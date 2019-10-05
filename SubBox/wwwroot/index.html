@@ -1,0 +1,628 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <script src="/vue.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <title>SubBox</title>
+    <style>
+        .dark-mode {
+            background-color: #131313;
+            --bg: #131313;
+            --nav_bg: #000000;
+            --font_title: #fafafa;
+            --font_text: #b8b8b8;
+            --video_bd_bot: #969696;
+        }
+
+        .light-mode {
+            background-color: #fafafa;
+            --bg: #fafafa;
+            --nav_bg: #ffffff;
+            --font_title: #131313;
+            --font_text: #969696;
+            --video_bd_bot: #969696;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            --red: #db4437;
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            top: 0;
+            left: 0;
+            right: 0;
+            position: fixed;
+            width: 100%;
+            background-color: var(--nav_bg);
+            height: 40px;
+        }
+
+        button {
+            padding: 5px;
+            margin: 5px;
+            border: transparent;
+            border-radius: 5px;
+            background-color: transparent;
+            color: var(--font_title);
+            cursor: pointer;
+        }
+
+        nav button {
+            height: 32px;
+            width: 32px;
+        }
+
+        nav p {
+            margin-left: 10px;
+            font-size: 22px;
+            color: var(--font_title);
+        }
+
+        nav button:hover {
+            color: var(--red);
+        }
+
+        input[type=text] {
+            padding: 2px;
+            border: solid var(--font_text) 1px;
+            border-radius: 0px;
+            width: 250px;
+            color: #131313;
+        }
+
+        tr {
+            padding: 0;
+        }
+
+        .channelInput {
+            display: flex;
+            align-items: center;
+            vertical-align: middle;
+        }
+
+        .refreshButton {
+            position: absolute;
+            right: 10px;
+        }
+
+        .videoTitle {
+            width: 100%;
+            font-size: 18px;
+            color: var(--font_title);
+            padding-top: 0;
+            padding-bottom: 0;
+            padding-left: 10px;
+            margin: 0;
+            cursor: pointer;
+        }
+
+        .videoText {
+            font-size: 13px;
+            color: var(--font_text);
+            padding-top: 0;
+            padding-bottom: 0;
+            padding-left: 10px;
+            margin: 0;
+        }
+
+        .videoHeaderName {
+            color: var(--font_title);
+            display: inline-block;
+            cursor: pointer;
+            font-size: 16px;
+            line-height: 20px;
+            font-weight: bold;
+            margin-left: 5px;
+        }
+
+        .videoRows {
+            height: 0;
+        }
+
+        .videoList {
+            margin-left: auto;
+            margin-right: auto;
+            width: 60%;
+        }
+
+        .videoBox {
+            margin-left: auto;
+            margin-right: auto;
+            border-bottom-color: var(--video_bd_bot);
+            border-bottom-style: solid;
+            border-bottom-width: 1px;
+        }
+
+            .videoBox:hover .deleteButton {
+                color: var(--font_title);
+            }
+
+        .deleteButton {
+            float: right;
+            position: relative;
+            color: transparent;
+            height: auto;
+            margin-top: 50px;
+            padding: 0;
+        }
+
+            .deleteButton:hover {
+                color: var(--red) !important;
+            }
+
+        .videoTextChannel {
+            cursor: pointer;
+        }
+
+            .videoTextChannel:hover {
+                color: var(--font_title);
+            }
+
+        .videoDesc {
+            vertical-align: top;
+            padding-left: 10px;
+            color: var(--font_text);
+            font-size: 13px;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 50px;
+            margin-left: 37.5%;
+            width: 25%;
+            background-color: var(--nav_bg);
+            z-index: 2;
+            display: block;
+            border: 1px solid var(--font_text);
+        }
+
+        .channelList {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        .channelNameColumn {
+            color: var(--font_title);
+            padding-left: 10px;
+            width: 100%;
+        }
+
+        .channelRow:hover {
+            background-color: var(--bg);
+        }
+
+        .deleteChannelButton:hover {
+            color: var(--red) !important;
+        }
+
+        .channelRow:hover .deleteChannelButton {
+            color: var(--font_title);
+        }
+
+        .deleteChannelButton {
+            color: transparent;
+        }
+
+        .closeChannelsButton {
+            float: right;
+        }
+
+            .closeChannelsButton:hover {
+                color: var(--red);
+            }
+
+        .listList {
+            margin-left: auto;
+            margin-right: auto;
+            width: 60%;
+        }
+
+        .spacer {
+            display: flex;
+            width: 100%;
+            margin-top: 40px;
+            height: 30px;
+        }
+
+        .videoBox:hover .listButton {
+            color: var(--font_title);
+        }
+
+        .listButton {
+            color: transparent;
+        }
+
+            .listButton:hover {
+                color: var(--red) !important;
+            }
+
+        .inputList {
+            display: flex;
+            align-items: center;
+        }
+
+        .overlayUniqueList {
+            position: fixed;
+            top: 40px;
+            margin-left: 0;
+            width: 100%;
+            height: 97%;
+            background-color: var(--bg);
+            z-index: 2;
+            display: flex;
+            padding: 0;
+        }
+
+        .scrollList {
+            width: 100%;
+            overflow: auto;
+            margin: 0;
+        }
+
+        .uniqueList {
+            margin-left: auto;
+            margin-right: auto;
+            width: 60%;
+        }
+
+        .closeUniqueListButton {
+            margin-left: auto;
+            margin-right: 0;
+        }
+
+            .closeUniqueListButton:hover {
+                color: var(--red);
+            }
+
+        .playlistHint {
+            color: var(--red);
+            font-size: 12px;
+            border: 1px var(--red) solid;
+            font-weight: 500;
+            margin-left: 10px;
+            display: inline-block;
+            padding-top: 2px;
+            padding-bottom: 2px;
+            padding-left: 3px;
+            padding-right: 3px;
+            line-height: 12px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app" :class="night ? 'dark-mode' : 'light-mode'">
+        <div v-show="channelMode" class="overlay"> 
+            <table class="channelList" v-for="channel in channels">
+                <tr class="channelRow">
+                    <td>
+                        <img :src="channel.thumbnailUrl" style="margin-left:10px;width:32px;height:32px;border-radius: 50%;vertical-align:middle;cursor:pointer;" @click="openChannel(channel.username)" />
+                    </td>
+                    <td class="channelNameColumn">
+                        {{channel.displayname}}
+                    </td>
+                    <td>
+                        <button @click="deleteChannel(channel)" class="material-icons deleteChannelButton">clear</button>
+                    </td>
+                </tr>
+            </table>
+            <button @click="closeChannels" class="material-icons closeChannelsButton">exit_to_app</button>
+        </div>
+
+        <div v-show="uniqueListMode" class="overlayUniqueList">
+            <nav>
+                <p>Playlist Contents</p><p class="material-icons">view_list</p><p>|</p>
+                <button @click="showListInput()" class="material-icons">playlist_add</button>
+                <div v-show="inputListMode" class="inputList">
+                    <input v-model="addPlayList" autocomplete="off" type="text" name="PlaylistIdUnqiue" placeholder="Playlist Id..." />
+                    <button @click="submitPlaylist" class="material-icons">done</button>
+                </div>
+                <button @click="closeUniqueList" class="material-icons closeUniqueListButton">exit_to_app</button>
+            </nav>
+
+            <div class="scrollList">
+                <table class="uniqueList">
+                    <tr v-for="video in uniqueList">
+                        <td>
+                            <div class="videoBox">
+                                <table style="display: inline-block; border-collapse: collapse; width:90%">
+                                    <tr class="videoRows">
+                                        <th rowspan="3">
+                                            <img :src="video.thumbnailUrl" style="width:246px;height:138px;cursor:pointer" @click="openVideo(video.id)" />
+                                        </th>
+                                        <td @click="openVideo(video.id)" class="videoTitle">
+                                            {{video.title}}
+                                        </td>
+                                    </tr>
+                                    <tr class="videoRows">
+                                        <td class="videoText">
+                                            <span class="videoTextChannel" @click="openChannel(video.channelName)">{{video.channelTitle}}</span> &#9679 {{video.duration}} &#9679 {{video.publishedAtString}}
+                                        </td>
+                                    </tr>
+                                    <tr style="height:100px">
+                                        <td class="videoDesc">
+                                            <p style="margin-top:5px">{{video.description1}}<br>{{video.description2}} </p>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <button class="material-icons deleteButton" style="margin-top: 0" @click="deleteVideo(video)">clear</button>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <nav>
+            <button @click="showChannelInput" class="material-icons">add_box</button>
+            <div v-show="inputMode" class="channelInput">
+                <input v-model="addChannelName" autocomplete="off" type="text" name="Username" placeholder="Channel Name..." />
+                <button class="material-icons" @click="onSubmit">done</button>
+            </div>
+            <button @click="showChannels" class="material-icons">account_box</button>
+            <button @click="showListInput()" class="material-icons">playlist_add</button>
+            <div v-show="inputListMode" class="inputList">
+                <input v-model="addPlayList" autocomplete="off" type="text" name="PlaylistId" placeholder="Playlist Id..." />
+                <button @click="submitPlaylist" class="material-icons">done</button>
+            </div>
+
+            <button @click="switchDesign" style="margin-left: auto;" class="material-icons">highlight</button>
+            <button @click="refresh" class="material-icons">autorenew</button>
+        </nav>
+
+        <div class="spacer">
+
+        </div>
+        <table v-show="videoListMode" class="listList">
+            <tr v-for="video in lists">
+                <td>
+                    <div class="videoBox">
+                        <table>
+                            <tr class="videoRows">
+                                <th rowspan="4">
+                                    <img :src="video.thumbnailUrl" style="width:246px;height:138px;cursor:pointer" @click="openVideo(video.id)" />
+                                </th>
+                                <td @click="openVideo(video.id)" class="videoTitle">
+                                    {{video.title}}
+                                </td>
+                            </tr>
+                            <tr class="videoRows">
+                                <td class="videoText">
+                                    <span class="videoTextChannel" @click="openChannel(video.channelName)">{{video.channelTitle}}</span> &#9679 {{video.duration}} &#9679 {{video.publishedAtString}}
+                                </td>
+                            </tr>
+                            <tr style="height:50px">
+                                <td class="videoDesc">
+                                    <p style="margin-top:5px">{{video.description1}}<br>{{video.description2}} </p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <p class="playlistHint">PLAYLIST</p>
+                                    <button @click="next(video.list)" style="margin-left: 80%" class="material-icons listButton">queue_play_next</button>
+                                    <button @click="showUniqueList(video.list)" class="material-icons listButton">view_list</button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </td>
+            </tr>
+        </table>
+        <table v-show="videoListMode" class="videoList">
+            <tr v-for="video in videos">
+                <td>
+                    <div class="videoBox">
+                        <table style="display: inline-block; border-collapse: collapse; width:90%">
+                            <tr>
+                                <th style="text-align:left;display:inline-block;padding:10px">
+                                    <img :src="video.channelPicUrl" style="left:0;width:32px;height:32px;border-radius: 50%;vertical-align:middle;cursor:pointer;" @click="openChannel(video.channelName)" />
+                                    <span class="videoHeaderName" @click="openChannel(video.channelName)">{{video.channelTitle}}</span>
+                                </th>
+                            </tr>
+                            <tr class="videoRows">
+                                <th rowspan="3">
+                                    <img :src="video.thumbnailUrl" style="width:246px;height:138px;cursor:pointer" @click="openVideo(video.id)" />
+                                </th>
+                                <td @click="openVideo(video.id)" class="videoTitle">
+                                    {{video.title}}
+                                </td>
+                            </tr>
+                            <tr class="videoRows">
+                                <td class="videoText">
+                                    <span class="videoTextChannel" @click="openChannel(video.channelName)">{{video.channelTitle}}</span> &#9679 {{video.duration}} &#9679 {{video.publishedAtString}}
+                                </td>
+                            </tr>
+                            <tr style="height:100px">
+                                <td class="videoDesc">
+                                    <p style="margin-top:5px">{{video.description1}}<br>{{video.description2}} </p>
+                                </td>
+                            </tr>
+                        </table>
+                        <button class="material-icons deleteButton" @click="deleteVideo(video)">clear</button>
+                    </div>               
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <script>
+        var app = new Vue({
+            data: {
+                videos: [],
+                channels: [],
+                lists: [],
+                uniqueList: [],
+                videoListMode: true,
+                inputMode: false,
+                inputListMode: false,
+                inputListModeNumber: 0,
+                addPlayList: "",
+                channelMode: false,
+                uniqueListMode: false,
+                addChannelName: "",
+                night: false,
+            },
+            methods: {
+                async update() {
+                    var result = await fetch("/api/values/videos");
+
+                    this.videos = await result.json();
+                },
+                async listUpdate() {
+                    var result = await fetch("/api/values/lists");
+
+                    this.lists = await result.json();
+                },
+                showChannelInput() {
+                    this.inputListMode = false;
+
+                    this.inputMode = !this.inputMode;
+
+                    this.addChannelName = "";
+                },
+                showListInput() {
+                    this.inputMode = false;
+
+                    this.addPlayList = "";
+
+                    this.addPlayListUnique = "";
+
+                    this.inputListMode = !this.inputListMode;
+                },
+                async showUniqueList(number) {
+                    if (number > 0) {
+                        var result = await fetch("/api/values/list/all/" + number);
+
+                        this.uniqueList = await result.json();
+
+                        this.inputListModeNumber = number;
+
+                        this.channelMode = false;
+
+                        this.uniqueListMode = true;
+
+                        this.videoListMode = false;
+                    }
+                },
+                async refresh() {
+                    await fetch("/api/values/refresh", { method: "POST", });
+
+                    this.update();
+                },
+                async onSubmit() {
+                    if (this.addChannelName != "") {
+                        this.addChannelName = this.addChannelName.trim();
+
+                        this.inputMode = false;
+
+                        this.channelMode = false;
+
+                        await fetch("/api/values/channel/" + this.addChannelName, { method: "POST" });
+
+                        this.addChannelName = "";
+
+                        this.update();
+                    }
+                },
+                async submitPlaylist() {
+                    if (this.addPlayList != "") {
+                        this.addPlayList = this.addPlayList.trim();
+
+                        this.inputListMode = false;
+
+                        if (!Number.isInteger(this.inputListModeNumber)) {
+                            console.log(this.inputListModeNumber);
+                        }
+
+                        await fetch("/api/values/list/add/" + this.addPlayList + "/" + this.inputListModeNumber, { method: "POST" });
+
+                        this.addPlayList = "";
+
+                        this.listUpdate();
+
+                        if (this.uniqueListMode) {
+                            this.showUniqueList(this.inputListModeNumber);
+                        }
+                    }
+                },
+                openVideo(link) {
+                    window.open("https://www.youtube.com/watch?v=" + link, "_blank");
+                },
+                async deleteVideo(video) {
+                    if (this.uniqueListMode) {
+                        await fetch("/api/values/video/" + video.id, { method: "DELETE" });
+
+                        var index = this.uniqueList.indexOf(video);
+
+                        this.uniqueList.splice(index, 1);
+
+                        this.listUpdate();
+                    } else {
+                        await fetch("/api/values/video/" + video.id, { method: "DELETE" });
+
+                        var index = this.videos.indexOf(video);
+
+                        this.videos.splice(index, 1);
+                    }
+                },
+                openChannel(link) {
+                    window.open("https://www.youtube.com/user/" + link, "_blank");
+                },
+                async showChannels() {
+                    this.channelMode = !this.channelMode;
+
+                    var result = await fetch("/api/values/channels");
+
+                    this.channels = await result.json();
+                },
+                closeChannels() {
+                    this.channelMode = false;
+                },
+                closeUniqueList() {
+                    this.inputListModeNumber = 0;
+
+                    this.videoListMode = true;
+
+                    this.uniqueListMode = false;
+                },
+                switchDesign() {
+                    this.night = !this.night;
+                },
+                async deleteChannel(channel) {
+                    await fetch("/api/values/channel/" + channel.id, { method: "DELETE" });
+
+                    var index = this.channels.indexOf(channel);
+
+                    this.channels.splice(index, 1);
+
+                    this.update();
+                },
+                async next(list) {
+                    await fetch("api/values/list/next/" + list, { method: "DELETE" });
+
+                    this.listUpdate();
+                },
+            },
+            el: "#app",
+            async mounted() {
+                this.listUpdate();
+
+                this.update();
+
+            }
+        });
+    </script>
+</body>
+
+
+</html>
