@@ -10,7 +10,7 @@ namespace SubBox.Models
 {
     public class DataRetriever
     {
-        private static readonly string APIKey = "AIzaSyDDr4NEXmYPZGrrG0b38qo5-to0RZyx7ss";
+        private static readonly string APIKey = Config.APIKey;
 
         private YouTubeService service;
 
