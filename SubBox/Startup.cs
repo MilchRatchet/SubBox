@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using SubBox.Data;
 using SubBox.Models;
 
@@ -40,9 +33,9 @@ namespace SubBox
                 context.Database.EnsureCreated();
             }
 
-            //var fetcher = new DataRetriever();
+            var fetcher = new DataRetriever();
 
-            //fetcher.AddPlaylist(1, "PLGWGc5dfbzn_yHCLnajlNhqg-80gqJgH-");
+            fetcher.UpdateVideoList();
 
             if (env.IsDevelopment())
             {

@@ -280,9 +280,9 @@
             margin-right: 0;
         }
 
-            .closeUniqueListButton:hover {
-                color: var(--red);
-            }
+        .closeUniqueListButton:hover {
+            color: var(--red);
+        }
 
         .playlistHint {
             color: var(--red);
@@ -302,7 +302,7 @@
 
 <body>
     <div id="app" :class="night ? 'dark-mode' : 'light-mode'">
-        <div v-show="channelMode" class="overlay"> 
+        <div v-show="channelMode" class="overlay">
             <table class="channelList" v-for="channel in channels">
                 <tr class="channelRow">
                     <td>
@@ -363,6 +363,51 @@
             </div>
         </div>
 
+        <div v-show="trashbinMode" class="overlayUniqueList">
+            <nav>
+                <p>Removed Videos</p><p class="material-icons">view_list</p><p>|</p>
+                <button @click="closeTrashbin" class="material-icons closeUniqueListButton">exit_to_app</button>
+            </nav>
+
+            <div class="scrollList">
+                <table class="uniqueList">
+                    <tr v-for="video in oldVideos">
+                        <td>
+                            <div class="videoBox">
+                                <table style="display: inline-block; border-collapse: collapse; width:90%">
+                                    <tr>
+                                        <th style="text-align:left;display:inline-block;padding:10px">
+                                            <img :src="video.channelPicUrl" style="left:0;width:32px;height:32px;border-radius: 50%;vertical-align:middle;cursor:pointer;" @click="openChannel(video.channelName)" />
+                                            <span class="videoHeaderName" @click="openChannel(video.channelName)">{{video.channelTitle}}</span>
+                                        </th>
+                                    </tr>
+                                    <tr class="videoRows">
+                                        <th rowspan="3">
+                                            <img :src="video.thumbnailUrl" style="width:246px;height:138px;cursor:pointer" @click="openVideo(video.id)" />
+                                        </th>
+                                        <td @click="openVideo(video.id)" class="videoTitle">
+                                            {{video.title}}
+                                        </td>
+                                    </tr>
+                                    <tr class="videoRows">
+                                        <td class="videoText">
+                                            <span class="videoTextChannel" @click="openChannel(video.channelName)">{{video.channelTitle}}</span> &#9679 {{video.duration}} &#9679 {{video.publishedAtString}}
+                                        </td>
+                                    </tr>
+                                    <tr style="height:100px">
+                                        <td class="videoDesc">
+                                            <p style="margin-top:5px">{{video.description1}}<br>{{video.description2}} </p>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <button class="material-icons deleteButton" @click="reactivateVideo(video)">add</button>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
         <nav>
             <button @click="showChannelInput" class="material-icons">add_box</button>
             <div v-show="inputMode" class="channelInput">
@@ -375,6 +420,7 @@
                 <input v-model="addPlayList" autocomplete="off" type="text" name="PlaylistId" placeholder="Playlist Id..." />
                 <button @click="submitPlaylist" class="material-icons">done</button>
             </div>
+            <button @click="showOldVideos" class="material-icons">restore</button>
 
             <button @click="switchDesign" style="margin-left: auto;" class="material-icons">highlight</button>
             <button @click="refresh" class="material-icons">autorenew</button>
@@ -409,7 +455,8 @@
                             <tr>
                                 <td>
                                     <p class="playlistHint">PLAYLIST</p>
-                                    <button @click="next(video.list)" style="margin-left: 80%" class="material-icons listButton">queue_play_next</button>
+                                    <button @click="prev(video.list)" style="margin-left: 75%" class="material-icons listButton">fast_rewind</button>
+                                    <button @click="next(video.list)" class="material-icons listButton">fast_forward</button>
                                     <button @click="showUniqueList(video.list)" class="material-icons listButton">view_list</button>
                                 </td>
                             </tr>
@@ -449,7 +496,7 @@
                             </tr>
                         </table>
                         <button class="material-icons deleteButton" @click="deleteVideo(video)">clear</button>
-                    </div>               
+                    </div>
                 </td>
             </tr>
         </table>
@@ -459,11 +506,13 @@
         var app = new Vue({
             data: {
                 videos: [],
+                oldVideos: [],
                 channels: [],
                 lists: [],
                 uniqueList: [],
                 videoListMode: true,
                 inputMode: false,
+                trashbinMode: false,
                 inputListMode: false,
                 inputListModeNumber: 0,
                 addPlayList: "",
@@ -513,6 +562,17 @@
 
                         this.videoListMode = false;
                     }
+                },
+                async showOldVideos() {
+                    var result = await fetch("api/values/videos/old");
+
+                    this.oldVideos = await result.json();
+
+                    this.channelMode = false;
+
+                    this.trashbinMode = true;
+
+                    this.videoListMode = false;
                 },
                 async refresh() {
                     await fetch("/api/values/refresh", { method: "POST", });
@@ -575,6 +635,15 @@
                         this.videos.splice(index, 1);
                     }
                 },
+                async reactivateVideo(video) {
+                    await fetch("/api/values/video/" + video.id, { method: "POST" });
+
+                    var index = this.oldVideos.indexOf(video);
+
+                    this.oldVideos.splice(index, 1);
+
+                    this.update();
+                },
                 openChannel(link) {
                     window.open("https://www.youtube.com/user/" + link, "_blank");
                 },
@@ -595,6 +664,11 @@
 
                     this.uniqueListMode = false;
                 },
+                closeTrashbin() {
+                    this.videoListMode = true;
+
+                    this.trashbinMode = false;
+                },
                 switchDesign() {
                     this.night = !this.night;
                 },
@@ -608,7 +682,12 @@
                     this.update();
                 },
                 async next(list) {
-                    await fetch("api/values/list/next/" + list, { method: "DELETE" });
+                    await fetch("api/values/list/next/" + list, { method: "POST" });
+
+                    this.listUpdate();
+                },
+                async prev(list) {
+                    await fetch("api/values/list/previous/" + list, { method: "POST" });
 
                     this.listUpdate();
                 },

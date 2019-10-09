@@ -4,7 +4,6 @@ using SubBox.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace SubBox.Models
 {
@@ -12,7 +11,7 @@ namespace SubBox.Models
     {
         private static readonly string APIKey = Config.APIKey;
 
-        private YouTubeService service;
+        private readonly YouTubeService service;
 
         private static readonly int DescLength = 120;
 

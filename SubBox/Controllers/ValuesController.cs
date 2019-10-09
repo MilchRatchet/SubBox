@@ -30,6 +30,15 @@ namespace SubBox.Controllers
             return result;
         }
 
+        // GET: api/values/videos/old
+        [HttpGet("videos/old")]
+        public async Task<ActionResult<IEnumerable<Video>>> GetOldVideos()
+        {
+            var result = await context.Videos.Where(v => !v.New).Where(v => v.List == 0).OrderByDescending(v => v.PublishedAt.Ticks).ToListAsync();
+
+            return result;
+        }
+
         // GET: api/values/channels
         [HttpGet("channels")]
         public async Task<ActionResult<IEnumerable<Channel>>> GetChannels()
@@ -120,9 +129,9 @@ namespace SubBox.Controllers
             fetcher.AddPlaylist(count, id);
         }
 
-        // DELETE: api/values/list/next/number
-        [HttpDelete("list/next/{number}")]
-        public void nextEntry(int number)
+        // POST: api/values/list/next/number
+        [HttpPost("list/next/{number}")]
+        public void NextEntry(int number)
         {
             Video video = context.Videos.Where(v => v.List == number).Where(v => v.Index == 0).FirstOrDefault();
 
@@ -133,36 +142,84 @@ namespace SubBox.Controllers
 
             video.New = false;
 
-            video.List = 0;
-
             context.Videos.Where(v => v.List == number).ToList().ForEach(v => v.Index -= 1);
 
             context.SaveChanges();
         }
 
-        // DELETE: api/values/video/id
-        [HttpDelete("video/{id}")]
-        public void DeleteVideo(string id)
+        // POST: api/values/list/previous/number
+        [HttpPost("list/previous/{number}")]
+        public void PrevEntry(int number)
         {
-            Video video = context.Videos.Find(id);
+            Video video = context.Videos.Where(v => v.List == number).Where(v => v.Index == -1).FirstOrDefault();
 
             if (video == null)
             {
                 return;
             }
 
-            Console.WriteLine("Deleting Video: " + video.Title + " by " + video.ChannelTitle);
+            video.New = true;
 
-            video.New = false;
-
-            if (video.List != 0)
-            {
-                context.Videos.Remove(video);
-
-                context.Videos.Where(v => v.List == video.List).Where(v => v.Index > video.Index).ToList().ForEach(v => v.Index -= 1);
-            }
+            context.Videos.Where(v => v.List == number).ToList().ForEach(v => v.Index += 1);
 
             context.SaveChanges();
+        }
+
+        // POST: api/values/video/id
+        [HttpPost("video/{id}")]
+        public void ReactivateVideo(string id)
+        {
+            try
+            {
+                Video video = context.Videos.Find(id);
+
+                if (video == null)
+                {
+                    return;
+                }
+
+                Console.WriteLine("Reativating Video: " + video.Title + " by " + video.ChannelTitle);
+
+                video.New = true;
+
+                context.SaveChanges();
+            }
+            catch(Exception)
+            {
+                return;
+            }
+        }
+
+        // DELETE: api/values/video/id
+        [HttpDelete("video/{id}")]
+        public void DeleteVideo(string id)
+        {
+            try
+            {
+                Video video = context.Videos.Find(id);
+
+                if (video == null)
+                {
+                    return;
+                }
+
+                Console.WriteLine("Deleting Video: " + video.Title + " by " + video.ChannelTitle);
+
+                video.New = false;
+
+                if (video.List != 0)
+                {
+                    context.Videos.Remove(video);
+
+                    context.Videos.Where(v => v.List == video.List).Where(v => v.Index > video.Index).ToList().ForEach(v => v.Index -= 1);
+                }
+
+                context.SaveChanges();
+            }
+            catch (Exception)
+            {
+                return;
+            }
         }
 
         // DELETE: api/values/channel/id
