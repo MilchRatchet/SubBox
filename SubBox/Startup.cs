@@ -33,10 +33,6 @@ namespace SubBox
                 context.Database.EnsureCreated();
             }
 
-            var fetcher = new DataRetriever();
-
-            fetcher.UpdateVideoList();
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
