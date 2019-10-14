@@ -339,3 +339,4 @@ ASALocalRun/
 # BeatPulse healthcheck temp database
 healthchecksdb
 /SubBox/Models/Config.cs
+/SubBox/settings.txt

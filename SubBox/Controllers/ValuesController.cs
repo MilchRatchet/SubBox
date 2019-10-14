@@ -66,6 +66,13 @@ namespace SubBox.Controllers
             return result;
         }
 
+        // GET: api/values/settings
+        [HttpGet("settings")]
+        public string[] GetSettings()
+        {
+            return new string[] { AppSettings.RetrievalTimeFrame.ToString(), AppSettings.NewChannelTimeFrame.ToString(), AppSettings.DeletionTimeFrame.ToString(), AppSettings.PlaylistPlaybackSize.ToString(), AppSettings.Color, AppSettings.NightMode.ToString() };
+        }
+
         // POST: api/values/refresh
         [HttpPost("refresh")]
         public void Refresh()
@@ -188,6 +195,60 @@ namespace SubBox.Controllers
             {
                 return;
             }
+        }
+
+        // POST: api/values/settings/RT/number
+        [HttpPost("settings/RT/{number}")]
+        public void SetRT(int number)
+        {
+            AppSettings.RetrievalTimeFrame = number;
+
+            AppSettings.Save();
+        }
+
+        // POST: api/values/settings/NCT/number
+        [HttpPost("settings/NCT/{number}")]
+        public void SetNCT(int number)
+        {
+            AppSettings.NewChannelTimeFrame = number;
+
+            AppSettings.Save();
+        }
+
+        // POST: api/values/settings/DT/number
+        [HttpPost("settings/DT/{number}")]
+        public void SetDT(int number)
+        {
+            AppSettings.DeletionTimeFrame = number;
+
+            AppSettings.Save();
+        }
+
+        // POST: api/values/settings/PPS/number
+        [HttpPost("settings/PPS/{number}")]
+        public void SetPPS(int number)
+        {
+            AppSettings.PlaylistPlaybackSize = number;
+
+            AppSettings.Save();
+        }
+
+        // POST: api/values/settings/night
+        [HttpPost("settings/night")]
+        public void SwitchNight()
+        {
+            AppSettings.NightMode = !AppSettings.NightMode;
+
+            AppSettings.Save();
+        }
+
+        // POST: api/values/settings/Color/number
+        [HttpPost("settings/Color/{number}")]
+        public void SetColor(string number)
+        {
+            AppSettings.Color = number;
+
+            AppSettings.Save();
         }
 
         // DELETE: api/values/video/id

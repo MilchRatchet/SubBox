@@ -1,8 +1,10 @@
 ﻿using Google.Apis.Services;
 using Google.Apis.YouTube.v3;
+using Microsoft.EntityFrameworkCore;
 using SubBox.Data;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 
 namespace SubBox.Models
@@ -15,7 +17,7 @@ namespace SubBox.Models
 
         private static readonly int DescLength = 120;
 
-        private static readonly int LifeTime = 7;
+        private static int LifeTime = 7;
 
         public DataRetriever()
         {
@@ -29,6 +31,8 @@ namespace SubBox.Models
 
         public void AddChannel(string name)
         {
+            LifeTime = AppSettings.NewChannelTimeFrame;
+
             var Request = service.Channels.List("snippet");
 
             Request.ForUsername = name;
@@ -181,6 +185,8 @@ namespace SubBox.Models
         public void UpdateVideoList()
         {
             GarbageCollector();
+
+            LifeTime = AppSettings.RetrievalTimeFrame;
 
             List<Channel> Channels;
 
@@ -349,6 +355,8 @@ namespace SubBox.Models
 
         public void GarbageCollector()
         {
+            LifeTime = AppSettings.DeletionTimeFrame;
+
             using (AppDbContext context = new AppDbContext())
             {
                 var list = context.Videos;
@@ -363,6 +371,8 @@ namespace SubBox.Models
                         }
                     }
                 }
+
+                context.Videos.RemoveRange(context.Videos.Where(v => v.Index < -AppSettings.PlaylistPlaybackSize));
 
                 context.SaveChanges();
             }

@@ -12,7 +12,7 @@ namespace SubBox.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            //Hier combined Keys festlegen
+            
         }
 
         public DbSet<Video> Videos { get; set; }

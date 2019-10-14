@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <script src="/vue.min.js"></script>
+    <script src="/jscolor.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
     <link rel="manifest" href="/site.webmanifest">
@@ -27,6 +28,10 @@
             --font_title: #131313;
             --font_text: #969696;
             --video_bd_bot: #969696;
+        }
+
+        :root {
+            --mainColor: #db4437;
         }
 
         body {
@@ -69,7 +74,7 @@
         }
 
         nav button:hover {
-            color: var(--red);
+            color: var(--mainColor);
         }
 
         input[type=text] {
@@ -78,6 +83,16 @@
             border-radius: 0px;
             width: 250px;
             color: #131313;
+        }
+
+        input[type=number] {
+            padding: 2px;
+            border: solid var(--font_text) 1px;
+            border-radius: 0px;
+            width: 250px;
+            color: #131313;
+            -moz-appearance: textfield;
+            -webkit-appearance: textfield;
         }
 
         tr {
@@ -157,7 +172,7 @@
         }
 
             .deleteButton:hover {
-                color: var(--red) !important;
+                color: var(--mainColor) !important;
             }
 
         .videoTextChannel {
@@ -177,9 +192,9 @@
 
         .overlay {
             position: fixed;
-            top: 50px;
-            margin-left: 37.5%;
-            width: 25%;
+            top: 40px;
+            margin-left: 0%;
+            width: 15%;
             background-color: var(--nav_bg);
             z-index: 2;
             display: block;
@@ -202,7 +217,7 @@
         }
 
         .deleteChannelButton:hover {
-            color: var(--red) !important;
+            color: var(--mainColor) !important;
         }
 
         .channelRow:hover .deleteChannelButton {
@@ -218,7 +233,7 @@
         }
 
             .closeChannelsButton:hover {
-                color: var(--red);
+                color: var(--mainColor);
             }
 
         .listList {
@@ -281,13 +296,13 @@
         }
 
         .closeUniqueListButton:hover {
-            color: var(--red);
+            color: var(--mainColor);
         }
 
         .playlistHint {
-            color: var(--red);
+            color: var(--mainColor);
             font-size: 12px;
-            border: 1px var(--red) solid;
+            border: 1px var(--mainColor) solid;
             font-weight: 500;
             margin-left: 10px;
             display: inline-block;
@@ -297,6 +312,67 @@
             padding-right: 3px;
             line-height: 12px;
         }
+
+        .settingsOverlay {
+            position: fixed;
+            top: 40px;
+            margin-left: 80%;
+            width: 20%;
+            background-color: var(--nav_bg);
+            z-index: 2;
+            display: block;
+            border: 1px solid var(--font_text);
+        }
+
+        .settingsOverlay p {
+            text-align: center;
+            color: var(--font_title);
+            margin: 0;
+        }
+
+        .settingsOverlay table {
+            width: 100%;
+        }
+
+        .settingsOverlay td {
+            width: 50%;
+            color: var(--font_title);
+        }
+
+        .settingsOverlay button {
+            float: right;
+        }
+
+        .settingsOverlay button:hover {
+            color: var(--mainColor);
+        }
+
+        .settingsOverlay input {
+            width: 30%;
+            margin: 0;
+            padding: 0;
+            font-size: 16px;
+            text-align: center;
+        }
+
+        .numberInput {
+            box-sizing: border-box;
+            display: inline-flex;
+            padding: 0;
+        }
+
+        .numberInput button {
+            align-items: center;
+            justify-content: center;
+            border: 1px var(--font_title) solid;
+            border-radius: initial;
+            cursor: pointer;
+            margin: 0;
+            padding: 0;
+            position: relative;
+        }
+
+
     </style>
 </head>
 
@@ -317,6 +393,67 @@
                 </tr>
             </table>
             <button @click="closeChannels" class="material-icons closeChannelsButton">exit_to_app</button>
+        </div>
+
+        <div v-show="settingsMode" class="settingsOverlay">
+            <table>
+                <tr>
+                    <th colspan="2">
+                        <p>Settings</p>
+                    </th>
+                </tr>
+                <tr>
+                    <td>New Channel Timeframe</td>
+                    <td>
+                        <div class="numberInput">
+                            <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()" class="material-icons" style="margin-left: 25%">remove</button>
+                            <input v-model="settingNCT" type="number" id="NCT" name="NCT" min="1" max="30" />
+                            <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()" class="material-icons">add</button>
+                        </div>    
+                    </td>
+                </tr>
+                <tr>
+                    <td>Retrieval Timeframe</td>
+                    <td>
+                        <div class="numberInput">
+                            <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()" class="material-icons" style="margin-left: 25%">remove</button>
+                            <input v-model="settingRT" type="number" id="RT" name="RT" min="1" max="7" />
+                            <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()" class="material-icons">add</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Deletion Timeframe</td>
+                    <td>
+                        <div class="numberInput">
+                            <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()" class="material-icons" style="margin-left: 25%">remove</button>
+                            <input v-model="settingDT" type="number" id="DT" name="DT" min="7" />
+                            <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()" class="material-icons">add</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Playlist Playback Size</td>
+                    <td>
+                        <div class="numberInput">
+                            <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()" class="material-icons" style="margin-left: 25%">remove</button>
+                            <input v-model="settingPPS" type="number" id="PPS" name="PPS" min="1" />
+                            <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()" class="material-icons">add</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Accent Color</td>
+                    <td>
+                        <input v-model="settingColor" id="colorPicker" @change="setColor()" style="margin-left: 30%" class="jscolor"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <button @click="closeSettings" class="material-icons">save</button>
+                    </td>
+                </tr>
+            </table>
         </div>
 
         <div v-show="uniqueListMode" class="overlayUniqueList">
@@ -423,6 +560,7 @@
             <button @click="showOldVideos" class="material-icons">restore</button>
 
             <button @click="switchDesign" style="margin-left: auto;" class="material-icons">highlight</button>
+            <button @click="showSettings" class="material-icons">settings_applications</button>
             <button @click="refresh" class="material-icons">autorenew</button>
         </nav>
 
@@ -520,6 +658,13 @@
                 uniqueListMode: false,
                 addChannelName: "",
                 night: false,
+                settingsMode: false,
+                settingNCT: 1,
+                settingRT: 7,
+                settingDT: 7,
+                settingPPS: 50,
+                settingColor: "ff0000",
+                settings: [],
             },
             methods: {
                 async update() {
@@ -531,6 +676,25 @@
                     var result = await fetch("/api/values/lists");
 
                     this.lists = await result.json();
+                },
+                async getSettings() {
+                    var result = await fetch("/api/values/settings");
+
+                    this.settings = await result.json();
+
+                    this.settingRT = this.settings[0];
+
+                    this.settingNCT = this.settings[1];
+
+                    this.settingDT = this.settings[2];
+
+                    this.settingPPS = this.settings[3];
+
+                    this.settingColor = this.settings[4];
+
+                    document.documentElement.style.setProperty('--mainColor', "#" + this.settingColor);
+
+                    this.night = (this.settings[5]=="True");
                 },
                 showChannelInput() {
                     this.inputListMode = false;
@@ -574,10 +738,20 @@
 
                     this.videoListMode = false;
                 },
+                showSettings() {
+                    this.channelMode = false;
+
+                    this.settingsMode = !this.settingsMode;
+                },
                 async refresh() {
                     await fetch("/api/values/refresh", { method: "POST", });
 
                     this.update();
+                },
+                setColor() {
+                    this.settingColor = document.getElementById('colorPicker').value;
+
+                    document.documentElement.style.setProperty('--mainColor', "#" + this.settingColor);
                 },
                 async onSubmit() {
                     if (this.addChannelName != "") {
@@ -648,6 +822,8 @@
                     window.open("https://www.youtube.com/user/" + link, "_blank");
                 },
                 async showChannels() {
+                    this.settingsMode = false;
+
                     this.channelMode = !this.channelMode;
 
                     var result = await fetch("/api/values/channels");
@@ -669,8 +845,31 @@
 
                     this.trashbinMode = false;
                 },
-                switchDesign() {
+                async closeSettings() {
+                    this.settingRT = document.getElementById('RT').value;
+
+                    this.settingNCT = document.getElementById('NCT').value;
+
+                    this.settingDT = document.getElementById('DT').value;
+
+                    this.settingPPS = document.getElementById('PPS').value;
+
+                    await fetch("/api/values/settings/RT/" + this.settingRT, { method: "POST" });
+
+                    await fetch("/api/values/settings/NCT/" + this.settingNCT, { method: "POST" });
+
+                    await fetch("/api/values/settings/DT/" + this.settingDT, { method: "POST" });
+
+                    await fetch("/api/values/settings/PPS/" + this.settingPPS, { method: "POST" });
+
+                    await fetch("/api/values/settings/Color/" + this.settingColor, { method: "POST" });
+
+                    this.settingsMode = false;
+                },
+                async switchDesign() {
                     this.night = !this.night;
+
+                    await fetch("/api/values/settings/night", { method: "POST" });
                 },
                 async deleteChannel(channel) {
                     await fetch("/api/values/channel/" + channel.id, { method: "DELETE" });
@@ -698,6 +897,7 @@
 
                 this.update();
 
+                this.getSettings();
             }
         });
     </script>
