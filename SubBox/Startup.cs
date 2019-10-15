@@ -30,6 +30,10 @@ namespace SubBox
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            //Change for every new release (maybe do this automatically in the future :pepeThink:)
+            Console.WriteLine("SubBox Build v1.1.0 - 15.10.2019");
+
+
             //load settings
             try
             {

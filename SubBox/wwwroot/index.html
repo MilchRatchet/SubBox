@@ -410,9 +410,9 @@
                     <td>Channel Retrieval (Days)</td>
                     <td>
                         <div class="numberInput">
-                            <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()" class="material-icons" style="margin-left: 25%">remove</button>
+                            <button @click="changeNCT(-1)" class="material-icons" style="margin-left: 25%">remove</button>
                             <input v-model="settingNCT" type="number" id="NCT" name="NCT" min="1" max="30" />
-                            <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()" class="material-icons">add</button>
+                            <button @click="changeNCT(+1)" class="material-icons">add</button>
                         </div>    
                     </td>
                 </tr>
@@ -420,9 +420,9 @@
                     <td>Retrieval Time (Days)</td>
                     <td>
                         <div class="numberInput">
-                            <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()" class="material-icons" style="margin-left: 25%">remove</button>
+                            <button @click="changeRT(-1)" class="material-icons" style="margin-left: 25%">remove</button>
                             <input v-model="settingRT" type="number" id="RT" name="RT" min="1" max="7" />
-                            <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()" class="material-icons">add</button>
+                            <button @click="changeRT(+1)" class="material-icons">add</button>
                         </div>
                     </td>
                 </tr>
@@ -430,9 +430,9 @@
                     <td>Deletion Time (Days)</td>
                     <td>
                         <div class="numberInput">
-                            <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()" class="material-icons" style="margin-left: 25%">remove</button>
+                            <button @click="changeDT(-1)" class="material-icons" style="margin-left: 25%">remove</button>
                             <input v-model="settingDT" type="number" id="DT" name="DT" min="7" />
-                            <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()" class="material-icons">add</button>
+                            <button @click="changeDT(+1)" class="material-icons">add</button>
                         </div>
                     </td>
                 </tr>
@@ -440,9 +440,9 @@
                     <td>Playlist Playback Size</td>
                     <td>
                         <div class="numberInput">
-                            <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()" class="material-icons" style="margin-left: 25%">remove</button>
+                            <button @click="changePPS(-1)" class="material-icons" style="margin-left: 25%">remove</button>
                             <input v-model="settingPPS" type="number" id="PPS" name="PPS" min="1" />
-                            <button onclick="this.parentNode.querySelector('input[type=number]').stepUp()" class="material-icons">add</button>
+                            <button @click="changePPS(+1)" class="material-icons">add</button>
                         </div>
                     </td>
                 </tr>
@@ -450,7 +450,7 @@
                     <td>Accent Color</td>
                     <td>
                         <div class="numberInput">
-                            <button @click="resetColor" class="material-icons" style="margin-left: 25%">delete_sweep</button>
+                            <button @click="resetColor" class="material-icons" style="margin-left: 25%">replay</button>
                             <input v-model="settingColor" id="colorPicker" @change="setColor()" class="jscolor" style="width: 30%; text-align: center; font-size: 16px; margin: 0; padding: 0;" />
                         </div> 
                     </td>
@@ -564,7 +564,7 @@
                 <input v-model="addPlayList" autocomplete="off" type="text" name="PlaylistId" placeholder="Playlist Id..." />
                 <button @click="submitPlaylist" class="material-icons">done</button>
             </div>
-            <button @click="showOldVideos" class="material-icons">restore</button>
+            <button @click="showOldVideos" class="material-icons">delete</button>
 
             <button @click="switchDesign" style="margin-left: auto;" class="material-icons">highlight</button>
             <button @click="showSettings" class="material-icons">settings_applications</button>
@@ -750,6 +750,8 @@
                 showSettings() {
                     this.channelMode = false;
 
+                    this.getSettings();
+
                     this.settingsMode = !this.settingsMode;
                 },
                 async refresh() {
@@ -909,6 +911,49 @@
                     await fetch("api/values/list/previous/" + list, { method: "POST" });
 
                     this.listUpdate();
+                },
+                changeNCT(number) {
+                    this.settingNCT *= 1;
+
+                    this.settingNCT += number;
+
+                    if (this.settingNCT > 90) {
+                        this.settingNCT = 90;
+                    }
+
+                    if (this.settingNCT < 1) {
+                        this.settingNCT = 1;
+                    }
+                },
+                changeRT(number) {
+                    this.settingRT *= 1;
+
+                    this.settingRT += number;
+
+                    if (this.settingRT > 7) {
+                        this.settingRT = 7;
+                    }
+                    if (this.settingRT < 1) {
+                        this.settingRT = 1;
+                    }
+                },
+                changeDT(number) {
+                    this.settingDT *= 1;
+
+                    this.settingDT += number;
+
+                    if (this.settingDT < 7) {
+                        this.settingDT = 7;
+                    }
+                },
+                changePPS(number) {
+                    this.settingPPS *= 1;
+
+                    this.settingPPS += number;
+
+                    if (this.settingPPS < 1) {
+                        this.settingPPS = 1;
+                    }
                 },
             },
             el: "#app",
