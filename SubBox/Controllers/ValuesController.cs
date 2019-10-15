@@ -202,8 +202,6 @@ namespace SubBox.Controllers
         public void SetRT(int number)
         {
             AppSettings.RetrievalTimeFrame = number;
-
-            AppSettings.Save();
         }
 
         // POST: api/values/settings/NCT/number
@@ -211,8 +209,6 @@ namespace SubBox.Controllers
         public void SetNCT(int number)
         {
             AppSettings.NewChannelTimeFrame = number;
-
-            AppSettings.Save();
         }
 
         // POST: api/values/settings/DT/number
@@ -220,8 +216,6 @@ namespace SubBox.Controllers
         public void SetDT(int number)
         {
             AppSettings.DeletionTimeFrame = number;
-
-            AppSettings.Save();
         }
 
         // POST: api/values/settings/PPS/number
@@ -229,8 +223,6 @@ namespace SubBox.Controllers
         public void SetPPS(int number)
         {
             AppSettings.PlaylistPlaybackSize = number;
-
-            AppSettings.Save();
         }
 
         // POST: api/values/settings/night
@@ -238,8 +230,6 @@ namespace SubBox.Controllers
         public void SwitchNight()
         {
             AppSettings.NightMode = !AppSettings.NightMode;
-
-            AppSettings.Save();
         }
 
         // POST: api/values/settings/Color/number
@@ -247,7 +237,11 @@ namespace SubBox.Controllers
         public void SetColor(string number)
         {
             AppSettings.Color = number;
+        }
 
+        [HttpPost("settings/save")]
+        public void saveSettings()
+        {
             AppSettings.Save();
         }
 

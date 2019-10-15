@@ -199,6 +199,8 @@
             z-index: 2;
             display: block;
             border: 1px solid var(--font_text);
+            border-left: none;
+            border-top: none;
         }
 
         .channelList {
@@ -322,6 +324,8 @@
             z-index: 2;
             display: block;
             border: 1px solid var(--font_text);
+            border-right: none;
+            border-top: none;
         }
 
         .settingsOverlay p {
@@ -403,7 +407,7 @@
                     </th>
                 </tr>
                 <tr>
-                    <td>New Channel Timeframe</td>
+                    <td>Channel Retrieval (Days)</td>
                     <td>
                         <div class="numberInput">
                             <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()" class="material-icons" style="margin-left: 25%">remove</button>
@@ -413,7 +417,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>Retrieval Timeframe</td>
+                    <td>Retrieval Time (Days)</td>
                     <td>
                         <div class="numberInput">
                             <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()" class="material-icons" style="margin-left: 25%">remove</button>
@@ -423,7 +427,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>Deletion Timeframe</td>
+                    <td>Deletion Time (Days)</td>
                     <td>
                         <div class="numberInput">
                             <button onclick="this.parentNode.querySelector('input[type=number]').stepDown()" class="material-icons" style="margin-left: 25%">remove</button>
@@ -445,7 +449,10 @@
                 <tr>
                     <td>Accent Color</td>
                     <td>
-                        <input v-model="settingColor" id="colorPicker" @change="setColor()" style="margin-left: 30%" class="jscolor"/>
+                        <div class="numberInput">
+                            <button @click="resetColor" class="material-icons" style="margin-left: 25%">delete_sweep</button>
+                            <input v-model="settingColor" id="colorPicker" @change="setColor()" class="jscolor" style="width: 30%; text-align: center; font-size: 16px; margin: 0; padding: 0;" />
+                        </div> 
                     </td>
                 </tr>
                 <tr>
@@ -694,6 +701,8 @@
 
                     document.documentElement.style.setProperty('--mainColor', "#" + this.settingColor);
 
+                    document.getElementById("colorPicker").jscolor.fromString(this.settingColor);
+
                     this.night = (this.settings[5]=="True");
                 },
                 showChannelInput() {
@@ -750,6 +759,13 @@
                 },
                 setColor() {
                     this.settingColor = document.getElementById('colorPicker').value;
+
+                    document.documentElement.style.setProperty('--mainColor', "#" + this.settingColor);
+                },
+                resetColor() {
+                    this.settingColor = "DB4437";
+
+                    document.getElementById("colorPicker").jscolor.fromString(this.settingColor);
 
                     document.documentElement.style.setProperty('--mainColor', "#" + this.settingColor);
                 },
@@ -864,12 +880,16 @@
 
                     await fetch("/api/values/settings/Color/" + this.settingColor, { method: "POST" });
 
+                    await fetch("/api/values/settings/save", {method: "POST"});
+
                     this.settingsMode = false;
                 },
                 async switchDesign() {
                     this.night = !this.night;
 
                     await fetch("/api/values/settings/night", { method: "POST" });
+
+                    await fetch("/api/values/settings/save", {method: "POST"});
                 },
                 async deleteChannel(channel) {
                     await fetch("/api/values/channel/" + channel.id, { method: "DELETE" });

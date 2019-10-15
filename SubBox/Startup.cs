@@ -53,7 +53,7 @@ namespace SubBox
                 AppSettings.RetrievalTimeFrame = 7;
                 AppSettings.NewChannelTimeFrame = 1;
                 AppSettings.PlaylistPlaybackSize = 50;
-                AppSettings.Color = "ff0000";
+                AppSettings.Color = "DB4437";
                 AppSettings.NightMode = false;
                 AppSettings.Save();
             }

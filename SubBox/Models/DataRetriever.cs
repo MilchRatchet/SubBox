@@ -317,6 +317,10 @@ namespace SubBox.Models
                                 {
                                     sec = "0" + sec;
                                 }
+                                else if (sec.Length == 0)
+                                {
+                                    sec = "00";
+                                }
 
                                 NewVideo.Duration = min + ":" + sec;
 
