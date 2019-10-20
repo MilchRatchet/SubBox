@@ -5,6 +5,10 @@
     <ApplicationIcon>wwwroot\favicon.ico</ApplicationIcon>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <Optimize>false</Optimize>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="Google.Apis.YouTube.v3" Version="1.41.1.1699" />
     <PackageReference Include="Microsoft.AspNetCore.App" />

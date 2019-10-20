@@ -15,7 +15,7 @@
         .dark-mode {
             background-color: #131313;
             --bg: #131313;
-            --nav_bg: #000000;
+            --nav_bg: #0b0b0b;
             --font_title: #fafafa;
             --font_text: #b8b8b8;
             --video_bd_bot: #969696;
@@ -32,6 +32,7 @@
 
         :root {
             --mainColor: #db4437;
+            --secColor: white;
         }
 
         body {
@@ -50,6 +51,7 @@
             width: 100%;
             background-color: var(--nav_bg);
             height: 40px;
+            z-index: 2;
         }
 
         button {
@@ -65,6 +67,9 @@
         nav button {
             height: 32px;
             width: 32px;
+            padding: 0;
+            border-radius: 5px;
+            transition: 0.2s;
         }
 
         nav p {
@@ -74,7 +79,12 @@
         }
 
         nav button:hover {
-            color: var(--mainColor);
+            width: 40px;
+            color: var(--secColor);
+            background-color: var(--mainColor);
+            padding: 0;
+            border-radius: 5px;
+            transition: 0.2s;
         }
 
         input[type=text] {
@@ -99,6 +109,32 @@
             padding: 0;
         }
 
+        .Title {
+            background-color: none;
+            color: var(--font_title);
+            cursor: default;
+            letter-spacing: 1px;
+            font-weight: bold;
+            background: linear-gradient(to right, var(--mainColor) 50%, var(--font_title) 50%);
+            background-size: 200% 100%;
+            background-position: right bottom;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            transition: 1s ease;
+        }
+
+        .Title:hover {
+            color: var(--mainColor);
+            font-weight: bold;
+            letter-spacing: 6px;
+            background: linear-gradient(to right, var(--mainColor) 50%, var(--font_title) 50%);
+            background-size: 200% 100%;
+            background-position: left bottom;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            transition: 1s ease;
+        }
+
         .channelInput {
             display: flex;
             align-items: center;
@@ -106,8 +142,15 @@
         }
 
         .refreshButton {
-            position: absolute;
-            right: 10px;
+            transition: transform 1s, color 0.2s, background-color 0.2s;
+            border-radius: 100%;
+        }
+
+        .refreshButton:hover {
+            transform: rotate(360deg);
+            transition: transform 1s, color 0.2s, background-color 0.2s;
+            border-radius: 100%;
+            width: 32px;
         }
 
         .videoTitle {
@@ -168,11 +211,17 @@
             color: transparent;
             height: auto;
             margin-top: 50px;
-            padding: 0;
+            padding: 1px;
+            background: none;
+            border: 1px solid var(--bg);
+            transition: background 0.1s ease;
         }
 
             .deleteButton:hover {
                 color: var(--mainColor) !important;
+                background-color: var(--secColor);
+                border: 1px solid var(--font_title);
+                transition: 0.2s ease;
             }
 
         .videoTextChannel {
@@ -194,7 +243,7 @@
             position: fixed;
             top: 40px;
             margin-left: 0%;
-            width: 15%;
+            width: 350px;
             background-color: var(--nav_bg);
             z-index: 2;
             display: block;
@@ -208,34 +257,107 @@
             width: 100%;
         }
 
+        .channelList img {
+            margin-top: 5px;
+            margin-bottom: 5px; 
+            margin-left: 10px;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            vertical-align: middle;
+            cursor: pointer;
+        }
+
         .channelNameColumn {
             color: var(--font_title);
             padding-left: 10px;
-            width: 100%;
+            width: 250px;
+        }
+
+        .channelButtonColumn {
+            width: 100px;
+        }
+
+        .channelRow {
+            border-left: 5px transparent solid;
+            background: linear-gradient(to right, var(--mainColor) 50%, transparent 50%);
+            background-size: 200% 100%;
+            background-position: right bottom;
+            transition: 0.2s ease, border 0.4s;
         }
 
         .channelRow:hover {
-            background-color: var(--bg);
+            border-left: 5px var(--mainColor) solid;
+            background: linear-gradient(to right,  var(--mainColor) 50%, transparent 50%);
+            background-size: 200% 100%;
+            background-position: left bottom;
+            transition: 0.4s ease, border 0s;
         }
 
-        .deleteChannelButton:hover {
-            color: var(--mainColor) !important;
+        .channelRow:hover td {
+            color: var(--secColor) !important;
         }
 
-        .channelRow:hover .deleteChannelButton {
-            color: var(--font_title);
+        .channelRow:hover button {
+            color: var(--secColor);
+        }
+
+        .locked {
+            border-left: 5px #daa520 solid;
+            background: linear-gradient(to right, #daa520 50%, transparent 50%);
+            background-size: 200% 100%;
+            background-position: right bottom;
+            transition: 0.2s ease;
+        }
+
+        .locked:hover {
+            border-left: 5px #daa520 solid;
+            background: linear-gradient(to right, #daa520 50%, transparent 50%);
+            background-size: 200% 100%;
+            background-position: left bottom;
+            transition: 0.4s ease;
+        }
+
+        .locked:hover .deleteChannelButton:hover {
+            color: #daa520 !important;
+        }
+
+        button.deleteChannelButton:hover {
+            padding: 0 !important;
+            color: var(--mainColor);
+            background: linear-gradient(to top, var(--secColor) 50%,  transparent 50%);
+            background-size: 100% 200%;
+            background-position: right bottom;
+            transition: 0.2s;
         }
 
         .deleteChannelButton {
+            display: inline-block;
+            border-radius: 2px;
+            padding: 0 !important;
             color: transparent;
+            background: linear-gradient(to top, var(--secColor) 50%,  transparent 50%);
+            background-size: 100% 200%;
+            background-position: right top;
+            transition: background 0.1s;
         }
 
         .closeChannelsButton {
             float: right;
+            border-radius: 5px;
+            background: linear-gradient(to right, var(--mainColor) 50%, transparent 50%);
+            background-size: 200% 100%;
+            background-position: right bottom;
+            transition: 0.1s ease;
         }
 
             .closeChannelsButton:hover {
-                color: var(--mainColor);
+                color: var(--secColor);
+                border-radius: 5px;
+                background: linear-gradient(to right,  var(--mainColor) 50%, transparent 50%);
+                background-size: 200% 100%;
+                background-position: left bottom;
+                transition: 0.2s ease;
             }
 
         .listList {
@@ -256,11 +378,18 @@
         }
 
         .listButton {
+            padding: 2px;
             color: transparent;
+            background-color: transparent;
+            border: 1px solid transparent;
+            transition: 0.1s ease;
         }
 
             .listButton:hover {
-                color: var(--red) !important;
+                color: var(--mainColor) !important;
+                background-color: var(--secColor);
+                border: 1px solid var(--font_title);
+                transition: 0.2s ease;
             }
 
         .inputList {
@@ -298,7 +427,8 @@
         }
 
         .closeUniqueListButton:hover {
-            color: var(--mainColor);
+            color: var(--secColor);
+            transition: 0.2s;
         }
 
         .playlistHint {
@@ -313,6 +443,7 @@
             padding-left: 3px;
             padding-right: 3px;
             line-height: 12px;
+            cursor: default;
         }
 
         .settingsOverlay {
@@ -336,31 +467,54 @@
 
         .settingsOverlay table {
             width: 100%;
+            border-collapse: collapse;
         }
 
         .settingsOverlay td {
+            justify-items: center;
             width: 50%;
             color: var(--font_title);
+            padding-left: 10px;
+        }
+
+        .settingsOverlay tr:hover td {
+            background-color: var(--bg);
+        }
+
+        .settingsOverlay td:first-of-type {
+            padding-top: 5px;
+            padding-bottom: 5px;
+        }
+
+        .settingsOverlay tr:nth-child(2) td {
+            padding-top: 5px;
         }
 
         .settingsOverlay button {
             float: right;
         }
 
-        .settingsOverlay button:hover {
-            color: var(--mainColor);
+        .numberInput button:hover {
+            color: var(--secColor);
+            background: linear-gradient(to top, var(--mainColor) 50%,  transparent 50%);
+            background-size: 100% 200%;
+            background-position: right bottom;
+            transition: 0.2s ease;
         }
 
         .settingsOverlay input {
-            width: 30%;
+            width: 35%;
             margin: 0;
             padding: 0;
             font-size: 16px;
             text-align: center;
+            border: 1px var(--font_title) solid;
+            border-radius: 0;
         }
 
         .numberInput {
             box-sizing: border-box;
+            justify-content: center;
             display: inline-flex;
             padding: 0;
         }
@@ -369,12 +523,64 @@
             align-items: center;
             justify-content: center;
             border: 1px var(--font_title) solid;
-            border-radius: initial;
+            border-radius: 0;
             cursor: pointer;
             margin: 0;
             padding: 0;
             position: relative;
+            background: linear-gradient(to top, var(--mainColor) 50%,  transparent 50%);
+            background-size: 100% 200%;
+            background-position: right top;
+            transition: background 0.1s ease;
         }
+
+        .videoThumb {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .videoThumb p {
+            font-size: 12px;
+            font-weight: 500;
+            bottom: -6px;
+            right: 3px;
+            color: white;
+            background: rgba(0,0,0,0.8);
+            position: absolute;
+            padding-left: 4px;
+            padding-right: 4px;
+            padding-top: 2px;
+            padding-bottom: 2px;
+            border-radius: 2px;
+        }
+
+        .changeWarning {
+            margin-top: 4px !important;
+            cursor: default;
+            float: left;
+            width: 180px;
+            padding: 3px;
+            border-radius: 2px;
+            color: var(--mainColor) !important;
+            font-size: 18px;
+            border: 1px solid var(--font_title);
+            background: linear-gradient(to right, var(--secColor) 50%,  transparent 50%);
+            background-size: 200% 100%;
+            background-position: left bottom;
+        }
+
+        .fade-enter-active {
+            transition: 0.5s ease;
+        }
+
+        .fade-leave-active {
+            transition: 0s;
+        }
+
+        .fade-enter, .fade-leave-to {
+            background-position: right bottom;
+        }
+
 
 
     </style>
@@ -384,14 +590,15 @@
     <div id="app" :class="night ? 'dark-mode' : 'light-mode'">
         <div v-show="channelMode" class="overlay">
             <table class="channelList" v-for="channel in channels">
-                <tr class="channelRow">
+                <tr v-bind:class="{ locked: channel.locked }" class="channelRow">
                     <td>
-                        <img :src="channel.thumbnailUrl" style="margin-left:10px;width:32px;height:32px;border-radius: 50%;vertical-align:middle;cursor:pointer;" @click="openChannel(channel.username)" />
+                        <img :src="channel.thumbnailUrl" @click="openChannel(channel.username)" />
                     </td>
                     <td class="channelNameColumn">
                         {{channel.displayname}}
                     </td>
-                    <td>
+                    <td class="channelButtonColumn">
+                        <button @click="setFilter(channel)" class="material-icons deleteChannelButton">star</button>
                         <button @click="deleteChannel(channel)" class="material-icons deleteChannelButton">clear</button>
                     </td>
                 </tr>
@@ -401,10 +608,10 @@
 
         <div v-show="settingsMode" class="settingsOverlay">
             <table>
-                <tr>
-                    <th colspan="2">
-                        <p>Settings</p>
-                    </th>
+                <tr style="border-bottom: 1px solid var(--font_title)">
+                    <td colspan="2">
+                        <p>SubBox v.1.2.0 - Settings</p>
+                    </td>
                 </tr>
                 <tr>
                     <td>Channel Retrieval (Days)</td>
@@ -451,13 +658,17 @@
                     <td>
                         <div class="numberInput">
                             <button @click="resetColor" class="material-icons" style="margin-left: 25%">replay</button>
-                            <input v-model="settingColor" id="colorPicker" @change="setColor()" class="jscolor" style="width: 30%; text-align: center; font-size: 16px; margin: 0; padding: 0;" />
+                            <input v-model="settingColor" id="colorPicker" @change="setColor()" class="jscolor" />
+                            <button class="material-icons" style="color: transparent; background: transparent; cursor: default; border: transparent;">add</button>
                         </div> 
                     </td>
                 </tr>
                 <tr>
                     <td colspan="2">
-                        <button @click="closeSettings" class="material-icons">save</button>
+                        <transition name="fade">
+                            <p class="changeWarning" v-if="changes">Unsaved Changes!</p>
+                        </transition>
+                        <button @click="closeSettings" class="material-icons closeChannelsButton">save</button>
                     </td>
                 </tr>
             </table>
@@ -482,7 +693,10 @@
                                 <table style="display: inline-block; border-collapse: collapse; width:90%">
                                     <tr class="videoRows">
                                         <th rowspan="3">
-                                            <img :src="video.thumbnailUrl" style="width:246px;height:138px;cursor:pointer" @click="openVideo(video.id)" />
+                                            <div @click="openVideo(video.id)" class="videoThumb">
+                                                <img :src="video.thumbnailUrl" style="width:246px;height:138px" />
+                                                <p>{{video.duration}}</p>
+                                            </div>
                                         </th>
                                         <td @click="openVideo(video.id)" class="videoTitle">
                                             {{video.title}}
@@ -490,7 +704,7 @@
                                     </tr>
                                     <tr class="videoRows">
                                         <td class="videoText">
-                                            <span class="videoTextChannel" @click="openChannel(video.channelName)">{{video.channelTitle}}</span> &#9679 {{video.duration}} &#9679 {{video.publishedAtString}}
+                                            <span class="videoTextChannel" @click="openChannel(video.channelName)">{{video.channelTitle}}</span> &#9679 {{video.publishedAtString}}
                                         </td>
                                     </tr>
                                     <tr style="height:100px">
@@ -527,7 +741,10 @@
                                     </tr>
                                     <tr class="videoRows">
                                         <th rowspan="3">
-                                            <img :src="video.thumbnailUrl" style="width:246px;height:138px;cursor:pointer" @click="openVideo(video.id)" />
+                                            <div @click="openVideo(video.id)" class="videoThumb">
+                                                <img :src="video.thumbnailUrl" style="width:246px;height:138px" />
+                                                <p>{{video.duration}}</p>
+                                            </div>
                                         </th>
                                         <td @click="openVideo(video.id)" class="videoTitle">
                                             {{video.title}}
@@ -535,7 +752,7 @@
                                     </tr>
                                     <tr class="videoRows">
                                         <td class="videoText">
-                                            <span class="videoTextChannel" @click="openChannel(video.channelName)">{{video.channelTitle}}</span> &#9679 {{video.duration}} &#9679 {{video.publishedAtString}}
+                                            <span class="videoTextChannel" @click="openChannel(video.channelName)">{{video.channelTitle}}</span> &#9679 {{video.publishedAtString}}
                                         </td>
                                     </tr>
                                     <tr style="height:100px">
@@ -552,7 +769,7 @@
             </div>
         </div>
 
-        <nav>
+        <nav v-show="videoListMode">
             <button @click="showChannelInput" class="material-icons">add_box</button>
             <div v-show="inputMode" class="channelInput">
                 <input v-model="addChannelName" autocomplete="off" type="text" name="Username" placeholder="Channel Name..." />
@@ -566,9 +783,11 @@
             </div>
             <button @click="showOldVideos" class="material-icons">delete</button>
 
+            <p class="Title" style="margin-left: auto">{{filter}}</p>
+
             <button @click="switchDesign" style="margin-left: auto;" class="material-icons">highlight</button>
             <button @click="showSettings" class="material-icons">settings_applications</button>
-            <button @click="refresh" class="material-icons">autorenew</button>
+            <button @click="refresh" class="material-icons refreshButton">autorenew</button>
         </nav>
 
         <div class="spacer">
@@ -581,7 +800,10 @@
                         <table>
                             <tr class="videoRows">
                                 <th rowspan="4">
-                                    <img :src="video.thumbnailUrl" style="width:246px;height:138px;cursor:pointer" @click="openVideo(video.id)" />
+                                    <div @click="openVideo(video.id)" class="videoThumb">
+                                        <img :src="video.thumbnailUrl" style="width:246px;height:138px" />
+                                        <p>{{video.duration}}</p>
+                                    </div>
                                 </th>
                                 <td @click="openVideo(video.id)" class="videoTitle">
                                     {{video.title}}
@@ -589,7 +811,7 @@
                             </tr>
                             <tr class="videoRows">
                                 <td class="videoText">
-                                    <span class="videoTextChannel" @click="openChannel(video.channelName)">{{video.channelTitle}}</span> &#9679 {{video.duration}} &#9679 {{video.publishedAtString}}
+                                    <span class="videoTextChannel" @click="openChannel(video.channelName)">{{video.channelTitle}}</span> &#9679 {{video.publishedAtString}}
                                 </td>
                             </tr>
                             <tr style="height:50px">
@@ -611,7 +833,7 @@
             </tr>
         </table>
         <table v-show="videoListMode" class="videoList">
-            <tr v-for="video in videos">
+            <tr v-for="video in filteredVideos">
                 <td>
                     <div class="videoBox">
                         <table style="display: inline-block; border-collapse: collapse; width:90%">
@@ -623,7 +845,10 @@
                             </tr>
                             <tr class="videoRows">
                                 <th rowspan="3">
-                                    <img :src="video.thumbnailUrl" style="width:246px;height:138px;cursor:pointer" @click="openVideo(video.id)" />
+                                    <div @click="openVideo(video.id)" class="videoThumb">
+                                        <img :src="video.thumbnailUrl" style="width:246px;height:138px"  />
+                                        <p>{{video.duration}}</p>
+                                    </div>
                                 </th>
                                 <td @click="openVideo(video.id)" class="videoTitle">
                                     {{video.title}}
@@ -631,7 +856,7 @@
                             </tr>
                             <tr class="videoRows">
                                 <td class="videoText">
-                                    <span class="videoTextChannel" @click="openChannel(video.channelName)">{{video.channelTitle}}</span> &#9679 {{video.duration}} &#9679 {{video.publishedAtString}}
+                                    <span class="videoTextChannel" @click="openChannel(video.channelName)">{{video.channelTitle}}</span> &#9679 {{video.publishedAtString}}
                                 </td>
                             </tr>
                             <tr style="height:100px">
@@ -665,6 +890,7 @@
                 uniqueListMode: false,
                 addChannelName: "",
                 night: false,
+                filter: "SubBox",
                 settingsMode: false,
                 settingNCT: 1,
                 settingRT: 7,
@@ -672,6 +898,18 @@
                 settingPPS: 50,
                 settingColor: "ff0000",
                 settings: [],
+                changes: false,
+            },
+            computed: {
+                filteredVideos: function () {
+                    return this.videos.filter(function (u) {
+                        if (app.filter === "SubBox") {
+                            return true;
+                        } else {
+                            return u.channelTitle == app.filter;
+                        }
+                    });
+                },
             },
             methods: {
                 async update() {
@@ -703,7 +941,11 @@
 
                     document.getElementById("colorPicker").jscolor.fromString(this.settingColor);
 
-                    this.night = (this.settings[5]=="True");
+                    this.setSecondColor();
+
+                    this.night = (this.settings[5] == "True");
+
+                    this.setBodyColor();
                 },
                 showChannelInput() {
                     this.inputListMode = false;
@@ -750,6 +992,8 @@
                 showSettings() {
                     this.channelMode = false;
 
+                    this.changes = false;
+
                     this.getSettings();
 
                     this.settingsMode = !this.settingsMode;
@@ -763,6 +1007,10 @@
                     this.settingColor = document.getElementById('colorPicker').value;
 
                     document.documentElement.style.setProperty('--mainColor', "#" + this.settingColor);
+
+                    this.setSecondColor();
+
+                    this.changes = true;
                 },
                 resetColor() {
                     this.settingColor = "DB4437";
@@ -770,6 +1018,10 @@
                     document.getElementById("colorPicker").jscolor.fromString(this.settingColor);
 
                     document.documentElement.style.setProperty('--mainColor', "#" + this.settingColor);
+
+                    this.setSecondColor();
+
+                    this.changes = true;
                 },
                 async onSubmit() {
                     if (this.addChannelName != "") {
@@ -847,6 +1099,31 @@
                     var result = await fetch("/api/values/channels");
 
                     this.channels = await result.json();
+
+                    this.unlockAllChannels();
+
+                    if (this.filter === "SubBox") {
+                        return;
+                    }
+
+                    this.channels.find(function (e) {
+                        return e.displayname === app.filter;
+                    }).locked = true;
+                },
+                unlockAllChannels() {
+                    this.channels.forEach(function (c) {
+                        c.locked = false;
+                    });
+                },
+                lockChannel(ch) {
+                    if (ch.locked) {
+                        ch.locked = false;
+                        return;
+                    }
+
+                    this.unlockAllChannels();
+
+                    ch.locked = true;
                 },
                 closeChannels() {
                     this.channelMode = false;
@@ -882,18 +1159,33 @@
 
                     await fetch("/api/values/settings/Color/" + this.settingColor, { method: "POST" });
 
-                    await fetch("/api/values/settings/save", {method: "POST"});
+                    await fetch("/api/values/settings/save", { method: "POST" });
 
                     this.settingsMode = false;
+
+                    this.changes = false;
                 },
                 async switchDesign() {
                     this.night = !this.night;
 
                     await fetch("/api/values/settings/night", { method: "POST" });
 
-                    await fetch("/api/values/settings/save", {method: "POST"});
+                    await fetch("/api/values/settings/save", { method: "POST" });
+
+                    this.setBodyColor();
+                },
+                setBodyColor() {
+                    if (this.night) {
+                        document.body.setAttribute('bgcolor', '#131313');
+                    } else {
+                        document.body.setAttribute('bgcolor', '#fafafa');
+                    }
                 },
                 async deleteChannel(channel) {
+                    if (channel.displayname == this.filter) {
+                        this.filter = "SubBox";
+                    }
+
                     await fetch("/api/values/channel/" + channel.id, { method: "DELETE" });
 
                     var index = this.channels.indexOf(channel);
@@ -919,11 +1211,15 @@
 
                     if (this.settingNCT > 90) {
                         this.settingNCT = 90;
+                        return;
                     }
 
                     if (this.settingNCT < 1) {
                         this.settingNCT = 1;
+                        return;
                     }
+
+                    this.changes = true;
                 },
                 changeRT(number) {
                     this.settingRT *= 1;
@@ -932,10 +1228,14 @@
 
                     if (this.settingRT > 7) {
                         this.settingRT = 7;
+                        return;
                     }
                     if (this.settingRT < 1) {
                         this.settingRT = 1;
+                        return;
                     }
+
+                    this.changes = true;
                 },
                 changeDT(number) {
                     this.settingDT *= 1;
@@ -944,7 +1244,10 @@
 
                     if (this.settingDT < 7) {
                         this.settingDT = 7;
+                        return;
                     }
+
+                    this.changes = true;
                 },
                 changePPS(number) {
                     this.settingPPS *= 1;
@@ -953,7 +1256,30 @@
 
                     if (this.settingPPS < 1) {
                         this.settingPPS = 1;
+                        return;
                     }
+
+                    this.changes = true;
+                },
+                setSecondColor() {
+                    var r = parseInt(this.settingColor.substr(0, 2), 16);
+                    var g = parseInt(this.settingColor.substr(2, 2), 16);
+                    var b = parseInt(this.settingColor.substr(4, 2), 16);
+                    var yiq = ((r * 299) + (g * 587) + (b * 114)) / 1000;
+                    if (yiq >= 200) {
+                        document.documentElement.style.setProperty('--secColor', 'black');
+                    } else {
+                        document.documentElement.style.setProperty('--secColor', 'white');
+                    }
+                },
+                setFilter(ch) {
+                    if (ch.displayname == this.filter) {
+                        this.filter = "SubBox";
+                    } else {
+                        this.filter = ch.displayname;
+                    }
+
+                    this.lockChannel(ch);
                 },
             },
             el: "#app",

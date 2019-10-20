@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace SubBox.Models
 {
@@ -159,23 +160,68 @@ namespace SubBox.Models
                             NewVideo.Description2 = desc.Substring(index + 1, DescLength) + "...";
                         }
 
-                        string min = item.ContentDetails.Duration.Split('M')[0].Substring(2);
+                        string hour, min;
 
-                        string sec = item.ContentDetails.Duration.Split('M')[1].Split('S')[0];
+                        if (item.ContentDetails.Duration.Contains('H'))
+                        {
+                            hour = Regex.Match(item.ContentDetails.Duration.Split('H')[0], @"(.{2})\s*$").Value;
+                        }
+                        else 
+                        {
+                            hour = "";
+                        }
+
+                        if (item.ContentDetails.Duration.Contains('M'))
+                        {
+                            min = Regex.Match(item.ContentDetails.Duration.Split('M')[0], @"(.{2})\s*$").Value;
+                        } 
+                        else
+                        {
+                            min = "";
+                        }
+
+                        string sec = Regex.Match(item.ContentDetails.Duration.Split('S')[0], @"(.{2})\s*$").Value;
+
+                        hour = new string(hour.Where(c => Enumerable.Range('0', 10).Contains(c)).ToArray());
+
+                        min = new string(min.Where(c => Enumerable.Range('0', 10).Contains(c)).ToArray());
+
+                        sec = new string(sec.Where(c => Enumerable.Range('0', 10).Contains(c)).ToArray());
+
+                        if ((hour != "")&&(min.Length == 1))
+                        {
+                            min = "0" + min;
+                        } else if ((hour != "")&&(min == ""))
+                        {
+                            min = "00";
+                        }
 
                         if (sec.Length == 1)
                         {
                             sec = "0" + sec;
                         }
+                        else if (sec == "")
+                        {
+                            sec = "00";
+                        }
 
-                        NewVideo.Duration = min + ":" + sec;
+                        if (hour != "")
+                        {
+                            hour += ":";
+                        }
+
+                        min += ":";
+
+                        NewVideo.Duration = hour + min + sec;
 
                         context.Videos.Add(NewVideo);
 
                         context.SaveChanges();
                     }
-                    catch (Exception)
+                    catch (Exception e)
                     {
+                        Console.WriteLine("Error:" + e.Message);
+
                         Console.WriteLine("Couldn't add: " + item.Snippet.Title + " by " + item.Snippet.ChannelTitle);
                     }
                 }
