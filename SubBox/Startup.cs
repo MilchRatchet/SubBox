@@ -31,7 +31,7 @@ namespace SubBox
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             //Change for every new release (maybe do this automatically in the future :pepeThink:)
-            Console.WriteLine("SubBox Build v1.2.0 - 20.10.2019");
+            Console.WriteLine("SubBox Build v1.2.1 - 23.10.2019");
 
 
             //load settings
@@ -53,9 +53,9 @@ namespace SubBox
             }
             catch (Exception)
             {
-                AppSettings.DeletionTimeFrame = 7;
-                AppSettings.RetrievalTimeFrame = 7;
-                AppSettings.NewChannelTimeFrame = 1;
+                AppSettings.DeletionTimeFrame = 30;
+                AppSettings.RetrievalTimeFrame = 3;
+                AppSettings.NewChannelTimeFrame = 30;
                 AppSettings.PlaylistPlaybackSize = 50;
                 AppSettings.Color = "DB4437";
                 AppSettings.NightMode = false;
@@ -67,6 +67,10 @@ namespace SubBox
             {
                 context.Database.EnsureCreated();
             }
+
+            DataRetriever Fetcher = new DataRetriever();
+
+            Fetcher.UpdateVideoList();
 
             if (env.IsDevelopment())
             {

@@ -70,11 +70,9 @@ namespace SubBox.Models
 
         private void RequestVideosFromChannel(string Id)
         {
-            var Request = service.Search.List("snippet");
+            var Request = service.Activities.List("snippet");
 
             Request.ChannelId = Id;
-
-            Request.Order = SearchResource.ListRequest.OrderEnum.Date;
 
             Request.MaxResults = 50;
 
@@ -86,9 +84,9 @@ namespace SubBox.Models
 
             foreach (var item in Response.Items)
             {
-                if (item.Id.Kind == "youtube#video")
+                if (item.Snippet.Type  == "upload")
                 {
-                    VideoIds += item.Id.VideoId + ",";
+                    VideoIds += item.Snippet.Thumbnails.Standard.Url.Split('/')[4] + ",";
                 }
             }
 
@@ -218,10 +216,8 @@ namespace SubBox.Models
 
                         context.SaveChanges();
                     }
-                    catch (Exception e)
+                    catch (Exception)
                     {
-                        Console.WriteLine("Error:" + e.Message);
-
                         Console.WriteLine("Couldn't add: " + item.Snippet.Title + " by " + item.Snippet.ChannelTitle);
                     }
                 }
