@@ -118,6 +118,8 @@ namespace SubBox.Controllers
 
             if (number == 0)
             {
+                count = 1;
+
                 var videos = context.Videos;
 
                 foreach (Video v in videos)
@@ -140,16 +142,16 @@ namespace SubBox.Controllers
         [HttpPost("list/next/{number}")]
         public void NextEntry(int number)
         {
-            Video video = context.Videos.Where(v => v.List == number).Where(v => v.Index == 0).FirstOrDefault();
+            context.Videos.Where(v => v.List == number).ToList().ForEach(v => v.Index -= 1);
+
+            Video video = context.Videos.Where(v => v.List == number).Where(v => v.Index == 1).FirstOrDefault();
 
             if (video == null)
             {
-                return;
+                Console.WriteLine("End of Playlist");
+
+                context.Videos.RemoveRange(context.Videos.Where(v => v.List == number));
             }
-
-            video.New = false;
-
-            context.Videos.Where(v => v.List == number).ToList().ForEach(v => v.Index -= 1);
 
             context.SaveChanges();
         }
@@ -164,8 +166,6 @@ namespace SubBox.Controllers
             {
                 return;
             }
-
-            video.New = true;
 
             context.Videos.Where(v => v.List == number).ToList().ForEach(v => v.Index += 1);
 

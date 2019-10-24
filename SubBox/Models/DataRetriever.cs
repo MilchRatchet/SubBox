@@ -102,117 +102,7 @@ namespace SubBox.Models
                 {
                     try
                     {
-                        Video NewVideo = new Video()
-                        {
-                            Id = item.Id,
-
-                            PublishedAt = item.Snippet.PublishedAt.GetValueOrDefault(),
-
-                            PublishedAtString = item.Snippet.PublishedAt.GetValueOrDefault().Day + "." + item.Snippet.PublishedAt.GetValueOrDefault().Month + "." + item.Snippet.PublishedAt.GetValueOrDefault().Year + " " + item.Snippet.PublishedAt.GetValueOrDefault().Hour + ":" + ((item.Snippet.PublishedAt.GetValueOrDefault().Minute < 10) ? ("0" + item.Snippet.PublishedAt.GetValueOrDefault().Minute) : (item.Snippet.PublishedAt.GetValueOrDefault().Minute + "")),
-
-                            ChannelId = item.Snippet.ChannelId,
-
-                            ChannelName = context.Channels.Where(c => c.Id == item.Snippet.ChannelId).First().Username,
-
-                            ChannelTitle = context.Channels.Where(c => c.Id == item.Snippet.ChannelId).First().Displayname,
-
-                            ChannelPicUrl = context.Channels.Where(c => c.Id == item.Snippet.ChannelId).First().ThumbnailUrl,
-
-                            Title = item.Snippet.Title,
-
-                            ThumbnailUrl = item.Snippet.Thumbnails.Medium.Url,
-
-                            New = true,
-
-                            List = 0,
-
-                            Index = 0
-                        };
-
-                        string desc = item.Snippet.Description;
-
-                        if (desc.Length < DescLength)
-                        {
-                            NewVideo.Description1 = desc;
-
-                            NewVideo.Description2 = "";
-                        }
-                        else if (desc.Length < 2 * DescLength)
-                        {
-                            NewVideo.Description1 = desc.Substring(0,DescLength);
-
-                            int index = NewVideo.Description1.LastIndexOf(" ");
-
-                            NewVideo.Description1 = NewVideo.Description1.Substring(0, index);
-
-                            NewVideo.Description2 = desc.Substring(index + 1,desc.Length - index - 1);
-                        }
-                        else
-                        {
-                            NewVideo.Description1 = desc.Substring(0, DescLength);
-
-                            int index = NewVideo.Description1.LastIndexOf(" ");
-
-                            NewVideo.Description1 = NewVideo.Description1.Substring(0, index);
-
-                            NewVideo.Description2 = desc.Substring(index + 1, DescLength) + "...";
-                        }
-
-                        string hour, min;
-
-                        if (item.ContentDetails.Duration.Contains('H'))
-                        {
-                            hour = Regex.Match(item.ContentDetails.Duration.Split('H')[0], @"(.{2})\s*$").Value;
-                        }
-                        else 
-                        {
-                            hour = "";
-                        }
-
-                        if (item.ContentDetails.Duration.Contains('M'))
-                        {
-                            min = Regex.Match(item.ContentDetails.Duration.Split('M')[0], @"(.{2})\s*$").Value;
-                        } 
-                        else
-                        {
-                            min = "";
-                        }
-
-                        string sec = Regex.Match(item.ContentDetails.Duration.Split('S')[0], @"(.{2})\s*$").Value;
-
-                        hour = new string(hour.Where(c => Enumerable.Range('0', 10).Contains(c)).ToArray());
-
-                        min = new string(min.Where(c => Enumerable.Range('0', 10).Contains(c)).ToArray());
-
-                        sec = new string(sec.Where(c => Enumerable.Range('0', 10).Contains(c)).ToArray());
-
-                        if ((hour != "")&&(min.Length == 1))
-                        {
-                            min = "0" + min;
-                        } else if ((hour != "")&&(min == ""))
-                        {
-                            min = "00";
-                        }
-
-                        if (sec.Length == 1)
-                        {
-                            sec = "0" + sec;
-                        }
-                        else if (sec == "")
-                        {
-                            sec = "00";
-                        }
-
-                        if (hour != "")
-                        {
-                            hour += ":";
-                        }
-
-                        min += ":";
-
-                        NewVideo.Duration = hour + min + sec;
-
-                        context.Videos.Add(NewVideo);
+                        context.Videos.Add(ParseVideo(item, 0, 0));
 
                         context.SaveChanges();
                     }
@@ -295,78 +185,7 @@ namespace SubBox.Models
                         {
                             try
                             {
-                                Video NewVideo = new Video()
-                                {
-                                    Id = item.Id,
-
-                                    PublishedAt = item.Snippet.PublishedAt.GetValueOrDefault(),
-
-                                    PublishedAtString = item.Snippet.PublishedAt.GetValueOrDefault().Day + "." + item.Snippet.PublishedAt.GetValueOrDefault().Month + "." + item.Snippet.PublishedAt.GetValueOrDefault().Year + " " + item.Snippet.PublishedAt.GetValueOrDefault().Hour + ":" + ((item.Snippet.PublishedAt.GetValueOrDefault().Minute < 10) ? ("0" + item.Snippet.PublishedAt.GetValueOrDefault().Minute) : (item.Snippet.PublishedAt.GetValueOrDefault().Minute + "")),
-
-                                    ChannelId = item.Snippet.ChannelId,
-
-                                    ChannelName = "",
-
-                                    ChannelTitle = item.Snippet.ChannelTitle,
-
-                                    ChannelPicUrl = "",
-
-                                    Title = item.Snippet.Title,
-
-                                    ThumbnailUrl = item.Snippet.Thumbnails.Medium.Url,
-
-                                    New = true,
-
-                                    List = number,
-
-                                    Index = count
-                                };
-
-                                string desc = item.Snippet.Description;
-
-                                if (desc.Length < DescLength)
-                                {
-                                    NewVideo.Description1 = desc;
-
-                                    NewVideo.Description2 = "";
-                                }
-                                else if (desc.Length < 2 * DescLength)
-                                {
-                                    NewVideo.Description1 = desc.Substring(0, DescLength);
-
-                                    int index = NewVideo.Description1.LastIndexOf(" ");
-
-                                    NewVideo.Description1 = NewVideo.Description1.Substring(0, index);
-
-                                    NewVideo.Description2 = desc.Substring(index + 1, desc.Length - index - 1);
-                                }
-                                else
-                                {
-                                    NewVideo.Description1 = desc.Substring(0, DescLength);
-
-                                    int index = NewVideo.Description1.LastIndexOf(" ");
-
-                                    NewVideo.Description1 = NewVideo.Description1.Substring(0, index);
-
-                                    NewVideo.Description2 = desc.Substring(index + 1, DescLength) + "...";
-                                }
-
-                                string min = item.ContentDetails.Duration.Split('M')[0].Substring(2);
-
-                                string sec = item.ContentDetails.Duration.Split('M')[1].Split('S')[0];
-
-                                if (sec.Length == 1)
-                                {
-                                    sec = "0" + sec;
-                                }
-                                else if (sec.Length == 0)
-                                {
-                                    sec = "00";
-                                }
-
-                                NewVideo.Duration = min + ":" + sec;
-
-                                context.Videos.Add(NewVideo);
+                                context.Videos.Add(ParseVideo(item, number, count));
 
                                 context.SaveChanges();
 
@@ -384,9 +203,7 @@ namespace SubBox.Models
                         break;
                     }
                     else
-                    {
-                        Console.WriteLine(response.NextPageToken);
-
+                    { 
                         request.PageToken = response.NextPageToken;
                     }
                 }
@@ -399,6 +216,137 @@ namespace SubBox.Models
             }
         }
 
+        private Video ParseVideo(Google.Apis.YouTube.v3.Data.Video item, int number, int count)
+        {
+            Video NewVideo = new Video()
+            {
+                Id = item.Id,
+
+                PublishedAt = item.Snippet.PublishedAt.GetValueOrDefault(),
+
+                PublishedAtString = item.Snippet.PublishedAt.GetValueOrDefault().Day + "." + item.Snippet.PublishedAt.GetValueOrDefault().Month + "." + item.Snippet.PublishedAt.GetValueOrDefault().Year + " " + item.Snippet.PublishedAt.GetValueOrDefault().Hour + ":" + ((item.Snippet.PublishedAt.GetValueOrDefault().Minute < 10) ? ("0" + item.Snippet.PublishedAt.GetValueOrDefault().Minute) : (item.Snippet.PublishedAt.GetValueOrDefault().Minute + "")),
+
+                ChannelId = item.Snippet.ChannelId,
+
+                ChannelName = "",
+
+                ChannelTitle = item.Snippet.ChannelTitle,
+
+                ChannelPicUrl = "",
+
+                Title = item.Snippet.Title,
+
+                ThumbnailUrl = item.Snippet.Thumbnails.Medium.Url,
+
+                New = true,
+
+                List = number,
+
+                Index = count
+            };
+
+            if (number == 0)
+            {
+                using (AppDbContext context = new AppDbContext())
+                {
+                    Channel ch = context.Channels.Where(c => c.Id == item.Snippet.ChannelId).FirstOrDefault();
+
+                    if (ch != null)
+                    {
+                        NewVideo.ChannelName = ch.Username;
+
+                        NewVideo.ChannelPicUrl = ch.ThumbnailUrl;
+                    }
+                }
+            }
+
+            string desc = item.Snippet.Description;
+
+            if (desc.Length < DescLength)
+            {
+                NewVideo.Description1 = desc;
+
+                NewVideo.Description2 = "";
+            }
+            else if (desc.Length < 2 * DescLength)
+            {
+                NewVideo.Description1 = desc.Substring(0, DescLength);
+
+                int index = NewVideo.Description1.LastIndexOf(" ");
+
+                NewVideo.Description1 = NewVideo.Description1.Substring(0, index);
+
+                NewVideo.Description2 = desc.Substring(index + 1, desc.Length - index - 1);
+            }
+            else
+            {
+                NewVideo.Description1 = desc.Substring(0, DescLength);
+
+                int index = NewVideo.Description1.LastIndexOf(" ");
+
+                NewVideo.Description1 = NewVideo.Description1.Substring(0, index);
+
+                NewVideo.Description2 = desc.Substring(index + 1, DescLength) + "...";
+            }
+
+            string hour, min;
+
+            if (item.ContentDetails.Duration.Contains('H'))
+            {
+                hour = Regex.Match(item.ContentDetails.Duration.Split('H')[0], @"(.{2})\s*$").Value;
+            }
+            else
+            {
+                hour = "";
+            }
+
+            if (item.ContentDetails.Duration.Contains('M'))
+            {
+                min = Regex.Match(item.ContentDetails.Duration.Split('M')[0], @"(.{2})\s*$").Value;
+            }
+            else
+            {
+                min = "";
+            }
+
+            string sec = Regex.Match(item.ContentDetails.Duration.Split('S')[0], @"(.{2})\s*$").Value;
+
+            hour = new string(hour.Where(c => Enumerable.Range('0', 10).Contains(c)).ToArray());
+
+            min = new string(min.Where(c => Enumerable.Range('0', 10).Contains(c)).ToArray());
+
+            sec = new string(sec.Where(c => Enumerable.Range('0', 10).Contains(c)).ToArray());
+
+            if ((hour != "") && (min.Length == 1))
+            {
+                min = "0" + min;
+            }
+            else if ((hour != "") && (min == ""))
+            {
+                min = "00";
+            }
+
+            if (sec.Length == 1)
+            {
+                sec = "0" + sec;
+            }
+            else if (sec == "")
+            {
+                sec = "00";
+            }
+
+            if (hour != "")
+            {
+                hour += ":";
+            }
+
+            min += ":";
+
+            NewVideo.Duration = hour + min + sec;
+
+            return NewVideo;
+        }
+
         public void GarbageCollector()
         {
             LifeTime = AppSettings.DeletionTimeFrame;
@@ -409,7 +357,7 @@ namespace SubBox.Models
 
                 foreach(Video v in list)
                 {
-                    if (!v.New)
+                    if ((!v.New)&&(v.List==0))
                     {
                         if (v.PublishedAt.AddDays(LifeTime) < DateTime.Now)
                         {
