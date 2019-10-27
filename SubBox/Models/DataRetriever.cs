@@ -325,6 +325,10 @@ namespace SubBox.Models
             {
                 min = "00";
             }
+            else if (min == "")
+            {
+                min = "0";
+            }
 
             if (sec.Length == 1)
             {
