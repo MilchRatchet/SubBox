@@ -88,9 +88,9 @@ namespace SubBox.Models
                 {
                     try
                     {
-                        VideoIds += item.Snippet.Thumbnails.Standard.Url.Split('/')[4] + ",";
+                        VideoIds += item.Snippet.Thumbnails.Default__.Url.Split('/')[4] + ",";
                     }
-                    //an unknown error randomly happened here once, this should help debugging in case it happens again
+                    //this is kept for future debugging, note that stream activities might only have a Default__ thumbnail but no standard one
                     catch (Exception e)
                     {
                         Console.ForegroundColor = ConsoleColor.Red;
