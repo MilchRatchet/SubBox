@@ -86,7 +86,28 @@ namespace SubBox.Models
             {
                 if (item.Snippet.Type  == "upload")
                 {
-                    VideoIds += item.Snippet.Thumbnails.Standard.Url.Split('/')[4] + ",";
+                    try
+                    {
+                        VideoIds += item.Snippet.Thumbnails.Standard.Url.Split('/')[4] + ",";
+                    }
+                    //an unknown error randomly happened here once, this should help debugging in case it happens again
+                    catch (Exception e)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+
+                        Console.WriteLine(e.Message);
+
+                        try
+                        {
+                            Console.WriteLine("Issued by: " + item.Snippet.Title + " by " + item.Snippet.ChannelTitle);
+                        }
+                        catch (Exception)
+                        {
+                            Console.WriteLine("No video title and/or channeltitle available");
+                        }
+
+                        Console.ForegroundColor = ConsoleColor.Gray;
+                    }
                 }
             }
 
