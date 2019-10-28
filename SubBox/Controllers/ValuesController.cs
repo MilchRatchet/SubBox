@@ -131,7 +131,7 @@ namespace SubBox.Controllers
                 }
             }
 
-            Console.WriteLine("Adding Playlist with number: " + count);
+            Console.WriteLine("Adding Playlist");
 
             DataRetriever fetcher = new DataRetriever();
 

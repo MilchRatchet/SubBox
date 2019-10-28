@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace SubBox.Models
 {
@@ -59,7 +60,7 @@ namespace SubBox.Models
 
                     context.SaveChanges();
 
-                    RequestVideosFromChannel(NewChannel.Id);
+                    RequestVideosFromIds(RequestVideoIdsFromChannel(NewChannel.Id));
                 }
             }
             catch (Exception)
@@ -68,11 +69,77 @@ namespace SubBox.Models
             }
         }
 
-        private void RequestVideosFromChannel(string Id)
+        private void RequestVideosFromIds(string id)
+        {
+            var VideoRequest = service.Videos.List("snippet,contentDetails");
+
+            VideoRequest.Id = id;
+
+            var VideoResponse = VideoRequest.Execute();
+
+            using (AppDbContext context = new AppDbContext())
+            {
+                object LockObject = new object();
+
+                Parallel.ForEach(VideoResponse.Items, (item) =>
+                {
+                    try
+                    {
+                        Video v = ParseVideo(item, 0, 0);
+
+                        lock (LockObject)
+                        {
+                            if (!context.Videos.Any(i => i.Id == v.Id))
+                            {
+                                context.Videos.Add(v);
+                            }
+                        }
+
+                    }
+                    catch (Exception e)
+                    {
+                        try
+                        {
+                            Console.WriteLine("Couldn't parse: " + item.Snippet.Title + " by " + item.Snippet.ChannelTitle);
+                        }
+                        catch (Exception)
+                        {
+                            Console.WriteLine("Couldn't parse video information");
+                        }
+
+                        Console.WriteLine(e.Message);
+
+                        Console.WriteLine(e.InnerException);
+
+                        Console.WriteLine(e.StackTrace);
+
+                        Console.WriteLine(e.Source);
+                    }
+                });
+                try
+                {
+                    context.SaveChanges();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("Couldn't add new videos");
+
+                    Console.WriteLine(e.Message);
+
+                    Console.WriteLine(e.InnerException);
+
+                    Console.WriteLine(e.StackTrace);
+
+                    Console.WriteLine(e.Source);
+                }
+            }
+        }
+
+        private string RequestVideoIdsFromChannel(string id)
         {
             var Request = service.Activities.List("snippet");
 
-            Request.ChannelId = Id;
+            Request.ChannelId = id;
 
             Request.MaxResults = 50;
 
@@ -84,55 +151,13 @@ namespace SubBox.Models
 
             foreach (var item in Response.Items)
             {
-                if (item.Snippet.Type  == "upload")
+                if (item.Snippet.Type == "upload")
                 {
-                    try
-                    {
-                        VideoIds += item.Snippet.Thumbnails.Default__.Url.Split('/')[4] + ",";
-                    }
-                    //this is kept for future debugging, note that stream activities might only have a Default__ thumbnail but no standard one
-                    catch (Exception e)
-                    {
-                        Console.ForegroundColor = ConsoleColor.Red;
-
-                        Console.WriteLine(e.Message);
-
-                        try
-                        {
-                            Console.WriteLine("Issued by: " + item.Snippet.Title + " by " + item.Snippet.ChannelTitle);
-                        }
-                        catch (Exception)
-                        {
-                            Console.WriteLine("No video title and/or channeltitle available");
-                        }
-
-                        Console.ForegroundColor = ConsoleColor.Gray;
-                    }
+                    VideoIds += item.Snippet.Thumbnails.Default__.Url.Split('/')[4] + ",";
                 }
             }
 
-            var VideoRequest = service.Videos.List("snippet,contentDetails");
-
-            VideoRequest.Id = VideoIds;
-
-            var VideoResponse = VideoRequest.Execute();
-
-            using (AppDbContext context = new AppDbContext())
-            {
-                foreach (var item in VideoResponse.Items)
-                {
-                    try
-                    {
-                        context.Videos.Add(ParseVideo(item, 0, 0));
-
-                        context.SaveChanges();
-                    }
-                    catch (Exception)
-                    {
-                        Console.WriteLine("Couldn't add: " + item.Snippet.Title + " by " + item.Snippet.ChannelTitle);
-                    }
-                }
-            }
+            return VideoIds;
         }
 
         public void UpdateVideoList()
@@ -148,10 +173,25 @@ namespace SubBox.Models
                 Channels = context.Channels.ToList();
             }
 
-            foreach (Channel ch in Channels)
+            object LockObject = new object();
+
+            string videoIds = "";
+
+            Parallel.ForEach(Channels, (ch) =>
             {
-                RequestVideosFromChannel(ch.Id);
-            }
+                string list = RequestVideoIdsFromChannel(ch.Id);
+
+                lock(LockObject)
+                {
+                    videoIds += list;
+                }
+            });
+
+            /*
+             * Here I wanted to split the list into lists of like 50 ids but it seems like youtube allows people to just request any amount of ids at one time
+             */
+
+            RequestVideosFromIds(videoIds);
         }
 
         public void AddPlaylist(int number, string listId)
@@ -206,17 +246,53 @@ namespace SubBox.Models
                         {
                             try
                             {
-                                context.Videos.Add(ParseVideo(item, number, count));
+                                Video v = ParseVideo(item, number, count);
 
-                                context.SaveChanges();
+                                if (!context.Videos.Any(i => i.Id == v.Id))
+                                {
+                                    context.Videos.Add(v);
 
-                                count++;
+                                    count++;
+                                }
                             }
-                            catch (Exception)
+                            catch (Exception e)
                             {
-                                Console.WriteLine("Couldn't add: " + item.Snippet.Title + " by " + item.Snippet.ChannelTitle);
+                                try
+                                {
+                                    Console.WriteLine("Couldn't parse: " + item.Snippet.Title + " by " + item.Snippet.ChannelTitle);
+                                }
+                                catch (Exception)
+                                {
+                                    Console.WriteLine("Couldn't parse video information");
+                                }
+
+                                Console.WriteLine(e.Message);
+
+                                Console.WriteLine(e.InnerException);
+
+                                Console.WriteLine(e.StackTrace);
+
+                                Console.WriteLine(e.Source);
                             }
                         }
+
+                        try
+                        {
+                            context.SaveChanges();
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine("Couldn't add playlist");
+
+                            Console.WriteLine(e.Message);
+
+                            Console.WriteLine(e.InnerException);
+
+                            Console.WriteLine(e.StackTrace);
+
+                            Console.WriteLine(e.Source);
+                        }
+
                     }
 
                     if (response.NextPageToken == null)

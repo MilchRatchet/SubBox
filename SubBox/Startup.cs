@@ -31,7 +31,7 @@ namespace SubBox
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             //Change for every new release (maybe do this automatically in the future :pepeThink:)
-            Console.WriteLine("SubBox Build v1.2.1 - 23.10.2019");
+            Console.WriteLine("SubBox Build v1.2.2 - 28.10.2019");
 
 
             //load settings
