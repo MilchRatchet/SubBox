@@ -1,10 +1,8 @@
 ﻿using Google.Apis.Services;
 using Google.Apis.YouTube.v3;
-using Microsoft.EntityFrameworkCore;
 using SubBox.Data;
 using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -60,7 +58,16 @@ namespace SubBox.Models
 
                     context.SaveChanges();
 
-                    RequestVideosFromIds(RequestVideoIdsFromChannel(NewChannel.Id));
+                    List<string> list = RequestVideoIdsFromChannel(NewChannel.Id);
+
+                    string ids = "";
+
+                    foreach(string str in list.Take(45))
+                    {
+                        ids += str + ",";
+                    }
+
+                    RequestVideosFromIds(ids);
                 }
             }
             catch (Exception)
@@ -81,15 +88,17 @@ namespace SubBox.Models
             {
                 object LockObject = new object();
 
+                Video[] videoList = context.Videos.ToArray();
+
                 Parallel.ForEach(VideoResponse.Items, (item) =>
                 {
                     try
                     {
                         Video v = ParseVideo(item, 0, 0);
 
-                        lock (LockObject)
+                        if (!videoList.Any(i => i.Id == v.Id))
                         {
-                            if (!context.Videos.Any(i => i.Id == v.Id))
+                            lock (LockObject)
                             {
                                 context.Videos.Add(v);
                             }
@@ -135,7 +144,7 @@ namespace SubBox.Models
             }
         }
 
-        private string RequestVideoIdsFromChannel(string id)
+        private List<string> RequestVideoIdsFromChannel(string id)
         {
             var Request = service.Activities.List("snippet");
 
@@ -147,13 +156,13 @@ namespace SubBox.Models
 
             var Response = Request.Execute();
 
-            string VideoIds = "";
+            List<string> VideoIds = new List<string>();
 
             foreach (var item in Response.Items)
             {
                 if (item.Snippet.Type == "upload")
                 {
-                    VideoIds += item.Snippet.Thumbnails.Default__.Url.Split('/')[4] + ",";
+                    VideoIds.Add(item.Snippet.Thumbnails.Default__.Url.Split('/')[4]);
                 }
             }
 
@@ -175,23 +184,40 @@ namespace SubBox.Models
 
             object LockObject = new object();
 
-            string videoIds = "";
+            List<string> videoIds = new List<string>();
 
             Parallel.ForEach(Channels, (ch) =>
             {
-                string list = RequestVideoIdsFromChannel(ch.Id);
+                List<string> list = RequestVideoIdsFromChannel(ch.Id);
 
                 lock(LockObject)
                 {
-                    videoIds += list;
+                    videoIds.AddRange(list);
                 }
             });
 
-            /*
-             * Here I wanted to split the list into lists of like 50 ids but it seems like youtube allows people to just request any amount of ids at one time
-             */
+            if (videoIds.Count == 0) return;
 
-            RequestVideosFromIds(videoIds);
+            List<string> requests = new List<string>(videoIds.Count/45 + 1);
+
+            for (int i = 0; i < videoIds.Count/45 + 1; i++)
+            {
+                string requestId = "";
+
+                for (int j = i*45; j < (i+1)*45; j++)
+                {
+                    if (j >= videoIds.Count) break;
+
+                    requestId += videoIds[j] + ",";
+                }
+
+                requests.Add(requestId);
+            }
+
+            foreach (string str in requests)
+            {
+                RequestVideosFromIds(str);
+            }
         }
 
         public void AddPlaylist(int number, string listId)
