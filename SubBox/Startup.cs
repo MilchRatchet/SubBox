@@ -6,12 +6,38 @@ using Microsoft.Extensions.DependencyInjection;
 using SubBox.Data;
 using SubBox.Models;
 using System;
+using System.Diagnostics;
+using System.Globalization;
 using System.IO;
+using System.Reflection;
 
 namespace SubBox
 {
     public class Startup
     {
+        //Found at: https://www.meziantou.net/getting-the-date-of-build-of-a-dotnet-assembly-at-runtime.htm
+        private static DateTime GetBuildDate(Assembly assembly)
+        {
+            const string BuildVersionMetadataPrefix = "+build";
+
+            var attribute = assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>();
+            if (attribute?.InformationalVersion != null)
+            {
+                var value = attribute.InformationalVersion;
+                var index = value.IndexOf(BuildVersionMetadataPrefix);
+                if (index > 0)
+                {
+                    value = value.Substring(index + BuildVersionMetadataPrefix.Length);
+                    if (DateTime.TryParseExact(value, "yyyyMMddHHmmss", CultureInfo.InvariantCulture, DateTimeStyles.None, out var result))
+                    {
+                        return result;
+                    }
+                }
+            }
+
+            return default;
+        }
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -30,8 +56,15 @@ namespace SubBox
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            //Change for every new release (maybe do this automatically in the future :pepeThink:)
-            Console.WriteLine("SubBox Build v1.2.2 - 28.10.2019");
+            Assembly assembly = Assembly.GetExecutingAssembly();
+
+            FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
+
+            string version = fvi.ProductVersion.Split('+')[0];
+
+            DateTime BuildTime = GetBuildDate(Assembly.GetExecutingAssembly());
+
+            Console.WriteLine("SubBox Build v"+ version +" - " + BuildTime.Day + "." + BuildTime.Month + "." + BuildTime.Year);
 
 
             //load settings
