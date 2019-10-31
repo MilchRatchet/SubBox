@@ -25,7 +25,7 @@ namespace SubBox.Models
             {
                 ApiKey = APIKey,
 
-                ApplicationName = this.GetType().ToString()
+                ApplicationName = GetType().ToString()
             });
         }
 
@@ -60,14 +60,14 @@ namespace SubBox.Models
 
                     List<string> list = RequestVideoIdsFromChannel(NewChannel.Id);
 
-                    string ids = "";
+                    if (list.Count == 0) return;
 
-                    foreach(string str in list.Take(45))
+                    List<string> requests = CreateRequestList(list);
+
+                    foreach (string str in requests)
                     {
-                        ids += str + ",";
+                        RequestVideosFromIds(str);
                     }
-
-                    RequestVideosFromIds(ids);
                 }
             }
             catch (Exception)
@@ -169,6 +169,27 @@ namespace SubBox.Models
             return VideoIds;
         }
 
+        private List<string> CreateRequestList(List<string> videoIds)
+        {
+            List<string> requests = new List<string>(videoIds.Count / 45 + 1);
+
+            for (int i = 0; i < videoIds.Count / 45 + 1; i++)
+            {
+                string requestId = "";
+
+                for (int j = i * 45; j < (i + 1) * 45; j++)
+                {
+                    if (j >= videoIds.Count) break;
+
+                    requestId += videoIds[j] + ",";
+                }
+
+                requests.Add(requestId);
+            }
+
+            return requests;
+        }
+
         public void UpdateVideoList()
         {
             GarbageCollector();
@@ -198,21 +219,7 @@ namespace SubBox.Models
 
             if (videoIds.Count == 0) return;
 
-            List<string> requests = new List<string>(videoIds.Count/45 + 1);
-
-            for (int i = 0; i < videoIds.Count/45 + 1; i++)
-            {
-                string requestId = "";
-
-                for (int j = i*45; j < (i+1)*45; j++)
-                {
-                    if (j >= videoIds.Count) break;
-
-                    requestId += videoIds[j] + ",";
-                }
-
-                requests.Add(requestId);
-            }
+            List<string> requests = CreateRequestList(videoIds);
 
             foreach (string str in requests)
             {
@@ -365,7 +372,9 @@ namespace SubBox.Models
 
                 List = number,
 
-                Index = count
+                Index = count,
+
+                Description = item.Snippet.Description
             };
 
             if (number == 0)
@@ -381,35 +390,6 @@ namespace SubBox.Models
                         NewVideo.ChannelPicUrl = ch.ThumbnailUrl;
                     }
                 }
-            }
-
-            string desc = item.Snippet.Description;
-
-            if (desc.Length < DescLength)
-            {
-                NewVideo.Description1 = desc;
-
-                NewVideo.Description2 = "";
-            }
-            else if (desc.Length < 2 * DescLength)
-            {
-                NewVideo.Description1 = desc.Substring(0, DescLength);
-
-                int index = NewVideo.Description1.LastIndexOf(" ");
-
-                NewVideo.Description1 = NewVideo.Description1.Substring(0, index);
-
-                NewVideo.Description2 = desc.Substring(index + 1, desc.Length - index - 1);
-            }
-            else
-            {
-                NewVideo.Description1 = desc.Substring(0, DescLength);
-
-                int index = NewVideo.Description1.LastIndexOf(" ");
-
-                NewVideo.Description1 = NewVideo.Description1.Substring(0, index);
-
-                NewVideo.Description2 = desc.Substring(index + 1, DescLength) + "...";
             }
 
             string hour, min;
