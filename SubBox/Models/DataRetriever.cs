@@ -15,8 +15,6 @@ namespace SubBox.Models
 
         private readonly YouTubeService service;
 
-        private static readonly int DescLength = 120;
-
         private static int LifeTime = 7;
 
         public DataRetriever()
@@ -72,7 +70,7 @@ namespace SubBox.Models
             }
             catch (Exception)
             {
-
+                Console.WriteLine(name + " couldn't be added");
             }
         }
 
@@ -96,12 +94,9 @@ namespace SubBox.Models
                     {
                         Video v = ParseVideo(item, 0, 0);
 
-                        if (!videoList.Any(i => i.Id == v.Id))
+                        lock (LockObject)
                         {
-                            lock (LockObject)
-                            {
-                                context.Videos.Add(v);
-                            }
+                            context.Videos.Add(v);
                         }
 
                     }
@@ -173,18 +168,25 @@ namespace SubBox.Models
         {
             List<string> requests = new List<string>(videoIds.Count / 45 + 1);
 
-            for (int i = 0; i < videoIds.Count / 45 + 1; i++)
+            using (AppDbContext context = new AppDbContext())
             {
-                string requestId = "";
+                List<Video> Videos = context.Videos.ToList();
 
-                for (int j = i * 45; j < (i + 1) * 45; j++)
+                for (int i = 0; i < videoIds.Count / 45 + 1; i++)
                 {
-                    if (j >= videoIds.Count) break;
+                    string requestId = "";
 
-                    requestId += videoIds[j] + ",";
+                    for (int j = i * 45; j < (i + 1) * 45; j++)
+                    {
+                        if (j >= videoIds.Count) break;
+
+                        if (Videos.Any(v => v.Id == videoIds[j])) continue;
+
+                        requestId += videoIds[j] + ",";
+                    }
+
+                    requests.Add(requestId);
                 }
-
-                requests.Add(requestId);
             }
 
             return requests;
