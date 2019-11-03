@@ -170,7 +170,6 @@
             padding-top: 0;
             padding-bottom: 0;
             padding-left: 10px;
-            margin: 0;
         }
 
         .videoHeaderName {
@@ -183,10 +182,6 @@
             margin-left: 5px;
         }
 
-        .videoRows {
-            height: 0;
-        }
-
         .videoList {
             margin-left: auto;
             margin-right: auto;
@@ -194,8 +189,6 @@
         }
 
         .videoBox {
-            margin-left: auto;
-            margin-right: auto;
             border-bottom-color: var(--video_bd_bot);
             border-bottom-style: solid;
             border-bottom-width: 1px;
@@ -745,7 +738,7 @@
                             <div class="videoBox">
                                 <table style="display: inline-block; border-collapse: collapse; width:90%">
                                     <tr>
-                                        <th style="text-align:left;display:inline-block;padding:10px">
+                                        <th style="display:inline-block;padding:10px">
                                             <img :src="video.channelPicUrl" style="left:0;width:32px;height:32px;border-radius: 50%;vertical-align:middle;cursor:pointer;" @click="openChannel(video.channelName)" />
                                             <span class="videoHeaderName" @click="openChannel(video.channelName)">{{video.channelTitle}}</span>
                                         </th>
@@ -849,7 +842,7 @@
                     <div class="videoBox">
                         <table style="display: inline-block; border-collapse: collapse; width:90%">
                             <tr>
-                                <th style="text-align:left;display:inline-block;padding:10px">
+                                <th style="display:inline-block;padding:10px">
                                     <img :src="video.channelPicUrl" style="left:0;width:32px;height:32px;border-radius: 50%;vertical-align:middle;cursor:pointer;" @click="openChannel(video.channelName)" />
                                     <span class="videoHeaderName" @click="openChannel(video.channelName)">{{video.channelTitle}}</span>
                                 </th>

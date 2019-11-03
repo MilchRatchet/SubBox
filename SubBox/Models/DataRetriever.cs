@@ -47,7 +47,7 @@ namespace SubBox.Models
 
                     Displayname = Response.Items.First().Snippet.Title,
 
-                    ThumbnailUrl = Response.Items.First().Snippet.Thumbnails.Medium.Url
+                    ThumbnailUrl = Response.Items.First().Snippet.Thumbnails.Default__.Url
                 };
 
                 using (AppDbContext context = new AppDbContext())
