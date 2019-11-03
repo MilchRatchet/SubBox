@@ -10,6 +10,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Reflection;
+using System.Threading;
 
 namespace SubBox
 {
@@ -117,6 +118,11 @@ namespace SubBox
             app.UseFileServer();
 
             app.UseMvc();
+
+            new Thread(() =>
+            {
+                ConsoleHandler.HandleConsoleInput();
+            }).Start(); 
         }
     }
 }
