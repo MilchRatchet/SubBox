@@ -56,16 +56,24 @@ namespace SubBox.Models
 
                     context.SaveChanges();
 
-                    List<string> list = RequestVideoIdsFromChannel(NewChannel.Id);
+                    List<string> list = RequestVideoIdsFromChannel(NewChannel.Id).GetAwaiter().GetResult();
 
                     if (list.Count == 0) return;
 
                     List<string> requests = CreateRequestList(list);
 
+                    Task[] waitTasks = new Task[requests.Count];
+
+                    int index = 0;
+
                     foreach (string str in requests)
                     {
-                        RequestVideosFromIds(str);
+                        waitTasks[index] = RequestVideosFromIds(str);
+
+                        index++;
                     }
+
+                    Task.WaitAll(waitTasks);
                 }
             }
             catch (Exception)
@@ -74,31 +82,25 @@ namespace SubBox.Models
             }
         }
 
-        private void RequestVideosFromIds(string id)
+        private async Task RequestVideosFromIds(string id)
         {
             var VideoRequest = service.Videos.List("snippet,contentDetails");
 
             VideoRequest.Id = id;
 
-            var VideoResponse = VideoRequest.Execute();
+            var VideoResponse = await VideoRequest.ExecuteAsync();
 
             using (AppDbContext context = new AppDbContext())
             {
-                object LockObject = new object();
-
                 Video[] videoList = context.Videos.ToArray();
 
-                Parallel.ForEach(VideoResponse.Items, (item) =>
+                foreach(var item in VideoResponse.Items)
                 {
                     try
                     {
                         Video v = ParseVideo(item, 0, 0);
 
-                        lock (LockObject)
-                        {
-                            context.Videos.Add(v);
-                        }
-
+                        context.Videos.Add(v);
                     }
                     catch (Exception e)
                     {
@@ -119,7 +121,8 @@ namespace SubBox.Models
 
                         Console.WriteLine(e.Source);
                     }
-                });
+                }
+
                 try
                 {
                     context.SaveChanges();
@@ -139,7 +142,7 @@ namespace SubBox.Models
             }
         }
 
-        private List<string> RequestVideoIdsFromChannel(string id)
+        private async Task<List<string>> RequestVideoIdsFromChannel(string id)
         {
             var Request = service.Activities.List("snippet");
 
@@ -149,7 +152,7 @@ namespace SubBox.Models
 
             Request.PublishedAfter = DateTime.Now.AddDays(-LifeTime);
 
-            var Response = Request.Execute();
+            var Response = await Request.ExecuteAsync();
 
             List<string> VideoIds = new List<string>();
 
@@ -185,7 +188,10 @@ namespace SubBox.Models
                         requestId += videoIds[j] + ",";
                     }
 
-                    requests.Add(requestId);
+                    if (requestId != "")
+                    {
+                        requests.Add(requestId);
+                    } 
                 }
             }
 
@@ -200,33 +206,56 @@ namespace SubBox.Models
 
             List<Channel> Channels;
 
+            long count = 0;
+
             using (AppDbContext context = new AppDbContext())
             {
                 Channels = context.Channels.ToList();
-            }
 
-            object LockObject = new object();
+                count = context.Videos.LongCount();
+            }
 
             List<string> videoIds = new List<string>();
 
-            Parallel.ForEach(Channels, (ch) =>
-            {
-                List<string> list = RequestVideoIdsFromChannel(ch.Id);
+            Task<List<string>>[] tasks = new Task<List<string>>[Channels.Count];
 
-                lock(LockObject)
-                {
-                    videoIds.AddRange(list);
-                }
-            });
+            int index = 0;
+
+            foreach(Channel ch in Channels)
+            {
+                tasks[index] = RequestVideoIdsFromChannel(ch.Id);
+
+                index++;
+            }
+
+            Task.WaitAll(tasks);
+
+            foreach(Task<List<string>> list in tasks)
+            {
+                videoIds.AddRange(list.Result);
+            }
 
             if (videoIds.Count == 0) return;
 
             List<string> requests = CreateRequestList(videoIds);
 
+            Task[] waitTasks = new Task[requests.Count];
+
+            index = 0;
+
             foreach (string str in requests)
             {
-                RequestVideosFromIds(str);
+                waitTasks[index] = RequestVideosFromIds(str);
+
+                index++;
             }
+
+            Task.WaitAll(waitTasks);
+
+            using (AppDbContext context = new AppDbContext())
+            {
+                Console.WriteLine("Finished loading " + (context.Videos.LongCount() - count) + " new Videos");
+            }  
         }
 
         public void AddPlaylist(int number, string listId)
@@ -458,6 +487,8 @@ namespace SubBox.Models
 
         public void GarbageCollector()
         {
+            if (!AppSettings.GCMode) return;
+
             LifeTime = AppSettings.DeletionTimeFrame;
 
             using (AppDbContext context = new AppDbContext())

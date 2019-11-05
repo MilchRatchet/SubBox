@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.IO;
 
 namespace SubBox.Models
 {
@@ -14,6 +10,7 @@ namespace SubBox.Models
         public static int PlaylistPlaybackSize { get; set; }   
         public static string Color { get; set; }
         public static bool NightMode { get; set; }
+        public static bool GCMode { get; set; }
 
         public static void Save()
         {

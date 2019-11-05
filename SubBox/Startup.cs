@@ -96,15 +96,19 @@ namespace SubBox
                 AppSettings.Save();
             }
 
+            AppSettings.GCMode = true;
 
             using (AppDbContext context = new AppDbContext())
             {
                 context.Database.EnsureCreated();
             }
 
-            DataRetriever Fetcher = new DataRetriever();
+            new Thread(() =>
+            {
+                DataRetriever Fetcher = new DataRetriever();
 
-            Fetcher.UpdateVideoList();
+                Fetcher.UpdateVideoList();
+            }).Start();
 
             if (env.IsDevelopment())
             {

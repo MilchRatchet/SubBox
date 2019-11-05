@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace SubBox.Models
 {
@@ -18,7 +17,8 @@ namespace SubBox.Models
                 {
                     case "-flth": Flth(); break;
                     case "-dbst": Dbst(); break;
-                    case "-help": Help(); break;
+                    case "-gcst": Gcst(); break;
+                    case "-help": Help(); break; 
                     default: Console.WriteLine("Invalid Command, type -help for a list of commands"); break;
                 }
             }
@@ -72,6 +72,26 @@ namespace SubBox.Models
             }
         }
 
+        private static void Gcst()
+        {
+            DataRetriever gc = new DataRetriever();
+
+            if (!AppSettings.GCMode)
+            {
+                AppSettings.GCMode = true;
+
+                gc.GarbageCollector();
+
+                AppSettings.GCMode = false;
+            }
+            else
+            {
+                gc.GarbageCollector();
+            }
+
+            Console.WriteLine("Done");
+        }
+
         private static void Help()
         {
             Console.WriteLine("List of all current commands:");
@@ -79,6 +99,8 @@ namespace SubBox.Models
             Console.WriteLine("-flth | Switches Legacy Thumbnails to Default__ Quality");
 
             Console.WriteLine("-dbst | Outputs status of database");
+
+            Console.WriteLine("-gcst | Forces garbage collection");
 
             Console.WriteLine("-help | Shows all commands");
         }
