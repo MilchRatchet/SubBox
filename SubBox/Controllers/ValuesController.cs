@@ -197,50 +197,53 @@ namespace SubBox.Controllers
             }
         }
 
-        // POST: api/values/settings/RT/number
-        [HttpPost("settings/RT/{number}")]
-        public void SetRT(int number)
+        //POST: api/values/settings/type/value
+        [HttpPost("settings/{type}/{value}")]
+        public void SetSetting(string type, string value)
         {
-            AppSettings.RetrievalTimeFrame = number;
+            switch (type.ToUpper())
+            {
+                case "NCT":
+                    AppSettings.NewChannelTimeFrame = int.Parse(value);
+
+                    break;
+
+                case "RT":
+                    AppSettings.RetrievalTimeFrame = int.Parse(value);
+
+                    break;
+
+                case "DT":
+                    AppSettings.DeletionTimeFrame = int.Parse(value);
+
+                    break;
+
+                case "PPS":
+                    AppSettings.PlaylistPlaybackSize = int.Parse(value);
+
+                    break;
+
+                case "NIGHT":
+                    AppSettings.NightMode = !AppSettings.NightMode;
+
+                    break;
+
+                case "COLOR":
+                    AppSettings.Color = value;
+
+                    break;
+
+                default:
+                    Console.WriteLine("Unknown setting was tried to change");
+
+                    break;
+            }
         }
 
-        // POST: api/values/settings/NCT/number
-        [HttpPost("settings/NCT/{number}")]
-        public void SetNCT(int number)
-        {
-            AppSettings.NewChannelTimeFrame = number;
-        }
 
-        // POST: api/values/settings/DT/number
-        [HttpPost("settings/DT/{number}")]
-        public void SetDT(int number)
-        {
-            AppSettings.DeletionTimeFrame = number;
-        }
-
-        // POST: api/values/settings/PPS/number
-        [HttpPost("settings/PPS/{number}")]
-        public void SetPPS(int number)
-        {
-            AppSettings.PlaylistPlaybackSize = number;
-        }
-
-        // POST: api/values/settings/night
-        [HttpPost("settings/night")]
-        public void SwitchNight()
-        {
-            AppSettings.NightMode = !AppSettings.NightMode;
-        }
-
-        // POST: api/values/settings/Color/number
-        [HttpPost("settings/Color/{number}")]
-        public void SetColor(string number)
-        {
-            AppSettings.Color = number;
-        }
-
+        //POST: api/values/settings/save
         [HttpPost("settings/save")]
-        public void saveSettings()
+        public void SaveSettings()
         {
             AppSettings.Save();
         }
