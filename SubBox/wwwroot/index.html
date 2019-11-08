@@ -63,7 +63,7 @@
         width: 32px;
         padding: 0;
         border-radius: 5px;
-        transition: 0.2s;
+        transition: width 0.2s ease-in;
     }
     nav p {
         margin-left: 10px;
@@ -76,7 +76,7 @@
         background-color: var(--mainColor);
         padding: 0;
         border-radius: 5px;
-        transition: 0.2s;
+        transition: width 0.2s ease-out;
     }
     input[type=text] {
         padding: 2px;
@@ -104,7 +104,7 @@
         letter-spacing: 1px;
         font-weight: bold;
         background: linear-gradient(to right, var(--mainColor) 50%, var(--font_title) 50%);
-        background-size: 200% 100%;
+        background-size: 400% 100%;
         background-position: right bottom;
         background-clip: text;
         -webkit-background-clip: text;
@@ -113,15 +113,14 @@
     }
     .Title:hover {
         color: var(--mainColor);
-        font-weight: bold;
-        letter-spacing: 6px;
-        background: linear-gradient(to right, var(--mainColor) 50%, var(--font_title) 50%);
-        background-size: 200% 100%;
+        font-weight: bold;       
+        background: linear-gradient(to right,var(--mainColor) 40%, var(--font_title) 40% 65%, var(--mainColor) 65% 75%, var(--font_title) 75%);
+        background-size: 400% 100%;
         background-position: left bottom;
         background-clip: text;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
-        transition: 1s ease;
+        transition: 2s ease;
     }
     .channelInput {
         display: flex;
@@ -987,15 +986,17 @@
             },
             async deleteVideo(video) {
                 if (this.uniqueListMode) {
-                    await fetch("/api/values/video/" + video.id, { method: "DELETE" });
+                    var waiter = fetch("/api/values/video/" + video.id, { method: "DELETE" });
 
                     var index = this.uniqueList.indexOf(video);
 
                     this.uniqueList.splice(index, 1);
 
+                    await waiter;
+
                     this.listUpdate();
                 } else {
-                    await fetch("/api/values/video/" + video.id, { method: "DELETE" });
+                    fetch("/api/values/video/" + video.id, { method: "DELETE" });
 
                     var index = this.videos.indexOf(video);
 
@@ -1003,11 +1004,13 @@
                 }
             },
             async reactivateVideo(video) {
-                await fetch("/api/values/video/" + video.id, { method: "POST" });
+                var waiter = fetch("/api/values/video/" + video.id, { method: "POST" });
 
                 var index = this.oldVideos.indexOf(video);
 
                 this.oldVideos.splice(index, 1);
+
+                await waiter;
 
                 this.update();
             },
@@ -1082,7 +1085,7 @@
 
                 fetch("/api/values/settings/COLOR/" + this.settingColor, { method: "POST" })]);
 
-                await fetch("/api/values/settings/save", { method: "POST" });
+                fetch("/api/values/settings/save", { method: "POST" });
 
                 this.settingsMode = false;
 
@@ -1093,7 +1096,7 @@
 
                 await fetch("/api/values/settings/NIGHT/" + null, { method: "POST" });
 
-                await fetch("/api/values/settings/save", { method: "POST" });
+                fetch("/api/values/settings/save", { method: "POST" });
 
                 this.setBodyColor();
             },
@@ -1109,11 +1112,13 @@
                     this.filter = "SubBox";
                 }
 
-                await fetch("/api/values/channel/" + channel.id, { method: "DELETE" });
+                var waiter = fetch("/api/values/channel/" + channel.id, { method: "DELETE" });
 
                 var index = this.channels.indexOf(channel);
 
                 this.channels.splice(index, 1);
+
+                await waiter;
 
                 this.update();
             },
