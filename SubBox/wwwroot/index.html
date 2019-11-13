@@ -59,11 +59,11 @@
         cursor: pointer;
     }
     nav button {
-        height: 32px;
-        width: 32px;
+        height: 100%;
+        width: 40px;
+        margin:0;
         padding: 0;
-        border-radius: 5px;
-        transition: width 0.2s ease-in;
+        border-radius: 0px;
     }
     nav p {
         margin-left: 10px;
@@ -71,19 +71,22 @@
         color: var(--font_title);
     }
     nav button:hover {
-        width: 40px;
         color: var(--secColor);
         background-color: var(--mainColor);
-        padding: 0;
-        border-radius: 5px;
-        transition: width 0.2s ease-out;
     }
     input[type=text] {
+        margin: 0px;
         padding: 2px;
         border: solid var(--font_text) 1px;
         border-radius: 0px;
         width: 250px;
         color: #131313;
+    }
+    input[type=text]:focus {
+        border-left: solid var(--mainColor) 1px;
+        border-right: solid var(--mainColor) 1px;
+        border-top: solid var(--mainColor) 10px;
+        border-bottom: solid var(--mainColor) 10px;
     }
     input[type=number] {
         padding: 2px;
@@ -100,7 +103,7 @@
     .Title {
         background-color: none;
         color: var(--font_title);
-        cursor: default;
+        cursor: pointer;
         letter-spacing: 1px;
         font-weight: bold;
         background: linear-gradient(to right, var(--mainColor) 50%, var(--font_title) 50%);
@@ -126,8 +129,12 @@
         display: flex;
         align-items: center;
         vertical-align: middle;
+        height: 100%;
     }
     .refreshButton {
+        height: 32px;
+        width: 32px;
+        margin-left: 4px;
         transition: transform 1s, color 0.2s, background-color 0.2s;
         border-radius: 100%;
     }
@@ -135,7 +142,6 @@
         transform: rotate(360deg);
         transition: transform 1s, color 0.2s, background-color 0.2s;
         border-radius: 100%;
-        width: 32px;
     }
     .videoTitle {
         width: 100%;
@@ -185,13 +191,11 @@
         padding: 1px;
         background: none;
         border: 1px solid var(--bg);
-        transition: background 0.1s ease;
     }
         .deleteButton:hover {
             color: var(--mainColor) !important;
             background-color: var(--secColor);
             border: 1px solid var(--font_title);
-            transition: 0.2s ease;
         }
     .videoTextChannel {
         cursor: pointer;
@@ -339,17 +343,16 @@
         color: transparent;
         background-color: transparent;
         border: 1px solid transparent;
-        transition: 0.1s ease;
     }
         .listButton:hover {
             color: var(--mainColor) !important;
             background-color: var(--secColor);
             border: 1px solid var(--font_title);
-            transition: 0.2s ease;
         }
     .inputList {
         display: flex;
         align-items: center;
+        height: 100%;
     }
     .overlayUniqueList {
         position: fixed;
@@ -495,15 +498,15 @@
         width: 180px;
         padding: 3px;
         border-radius: 2px;
-        color: var(--mainColor) !important;
+        color: var(--secColor) !important;
         font-size: 18px;
         border: 1px solid var(--font_title);
-        background: linear-gradient(to right, var(--secColor) 50%,  transparent 50%);
+        background: linear-gradient(to right, var(--mainColor) 50%,  transparent 50%);
         background-size: 200% 100%;
         background-position: left bottom;
     }
     .fade-enter-active {
-        transition: 0.5s ease;
+        transition: 0.3s;
     }
     .fade-leave-active {
         transition: 0s;
@@ -707,7 +710,7 @@
             <button @click="submitPlaylist" class="material-icons">done</button>
         </div>
         <button @click="showOldVideos" class="material-icons">delete</button>
-        <p class="Title" style="margin-left: auto">{{filter}} - {{filteredVideos.length}}</p>
+        <p class="Title" @click="window.scrollTo(0,0);" style="margin-left: auto">{{filter}} - {{filteredVideos.length}}</p>
         <button @click="switchDesign" style="margin-left: auto;" class="material-icons">highlight</button>
         <button @click="showSettings" class="material-icons">settings_applications</button>
         <button @click="refresh" class="material-icons refreshButton">autorenew</button>
@@ -1074,6 +1077,10 @@
                 this.settingDT = document.getElementById('DT').value;
 
                 this.settingPPS = document.getElementById('PPS').value;
+                
+                this.settingsMode = false;
+
+                this.changes = false;
 
                 await Promise.all([fetch("/api/values/settings/RT/" + this.settingRT, { method: "POST" }),
 
@@ -1086,19 +1093,15 @@
                 fetch("/api/values/settings/COLOR/" + this.settingColor, { method: "POST" })]);
 
                 fetch("/api/values/settings/save", { method: "POST" });
-
-                this.settingsMode = false;
-
-                this.changes = false;
             },
             async switchDesign() {
                 this.night = !this.night;
 
+                this.setBodyColor();
+
                 await fetch("/api/values/settings/NIGHT/" + null, { method: "POST" });
 
                 fetch("/api/values/settings/save", { method: "POST" });
-
-                this.setBodyColor();
             },
             setBodyColor() {
                 if (this.night) {
