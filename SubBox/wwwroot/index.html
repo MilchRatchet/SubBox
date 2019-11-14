@@ -827,12 +827,11 @@
         },
         computed: {
             filteredVideos: function () {
+                if (this.filter === "SubBox") {
+                    return this.videos;
+                }
                 return this.videos.filter(function (u) {
-                    if (app.filter === "SubBox") {
-                        return true;
-                    } else {
-                        return u.channelTitle == app.filter;
-                    }
+                    return u.channelTitle == app.filter;
                 });
             },
         },
