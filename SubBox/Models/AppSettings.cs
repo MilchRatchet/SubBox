@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 
 namespace SubBox.Models
 {
@@ -10,12 +11,15 @@ namespace SubBox.Models
         public static int PlaylistPlaybackSize { get; set; }   
         public static string Color { get; set; }
         public static bool NightMode { get; set; }
+        public static DateTime LastRefresh { get; set; }
+
+        //Runtime vars
         public static bool GCMode { get; set; }
 
-        public static void Save()
+        public static async void Save()
         {
-            string[] options = new string[] {RetrievalTimeFrame.ToString(), NewChannelTimeFrame.ToString(), DeletionTimeFrame.ToString(), PlaylistPlaybackSize.ToString(), Color, NightMode.ToString() };
-            File.WriteAllLines("settings.txt", options);
+            string[] options = new string[] {RetrievalTimeFrame.ToString(), NewChannelTimeFrame.ToString(), DeletionTimeFrame.ToString(), PlaylistPlaybackSize.ToString(), Color, NightMode.ToString(), LastRefresh.ToString("O") };
+            await File.WriteAllLinesAsync("settings.txt", options);
         }
     }
 }

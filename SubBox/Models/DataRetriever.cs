@@ -17,6 +17,8 @@ namespace SubBox.Models
 
         private static int LifeTime = 7;
 
+        private readonly int RefreshLimit = 120;
+
         public DataRetriever()
         {
             service = new YouTubeService(new BaseClientService.Initializer()
@@ -200,7 +202,22 @@ namespace SubBox.Models
 
         public void UpdateVideoList()
         {
+            int diffSec = (int) (DateTime.Now - AppSettings.LastRefresh).TotalSeconds;
+
+            if (diffSec < RefreshLimit)
+            {
+                Console.WriteLine("Can only refresh every " + RefreshLimit + " seconds! " + (RefreshLimit - diffSec) + " seconds remaining");
+
+                return;
+            }
+
+            AppSettings.LastRefresh = DateTime.Now;
+
+            AppSettings.Save();
+
             GarbageCollector();
+
+            Console.WriteLine("Refreshing...");
 
             LifeTime = AppSettings.RetrievalTimeFrame;
 

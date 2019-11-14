@@ -84,6 +84,7 @@ namespace SubBox
                 {
                     AppSettings.NightMode = false;
                 }
+                AppSettings.LastRefresh = DateTime.ParseExact(options[6], "O", CultureInfo.InvariantCulture);
             }
             catch (Exception)
             {
@@ -93,6 +94,7 @@ namespace SubBox
                 AppSettings.PlaylistPlaybackSize = 50;
                 AppSettings.Color = "DB4437";
                 AppSettings.NightMode = false;
+                AppSettings.LastRefresh = BuildTime;
                 AppSettings.Save();
             }
 

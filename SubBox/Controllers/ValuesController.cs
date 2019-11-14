@@ -77,8 +77,6 @@ namespace SubBox.Controllers
         [HttpPost("refresh")]
         public void Refresh()
         {
-            Console.WriteLine("Refreshing...");
-
             DataRetriever fetcher = new DataRetriever();
 
             fetcher.UpdateVideoList();
