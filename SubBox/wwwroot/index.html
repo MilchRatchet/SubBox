@@ -889,9 +889,9 @@
             },
             async showUniqueList(number) {
                 if (number > 0) {
-                    var result = await fetch("/api/values/list/all/" + number);
+                    this.uniqueList = null;
 
-                    this.uniqueList = await result.json();
+                    var waiter = fetch("/api/values/list/all/" + number);
 
                     this.inputListModeNumber = number;
 
@@ -900,18 +900,24 @@
                     this.uniqueListMode = true;
 
                     this.videoListMode = false;
+
+                    var result = await waiter;
+
+                    this.uniqueList = await result.json();
                 }
             },
             async showOldVideos() {
-                var result = await fetch("api/values/videos/old");
-
-                this.oldVideos = await result.json();
+                var waiter = fetch("api/values/videos/old");
 
                 this.channelMode = false;
 
                 this.trashbinMode = true;
 
                 this.videoListMode = false;
+
+                var result = await waiter;
+
+                this.oldVideos = await result.json();
             },
             showSettings() {
                 this.channelMode = false;
@@ -998,7 +1004,7 @@
 
                     this.listUpdate();
                 } else {
-                    fetch("/api/values/video/" + video.id, { method: "DELETE" });
+                    var waiter = fetch("/api/values/video/" + video.id, { method: "DELETE" });
 
                     var index = this.videos.indexOf(video);
 
@@ -1020,11 +1026,13 @@
                 window.open("https://www.youtube.com/user/" + link, "_blank");
             },
             async showChannels() {
+                var waiter = fetch("/api/values/channels");
+
                 this.settingsMode = false;
 
                 this.channelMode = !this.channelMode;
 
-                var result = await fetch("/api/values/channels");
+                var result = await waiter;
 
                 this.channels = await result.json();
 

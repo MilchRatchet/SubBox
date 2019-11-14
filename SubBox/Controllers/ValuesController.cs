@@ -25,7 +25,7 @@ namespace SubBox.Controllers
         [HttpGet("videos")]
         public async Task<ActionResult<IEnumerable<Video>>> GetVideos()
         {
-            var result = await context.Videos.Where(v => v.New).Where(v => v.List == 0).OrderByDescending(v => v.PublishedAt.Ticks).ToListAsync();
+            var result = await context.Videos.Where(v => v.New && v.List == 0).OrderByDescending(v => v.PublishedAt.Ticks).ToListAsync();
 
             return result;
         }
@@ -34,7 +34,7 @@ namespace SubBox.Controllers
         [HttpGet("videos/old")]
         public async Task<ActionResult<IEnumerable<Video>>> GetOldVideos()
         {
-            var result = await context.Videos.Where(v => !v.New).Where(v => v.List == 0).OrderByDescending(v => v.PublishedAt.Ticks).ToListAsync();
+            var result = await context.Videos.Where(v => !v.New && v.List == 0).OrderByDescending(v => v.PublishedAt.Ticks).ToListAsync();
 
             return result;
         }
@@ -52,7 +52,7 @@ namespace SubBox.Controllers
         [HttpGet("lists")]
         public async Task<ActionResult<IEnumerable<Video>>> GetLists()
         {
-            var result = await context.Videos.Where(v => v.List != 0).Where(v => v.Index == 0).OrderBy(v => v.List).ToListAsync();
+            var result = await context.Videos.Where(v => v.List != 0 && v.Index == 0).OrderBy(v => v.List).ToListAsync();
 
             return result;
         }
@@ -142,7 +142,7 @@ namespace SubBox.Controllers
         {
             context.Videos.Where(v => v.List == number).ToList().ForEach(v => v.Index -= 1);
 
-            Video video = context.Videos.Where(v => v.List == number).Where(v => v.Index == 1).FirstOrDefault();
+            Video video = context.Videos.Where(v => v.List == number && v.Index == 1).FirstOrDefault();
 
             if (video == null)
             {
@@ -158,7 +158,7 @@ namespace SubBox.Controllers
         [HttpPost("list/previous/{number}")]
         public void PrevEntry(int number)
         {
-            Video video = context.Videos.Where(v => v.List == number).Where(v => v.Index == -1).FirstOrDefault();
+            Video video = context.Videos.Where(v => v.List == number && v.Index == -1).FirstOrDefault();
 
             if (video == null)
             {
@@ -267,7 +267,14 @@ namespace SubBox.Controllers
                 {
                     context.Videos.Remove(video);
 
-                    context.Videos.Where(v => v.List == video.List).Where(v => v.Index > video.Index).ToList().ForEach(v => v.Index -= 1);
+                    if (video.Index >= 0)
+                    {
+                        context.Videos.Where(v => v.List == video.List && v.Index > video.Index).ToList().ForEach(v => v.Index -= 1);
+                    }
+                    else
+                    {
+                        context.Videos.Where(v => v.List == video.List && v.Index < video.Index).ToList().ForEach(v => v.Index += 1);
+                    }
                 }
 
                 context.SaveChanges();
@@ -293,7 +300,7 @@ namespace SubBox.Controllers
 
             context.Channels.Remove(channel);
 
-            IEnumerable<Video> videos = context.Videos.Where(v => v.List == 0).Where(v => v.ChannelId == id).ToList();
+            IEnumerable<Video> videos = context.Videos.Where(v => v.List == 0 && v.ChannelId == id).ToList();
 
             foreach (Video v in videos)
             {
