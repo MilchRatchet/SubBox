@@ -78,9 +78,9 @@
         margin: 0px;
         padding: 2px;
         border: solid var(--font_text) 1px;
-        border-radius: 0px;
         width: 250px;
-        color: #131313;
+        color: var(--font_title);
+        background-color: var(--bg);
     }
     input[type=text]:focus {
         border-left: solid var(--mainColor) 1px;
@@ -97,11 +97,22 @@
         -moz-appearance: textfield;
         -webkit-appearance: textfield;
     }
+    input[type=text].search {
+        background-color: var(--bg);
+        padding: 4px;
+        border-radius: 5px;
+        margin: 0;
+        height: 18px;
+    }
+    input[type=text].search:focus {
+        border: solid var(--font_text) 1px;
+    }
     tr {
         padding: 0;
     }
     .Title {
         background-color: none;
+        margin-left: 6px;
         color: var(--font_title);
         cursor: pointer;
         letter-spacing: 1px;
@@ -611,7 +622,7 @@
             <button @click="showListInput()" class="material-icons">playlist_add</button>
             <div v-show="inputListMode" class="inputList">
                 <input v-model="addPlayList" autocomplete="off" type="text" name="PlaylistIdUnqiue" placeholder="Playlist Id..." />
-                <button @click="submitPlaylist" class="material-icons">done</button>
+                <button @click="submitPlaylist" class="material-icons">search</button>
             </div>
             <button @click="closeUniqueList" class="material-icons closeUniqueListButton">exit_to_app</button>
         </nav>
@@ -701,17 +712,18 @@
         <button @click="showChannelInput" class="material-icons">add_box</button>
         <div v-show="inputMode" class="channelInput">
             <input v-model="addChannelName" autocomplete="off" type="text" name="Username" placeholder="Channel Name..." />
-            <button class="material-icons" @click="onSubmit">done</button>
+            <button class="material-icons" @click="onSubmit">search</button>
         </div>
-        <button @click="showChannels" class="material-icons">account_box</button>
+        <button @click="showChannels" class="material-icons">{{(filter === 'SubBox') ? 'account_box' : 'star'}}</button>
         <button @click="showListInput()" class="material-icons">playlist_add</button>
         <div v-show="inputListMode" class="inputList">
             <input v-model="addPlayList" autocomplete="off" type="text" name="PlaylistId" placeholder="Playlist Id..." />
-            <button @click="submitPlaylist" class="material-icons">done</button>
+            <button @click="submitPlaylist" class="material-icons">search</button>
         </div>
         <button @click="showOldVideos" class="material-icons">delete</button>
-        <p class="Title" @click="window.scrollTo(0,0);" style="margin-left: auto">{{filter}} - {{filteredVideos.length}}</p>
-        <button @click="switchDesign" style="margin-left: auto;" class="material-icons">highlight</button>
+        <input class="search" v-model="searchFilter" type="text" autocomplete="off" placeholder="Search" style="margin-left: auto" />
+        <p class="Title" style="cursor: default;" >{{filteredVideos.length}}</p>
+        <button style="margin-left: auto" @click="switchDesign" class="material-icons" >highlight</button>
         <button @click="showSettings" class="material-icons">settings_applications</button>
         <button @click="refresh" class="material-icons refreshButton">autorenew</button>
     </nav>
@@ -719,7 +731,7 @@
     <div class="spacer">
 
     </div>
-    <table v-show="videoListMode" class="listList">
+    <table v-show="videoListMode && filter==='SubBox' && searchFilter === ''" class="listList">
         <tr v-for="video in lists">
             <td>
                 <div class="videoBox">
@@ -816,6 +828,7 @@
             addChannelName: "",
             night: false,
             filter: "SubBox",
+            searchFilter: "",
             settingsMode: false,
             settingNCT: 1,
             settingRT: 7,
@@ -827,11 +840,17 @@
         },
         computed: {
             filteredVideos: function () {
-                if (this.filter === "SubBox") {
+                if (this.filter === "SubBox" && this.searchFilter === "") {
                     return this.videos;
                 }
+                searchFilterUp = this.searchFilter.toUpperCase();
+                if (this.filter === "SubBox") {
+                    return this.videos.filter(function (u) {
+                        return (u.title + u.description).toUpperCase().includes(searchFilterUp);
+                    });
+                }
                 return this.videos.filter(function (u) {
-                    return u.channelTitle == app.filter;
+                    return (u.channelTitle == app.filter && (u.title + u.description).toUpperCase().includes(searchFilterUp));
                 });
             },
         },
