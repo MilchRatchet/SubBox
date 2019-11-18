@@ -82,7 +82,7 @@
         color: var(--font_title);
         background-color: var(--bg);
     }
-    input[type=text]:focus {
+    input[type=text]:focus, input[type=text]:hover {
         border-left: solid var(--mainColor) 1px;
         border-right: solid var(--mainColor) 1px;
         border-top: solid var(--mainColor) 10px;
@@ -98,13 +98,16 @@
         -webkit-appearance: textfield;
     }
     input[type=text].search {
+        display: none;
         background-color: var(--bg);
         padding: 4px;
         border-radius: 5px;
         margin: 0;
+        margin-top: 4px;
         height: 18px;
+        width: 300px;
     }
-    input[type=text].search:focus {
+    input[type=text].search:focus, input[type=text].search:hover {
         border: solid var(--font_text) 1px;
     }
     tr {
@@ -112,6 +115,8 @@
     }
     .Title {
         background-color: none;
+        margin-top: 8px;
+        margin-bottom: 0;
         margin-left: 6px;
         color: var(--font_title);
         cursor: pointer;
@@ -125,7 +130,7 @@
         -webkit-text-fill-color: transparent;
         transition: 1s ease;
     }
-    .Title:hover {
+    nav:hover .Title {
         color: var(--mainColor);
         font-weight: bold;       
         background: linear-gradient(to right,var(--mainColor) 40%, var(--font_title) 40% 65%, var(--mainColor) 65% 75%, var(--font_title) 75%);
@@ -135,6 +140,16 @@
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         transition: 2s ease;
+    }
+    .topbar {
+        height: 40px;
+    }
+    .topbar:hover .Title {
+        display: none;
+    }
+
+    .topbar:hover .search {
+        display: flex;
     }
     .channelInput {
         display: flex;
@@ -721,8 +736,11 @@
             <button @click="submitPlaylist" class="material-icons">search</button>
         </div>
         <button @click="showOldVideos" class="material-icons">delete</button>
-        <input class="search" v-model="searchFilter" type="text" autocomplete="off" placeholder="Search" style="margin-left: auto" />
-        <p class="Title" style="cursor: default;" >{{filteredVideos.length}}</p>
+        <div class="topbar" style="margin-left: auto">
+            <input class="search" v-model="searchFilter" type="text" autocomplete="off" placeholder="Search"/>
+            <p class="Title" style="cursor: default;">{{filter}} - {{filteredVideos.length}}</p>
+        </div>
+
         <button style="margin-left: auto" @click="switchDesign" class="material-icons" >highlight</button>
         <button @click="showSettings" class="material-icons">settings_applications</button>
         <button @click="refresh" class="material-icons refreshButton">autorenew</button>
