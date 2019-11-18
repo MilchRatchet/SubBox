@@ -161,12 +161,12 @@
         height: 32px;
         width: 32px;
         margin-left: 4px;
-        transition: transform 1s, color 0.2s, background-color 0.2s;
+        transition: transform 1s;
         border-radius: 100%;
     }
     .refreshButton:hover {
         transform: rotate(360deg);
-        transition: transform 1s, color 0.2s, background-color 0.2s;
+        transition: transform 1s;
         border-radius: 100%;
     }
     .videoTitle {
@@ -778,9 +778,9 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>
+                            <td style="display: flex;">
                                 <p class="playlistHint">PLAYLIST</p>
-                                <button @click="prev(video.list)" style="margin-left: 75%" class="material-icons listButton">fast_rewind</button>
+                                <button @click="prev(video.list)" style="margin-left: auto" class="material-icons listButton">fast_rewind</button>
                                 <button @click="next(video.list)" class="material-icons listButton">fast_forward</button>
                                 <button @click="showUniqueList(video.list)" class="material-icons listButton">view_list</button>
                             </td>
