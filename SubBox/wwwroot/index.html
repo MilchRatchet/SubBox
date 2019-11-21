@@ -147,9 +147,14 @@
     .topbar:hover .Title {
         display: none;
     }
-
     .topbar:hover .search {
         display: flex;
+    }
+    .search:focus {
+        display: flex !important;
+    }
+    .search:focus ~ .Title {
+        display: none !important;
     }
     .channelInput {
         display: flex;
