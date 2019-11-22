@@ -1268,6 +1268,14 @@
         },
         el: "#app",
         async mounted() {
+            var result = await fetch("/api/values/first");
+
+            var first = await result.json();
+
+            if (first) {
+                window.location.replace("http://localhost:5000/tutorial.html");
+            }
+
             this.listUpdate();
 
             this.update();

@@ -1,0 +1,32 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <script src="/vue.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
+    <title>SubBox - Introduction</title>
+</head>
+<body>
+
+    <div id="app">
+        <p>Welcome to SubBox</p>
+        <button @click="leave()">Let's Start!</button>
+    </div>
+
+
+    <script>
+        var app = new Vue({
+            methods: {
+                async leave() {
+                    await fetch("api/values/firstdone", { method: "POST" });
+
+                    window.location.replace("http://localhost:5000/");
+                }
+            },
+            el: "#app"
+        });
+    </script>
+</body>
+
+</html>

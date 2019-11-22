@@ -88,6 +88,14 @@ namespace SubBox
                     AppSettings.NightMode = false;
                 }
                 AppSettings.LastRefresh = DateTime.ParseExact(options[6], "O", CultureInfo.InvariantCulture);
+                if (options[7] == "True")
+                {
+                    AppSettings.FirstStart = true;
+                }
+                else
+                {
+                    AppSettings.FirstStart = false;
+                }
             }
             catch (Exception)
             {
@@ -98,6 +106,7 @@ namespace SubBox
                 AppSettings.Color = "DB4437";
                 AppSettings.NightMode = false;
                 AppSettings.LastRefresh = BuildTime;
+                AppSettings.FirstStart = true;
                 AppSettings.Save();
             }
 

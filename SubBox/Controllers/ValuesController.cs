@@ -73,6 +73,26 @@ namespace SubBox.Controllers
             return new string[] { AppSettings.RetrievalTimeFrame.ToString(), AppSettings.NewChannelTimeFrame.ToString(), AppSettings.DeletionTimeFrame.ToString(), AppSettings.PlaylistPlaybackSize.ToString(), AppSettings.Color, AppSettings.NightMode.ToString() };
         }
 
+        // GET: api/values/first
+        [HttpGet("first")]
+        public bool GetFirstStart()
+        {
+            return AppSettings.FirstStart;
+        }
+
+        // POST: api/values/firstdone
+        [HttpPost("firstdone")]
+        public void SetFirstStart()
+        {
+            if (!AppSettings.FirstStart) return;
+
+            AppSettings.FirstStart = false;
+
+            Console.WriteLine("Tutorial finished. You can always revisit it through the settings tab!");
+
+            AppSettings.Save();
+        }
+
         // POST: api/values/refresh
         [HttpPost("refresh")]
         public void Refresh()
