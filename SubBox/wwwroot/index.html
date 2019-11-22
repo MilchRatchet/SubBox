@@ -1,839 +1,865 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-<meta charset="utf-8" />
-<script src="/vue.min.js"></script>
-<script src="/jscolor.js"></script>
-<link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
-<link rel="manifest" href="/site.webmanifest">
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-<title>SubBox</title>
-<style>
-    .dark-mode {
-        background-color: #131313;
-        --bg: #131313;
-        --nav_bg: #0b0b0b;
-        --font_title: #fafafa;
-        --font_text: #b8b8b8;
-        --video_bd_bot: #969696;
-    }
-    .light-mode {
-        background-color: #fafafa;
-        --bg: #fafafa;
-        --nav_bg: #ffffff;
-        --font_title: #131313;
-        --font_text: #969696;
-        --video_bd_bot: #969696;
-    }
-    :root {
-        --mainColor: #db4437;
-        --secColor: white;
-    }
-    body {
-        margin: 0;
-        font-family: 'Roboto', sans-serif;
-        --red: #db4437;
-    }
-    nav {
-        display: flex;
-        align-items: center;
-        top: 0;
-        left: 0;
-        right: 0;
-        position: fixed;
-        width: 100%;
-        background-color: var(--nav_bg);
-        height: 40px;
-        z-index: 2;
-    }
-    button {
-        padding: 5px;
-        margin: 5px;
-        border: transparent;
-        border-radius: 5px;
-        background-color: transparent;
-        color: var(--font_title);
-        cursor: pointer;
-    }
-    nav button {
-        height: 100%;
-        width: 40px;
-        margin:0;
-        padding: 0;
-        border-radius: 0px;
-    }
-    nav p {
-        margin-left: 10px;
-        font-size: 22px;
-        color: var(--font_title);
-    }
-    nav button:hover {
-        color: var(--secColor);
-        background-color: var(--mainColor);
-    }
-    input[type=text] {
-        margin: 0px;
-        padding: 2px;
-        border: solid var(--font_text) 1px;
-        width: 250px;
-        color: var(--font_title);
-        background-color: var(--bg);
-    }
-    input[type=text]:focus, input[type=text]:hover {
-        border-left: solid var(--mainColor) 1px;
-        border-right: solid var(--mainColor) 1px;
-        border-top: solid var(--mainColor) 10px;
-        border-bottom: solid var(--mainColor) 10px;
-    }
-    input[type=number] {
-        padding: 2px;
-        border: solid var(--font_text) 1px;
-        border-radius: 0px;
-        width: 250px;
-        color: #131313;
-        -moz-appearance: textfield;
-        -webkit-appearance: textfield;
-    }
-    input[type=text].search {
-        display: none;
-        background-color: var(--bg);
-        padding: 4px;
-        border-radius: 5px;
-        margin: 0;
-        margin-top: 4px;
-        height: 18px;
-        width: 300px;
-    }
-    input[type=text].search:focus, input[type=text].search:hover {
-        border: solid var(--font_text) 1px;
-    }
-    tr {
-        padding: 0;
-    }
-    .Title {
-        background-color: none;
-        margin-top: 8px;
-        margin-bottom: 0;
-        margin-left: 6px;
-        color: var(--font_title);
-        cursor: default;
-        letter-spacing: 1px;
-        font-weight: bold;
-        background: linear-gradient(to right, var(--mainColor) 50%, var(--font_title) 50%);
-        background-size: 400% 100%;
-        background-position: right bottom;
-        background-clip: text;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        transition: 1s ease;
-    }
-    nav:hover .Title {
-        color: var(--mainColor);
-        font-weight: bold;       
-        background: linear-gradient(to right,var(--mainColor) 40%, var(--font_title) 40% 65%, var(--mainColor) 65% 75%, var(--font_title) 75%);
-        background-size: 400% 100%;
-        background-position: left bottom;
-        background-clip: text;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        transition: 2s ease;
-    }
-    .topbar {
-        height: 40px;
-    }
-    .topbar:hover .Title {
-        display: none;
-    }
-    .topbar:hover .search {
-        display: flex;
-    }
-    .search:focus {
-        display: flex !important;
-    }
-    .search:focus ~ .Title {
-        display: none !important;
-    }
-    .channelInput {
-        display: flex;
-        align-items: center;
-        vertical-align: middle;
-        height: 100%;
-    }
-    .refreshButton {
-        height: 32px;
-        width: 32px;
-        margin-left: 4px;
-        transition: transform 1s;
-        border-radius: 100%;
-    }
-    .refreshButton:hover {
-        transform: rotate(360deg);
-        transition: transform 1s;
-        border-radius: 100%;
-    }
-    .videoTitle {
-        width: 100%;
-        font-size: 18px;
-        color: var(--font_title);
-        padding-top: 0;
-        padding-bottom: 0;
-        padding-left: 10px;
-        margin: 0;
-        cursor: pointer;
-    }
-    .videoText {
-        font-size: 13px;
-        color: var(--font_text);
-        padding-top: 0;
-        padding-bottom: 0;
-        padding-left: 10px;
-    }
-    .videoHeaderName {
-        color: var(--font_title);
-        display: inline-block;
-        cursor: pointer;
-        font-size: 16px;
-        line-height: 20px;
-        font-weight: bold;
-        margin-left: 5px;
-    }
-    .videoList {
-        margin-left: auto;
-        margin-right: auto;
-        width: 60%;
-    }
-    .videoBox {
-        border-bottom-color: var(--video_bd_bot);
-        border-bottom-style: solid;
-        border-bottom-width: 1px;
-    }
-        .videoBox:hover .deleteButton {
-            color: var(--font_title);
+    <meta charset="utf-8" />
+    <script src="/vue.min.js"></script>
+    <script src="/jscolor.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="../css/brand-icons.css">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <title>SubBox</title>
+    <style>
+        .dark-mode {
+            background-color: #131313;
+            --bg: #131313;
+            --nav_bg: #0b0b0b;
+            --font_title: #fafafa;
+            --font_text: #b8b8b8;
+            --video_bd_bot: #969696;
         }
-    .deleteButton {
-        float: right;
-        position: relative;
-        color: transparent;
-        height: auto;
-        margin-top: 50px;
-        padding: 1px;
-        background: none;
-        border: 1px solid var(--bg);
-    }
-        .deleteButton:hover {
-            color: var(--mainColor) !important;
-            background-color: var(--secColor);
-            border: 1px solid var(--font_title);
+        .light-mode {
+            background-color: #fafafa;
+            --bg: #fafafa;
+            --nav_bg: #ffffff;
+            --font_title: #131313;
+            --font_text: #969696;
+            --video_bd_bot: #969696;
         }
-    .videoTextChannel {
-        cursor: pointer;
-    }
-        .videoTextChannel:hover {
-            color: var(--font_title);
+        :root {
+            --mainColor: #db4437;
+            --secColor: white;
         }
-    .videoDesc {
-        vertical-align: top;
-        padding-left: 10px;
-        color: var(--font_text);
-        font-size: 13px;
-    }
-    .videoDesc p {
-        max-height: 2.4em;
-        line-height: 1.2em;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        display: -webkit-box;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        width: 80%;
-    }
-    .overlay {
-        position: fixed;
-        top: 40px;
-        margin-left: 0%;
-        width: 350px;
-        background-color: var(--nav_bg);
-        z-index: 2;
-        display: block;
-        border: 1px solid var(--font_text);
-        border-left: none;
-        border-top: none;
-    }
-    .channelList {
-        border-collapse: collapse;
-        width: 100%;
-    }
-    .channelList img {
-        margin-top: 5px;
-        margin-bottom: 5px; 
-        margin-left: 10px;
-        width: 32px;
-        height: 32px;
-        border-radius: 50%;
-        vertical-align: middle;
-        cursor: pointer;
-    }
-    .channelNameColumn {
-        color: var(--font_title);
-        padding-left: 10px;
-        width: 250px;
-    }
-    .channelButtonColumn {
-        width: 100px;
-    }
-    .channelRow {
-        border-left: 5px transparent solid;
-        background: linear-gradient(to right, var(--mainColor) 50%, transparent 50%);
-        background-size: 200% 100%;
-        background-position: right bottom;
-        transition: 0.2s ease, border 0.4s;
-    }
-    .channelRow:hover {
-        border-left: 5px var(--mainColor) solid;
-        background: linear-gradient(to right,  var(--mainColor) 50%, transparent 50%);
-        background-size: 200% 100%;
-        background-position: left bottom;
-        transition: 0.4s ease, border 0s;
-    }
-    .channelRow:hover td {
-        color: var(--secColor) !important;
-    }
-    .channelRow:hover button {
-        color: var(--secColor);
-    }
-    .locked {
-        border-left: 5px #daa520 solid;
-        background: linear-gradient(to right, #daa520 50%, transparent 50%);
-        background-size: 200% 100%;
-        background-position: right bottom;
-        transition: 0.2s ease;
-    }
-    .locked:hover {
-        border-left: 5px #daa520 solid;
-        background: linear-gradient(to right, #daa520 50%, transparent 50%);
-        background-size: 200% 100%;
-        background-position: left bottom;
-        transition: 0.4s ease;
-    }
-    .locked:hover .deleteChannelButton:hover {
-        color: #daa520 !important;
-    }
-    button.deleteChannelButton:hover {
-        padding: 0 !important;
-        color: var(--mainColor);
-        background: linear-gradient(to top, var(--secColor) 50%,  transparent 50%);
-        background-size: 100% 200%;
-        background-position: right bottom;
-        transition: 0.2s;
-    }
-    .deleteChannelButton {
-        display: inline-block;
-        border-radius: 2px;
-        padding: 0 !important;
-        color: transparent;
-        background: linear-gradient(to top, var(--secColor) 50%,  transparent 50%);
-        background-size: 100% 200%;
-        background-position: right top;
-        transition: background 0.1s;
-    }
-    .closeChannelsButton {
-        float: right;
-        border-radius: 5px;
-        background: linear-gradient(to right, var(--mainColor) 50%, transparent 50%);
-        background-size: 200% 100%;
-        background-position: right bottom;
-        transition: 0.1s ease;
-    }
-        .closeChannelsButton:hover {
-            color: var(--secColor);
+        body {
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            --red: #db4437;
+        }
+        i {
+            margin-right: 2px;
+        }
+        nav {
+            display: flex;
+            align-items: center;
+            top: 0;
+            left: 0;
+            right: 0;
+            position: fixed;
+            width: 100%;
+            background-color: var(--nav_bg);
+            height: 40px;
+            z-index: 2;
+        }
+        button {
+            padding: 5px;
+            margin: 5px;
+            border: transparent;
             border-radius: 5px;
-            background: linear-gradient(to right,  var(--mainColor) 50%, transparent 50%);
-            background-size: 200% 100%;
+            background-color: transparent;
+            color: var(--font_title);
+            cursor: pointer;
+        }
+        nav button {
+            height: 100%;
+            width: 40px;
+            margin: 0;
+            padding: 0;
+            border-radius: 0px;
+        }
+        nav p {
+            margin-left: 10px;
+            font-size: 22px;
+            color: var(--font_title);
+        }
+        nav button:hover {
+            color: var(--secColor);
+            background-color: var(--mainColor);
+        }
+        input[type=text] {
+            margin: 0px;
+            padding: 2px;
+            border: solid var(--font_text) 1px;
+            width: 250px;
+            color: var(--font_title);
+            background-color: var(--bg);
+        }
+            input[type=text]:focus, input[type=text]:hover {
+                border-left: solid var(--mainColor) 1px;
+                border-right: solid var(--mainColor) 1px;
+                border-top: solid var(--mainColor) 10px;
+                border-bottom: solid var(--mainColor) 10px;
+            }
+        input[type=number] {
+            padding: 2px;
+            border: solid var(--font_text) 1px;
+            border-radius: 0px;
+            width: 250px;
+            color: #131313;
+            -moz-appearance: textfield;
+            -webkit-appearance: textfield;
+        }
+        input[type=text].search {
+            display: none;
+            background-color: var(--bg);
+            padding: 4px;
+            border-radius: 5px;
+            margin: 0;
+            margin-top: 4px;
+            height: 18px;
+            width: 300px;
+        }
+            input[type=text].search:focus, input[type=text].search:hover {
+                border: solid var(--font_text) 1px;
+            }
+        tr {
+            padding: 0;
+        }
+        .Title {
+            background-color: none;
+            margin-top: 8px;
+            margin-bottom: 0;
+            margin-left: 6px;
+            color: var(--font_title);
+            cursor: default;
+            letter-spacing: 1px;
+            font-weight: bold;
+            background: linear-gradient(to right, var(--mainColor) 50%, var(--font_title) 50%);
+            background-size: 400% 100%;
+            background-position: right bottom;
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            transition: 1s ease;
+        }
+        nav:hover .Title {
+            color: var(--mainColor);
+            font-weight: bold;
+            background: linear-gradient(to right,var(--mainColor) 40%, var(--font_title) 40% 65%, var(--mainColor) 65% 75%, var(--font_title) 75%);
+            background-size: 400% 100%;
             background-position: left bottom;
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            transition: 2s ease;
+        }
+        .topbar {
+            height: 40px;
+        }
+            .topbar:hover .Title {
+                display: none;
+            }
+            .topbar:hover .search {
+                display: flex;
+            }
+        .search:focus {
+            display: flex !important;
+        }
+            .search:focus ~ .Title {
+                display: none !important;
+            }
+        .channelInput {
+            display: flex;
+            align-items: center;
+            vertical-align: middle;
+            height: 100%;
+        }
+        .refreshButton {
+            height: 32px;
+            width: 32px;
+            margin-left: 4px;
+            transition: transform 1s;
+            border-radius: 100%;
+        }
+            .refreshButton:hover {
+                transform: rotate(360deg);
+                transition: transform 1s;
+                border-radius: 100%;
+            }
+        .videoTitle {
+            width: 100%;
+            font-size: 18px;
+            color: var(--font_title);
+            padding-top: 0;
+            padding-bottom: 0;
+            padding-left: 10px;
+            margin: 0;
+            cursor: pointer;
+        }
+        .videoText {
+            font-size: 13px;
+            color: var(--font_text);
+            padding-top: 0;
+            padding-bottom: 0;
+            padding-left: 10px;
+        }
+        .videoHeaderName {
+            color: var(--font_title);
+            display: inline-block;
+            cursor: pointer;
+            font-size: 16px;
+            line-height: 20px;
+            font-weight: bold;
+            margin-left: 5px;
+        }
+        .videoList {
+            margin-left: auto;
+            margin-right: auto;
+            width: 60%;
+        }
+        .videoBox {
+            border-bottom-color: var(--video_bd_bot);
+            border-bottom-style: solid;
+            border-bottom-width: 1px;
+        }
+            .videoBox:hover .deleteButton {
+                color: var(--font_title);
+            }
+        .deleteButton {
+            float: right;
+            position: relative;
+            color: transparent;
+            height: auto;
+            margin-top: 50px;
+            padding: 1px;
+            background: none;
+            border: 1px solid var(--bg);
+        }
+            .deleteButton:hover {
+                color: var(--mainColor) !important;
+                background-color: var(--secColor);
+                border: 1px solid var(--font_title);
+            }
+        .videoTextChannel {
+            cursor: pointer;
+        }
+            .videoTextChannel:hover {
+                color: var(--font_title);
+            }
+        .videoDesc {
+            vertical-align: top;
+            padding-left: 10px;
+            color: var(--font_text);
+            font-size: 13px;
+        }
+            .videoDesc p {
+                max-height: 2.4em;
+                line-height: 1.2em;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
+                display: -webkit-box;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                width: 80%;
+            }
+        .overlay {
+            position: fixed;
+            top: 40px;
+            margin-left: 0%;
+            width: 350px;
+            background-color: var(--nav_bg);
+            z-index: 2;
+            display: block;
+            border: 1px solid var(--font_text);
+            border-left: none;
+            border-top: none;
+        }
+        .channelList {
+            border-collapse: collapse;
+            width: 100%;
+        }
+            .channelList img {
+                margin-top: 5px;
+                margin-bottom: 5px;
+                margin-left: 10px;
+                width: 32px;
+                height: 32px;
+                border-radius: 50%;
+                vertical-align: middle;
+                cursor: pointer;
+            }
+        .channelNameColumn {
+            color: var(--font_title);
+            padding-left: 10px;
+            width: 250px;
+        }
+        .channelButtonColumn {
+            width: 100px;
+        }
+        .channelRow {
+            border-left: 5px transparent solid;
+            background: linear-gradient(to right, var(--mainColor) 50%, transparent 50%);
+            background-size: 200% 100%;
+            background-position: right bottom;
+            transition: 0.2s ease, border 0.4s;
+        }
+            .channelRow:hover {
+                border-left: 5px var(--mainColor) solid;
+                background: linear-gradient(to right, var(--mainColor) 50%, transparent 50%);
+                background-size: 200% 100%;
+                background-position: left bottom;
+                transition: 0.4s ease, border 0s;
+            }
+                .channelRow:hover td {
+                    color: var(--secColor) !important;
+                }
+                .channelRow:hover button {
+                    color: var(--secColor);
+                }
+        .locked {
+            border-left: 5px #daa520 solid;
+            background: linear-gradient(to right, #daa520 50%, transparent 50%);
+            background-size: 200% 100%;
+            background-position: right bottom;
             transition: 0.2s ease;
         }
-    .listList {
-        margin-left: auto;
-        margin-right: auto;
-        width: 60%;
-    }
-    .spacer {
-        display: flex;
-        width: 100%;
-        margin-top: 40px;
-        height: 30px;
-    }
-    .videoBox:hover .listButton {
-        color: var(--font_title);
-    }
-    .listButton {
-        padding: 2px;
-        color: transparent;
-        background-color: transparent;
-        border: 1px solid transparent;
-    }
-        .listButton:hover {
-            color: var(--mainColor) !important;
-            background-color: var(--secColor);
-            border: 1px solid var(--font_title);
+            .locked:hover {
+                border-left: 5px #daa520 solid;
+                background: linear-gradient(to right, #daa520 50%, transparent 50%);
+                background-size: 200% 100%;
+                background-position: left bottom;
+                transition: 0.4s ease;
+            }
+                .locked:hover .deleteChannelButton:hover {
+                    color: #daa520 !important;
+                }
+        button.deleteChannelButton:hover {
+            padding: 0 !important;
+            color: var(--mainColor);
+            background: linear-gradient(to top, var(--secColor) 50%, transparent 50%);
+            background-size: 100% 200%;
+            background-position: right bottom;
+            transition: 0.2s;
         }
-    .inputList {
-        display: flex;
-        align-items: center;
-        height: 100%;
-    }
-    .overlayUniqueList {
-        position: fixed;
-        top: 40px;
-        margin-left: 0;
-        width: 100%;
-        height: 97%;
-        background-color: var(--bg);
-        z-index: 2;
-        display: flex;
-        padding: 0;
-    }
-    .scrollList {
-        width: 100%;
-        overflow: auto;
-        margin: 0;
-    }
-    .uniqueList {
-        margin-left: auto;
-        margin-right: auto;
-        width: 60%;
-    }
-    .closeUniqueListButton {
-        margin-left: auto;
-        margin-right: 0;
-    }
-    .closeUniqueListButton:hover {
-        color: var(--secColor);
-        transition: 0.2s;
-    }
-    .playlistHint {
-        color: var(--mainColor);
-        font-size: 12px;
-        border: 1px var(--mainColor) solid;
-        font-weight: 500;
-        margin-left: 10px;
-        display: inline-block;
-        padding-top: 2px;
-        padding-bottom: 2px;
-        padding-left: 3px;
-        padding-right: 3px;
-        line-height: 12px;
-        cursor: default;
-    }
-    .settingsOverlay {
-        position: fixed;
-        top: 40px;
-        margin-left: 80%;
-        width: 20%;
-        background-color: var(--nav_bg);
-        z-index: 2;
-        display: block;
-        border: 1px solid var(--font_text);
-        border-right: none;
-        border-top: none;
-    }
-    .settingsOverlay p {
-        text-align: center;
-        color: var(--font_title);
-        margin: 0;
-    }
-    .settingsOverlay table {
-        width: 100%;
-        border-collapse: collapse;
-    }
-    .settingsOverlay td {
-        justify-items: center;
-        width: 50%;
-        color: var(--font_title);
-        padding-left: 10px;
-    }
-    .settingsOverlay tr:hover td {
-        background-color: var(--bg);
-    }
-    .settingsOverlay td:first-of-type {
-        padding-top: 5px;
-        padding-bottom: 5px;
-    }
-    .settingsOverlay tr:nth-child(2) td {
-        padding-top: 5px;
-    }
-    .settingsOverlay button {
-        float: right;
-    }
-    .numberInput button:hover {
-        color: var(--secColor);
-        background: linear-gradient(to top, var(--mainColor) 50%,  transparent 50%);
-        background-size: 100% 200%;
-        background-position: right bottom;
-        transition: 0.2s ease;
-    }
-    .settingsOverlay input {
-        width: 35%;
-        margin: 0;
-        padding: 0;
-        font-size: 16px;
-        text-align: center;
-        border: 1px var(--font_title) solid;
-        border-radius: 0;
-    }
-    .numberInput {
-        box-sizing: border-box;
-        justify-content: center;
-        display: inline-flex;
-        padding: 0;
-    }
-    .numberInput button {
-        align-items: center;
-        justify-content: center;
-        border: 1px var(--font_title) solid;
-        border-radius: 0;
-        cursor: pointer;
-        margin: 0;
-        padding: 0;
-        position: relative;
-        background: linear-gradient(to top, var(--mainColor) 50%,  transparent 50%);
-        background-size: 100% 200%;
-        background-position: right top;
-        transition: background 0.1s ease;
-    }
-    .videoThumb {
-        position: relative;
-        cursor: pointer;
-    }
-    .videoThumb p {
-        font-size: 12px;
-        font-weight: 500;
-        bottom: -6px;
-        right: 3px;
-        color: white;
-        background: rgba(0,0,0,0.8);
-        position: absolute;
-        padding-left: 4px;
-        padding-right: 4px;
-        padding-top: 2px;
-        padding-bottom: 2px;
-        border-radius: 2px;
-    }
-    .changeWarning {
-        margin-top: 4px !important;
-        cursor: default;
-        float: left;
-        width: 180px;
-        padding: 3px;
-        border-radius: 2px;
-        color: var(--secColor) !important;
-        font-size: 18px;
-        border: 1px solid var(--font_title);
-        background: linear-gradient(to right, var(--mainColor) 50%,  transparent 50%);
-        background-size: 200% 100%;
-        background-position: left bottom;
-    }
-    .fade-enter-active {
-        transition: 0.3s;
-    }
-    .fade-leave-active {
-        transition: 0s;
-    }
-    .fade-enter, .fade-leave-to {
-        background-position: right bottom;
-    }
-</style>
+        .deleteChannelButton {
+            display: inline-block;
+            border-radius: 2px;
+            padding: 0 !important;
+            color: transparent;
+            background: linear-gradient(to top, var(--secColor) 50%, transparent 50%);
+            background-size: 100% 200%;
+            background-position: right top;
+            transition: background 0.1s;
+        }
+        .closeChannelsButton {
+            float: right;
+            border-radius: 5px;
+            background: linear-gradient(to right, var(--mainColor) 50%, transparent 50%);
+            background-size: 200% 100%;
+            background-position: right bottom;
+            transition: 0.1s ease;
+        }
+            .closeChannelsButton:hover {
+                color: var(--secColor);
+                border-radius: 5px;
+                background: linear-gradient(to right, var(--mainColor) 50%, transparent 50%);
+                background-size: 200% 100%;
+                background-position: left bottom;
+                transition: 0.2s ease;
+            }
+        .listList {
+            margin-left: auto;
+            margin-right: auto;
+            width: 60%;
+        }
+        .spacer {
+            display: flex;
+            width: 100%;
+            margin-top: 40px;
+            height: 30px;
+        }
+        .videoBox:hover .listButton {
+            color: var(--font_title);
+        }
+        .listButton {
+            padding: 2px;
+            color: transparent;
+            background-color: transparent;
+            border: 1px solid transparent;
+        }
+            .listButton:hover {
+                color: var(--mainColor) !important;
+                background-color: var(--secColor);
+                border: 1px solid var(--font_title);
+            }
+        .inputList {
+            display: flex;
+            align-items: center;
+            height: 100%;
+        }
+        .overlayUniqueList {
+            position: fixed;
+            top: 40px;
+            margin-left: 0;
+            width: 100%;
+            height: 97%;
+            background-color: var(--bg);
+            z-index: 2;
+            display: flex;
+            padding: 0;
+        }
+        .scrollList {
+            width: 100%;
+            overflow: auto;
+            margin: 0;
+        }
+        .uniqueList {
+            margin-left: auto;
+            margin-right: auto;
+            width: 60%;
+        }
+        .closeUniqueListButton {
+            margin-left: auto;
+            margin-right: 0;
+        }
+            .closeUniqueListButton:hover {
+                color: var(--secColor);
+                transition: 0.2s;
+            }
+        .playlistHint {
+            color: var(--mainColor);
+            font-size: 12px;
+            border: 1px var(--mainColor) solid;
+            font-weight: 500;
+            margin-left: 10px;
+            display: inline-block;
+            padding-top: 2px;
+            padding-bottom: 2px;
+            padding-left: 3px;
+            padding-right: 3px;
+            line-height: 12px;
+            cursor: default;
+        }
+        .settingsOverlay {
+            position: fixed;
+            top: 40px;
+            margin-left: 80%;
+            width: 20%;
+            background-color: var(--nav_bg);
+            z-index: 2;
+            display: block;
+            border: 1px solid var(--font_text);
+            border-right: none;
+            border-top: none;
+        }
+            .settingsOverlay p {
+                text-align: center;
+                color: var(--font_title);
+                margin: 0;
+            }
+            .settingsOverlay table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+            .settingsOverlay td {
+                justify-items: center;
+                width: 50%;
+                color: var(--font_title);
+                padding-left: 10px;
+            }
+            .settingsOverlay tr:hover td {
+                background-color: var(--bg);
+            }
+            .settingsOverlay td:first-of-type {
+                padding-top: 5px;
+                padding-bottom: 5px;
+            }
+            .settingsOverlay tr:nth-child(2) td {
+                padding-top: 5px;
+            }
+            .settingsOverlay button {
+                float: right;
+            }
+        .numberInput button:hover {
+            color: var(--secColor);
+            background: linear-gradient(to top, var(--mainColor) 50%, transparent 50%);
+            background-size: 100% 200%;
+            background-position: right bottom;
+            transition: 0.2s ease;
+        }
+        .settingsOverlay input {
+            width: 35%;
+            margin: 0;
+            padding: 0;
+            font-size: 16px;
+            text-align: center;
+            border: 1px var(--font_title) solid;
+            border-radius: 0;
+        }
+        .numberInput {
+            box-sizing: border-box;
+            justify-content: center;
+            display: inline-flex;
+            padding: 0;
+        }
+            .numberInput button {
+                align-items: center;
+                justify-content: center;
+                border: 1px var(--font_title) solid;
+                border-radius: 0;
+                cursor: pointer;
+                margin: 0;
+                padding: 0;
+                position: relative;
+                background: linear-gradient(to top, var(--mainColor) 50%, transparent 50%);
+                background-size: 100% 200%;
+                background-position: right top;
+                transition: background 0.1s ease;
+            }
+        .videoThumb {
+            position: relative;
+            cursor: pointer;
+        }
+            .videoThumb p {
+                font-size: 12px;
+                font-weight: 500;
+                bottom: -6px;
+                right: 3px;
+                color: white;
+                background: rgba(0,0,0,0.8);
+                position: absolute;
+                padding-left: 4px;
+                padding-right: 4px;
+                padding-top: 2px;
+                padding-bottom: 2px;
+                border-radius: 2px;
+            }
+        .changeWarning {
+            margin-top: 4px !important;
+            cursor: default;
+            float: left;
+            width: 180px;
+            padding: 3px;
+            border-radius: 2px;
+            color: var(--secColor) !important;
+            font-size: 18px;
+            border: 1px solid var(--font_title);
+            background: linear-gradient(to right, var(--mainColor) 50%, transparent 50%);
+            background-size: 200% 100%;
+            background-position: left bottom;
+        }
+        .fade-enter-active {
+            transition: 0.3s;
+        }
+        .fade-leave-active {
+            transition: 0s;
+        }
+        .fade-enter, .fade-leave-to {
+            background-position: right bottom;
+        }
+        .bottomDiv {
+            text-align: center;
+        }
+        .bottomDivEntry {
+            text-decoration:none;
+            cursor: pointer;
+            font-size: 12px;
+            color: var(--font_title);
+            margin: 20px;
+            display: inline-flex;
+        }
+        .bottomDivEntry:hover {
+            color: var(--font_text);
+        }
+    </style>
 </head>
 
 <body>
-<div id="app" :class="night ? 'dark-mode' : 'light-mode'">
-    <div v-show="channelMode" class="overlay">
-        <table class="channelList" v-for="channel in channels">
-            <tr v-bind:class="{ locked: channel.locked }" class="channelRow">
-                <td>
-                    <img :src="channel.thumbnailUrl" @click="openChannel(channel.username)" />
-                </td>
-                <td class="channelNameColumn">
-                    {{channel.displayname}}
-                </td>
-                <td class="channelButtonColumn">
-                    <button @click="setFilter(channel)" class="material-icons deleteChannelButton">star</button>
-                    <button @click="deleteChannel(channel)" class="material-icons deleteChannelButton">clear</button>
-                </td>
-            </tr>
-        </table>
-        <button @click="closeChannels" class="material-icons closeChannelsButton">exit_to_app</button>
-    </div>
+    <div id="app" :class="night ? 'dark-mode' : 'light-mode'">
+        <div v-show="channelMode" class="overlay">
+            <table class="channelList" v-for="channel in channels">
+                <tr v-bind:class="{ locked: channel.locked }" class="channelRow">
+                    <td>
+                        <img :src="channel.thumbnailUrl" @click="openChannel(channel.username)" />
+                    </td>
+                    <td class="channelNameColumn">
+                        {{channel.displayname}}
+                    </td>
+                    <td class="channelButtonColumn">
+                        <button @click="setFilter(channel)" class="material-icons deleteChannelButton">star</button>
+                        <button @click="deleteChannel(channel)" class="material-icons deleteChannelButton">clear</button>
+                    </td>
+                </tr>
+            </table>
+            <button @click="closeChannels" class="material-icons closeChannelsButton">exit_to_app</button>
+        </div>
 
-    <div v-show="settingsMode" class="settingsOverlay">
-        <table>
-            <tr style="border-bottom: 1px solid var(--font_title)">
-                <td colspan="2">
-                    <p>SubBox - Settings</p>
-                </td>
-            </tr>
-            <tr>
-                <td>Channel Retrieval (Days)</td>
-                <td>
-                    <div class="numberInput">
-                        <button @click="changeSetting('NCT',-1)" class="material-icons" style="margin-left: 25%">remove</button>
-                        <input v-model="settingNCT" type="number" id="NCT" name="NCT" min="1" max="30" />
-                        <button @click="changeSetting('NCT',+1)" class="material-icons">add</button>
-                    </div>    
-                </td>
-            </tr>
-            <tr>
-                <td>Retrieval Time (Days)</td>
-                <td>
-                    <div class="numberInput">
-                        <button @click="changeSetting('RT',-1)" class="material-icons" style="margin-left: 25%">remove</button>
-                        <input v-model="settingRT" type="number" id="RT" name="RT" min="1" max="7" />
-                        <button @click="changeSetting('RT',+1)" class="material-icons">add</button>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>Deletion Time (Days)</td>
-                <td>
-                    <div class="numberInput">
-                        <button @click="changeSetting('DT',-1)" class="material-icons" style="margin-left: 25%">remove</button>
-                        <input v-model="settingDT" type="number" id="DT" name="DT" min="7" />
-                        <button @click="changeSetting('DT',+1)" class="material-icons">add</button>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>Playlist Playback Size</td>
-                <td>
-                    <div class="numberInput">
-                        <button @click="changeSetting('PPS',-1)" class="material-icons" style="margin-left: 25%">remove</button>
-                        <input v-model="settingPPS" type="number" id="PPS" name="PPS" min="1" />
-                        <button @click="changeSetting('PPS',+1)" class="material-icons">add</button>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>Accent Color</td>
-                <td>
-                    <div class="numberInput">
-                        <button @click="resetColor" class="material-icons" style="margin-left: 25%">replay</button>
-                        <input v-model="settingColor" id="colorPicker" @change="setColor()" class="jscolor" />
-                        <button class="material-icons" style="color: transparent; background: transparent; cursor: default; border: transparent;">add</button>
-                    </div> 
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2">
-                    <transition name="fade">
-                        <p class="changeWarning" v-if="changes">Unsaved Changes!</p>
-                    </transition>
-                    <button @click="closeSettings" class="material-icons closeChannelsButton">save</button>
-                </td>
-            </tr>
-        </table>
-    </div>
+        <div v-show="settingsMode" class="settingsOverlay">
+            <table>
+                <tr style="border-bottom: 1px solid var(--font_title)">
+                    <td colspan="2">
+                        <p>SubBox - Settings</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Channel Retrieval (Days)</td>
+                    <td>
+                        <div class="numberInput">
+                            <button @click="changeSetting('NCT',-1)" class="material-icons" style="margin-left: 25%">remove</button>
+                            <input v-model="settingNCT" type="number" id="NCT" name="NCT" min="1" max="30" />
+                            <button @click="changeSetting('NCT',+1)" class="material-icons">add</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Retrieval Time (Days)</td>
+                    <td>
+                        <div class="numberInput">
+                            <button @click="changeSetting('RT',-1)" class="material-icons" style="margin-left: 25%">remove</button>
+                            <input v-model="settingRT" type="number" id="RT" name="RT" min="1" max="7" />
+                            <button @click="changeSetting('RT',+1)" class="material-icons">add</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Deletion Time (Days)</td>
+                    <td>
+                        <div class="numberInput">
+                            <button @click="changeSetting('DT',-1)" class="material-icons" style="margin-left: 25%">remove</button>
+                            <input v-model="settingDT" type="number" id="DT" name="DT" min="7" />
+                            <button @click="changeSetting('DT',+1)" class="material-icons">add</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Playlist Playback Size</td>
+                    <td>
+                        <div class="numberInput">
+                            <button @click="changeSetting('PPS',-1)" class="material-icons" style="margin-left: 25%">remove</button>
+                            <input v-model="settingPPS" type="number" id="PPS" name="PPS" min="1" />
+                            <button @click="changeSetting('PPS',+1)" class="material-icons">add</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Accent Color</td>
+                    <td>
+                        <div class="numberInput">
+                            <button @click="resetColor" class="material-icons" style="margin-left: 25%">replay</button>
+                            <input v-model="settingColor" id="colorPicker" @change="setColor()" class="jscolor" />
+                            <button class="material-icons" style="color: transparent; background: transparent; cursor: default; border: transparent;">add</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <transition name="fade">
+                            <p class="changeWarning" v-if="changes">Unsaved Changes!</p>
+                        </transition>
+                        <button @click="closeSettings" class="material-icons closeChannelsButton">save</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
 
-    <div v-show="uniqueListMode" class="overlayUniqueList">
-        <nav>
-            <p>Playlist Contents</p><p class="material-icons">view_list</p><p>|</p>
-            <p class="Title" style="margin-top:0; margin-right: 6px">{{uniqueList.length}} Video{{(uniqueList.length != 1) ? 's' : ''}}</p>
+        <div v-show="uniqueListMode" class="overlayUniqueList">
+            <nav>
+                <p>Playlist Contents</p><p class="material-icons">view_list</p><p>|</p>
+                <p class="Title" style="margin-top:0; margin-right: 6px">{{uniqueList.length}} Video{{(uniqueList.length != 1) ? 's' : ''}}</p>
+                <button @click="showListInput()" class="material-icons">playlist_add</button>
+                <div v-show="inputListMode" class="inputList">
+                    <input v-model="addPlayList" autocomplete="off" type="text" name="PlaylistIdUnqiue" placeholder="Playlist Id..." />
+                    <button @click="submitPlaylist" class="material-icons">search</button>
+                </div>
+                <button @click="closeUniqueList" class="material-icons closeUniqueListButton">exit_to_app</button>
+            </nav>
+
+            <div class="scrollList">
+                <table class="uniqueList">
+                    <tr v-for="video in uniqueList">
+                        <td>
+                            <div class="videoBox">
+                                <table style="display: inline-block; border-collapse: collapse; width:90%">
+                                    <tr class="videoRows">
+                                        <th rowspan="3">
+                                            <div @click="openVideo(video.id)" class="videoThumb">
+                                                <img :src="video.thumbnailUrl" style="width:246px;height:138px" />
+                                                <p>{{video.duration}}</p>
+                                            </div>
+                                        </th>
+                                        <td @click="openVideo(video.id)" class="videoTitle">
+                                            {{video.title}}
+                                        </td>
+                                    </tr>
+                                    <tr class="videoRows">
+                                        <td class="videoText">
+                                            <span class="videoTextChannel" @click="openChannel(video.channelName)">{{video.channelTitle}}</span> &#9679 {{video.publishedAtString}}
+                                        </td>
+                                    </tr>
+                                    <tr style="height:100px">
+                                        <td class="videoDesc">
+                                            <p style="margin-top:5px">{{video.description}} </p>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <button class="material-icons deleteButton" style="margin-top: 0" @click="deleteVideo(video)">clear</button>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div v-show="trashbinMode" class="overlayUniqueList">
+            <nav>
+                <p>Removed Videos</p><p class="material-icons">view_list</p><p>|</p>
+                <p class="Title" style="margin-top:0;">{{oldVideos.length}} Video{{(oldVideos.length != 1) ? 's' : ''}}</p>
+                <button @click="closeTrashbin" class="material-icons closeUniqueListButton">exit_to_app</button>
+            </nav>
+            <div class="scrollList">
+                <table class="uniqueList">
+                    <tr v-for="video in oldVideos">
+                        <td>
+                            <div class="videoBox">
+                                <table style="display: inline-block; border-collapse: collapse; width:90%">
+                                    <tr>
+                                        <th style="display:inline-block;padding:10px">
+                                            <img :src="video.channelPicUrl" style="left:0;width:32px;height:32px;border-radius: 50%;vertical-align:middle;cursor:pointer;" @click="openChannel(video.channelName)" />
+                                            <span class="videoHeaderName" @click="openChannel(video.channelName)">{{video.channelTitle}}</span>
+                                        </th>
+                                    </tr>
+                                    <tr class="videoRows">
+                                        <th rowspan="3">
+                                            <div @click="openVideo(video.id)" class="videoThumb">
+                                                <img :src="video.thumbnailUrl" style="width:246px;height:138px" />
+                                                <p>{{video.duration}}</p>
+                                            </div>
+                                        </th>
+                                        <td @click="openVideo(video.id)" class="videoTitle">
+                                            {{video.title}}
+                                        </td>
+                                    </tr>
+                                    <tr class="videoRows">
+                                        <td class="videoText">
+                                            <span class="videoTextChannel" @click="openChannel(video.channelName)">{{video.channelTitle}}</span> &#9679 {{video.publishedAtString}}
+                                        </td>
+                                    </tr>
+                                    <tr style="height:100px">
+                                        <td class="videoDesc">
+                                            <p style="margin-top:5px">{{video.description}} </p>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <button class="material-icons deleteButton" @click="reactivateVideo(video)">add</button>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <nav v-show="videoListMode">
+            <button @click="showChannelInput" class="material-icons">add_box</button>
+            <div v-show="inputMode" class="channelInput">
+                <input v-model="addChannelName" autocomplete="off" type="text" name="Username" placeholder="Channel Name..." />
+                <button class="material-icons" @click="onSubmit">search</button>
+            </div>
+            <button @click="showChannels" class="material-icons">{{(filter === 'SubBox') ? 'account_box' : 'star'}}</button>
             <button @click="showListInput()" class="material-icons">playlist_add</button>
             <div v-show="inputListMode" class="inputList">
-                <input v-model="addPlayList" autocomplete="off" type="text" name="PlaylistIdUnqiue" placeholder="Playlist Id..." />
+                <input v-model="addPlayList" autocomplete="off" type="text" name="PlaylistId" placeholder="Playlist Id..." />
                 <button @click="submitPlaylist" class="material-icons">search</button>
             </div>
-            <button @click="closeUniqueList" class="material-icons closeUniqueListButton">exit_to_app</button>
+            <button @click="showOldVideos" class="material-icons">delete</button>
+            <div class="topbar" style="margin-left: auto">
+                <input class="search" v-model="searchFilter" type="text" autocomplete="off" placeholder="Search" />
+                <p class="Title" style="cursor: default;">{{filter}} - {{filteredVideos.length}}</p>
+            </div>
+
+            <button style="margin-left: auto" @click="switchDesign" class="material-icons">highlight</button>
+            <button @click="showSettings" class="material-icons">settings_applications</button>
+            <button @click="refresh" class="material-icons refreshButton">autorenew</button>
         </nav>
 
-        <div class="scrollList">
-            <table class="uniqueList">
-                <tr v-for="video in uniqueList">
-                    <td>
-                        <div class="videoBox">
-                            <table style="display: inline-block; border-collapse: collapse; width:90%">
-                                <tr class="videoRows">
-                                    <th rowspan="3">
-                                        <div @click="openVideo(video.id)" class="videoThumb">
-                                            <img :src="video.thumbnailUrl" style="width:246px;height:138px" />
-                                            <p>{{video.duration}}</p>
-                                        </div>
-                                    </th>
-                                    <td @click="openVideo(video.id)" class="videoTitle">
-                                        {{video.title}}
-                                    </td>
-                                </tr>
-                                <tr class="videoRows">
-                                    <td class="videoText">
-                                        <span class="videoTextChannel" @click="openChannel(video.channelName)">{{video.channelTitle}}</span> &#9679 {{video.publishedAtString}}
-                                    </td>
-                                </tr>
-                                <tr style="height:100px">
-                                    <td class="videoDesc">
-                                        <p style="margin-top:5px">{{video.description}} </p>
-                                    </td>
-                                </tr>
-                            </table>
-                            <button class="material-icons deleteButton" style="margin-top: 0" @click="deleteVideo(video)">clear</button>
-                        </div>
-                    </td>
-                </tr>
-            </table>
+        <div class="spacer">
+
+        </div>
+        <table v-show="videoListMode && filter==='SubBox' && searchFilter === ''" class="listList">
+            <tr v-for="video in lists">
+                <td>
+                    <div class="videoBox">
+                        <table>
+                            <tr class="videoRows">
+                                <th rowspan="4">
+                                    <div @click="openVideo(video.id)" class="videoThumb">
+                                        <img :src="video.thumbnailUrl" style="width:246px;height:138px" />
+                                        <p>{{video.duration}}</p>
+                                    </div>
+                                </th>
+                                <td @click="openVideo(video.id)" class="videoTitle">
+                                    {{video.title}}
+                                </td>
+                            </tr>
+                            <tr class="videoRows">
+                                <td class="videoText">
+                                    <span class="videoTextChannel" @click="openChannel(video.channelName)">{{video.channelTitle}}</span> &#9679 {{video.publishedAtString}}
+                                </td>
+                            </tr>
+                            <tr style="height:50px">
+                                <td class="videoDesc">
+                                    <p style="margin-top:5px">{{video.description}}</p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="display: flex;">
+                                    <p class="playlistHint">PLAYLIST</p>
+                                    <button @click="prev(video.list)" style="margin-left: auto" class="material-icons listButton">fast_rewind</button>
+                                    <button @click="next(video.list)" class="material-icons listButton">fast_forward</button>
+                                    <button @click="showUniqueList(video.list)" class="material-icons listButton">view_list</button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </td>
+            </tr>
+        </table>
+        <table v-show="videoListMode" class="videoList">
+            <tr v-for="video in filteredVideos">
+                <td>
+                    <div class="videoBox">
+                        <table style="display: inline-block; border-collapse: collapse; width:90%">
+                            <tr>
+                                <th style="display:inline-block;padding:10px">
+                                    <img :src="video.channelPicUrl" style="left:0;width:32px;height:32px;border-radius: 50%;vertical-align:middle;cursor:pointer;" @click="openChannel(video.channelName)" />
+                                    <span class="videoHeaderName" @click="openChannel(video.channelName)">{{video.channelTitle}}</span>
+                                </th>
+                            </tr>
+                            <tr class="videoRows">
+                                <th rowspan="3">
+                                    <div @click="openVideo(video.id)" class="videoThumb">
+                                        <img :src="video.thumbnailUrl" style="width:246px;height:138px" />
+                                        <p>{{video.duration}}</p>
+                                    </div>
+                                </th>
+                                <td @click="openVideo(video.id)" class="videoTitle">
+                                    {{video.title}}
+                                </td>
+                            </tr>
+                            <tr class="videoRows">
+                                <td class="videoText">
+                                    <span class="videoTextChannel" @click="openChannel(video.channelName)">{{video.channelTitle}}</span> &#9679 {{video.publishedAtString}}
+                                </td>
+                            </tr>
+                            <tr style="height:100px">
+                                <td class="videoDesc">
+                                    <p style="margin-top:5px">{{video.description}}</p>
+                                </td>
+                            </tr>
+                        </table>
+                        <button class="material-icons deleteButton" @click="deleteVideo(video)">clear</button>
+                    </div>
+                </td>
+            </tr>
+        </table>
+        
+        <div class="bottomDiv">
+            <a target="_blank" rel="noopener noreferrer" href="https://github.com/MilchRatchet/SubBox" class="bottomDivEntry"><i class="bd-github"></i> Github</a>
+            <a href="http://localhost:5000/tutorial.html" class="bottomDivEntry"><i class="bd-html5"></i>Introduction</a>
+            <a target="_blank" rel="noopener noreferrer" href="https://www.youtube.com/" class="bottomDivEntry"><i class="bd-youtube"></i>Youtube</a>
         </div>
     </div>
-    <div v-show="trashbinMode" class="overlayUniqueList">
-        <nav>
-            <p>Removed Videos</p><p class="material-icons">view_list</p><p>|</p>
-            <p class="Title" style="margin-top:0;">{{oldVideos.length}} Video{{(oldVideos.length != 1) ? 's' : ''}}</p>
-            <button @click="closeTrashbin" class="material-icons closeUniqueListButton">exit_to_app</button>
-        </nav>
-        <div class="scrollList">
-            <table class="uniqueList">
-                <tr v-for="video in oldVideos">
-                    <td>
-                        <div class="videoBox">
-                            <table style="display: inline-block; border-collapse: collapse; width:90%">
-                                <tr>
-                                    <th style="display:inline-block;padding:10px">
-                                        <img :src="video.channelPicUrl" style="left:0;width:32px;height:32px;border-radius: 50%;vertical-align:middle;cursor:pointer;" @click="openChannel(video.channelName)" />
-                                        <span class="videoHeaderName" @click="openChannel(video.channelName)">{{video.channelTitle}}</span>
-                                    </th>
-                                </tr>
-                                <tr class="videoRows">
-                                    <th rowspan="3">
-                                        <div @click="openVideo(video.id)" class="videoThumb">
-                                            <img :src="video.thumbnailUrl" style="width:246px;height:138px" />
-                                            <p>{{video.duration}}</p>
-                                        </div>
-                                    </th>
-                                    <td @click="openVideo(video.id)" class="videoTitle">
-                                        {{video.title}}
-                                    </td>
-                                </tr>
-                                <tr class="videoRows">
-                                    <td class="videoText">
-                                        <span class="videoTextChannel" @click="openChannel(video.channelName)">{{video.channelTitle}}</span> &#9679 {{video.publishedAtString}}
-                                    </td>
-                                </tr>
-                                <tr style="height:100px">
-                                    <td class="videoDesc">
-                                        <p style="margin-top:5px">{{video.description}} </p>
-                                    </td>
-                                </tr>
-                            </table>
-                            <button class="material-icons deleteButton" @click="reactivateVideo(video)">add</button>
-                        </div>
-                    </td>
-                </tr>
-            </table>
-        </div>
-    </div>
-    <nav v-show="videoListMode">
-        <button @click="showChannelInput" class="material-icons">add_box</button>
-        <div v-show="inputMode" class="channelInput">
-            <input v-model="addChannelName" autocomplete="off" type="text" name="Username" placeholder="Channel Name..." />
-            <button class="material-icons" @click="onSubmit">search</button>
-        </div>
-        <button @click="showChannels" class="material-icons">{{(filter === 'SubBox') ? 'account_box' : 'star'}}</button>
-        <button @click="showListInput()" class="material-icons">playlist_add</button>
-        <div v-show="inputListMode" class="inputList">
-            <input v-model="addPlayList" autocomplete="off" type="text" name="PlaylistId" placeholder="Playlist Id..." />
-            <button @click="submitPlaylist" class="material-icons">search</button>
-        </div>
-        <button @click="showOldVideos" class="material-icons">delete</button>
-        <div class="topbar" style="margin-left: auto">
-            <input class="search" v-model="searchFilter" type="text" autocomplete="off" placeholder="Search"/>
-            <p class="Title" style="cursor: default;">{{filter}} - {{filteredVideos.length}}</p>
-        </div>
 
-        <button style="margin-left: auto" @click="switchDesign" class="material-icons" >highlight</button>
-        <button @click="showSettings" class="material-icons">settings_applications</button>
-        <button @click="refresh" class="material-icons refreshButton">autorenew</button>
-    </nav>
 
-    <div class="spacer">
-
-    </div>
-    <table v-show="videoListMode && filter==='SubBox' && searchFilter === ''" class="listList">
-        <tr v-for="video in lists">
-            <td>
-                <div class="videoBox">
-                    <table>
-                        <tr class="videoRows">
-                            <th rowspan="4">
-                                <div @click="openVideo(video.id)" class="videoThumb">
-                                    <img :src="video.thumbnailUrl" style="width:246px;height:138px" />
-                                    <p>{{video.duration}}</p>
-                                </div>
-                            </th>
-                            <td @click="openVideo(video.id)" class="videoTitle">
-                                {{video.title}}
-                            </td>
-                        </tr>
-                        <tr class="videoRows">
-                            <td class="videoText">
-                                <span class="videoTextChannel" @click="openChannel(video.channelName)">{{video.channelTitle}}</span> &#9679 {{video.publishedAtString}}
-                            </td>
-                        </tr>
-                        <tr style="height:50px">
-                            <td class="videoDesc">
-                                <p style="margin-top:5px">{{video.description}}</p>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="display: flex;">
-                                <p class="playlistHint">PLAYLIST</p>
-                                <button @click="prev(video.list)" style="margin-left: auto" class="material-icons listButton">fast_rewind</button>
-                                <button @click="next(video.list)" class="material-icons listButton">fast_forward</button>
-                                <button @click="showUniqueList(video.list)" class="material-icons listButton">view_list</button>
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-            </td>
-        </tr>
-    </table>
-    <table v-show="videoListMode" class="videoList">
-        <tr v-for="video in filteredVideos">
-            <td>
-                <div class="videoBox">
-                    <table style="display: inline-block; border-collapse: collapse; width:90%">
-                        <tr>
-                            <th style="display:inline-block;padding:10px">
-                                <img :src="video.channelPicUrl" style="left:0;width:32px;height:32px;border-radius: 50%;vertical-align:middle;cursor:pointer;" @click="openChannel(video.channelName)" />
-                                <span class="videoHeaderName" @click="openChannel(video.channelName)">{{video.channelTitle}}</span>
-                            </th>
-                        </tr>
-                        <tr class="videoRows">
-                            <th rowspan="3">
-                                <div @click="openVideo(video.id)" class="videoThumb">
-                                    <img :src="video.thumbnailUrl" style="width:246px;height:138px"  />
-                                    <p>{{video.duration}}</p>
-                                </div>
-                            </th>
-                            <td @click="openVideo(video.id)" class="videoTitle">
-                                {{video.title}}
-                            </td>
-                        </tr>
-                        <tr class="videoRows">
-                            <td class="videoText">
-                                <span class="videoTextChannel" @click="openChannel(video.channelName)">{{video.channelTitle}}</span> &#9679 {{video.publishedAtString}}
-                            </td>
-                        </tr>
-                        <tr style="height:100px">
-                            <td class="videoDesc">
-                                <p style="margin-top:5px">{{video.description}}</p>
-                            </td>
-                        </tr>
-                    </table>
-                    <button class="material-icons deleteButton" @click="deleteVideo(video)">clear</button>
-                </div>
-            </td>
-        </tr>
-    </table>
-</div>
 <script>
     var app = new Vue({
         data: {

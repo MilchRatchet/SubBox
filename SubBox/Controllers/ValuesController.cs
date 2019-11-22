@@ -88,7 +88,7 @@ namespace SubBox.Controllers
 
             AppSettings.FirstStart = false;
 
-            Console.WriteLine("Tutorial finished. You can always revisit it through the settings tab!");
+            Console.WriteLine("Tutorial finished. You can always revisit it through the the link at the bottom of the site!");
 
             AppSettings.Save();
         }
