@@ -7,10 +7,23 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="../css/brand-icons.css">
-    <link rel="manifest" href="/site.webmanifest">
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/android-icon-192x192.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
     <title>SubBox</title>
     <style>
         .dark-mode {
@@ -21,6 +34,7 @@
             --font_text: #b8b8b8;
             --video_bd_bot: #969696;
         }
+
         .light-mode {
             background-color: #fafafa;
             --bg: #fafafa;
@@ -29,18 +43,22 @@
             --font_text: #969696;
             --video_bd_bot: #969696;
         }
+
         :root {
             --mainColor: #db4437;
             --secColor: white;
         }
+
         body {
             margin: 0;
             font-family: 'Roboto', sans-serif;
             --red: #db4437;
         }
+
         i {
             margin-right: 2px;
         }
+
         nav {
             display: flex;
             align-items: center;
@@ -53,6 +71,7 @@
             height: 40px;
             z-index: 2;
         }
+
         button {
             padding: 5px;
             margin: 5px;
@@ -62,6 +81,7 @@
             color: var(--font_title);
             cursor: pointer;
         }
+
         nav button {
             height: 100%;
             width: 40px;
@@ -69,16 +89,19 @@
             padding: 0;
             border-radius: 0px;
         }
+
         nav p {
             margin-left: 10px;
             font-size: 22px;
             color: var(--font_title);
         }
+
         nav button:hover {
             color: var(--secColor);
             background-color: var(--mainColor);
         }
-        input[type=text] {
+
+        nav input[type=text] {
             margin: 0px;
             padding: 2px;
             border: solid var(--font_text) 1px;
@@ -86,12 +109,14 @@
             color: var(--font_title);
             background-color: var(--bg);
         }
-            input[type=text]:focus, input[type=text]:hover {
+
+            nav input[type=text]:focus, nav input[type=text]:hover {
                 border-left: solid var(--mainColor) 1px;
                 border-right: solid var(--mainColor) 1px;
                 border-top: solid var(--mainColor) 10px;
                 border-bottom: solid var(--mainColor) 10px;
             }
+
         input[type=number] {
             padding: 2px;
             border: solid var(--font_text) 1px;
@@ -101,6 +126,7 @@
             -moz-appearance: textfield;
             -webkit-appearance: textfield;
         }
+
         input[type=text].search {
             display: none;
             background-color: var(--bg);
@@ -111,12 +137,15 @@
             height: 18px;
             width: 300px;
         }
+
             input[type=text].search:focus, input[type=text].search:hover {
                 border: solid var(--font_text) 1px;
             }
+
         tr {
             padding: 0;
         }
+
         .Title {
             background-color: none;
             margin-top: 8px;
@@ -134,6 +163,7 @@
             -webkit-text-fill-color: transparent;
             transition: 1s ease;
         }
+
         nav:hover .Title {
             color: var(--mainColor);
             font-weight: bold;
@@ -145,27 +175,34 @@
             -webkit-text-fill-color: transparent;
             transition: 2s ease;
         }
+
         .topbar {
             height: 40px;
         }
+
             .topbar:hover .Title {
                 display: none;
             }
+
             .topbar:hover .search {
                 display: flex;
             }
+
         .search:focus {
             display: flex !important;
         }
+
             .search:focus ~ .Title {
                 display: none !important;
             }
+
         .channelInput {
             display: flex;
             align-items: center;
             vertical-align: middle;
             height: 100%;
         }
+
         .refreshButton {
             height: 32px;
             width: 32px;
@@ -173,11 +210,13 @@
             transition: transform 1s;
             border-radius: 100%;
         }
+
             .refreshButton:hover {
                 transform: rotate(360deg);
                 transition: transform 1s;
                 border-radius: 100%;
             }
+
         .videoTitle {
             width: 100%;
             font-size: 18px;
@@ -188,6 +227,7 @@
             margin: 0;
             cursor: pointer;
         }
+
         .videoText {
             font-size: 13px;
             color: var(--font_text);
@@ -195,6 +235,7 @@
             padding-bottom: 0;
             padding-left: 10px;
         }
+
         .videoHeaderName {
             color: var(--font_title);
             display: inline-block;
@@ -204,19 +245,23 @@
             font-weight: bold;
             margin-left: 5px;
         }
+
         .videoList {
             margin-left: auto;
             margin-right: auto;
             width: 60%;
         }
+
         .videoBox {
             border-bottom-color: var(--video_bd_bot);
             border-bottom-style: solid;
             border-bottom-width: 1px;
         }
+
             .videoBox:hover .deleteButton {
                 color: var(--font_title);
             }
+
         .deleteButton {
             float: right;
             position: relative;
@@ -227,23 +272,28 @@
             background: none;
             border: 1px solid var(--bg);
         }
+
             .deleteButton:hover {
                 color: var(--mainColor) !important;
                 background-color: var(--secColor);
                 border: 1px solid var(--font_title);
             }
+
         .videoTextChannel {
             cursor: pointer;
         }
+
             .videoTextChannel:hover {
                 color: var(--font_title);
             }
+
         .videoDesc {
             vertical-align: top;
             padding-left: 10px;
             color: var(--font_text);
             font-size: 13px;
         }
+
             .videoDesc p {
                 max-height: 2.4em;
                 line-height: 1.2em;
@@ -254,6 +304,7 @@
                 text-overflow: ellipsis;
                 width: 80%;
             }
+
         .overlay {
             position: fixed;
             top: 40px;
@@ -266,10 +317,12 @@
             border-left: none;
             border-top: none;
         }
+
         .channelList {
             border-collapse: collapse;
             width: 100%;
         }
+
             .channelList img {
                 margin-top: 5px;
                 margin-bottom: 5px;
@@ -280,14 +333,17 @@
                 vertical-align: middle;
                 cursor: pointer;
             }
+
         .channelNameColumn {
             color: var(--font_title);
             padding-left: 10px;
             width: 250px;
         }
+
         .channelButtonColumn {
             width: 100px;
         }
+
         .channelRow {
             border-left: 5px transparent solid;
             background: linear-gradient(to right, var(--mainColor) 50%, transparent 50%);
@@ -295,6 +351,7 @@
             background-position: right bottom;
             transition: 0.2s ease, border 0.4s;
         }
+
             .channelRow:hover {
                 border-left: 5px var(--mainColor) solid;
                 background: linear-gradient(to right, var(--mainColor) 50%, transparent 50%);
@@ -302,12 +359,15 @@
                 background-position: left bottom;
                 transition: 0.4s ease, border 0s;
             }
+
                 .channelRow:hover td {
                     color: var(--secColor) !important;
                 }
+
                 .channelRow:hover button {
                     color: var(--secColor);
                 }
+
         .locked {
             border-left: 5px #daa520 solid;
             background: linear-gradient(to right, #daa520 50%, transparent 50%);
@@ -315,6 +375,7 @@
             background-position: right bottom;
             transition: 0.2s ease;
         }
+
             .locked:hover {
                 border-left: 5px #daa520 solid;
                 background: linear-gradient(to right, #daa520 50%, transparent 50%);
@@ -322,9 +383,11 @@
                 background-position: left bottom;
                 transition: 0.4s ease;
             }
+
                 .locked:hover .deleteChannelButton:hover {
                     color: #daa520 !important;
                 }
+
         button.deleteChannelButton:hover {
             padding: 0 !important;
             color: var(--mainColor);
@@ -333,6 +396,7 @@
             background-position: right bottom;
             transition: 0.2s;
         }
+
         .deleteChannelButton {
             display: inline-block;
             border-radius: 2px;
@@ -343,6 +407,7 @@
             background-position: right top;
             transition: background 0.1s;
         }
+
         .closeChannelsButton {
             float: right;
             border-radius: 5px;
@@ -351,6 +416,7 @@
             background-position: right bottom;
             transition: 0.1s ease;
         }
+
             .closeChannelsButton:hover {
                 color: var(--secColor);
                 border-radius: 5px;
@@ -359,36 +425,43 @@
                 background-position: left bottom;
                 transition: 0.2s ease;
             }
+
         .listList {
             margin-left: auto;
             margin-right: auto;
             width: 60%;
         }
+
         .spacer {
             display: flex;
             width: 100%;
             margin-top: 40px;
             height: 30px;
         }
+
         .videoBox:hover .listButton {
             color: var(--font_title);
         }
+
         .listButton {
             padding: 2px;
             color: transparent;
             background-color: transparent;
             border: 1px solid transparent;
         }
+
             .listButton:hover {
                 color: var(--mainColor) !important;
                 background-color: var(--secColor);
                 border: 1px solid var(--font_title);
             }
+
         .inputList {
             display: flex;
             align-items: center;
             height: 100%;
         }
+
         .overlayUniqueList {
             position: fixed;
             top: 40px;
@@ -400,24 +473,29 @@
             display: flex;
             padding: 0;
         }
+
         .scrollList {
             width: 100%;
             overflow: auto;
             margin: 0;
         }
+
         .uniqueList {
             margin-left: auto;
             margin-right: auto;
             width: 60%;
         }
+
         .closeUniqueListButton {
             margin-left: auto;
             margin-right: 0;
         }
+
             .closeUniqueListButton:hover {
                 color: var(--secColor);
                 transition: 0.2s;
             }
+
         .playlistHint {
             color: var(--mainColor);
             font-size: 12px;
@@ -432,6 +510,7 @@
             line-height: 12px;
             cursor: default;
         }
+
         .settingsOverlay {
             position: fixed;
             top: 40px;
@@ -444,34 +523,42 @@
             border-right: none;
             border-top: none;
         }
+
             .settingsOverlay p {
                 text-align: center;
                 color: var(--font_title);
                 margin: 0;
             }
+
             .settingsOverlay table {
                 width: 100%;
                 border-collapse: collapse;
             }
+
             .settingsOverlay td {
                 justify-items: center;
                 width: 50%;
                 color: var(--font_title);
                 padding-left: 10px;
             }
+
             .settingsOverlay tr:hover td {
                 background-color: var(--bg);
             }
+
             .settingsOverlay td:first-of-type {
                 padding-top: 5px;
                 padding-bottom: 5px;
             }
+
             .settingsOverlay tr:nth-child(2) td {
                 padding-top: 5px;
             }
+
             .settingsOverlay button {
                 float: right;
             }
+
         .numberInput button:hover {
             color: var(--secColor);
             background: linear-gradient(to top, var(--mainColor) 50%, transparent 50%);
@@ -479,6 +566,7 @@
             background-position: right bottom;
             transition: 0.2s ease;
         }
+
         .settingsOverlay input {
             width: 35%;
             margin: 0;
@@ -488,12 +576,14 @@
             border: 1px var(--font_title) solid;
             border-radius: 0;
         }
+
         .numberInput {
             box-sizing: border-box;
             justify-content: center;
             display: inline-flex;
             padding: 0;
         }
+
             .numberInput button {
                 align-items: center;
                 justify-content: center;
@@ -508,10 +598,12 @@
                 background-position: right top;
                 transition: background 0.1s ease;
             }
+
         .videoThumb {
             position: relative;
             cursor: pointer;
         }
+
             .videoThumb p {
                 font-size: 12px;
                 font-weight: 500;
@@ -526,6 +618,7 @@
                 padding-bottom: 2px;
                 border-radius: 2px;
             }
+
         .changeWarning {
             margin-top: 4px !important;
             cursor: default;
@@ -540,34 +633,143 @@
             background-size: 200% 100%;
             background-position: left bottom;
         }
+
         .fade-enter-active {
             transition: 0.3s;
         }
+
         .fade-leave-active {
             transition: 0s;
         }
+
         .fade-enter, .fade-leave-to {
             background-position: right bottom;
         }
+
         .bottomDiv {
             text-align: center;
         }
+
         .bottomDivEntry {
-            text-decoration:none;
+            text-decoration: none;
             cursor: pointer;
             font-size: 12px;
             color: var(--font_title);
             margin: 20px;
             display: inline-flex;
         }
-        .bottomDivEntry:hover {
-            color: var(--font_text);
+
+            .bottomDivEntry:hover {
+                color: var(--font_text);
+            }
+
+        .addTagDiv {
+            width: 100%;
+            height: 20px;
+            display: flex;
+            vertical-align: central;
+            padding: 3px;
+            margin-bottom: 10px;
+        }
+
+        .addTagInput {
+            margin-left: 10px;
+            width: 75%;
+            height: 100%;
+        }
+
+        .addTagButton {
+            margin: 0;
+            padding: 0;
+            width: 32px;
+        }
+
+        .addTagFilterDiv {
+            width: 100%;
+            height: 16px;
+            display: flex;
+            vertical-align: central;
+            padding: 3px;
+            margin-bottom: 10px;
+        }
+
+        .addTagFilterInput {
+            margin-left: 10px;
+            width: 75%;
+            height: 100%;
+        }
+
+        .addTagFilterButton {
+            margin: 0;
+            padding: 0;
+            width: 32px;
+        }
+
+        .tagFilterTable {
+            width: 100%;
+        }
+
+            .tagFilterTable tr {
+                padding: 3px;
+            }
+
+                .tagFilterTable tr:hover {
+                    background: var(--mainColor);
+                    color: var(--secColor);
+                    border-left-color: var(--secColor);
+                }
+
+        .tagFilterRow {
+            background: var(--bg);
         }
     </style>
 </head>
 
 <body>
     <div id="app" :class="night ? 'dark-mode' : 'light-mode'">
+
+        <div v-show="tagsMode" class="overlay">
+            <div class="addTagDiv">
+                <input class="addTagInput" v-model="addTag" type="text" autocomplete="off" placeholder="Enter Tag Name..."/>
+                <button @click="submitTag" class="material-icons addTagButton">add</button>
+            </div>
+            <table class="channelList" v-for="tag in tags">
+                <tr class="channelRow">
+                    <td class="channelNameColumn" style="width: 200px">
+                        {{tag.name}}
+                    </td>
+                    <td class="channelButtonColumn">
+                        <button @click="selectTag(tag)" class="material-icons deleteChannelButton">star</button>
+                        <button @click="editTag(tag)" class="material-icons deleteChannelButton">create</button>
+                        <button @click="deleteTag(tag)" class="material-icons deleteChannelButton">clear</button>
+                    </td>
+                </tr>
+                <tr class="tagFilterRow" v-if="tag.inEdit">
+                    <td colspan="2">
+                        <table class="tagFilterTable" v-for="tagFilter in tag.filterList">
+                            <tr>
+                                <td style="width: 80%">
+                                    {{tagFilter}}
+                                </td>
+                                <td>
+                                    <button @click="deleteFilter(tag,tagFilter)" class="material-icons deleteChannelButton">clear</button>
+                                </td>
+                            </tr>
+                        </table>
+                        <div class="addTagFilterDiv">
+                            <input class="addTagFilterInput" v-model="addTagFilter" type="text" autocomplete="off" placeholder="Enter Filter..." />
+                            <button @click="addFilterToTag(tag)" class="material-icons addTagFilterButton">add</button>
+                        </div>
+                        <button @click="saveFilters(tag)" class="material-icons closeChannelsButton">save</button>
+                    </td>
+                </tr>
+            </table>
+            <button @click="closeChannels" class="material-icons closeChannelsButton">exit_to_app</button>
+        </div>
+
+
+
+
         <div v-show="channelMode" class="overlay">
             <table class="channelList" v-for="channel in channels">
                 <tr v-bind:class="{ locked: channel.locked }" class="channelRow">
@@ -761,6 +963,8 @@
                 <button @click="submitPlaylist" class="material-icons">search</button>
             </div>
             <button @click="showOldVideos" class="material-icons">delete</button>
+            <button @click="showTags" class="material-icons">label</button>
+            <p v-if="selectedTag != null">{{selectedTag.name}}</p>
             <div class="topbar" style="margin-left: auto">
                 <input class="search" v-model="searchFilter" type="text" autocomplete="off" placeholder="Search" />
                 <p class="Title" style="cursor: default;">{{filter}} - {{filteredVideos.length}}</p>
@@ -868,18 +1072,23 @@
             channels: [],
             lists: [],
             uniqueList: [],
+            tags: [],
             videoListMode: true,
             inputMode: false,
             trashbinMode: false,
             inputListMode: false,
+            tagsMode: false,
             inputListModeNumber: 0,
             addPlayList: "",
+            addTag: "",
+            addTagFilter: "",
             channelMode: false,
             uniqueListMode: false,
             addChannelName: "",
             night: false,
             filter: "SubBox",
             searchFilter: "",
+            selectedTag: null,
             settingsMode: false,
             settingNCT: 1,
             settingRT: 7,
@@ -891,19 +1100,31 @@
         },
         computed: {
             filteredVideos: function () {
-                if (this.filter === "SubBox" && this.searchFilter === "") {
+                if (this.filter === "SubBox" && this.searchFilter === "" && (this.selectedTag == null || this.selectedTag.filterList.length == 0)) {
                     return this.videos;
                 }
                 searchFilterUp = this.searchFilter.toUpperCase();
-                if (this.filter === "SubBox") {
+                if (this.filter === "SubBox" && (this.selectedTag == null || this.selectedTag.filterList.length == 0)) {
                     return this.videos.filter(function (u) {
                         return (u.title + u.description).toUpperCase().includes(searchFilterUp);
                     });
                 }
+                if (this.filter === "SubBox") {
+                    return this.videos.filter(function (u) {
+                        return ((u.title + u.description).toUpperCase().includes(searchFilterUp) && app.selectedTag.filterList.some(function(f) {
+                            return (u.title + u.description).toUpperCase().includes(f.toUpperCase());
+                        }));
+                    });
+                }
                 return this.videos.filter(function (u) {
-                    return (u.channelTitle == app.filter && (u.title + u.description).toUpperCase().includes(searchFilterUp));
+                    return (u.channelTitle == app.filter && (u.title + u.description).toUpperCase().includes(searchFilterUp) && app.selectedTag.filterList.some(function(f) {
+                        return (u.title + u.description).toUpperCase().includes(f.toUpperCase());
+                    }));
                 });
             },
+        },
+        functions: {
+
         },
         methods: {
             async update() {
@@ -915,6 +1136,22 @@
                 var result = await fetch("/api/values/lists");
 
                 this.lists = await result.json();
+            },
+            async tagsUpdate() {
+                var result = await fetch("/api/values/tags");
+
+                this.tags = await result.json();
+
+                this.tags.forEach(function (t) {
+                    if (t.filter == "") {
+                        t.filterList = [];
+                    } else {
+                        t.filterList = t.filter.split("§");
+                    }
+                    t.inEdit = false;
+                });
+
+                this.tags.sort();
             },
             async getSettings() {
                 var result = await fetch("/api/values/settings");
@@ -998,6 +1235,19 @@
 
                 this.settingsMode = !this.settingsMode;
             },
+            showTags() {
+                this.channelMode = false;
+
+                if (this.settingsMode) {
+                    this.settingsMode = false;
+
+                    this.changes = false;
+
+                    this.getSettings();
+                }
+
+                this.tagsMode = !this.tagsMode;
+            },
             async refresh() {
                 await fetch("/api/values/refresh", { method: "POST", });
 
@@ -1022,6 +1272,17 @@
                 this.setSecondColor();
 
                 this.changes = true;
+            },
+            async submitTag() {
+                if (this.addTag != "") {
+                    this.addTag = this.addTag.trim();
+
+                    await fetch("api/values/tags/add/" + this.addTag, { method: "POST" });
+
+                    this.addTag = "";
+
+                    this.tagsUpdate();
+                }
             },
             async onSubmit() {
                 if (this.addChannelName != "") {
@@ -1099,6 +1360,10 @@
                 var waiter = fetch("/api/values/channels");
 
                 this.settingsMode = false;
+
+                this.changes = false;
+
+                this.getSettings();
 
                 this.channelMode = !this.channelMode;
 
@@ -1291,6 +1556,80 @@
 
                 this.lockChannel(ch);
             },
+            selectTag(tag) {
+                if (this.selectedTag == null) {
+                    this.selectedTag = tag;
+
+                    return;
+                }
+                if (this.selectedTag.name == tag.name) {
+                    this.selectedTag = null;
+
+                    return;
+                }
+                this.selectedTag = tag;
+            },
+            deleteTag(tag) {
+                if (this.selectedTag != null && this.selectedTag.name == tag.name) {
+                    this.selectedTag = null;
+                }
+
+                fetch("/api/values/tags/delete/" + tag.name, { method: "DELETE" });
+
+                var index = this.tags.indexOf(tag);
+
+                this.tags.splice(index, 1);
+            },
+            editTag(tag) {
+                if (tag.inEdit) {
+                    this.saveFilters(tag);
+                    return;
+                }
+
+                this.tags.forEach(function (t) {
+                    t.inEdit = t.name == tag.name;
+                });
+
+                this.tags.sort();
+            },
+            async addFilterToTag(tag) {
+                if (this.addTagFilter != "") {
+                    tag.filterList.push(this.addTagFilter);
+
+                    this.addTagFilter = "";
+
+                    this.selectedTag = null;
+
+                    tag.filter = tag.filterList.join('§');
+
+                    await fetch("/api/values/tags/set/" + tag.name + "/§" + tag.filter, { method: "POST" });
+
+                }     
+            },
+            async saveFilters(tag) {
+                this.selectedTag = null;
+
+                tag.filter = tag.filterList.join('§');
+
+                await fetch("/api/values/tags/set/" + tag.name + "/§" + tag.filter, { method: "POST" });
+
+                this.tags.forEach(function (t) {
+                    t.inEdit = false;
+                });
+
+                this.tags.sort();
+            },
+            async deleteFilter(tag, filter) {
+                var index = tag.filterList.indexOf(filter);
+
+                this.$delete(tag.filterList, index);
+
+                this.selectedTag = null;
+
+                tag.filter = tag.filterList.join('§');
+
+                await fetch("/api/values/tags/set/" + tag.name + "/§" + tag.filter, { method: "POST" });
+            }
         },
         el: "#app",
         async mounted() {
@@ -1307,6 +1646,8 @@
             this.update();
 
             this.getSettings();
+
+            this.tagsUpdate();
         }
     });
 </script>

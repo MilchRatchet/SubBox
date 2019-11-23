@@ -297,6 +297,8 @@ namespace SubBox.Controllers
         {
             try
             {
+                filter = filter.Substring(1, filter.Length - 1);
+
                 Tag tag = context.Tags.Find(name);
 
                 tag.Filter = filter;
@@ -376,7 +378,7 @@ namespace SubBox.Controllers
         }
 
         // DELETE: api/values/tags/{name}
-        [HttpDelete("tags/{name}")]
+        [HttpDelete("tags/delete/{name}")]
         public void DeleteTag(string name)
         {
             try
