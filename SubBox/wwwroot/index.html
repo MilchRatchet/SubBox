@@ -53,6 +53,10 @@
             margin: 0;
             font-family: 'Roboto', sans-serif;
             --red: #db4437;
+            -moz-user-select: none;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
         }
 
         i {
@@ -665,7 +669,7 @@
 
         .addTagDiv {
             width: 100%;
-            height: 20px;
+            height: 24px;
             display: flex;
             vertical-align: central;
             padding: 3px;
@@ -673,20 +677,32 @@
         }
 
         .addTagInput {
+            padding: 2px;
             margin-left: 10px;
             width: 75%;
             height: 100%;
+            background: var(--bg);
+            color: var(--font_title);
+            border: 1px solid var(--font_text);
         }
 
         .addTagButton {
+            border-radius: 0;
             margin: 0;
             padding: 0;
-            width: 32px;
+            width: 30px;
+            height: 30px;
+            border: 1px solid var(--font_text);
         }
+
+                .addTagButton:hover {
+                    background: var(--mainColor);
+                    color: var(--secColor);
+                }
 
         .addTagFilterDiv {
             width: 100%;
-            height: 16px;
+            height: 24px;
             display: flex;
             vertical-align: central;
             padding: 3px;
@@ -694,33 +710,60 @@
         }
 
         .addTagFilterInput {
-            margin-left: 10px;
+            padding: 2px;
+            margin-left: 15px;
             width: 75%;
             height: 100%;
+            background: var(--bg);
+            color: var(--font_title);
+            border: 1px solid var(--font_text);
         }
 
         .addTagFilterButton {
+            border-radius: 0;
             margin: 0;
             padding: 0;
-            width: 32px;
+            width: 30px;
+            height: 30px;
+            border: 1px solid var(--font_text);
         }
+
+            .addTagFilterButton:hover {
+                background: var(--mainColor);
+                color: var(--secColor);
+            }
 
         .tagFilterTable {
             width: 100%;
+            border-collapse: collapse;
+            color: var(--font_title);
         }
 
             .tagFilterTable tr {
                 padding: 3px;
             }
 
+            .tagFilterTable td {
+                padding-left: 20px;
+            }
+
                 .tagFilterTable tr:hover {
-                    background: var(--mainColor);
-                    color: var(--secColor);
-                    border-left-color: var(--secColor);
+                    background: var(--font_text);
+                    color: var(--bg);
                 }
 
         .tagFilterRow {
             background: var(--bg);
+            border-right: 1px solid var(--font_title);
+        }
+
+        .selectedTag {
+            cursor: default;
+            border-radius: 4px;
+            padding: 4px;
+            font-size: 16px;
+            background: var(--mainColor);
+            color: var(--secColor);
         }
     </style>
 </head>
@@ -734,7 +777,7 @@
                 <button @click="submitTag" class="material-icons addTagButton">add</button>
             </div>
             <table class="channelList" v-for="tag in tags">
-                <tr class="channelRow">
+                <tr v-bind:class="{ locked: selectedTag != null && selectedTag.name == tag.name }" class="channelRow">
                     <td class="channelNameColumn" style="width: 200px">
                         {{tag.name}}
                     </td>
@@ -752,7 +795,7 @@
                                     {{tagFilter}}
                                 </td>
                                 <td>
-                                    <button @click="deleteFilter(tag,tagFilter)" class="material-icons deleteChannelButton">clear</button>
+                                    <button @click="deleteFilter(tag,tagFilter)" style="float: right;" class="material-icons deleteChannelButton">clear</button>
                                 </td>
                             </tr>
                         </table>
@@ -764,7 +807,7 @@
                     </td>
                 </tr>
             </table>
-            <button @click="closeChannels" class="material-icons closeChannelsButton">exit_to_app</button>
+            <button @click="showTags" class="material-icons closeChannelsButton">exit_to_app</button>
         </div>
 
 
@@ -964,7 +1007,7 @@
             </div>
             <button @click="showOldVideos" class="material-icons">delete</button>
             <button @click="showTags" class="material-icons">label</button>
-            <p v-if="selectedTag != null">{{selectedTag.name}}</p>
+            <p class="selectedTag" v-if="selectedTag != null">{{selectedTag.name}}</p>
             <div class="topbar" style="margin-left: auto">
                 <input class="search" v-model="searchFilter" type="text" autocomplete="off" placeholder="Search" />
                 <p class="Title" style="cursor: default;">{{filter}} - {{filteredVideos.length}}</p>
@@ -1244,6 +1287,12 @@
                     this.changes = false;
 
                     this.getSettings();
+                }
+
+                if (this.tagsMode) {
+                    this.tags.forEach(function (t) {
+                        t.inEdit = false;
+                    });
                 }
 
                 this.tagsMode = !this.tagsMode;
@@ -1602,7 +1651,7 @@
 
                     tag.filter = tag.filterList.join('§');
 
-                    await fetch("/api/values/tags/set/" + tag.name + "/§" + tag.filter, { method: "POST" });
+                    fetch("/api/values/tags/set/" + tag.name + "/§" + tag.filter, { method: "POST" });
 
                 }     
             },
@@ -1611,7 +1660,7 @@
 
                 tag.filter = tag.filterList.join('§');
 
-                await fetch("/api/values/tags/set/" + tag.name + "/§" + tag.filter, { method: "POST" });
+                fetch("/api/values/tags/set/" + tag.name + "/§" + tag.filter, { method: "POST" });
 
                 this.tags.forEach(function (t) {
                     t.inEdit = false;
@@ -1628,7 +1677,9 @@
 
                 tag.filter = tag.filterList.join('§');
 
-                await fetch("/api/values/tags/set/" + tag.name + "/§" + tag.filter, { method: "POST" });
+                fetch("/api/values/tags/set/" + tag.name + "/§" + tag.filter, { method: "POST" });
+
+                this.tags.sort();
             }
         },
         el: "#app",
