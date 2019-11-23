@@ -80,6 +80,15 @@ namespace SubBox.Controllers
             return AppSettings.FirstStart;
         }
 
+        // GET: api/values/tags
+        [HttpGet("tags")]
+        public async Task<ActionResult<IEnumerable<Tag>>> GetTags()
+        {
+            var result = await context.Tags.ToListAsync();
+
+            return result;
+        }
+
         // POST: api/values/firstdone
         [HttpPost("firstdone")]
         public void SetFirstStart()
@@ -266,6 +275,42 @@ namespace SubBox.Controllers
             AppSettings.Save();
         }
 
+        // POST: api/values/tags/add/{name}
+        [HttpPost("tags/add/{name}")]
+        public void AddTag(string name)
+        {
+            try
+            {
+                context.Tags.Add(new Tag{ Name = name, Filter = string.Empty});
+
+                context.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Couldn't add Tag " + name);
+            }
+        }
+
+        // POST: api/values/tags/add/{name}
+        [HttpPost("tags/set/{name}/{filter}")]
+        public void SetTag(string name, string filter)
+        {
+            try
+            {
+                Tag tag = context.Tags.Find(name);
+
+                tag.Filter = filter;
+
+                context.Tags.Update(tag);
+
+                context.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Couldn't update Tag " + name);
+            }
+        }
+
         // DELETE: api/values/video/id
         [HttpDelete("video/{id}")]
         public void DeleteVideo(string id)
@@ -328,6 +373,22 @@ namespace SubBox.Controllers
             }
 
             context.SaveChanges();
+        }
+
+        // DELETE: api/values/tags/{name}
+        [HttpDelete("tags/{name}")]
+        public void DeleteTag(string name)
+        {
+            try
+            {
+                context.Tags.Remove(context.Tags.Find(name));
+
+                context.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Couldn't delete Tag " + name);
+            }
         }
     }
 }

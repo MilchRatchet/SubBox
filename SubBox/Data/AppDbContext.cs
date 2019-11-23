@@ -19,5 +19,7 @@ namespace SubBox.Data
 
         public DbSet<Channel> Channels { get; set; }
 
+        public DbSet<Tag> Tags { get; set; }
+
     }
 }
