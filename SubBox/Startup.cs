@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -124,6 +125,9 @@ namespace SubBox
             using (AppDbContext context = new AppDbContext())
             {
                 context.Database.EnsureCreated();
+
+                context.Database.ExecuteSqlCommand("CREATE TABLE IF NOT EXISTS Tags (Name TEXT PRIMARY KEY, Filter TEXT);");
+
             }
 
             new Thread(() =>
