@@ -283,7 +283,7 @@ namespace SubBox.Controllers
             {
                 context.Tags.Add(new Tag{ Name = name, Filter = string.Empty});
 
-                context.SaveChangesAsync();
+                context.SaveChanges();
             }
             catch (Exception)
             {
@@ -305,7 +305,7 @@ namespace SubBox.Controllers
 
                 context.Tags.Update(tag);
 
-                context.SaveChangesAsync();
+                context.SaveChanges();
             }
             catch (Exception)
             {
@@ -385,7 +385,7 @@ namespace SubBox.Controllers
             {
                 context.Tags.Remove(context.Tags.Find(name));
 
-                context.SaveChangesAsync();
+                context.SaveChanges();
             }
             catch (Exception)
             {
