@@ -1378,13 +1378,18 @@
 
                     this.inputMode = false;
 
-                    this.channelMode = false;
-
                     await fetch("/api/values/channel/" + this.addChannelName, { method: "POST" });
 
                     this.addChannelName = "";
 
                     this.update();
+
+                    if (this.channelMode) {
+                        await this.showChannels();
+
+                        await this.showChannels();
+                    }
+
                 }
             },
             async submitPlaylist() {
