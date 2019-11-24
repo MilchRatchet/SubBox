@@ -748,8 +748,12 @@
             }
 
                 .tagFilterTable tr:hover {
-                    background: var(--font_text);
-                    color: var(--bg);
+                    background: var(--nav_bg);
+                    color: var(--font_title);
+                }
+
+                .tagFilterTable tr:hover button {
+                    color: var(--font_title);
                 }
 
         .tagFilterRow {
@@ -764,6 +768,20 @@
             font-size: 16px;
             background: var(--mainColor);
             color: var(--secColor);
+        }
+        .deleteTagFilterButton {
+            border-radius: 0;
+            padding: 0;
+            float: right;
+            width: 24px;
+            height: 24px;
+            color: transparent;
+            background: transparent;
+        }
+
+        button.deleteTagFilterButton:hover {
+            background: var(--mainColor);
+            color: var(--secColor) !important;
         }
     </style>
 </head>
@@ -789,13 +807,13 @@
                 </tr>
                 <tr class="tagFilterRow" v-if="tag.inEdit">
                     <td colspan="2">
-                        <table class="tagFilterTable" v-for="tagFilter in tag.filterList">
+                        <table class="tagFilterTable" v-for="(tagFilter,index) in tag.filterList">
                             <tr>
                                 <td style="width: 80%">
-                                    {{tagFilter}}
+                                    {{index + 1}}: {{tagFilter}}
                                 </td>
                                 <td>
-                                    <button @click="deleteFilter(tag,tagFilter)" style="float: right;" class="material-icons deleteChannelButton">clear</button>
+                                    <button @click="deleteFilter(tag,tagFilter)" style="float: right;" class="material-icons deleteTagFilterButton">clear</button>
                                 </td>
                             </tr>
                         </table>
@@ -1647,7 +1665,11 @@
 
                     this.addTagFilter = "";
 
+                    var forceUpdateTag = this.selectedTag;
+
                     this.selectedTag = null;
+
+                    this.selectedTag = forceUpdateTag;
 
                     tag.filter = tag.filterList.join('§');
 
@@ -1656,7 +1678,11 @@
                 }     
             },
             async saveFilters(tag) {
+                var forceUpdateTag = this.selectedTag;
+
                 this.selectedTag = null;
+
+                this.selectedTag = forceUpdateTag;
 
                 tag.filter = tag.filterList.join('§');
 
@@ -1673,7 +1699,11 @@
 
                 this.$delete(tag.filterList, index);
 
+                var forceUpdateTag = this.selectedTag;
+
                 this.selectedTag = null;
+
+                this.selectedTag = forceUpdateTag;
 
                 tag.filter = tag.filterList.join('§');
 
