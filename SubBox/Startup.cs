@@ -96,6 +96,14 @@ namespace SubBox
                 {
                     AppSettings.FirstStart = false;
                 }
+                if (options[8] == "True")
+                {
+                    AppSettings.AutoStart = true;
+                }
+                else
+                {
+                    AppSettings.AutoStart = false;
+                }
             }
             catch (Exception)
             {
@@ -107,6 +115,7 @@ namespace SubBox
                 AppSettings.NightMode = false;
                 AppSettings.LastRefresh = BuildTime;
                 AppSettings.FirstStart = true;
+                AppSettings.AutoStart = true;
                 AppSettings.Save();
             }
 
@@ -122,6 +131,11 @@ namespace SubBox
                 DataRetriever Fetcher = new DataRetriever();
 
                 Fetcher.UpdateVideoList();
+
+                if (AppSettings.AutoStart)
+                {
+                    Process.Start(new ProcessStartInfo("cmd", $"/c start {"http://localhost:5000/".Replace("&", "^&")}"));
+                }
             }).Start();
 
             if (env.IsDevelopment())
@@ -144,7 +158,7 @@ namespace SubBox
             new Thread(() =>
             {
                 ConsoleHandler.HandleConsoleInput();
-            }).Start(); 
+            }).Start();
         }
     }
 }

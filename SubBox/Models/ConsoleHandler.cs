@@ -18,7 +18,8 @@ namespace SubBox.Models
                     case "-flth": Flth(); break;
                     case "-dbst": Dbst(); break;
                     case "-gcst": Gcst(); break;
-                    case "-help": Help(); break; 
+                    case "-help": Help(); break;
+                    case "-auto": Auto(); break;
                     default: Console.WriteLine("Invalid Command, type -help for a list of commands"); break;
                 }
             }
@@ -92,6 +93,15 @@ namespace SubBox.Models
             Console.WriteLine("Done");
         }
 
+        private static void Auto()
+        {
+            AppSettings.AutoStart = !AppSettings.AutoStart;
+
+            AppSettings.Save();
+
+            Console.WriteLine("AutoStart is now " + ((AppSettings.AutoStart) ? "on" : "off"));
+        }
+
         private static void Help()
         {
             Console.WriteLine("List of all current commands:");
@@ -101,6 +111,8 @@ namespace SubBox.Models
             Console.WriteLine("-dbst | Outputs status of database");
 
             Console.WriteLine("-gcst | Forces garbage collection");
+
+            Console.WriteLine("-auto | Toggle AutoStart Setting");
 
             Console.WriteLine("-help | Shows all commands");
         }
