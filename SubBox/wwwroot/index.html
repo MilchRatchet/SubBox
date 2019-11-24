@@ -268,20 +268,19 @@
             }
 
         .deleteButton {
+            border-radius: 0;
             float: right;
             position: relative;
             color: transparent;
             height: auto;
             margin-top: 50px;
-            padding: 1px;
+            padding: 2px;
             background: none;
-            border: 1px solid var(--bg);
         }
 
             .deleteButton:hover {
-                color: var(--mainColor) !important;
-                background-color: var(--secColor);
-                border: 1px solid var(--font_title);
+                color: var(--secColor) !important;
+                background-color: var(--mainColor);
             }
 
         .videoTextChannel {
@@ -407,7 +406,6 @@
                 }
 
         button.deleteChannelButton:hover {
-            padding: 0 !important;
             color: var(--mainColor);
             background: linear-gradient(to top, var(--secColor) 50%, transparent 50%);
             background-size: 100% 200%;
@@ -417,8 +415,8 @@
 
         .deleteChannelButton {
             display: inline-block;
-            border-radius: 2px;
-            padding: 0 !important;
+            border-radius: 0;
+            padding: 1px !important;
             color: transparent;
             background: linear-gradient(to top, var(--secColor) 50%, transparent 50%);
             background-size: 100% 200%;
@@ -462,6 +460,7 @@
         }
 
         .listButton {
+            border-radius: 0;
             padding: 2px;
             color: transparent;
             background-color: transparent;
@@ -469,9 +468,8 @@
         }
 
             .listButton:hover {
-                color: var(--mainColor) !important;
-                background-color: var(--secColor);
-                border: 1px solid var(--font_title);
+                color: var(--secColor) !important;
+                background-color: var(--mainColor);
             }
 
         .inputList {
@@ -812,7 +810,7 @@
             </div>
             <table class="channelList" v-for="tag in tags">
                 <tr v-bind:class="{ locked: selectedTag != null && selectedTag.name == tag.name }" class="channelRow">
-                    <td class="channelNameColumn" style="width: 200px">
+                    <td class="channelNameColumn" style="width: 180px">
                         {{tag.name}}
                     </td>
                     <td class="channelButtonColumn">
