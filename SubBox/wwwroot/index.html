@@ -372,6 +372,19 @@
                     color: var(--secColor);
                 }
 
+        .removeChannelRow {
+            background: var(--bg);
+            color: var(--font_title);
+        } 
+
+            .removeChannelRow:hover {
+                background: var(--nav_bg);
+            }
+
+            .removeChannelRow:hover button {
+                color: var(--font_title);
+            }
+
         .locked {
             border-left: 5px #daa520 solid;
             background: linear-gradient(to right, #daa520 50%, transparent 50%);
@@ -842,7 +855,16 @@
                     </td>
                     <td class="channelButtonColumn">
                         <button @click="setFilter(channel)" class="material-icons deleteChannelButton">star</button>
-                        <button @click="deleteChannel(channel)" class="material-icons deleteChannelButton">clear</button>
+                        <button @click="markChannelDeletion(channel)" class="material-icons deleteChannelButton">clear</button>
+                    </td>
+                </tr>
+                <tr v-if="removeChannel != null && removeChannel.id == channel.id" class="removeChannelRow">
+                    <td style="padding-left: 10px;" colspan="2">
+                        Remove {{channel.displayname}}?
+                    </td>
+                    <td colspan="1">
+                        <button @click="deleteChannel(channel)" class="material-icons deleteTagFilterButton">check</button>
+                        <button @click="removeChannel = null;" class="material-icons deleteTagFilterButton">clear</button>
                     </td>
                 </tr>
             </table>
@@ -1144,6 +1166,7 @@
             addTag: "",
             addTagFilter: "",
             channelMode: false,
+            removeChannel: null,
             uniqueListMode: false,
             addChannelName: "",
             night: false,
@@ -1309,6 +1332,8 @@
                 }
 
                 this.tagsMode = !this.tagsMode;
+
+                this.removeChannel = null;
             },
             async refresh() {
                 await fetch("/api/values/refresh", { method: "POST", });
@@ -1419,6 +1444,8 @@
                 window.open("https://www.youtube.com/user/" + link, "_blank");
             },
             async showChannels() {
+                this.removeChannel = null;
+
                 var waiter = fetch("/api/values/channels");
 
                 if (this.tagsMode) {
@@ -1458,6 +1485,8 @@
             },
             closeChannels() {
                 this.channelMode = false;
+
+                this.removeChannel = null;
             },
             closeUniqueList() {
                 this.inputListModeNumber = 0;
@@ -1512,7 +1541,22 @@
                     document.body.setAttribute('bgcolor', '#fafafa');
                 }
             },
+            markChannelDeletion(channel) {
+                if (this.removeChannel == null) {
+                    this.removeChannel = channel;
+                    return;
+                }
+
+                if (this.removeChannel.id == channel.id) {
+                    this.removeChannel = null;
+                    return;
+                }
+
+                this.removeChannel = channel;
+            },
             async deleteChannel(channel) {
+                this.removeChannel = null;
+
                 if (channel.displayname == this.filter) {
                     this.filter = "SubBox";
                 }
