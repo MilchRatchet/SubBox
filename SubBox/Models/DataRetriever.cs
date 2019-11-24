@@ -252,7 +252,11 @@ namespace SubBox.Models
                 videoIds.AddRange(list.Result);
             }
 
-            if (videoIds.Count == 0) return;
+            if (videoIds.Count == 0) {
+                Console.WriteLine("Finished loading 0 new Videos");
+
+                return;
+            };
 
             List<string> requests = CreateRequestList(videoIds);
 
