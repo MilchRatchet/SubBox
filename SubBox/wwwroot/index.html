@@ -578,10 +578,7 @@
 
         .numberInput button:hover {
             color: var(--secColor);
-            background: linear-gradient(to top, var(--mainColor) 50%, transparent 50%);
-            background-size: 100% 200%;
-            background-position: right bottom;
-            transition: 0.2s ease;
+            background: var(--mainColor);
         }
 
         .settingsOverlay input {
@@ -610,10 +607,7 @@
                 margin: 0;
                 padding: 0;
                 position: relative;
-                background: linear-gradient(to top, var(--mainColor) 50%, transparent 50%);
-                background-size: 100% 200%;
-                background-position: right top;
-                transition: background 0.1s ease;
+                background: transparent;
             }
 
         .videoThumb {
@@ -1190,24 +1184,24 @@
                 searchFilterUp = this.searchFilter.toUpperCase();
                 if (this.filter === "SubBox" && (this.selectedTag == null || this.selectedTag.filterList.length == 0)) {
                     return this.videos.filter(function (u) {
-                        return (u.title + u.description).toUpperCase().includes(searchFilterUp);
+                        return (u.title + u.description + u.channelTitle).toUpperCase().includes(searchFilterUp);
                     });
                 }
                 if (this.filter === "SubBox") {
                     return this.videos.filter(function (u) {
-                        return ((u.title + u.description).toUpperCase().includes(searchFilterUp) && app.selectedTag.filterList.some(function(f) {
-                            return (u.title + u.description).toUpperCase().includes(f.toUpperCase());
+                        return ((u.title + u.description + u.channelTitle).toUpperCase().includes(searchFilterUp) && app.selectedTag.filterList.some(function(f) {
+                            return (u.title + u.description + u.channelTitle).toUpperCase().includes(f.toUpperCase());
                         }));
                     });
                 }
                 if (this.selectedTag == null || this.selectedTag.filterList.length == 0) {
                     return this.videos.filter(function (u) {
-                        return (u.channelTitle == app.filter && (u.title + u.description).toUpperCase().includes(searchFilterUp));
+                        return (u.channelTitle == app.filter && (u.title + u.description + u.channelTitle).toUpperCase().includes(searchFilterUp));
                     });
                 }
                 return this.videos.filter(function (u) {
-                    return (u.channelTitle == app.filter && (u.title + u.description).toUpperCase().includes(searchFilterUp) && app.selectedTag.filterList.some(function(f) {
-                        return (u.title + u.description).toUpperCase().includes(f.toUpperCase());
+                    return (u.channelTitle == app.filter && (u.title + u.description + u.channelTitle).toUpperCase().includes(searchFilterUp) && app.selectedTag.filterList.some(function(f) {
+                        return (u.title + u.description + u.channelTitle).toUpperCase().includes(f.toUpperCase());
                     }));
                 });
             },
