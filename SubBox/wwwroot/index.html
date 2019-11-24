@@ -106,7 +106,8 @@
         }
 
         nav input[type=text] {
-            margin: 0px;
+            margin-right: 2px;
+            margin-left: 2px;
             padding: 2px;
             border: solid var(--font_text) 1px;
             width: 250px;
@@ -117,8 +118,8 @@
             nav input[type=text]:focus, nav input[type=text]:hover {
                 border-left: solid var(--mainColor) 1px;
                 border-right: solid var(--mainColor) 1px;
-                border-top: solid var(--mainColor) 10px;
-                border-bottom: solid var(--mainColor) 10px;
+                border-top: solid var(--mainColor) 1px;
+                border-bottom: solid var(--mainColor) 1px;
             }
 
         input[type=number] {
@@ -693,6 +694,10 @@
             border: 1px solid var(--font_text);
         }
 
+            .addTagInput:hover, .addTagInput:focus {
+                border-color: var(--mainColor);
+            }
+
         .addTagButton {
             border-radius: 0;
             margin: 0;
@@ -725,6 +730,10 @@
             color: var(--font_title);
             border: 1px solid var(--font_text);
         }
+        
+            .addTagFilterInput:hover, .addTagFilterInput:focus {
+                border-color: var(--mainColor);
+            }
 
         .addTagFilterButton {
             border-radius: 0;
