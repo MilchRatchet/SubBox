@@ -80,7 +80,6 @@
             padding: 5px;
             margin: 5px;
             border: transparent;
-            border-radius: 5px;
             background-color: transparent;
             color: var(--font_title);
             cursor: pointer;
@@ -105,9 +104,10 @@
             background-color: var(--mainColor);
         }
 
-        nav input[type=text] {
+        input[type=text] {
             margin-right: 2px;
             margin-left: 2px;
+            border-radius: 0;
             padding: 2px;
             border: solid var(--font_text) 1px;
             width: 250px;
@@ -115,11 +115,8 @@
             background-color: var(--bg);
         }
 
-            nav input[type=text]:focus, nav input[type=text]:hover {
-                border-left: solid var(--mainColor) 1px;
-                border-right: solid var(--mainColor) 1px;
-                border-top: solid var(--mainColor) 1px;
-                border-bottom: solid var(--mainColor) 1px;
+            input[type=text]:focus, input[type=text]:hover {
+                border: solid var(--mainColor) 1px;
             }
 
         input[type=number] {
@@ -134,24 +131,18 @@
             -webkit-appearance: textfield;
         }
 
-            input[type=number]:hover {
+            input[type=number]:hover, input[type=number]:focus {
                 border-color: var(--mainColor);
             }
 
         input[type=text].search {
             display: none;
-            background-color: var(--bg);
             padding: 4px;
-            border-radius: 5px;
             margin: 0;
             margin-top: 4px;
             height: 18px;
             width: 300px;
         }
-
-            input[type=text].search:focus, input[type=text].search:hover {
-                border: solid var(--font_text) 1px;
-            }
 
         tr {
             padding: 0;
@@ -592,8 +583,6 @@
             padding: 0;
             font-size: 16px;
             text-align: center;
-            border: 1px var(--font_title) solid;
-            border-radius: 0;
         }
 
         .numberInput {
@@ -688,19 +677,12 @@
             margin-bottom: 10px;
         }
 
-        .addTagInput {
-            padding: 2px;
+        input[type=text].addTagInput {
             margin-left: 10px;
+            margin-right: 0;
             width: 75%;
             height: 100%;
-            background: var(--bg);
-            color: var(--font_title);
-            border: 1px solid var(--font_text);
         }
-
-            .addTagInput:hover, .addTagInput:focus {
-                border-color: var(--mainColor);
-            }
 
         .addTagButton {
             border-radius: 0;
@@ -725,19 +707,12 @@
             margin-bottom: 10px;
         }
 
-        .addTagFilterInput {
-            padding: 2px;
+        input[type=text].addTagFilterInput {
             margin-left: 15px;
+            margin-right: 0;
             width: 75%;
             height: 100%;
-            background: var(--bg);
-            color: var(--font_title);
-            border: 1px solid var(--font_text);
         }
-        
-            .addTagFilterInput:hover, .addTagFilterInput:focus {
-                border-color: var(--mainColor);
-            }
 
         .addTagFilterButton {
             border-radius: 0;
@@ -759,11 +734,8 @@
             color: var(--font_title);
         }
 
-            .tagFilterTable tr {
-                padding: 3px;
-            }
-
             .tagFilterTable td {
+                padding: 0;
                 padding-left: 20px;
             }
 
@@ -833,7 +805,7 @@
                                     {{index + 1}}: {{tagFilter}}
                                 </td>
                                 <td>
-                                    <button @click="deleteFilter(tag,tagFilter)" style="float: right;" class="material-icons deleteTagFilterButton">clear</button>
+                                    <button @click="deleteFilter(tag,tagFilter)" class="material-icons deleteTagFilterButton">clear</button>
                                 </td>
                             </tr>
                         </table>
@@ -965,7 +937,7 @@
                             <div class="videoBox">
                                 <table style="display: inline-block; border-collapse: collapse; width:90%">
                                     <tr class="videoRows">
-                                        <th rowspan="3">
+                                        <th rowspan="3" valign="top">
                                             <div @click="openVideo(video.id)" class="videoThumb">
                                                 <img :src="video.thumbnailUrl" style="width:246px;height:138px" />
                                                 <p>{{video.duration}}</p>
@@ -1012,7 +984,7 @@
                                         </th>
                                     </tr>
                                     <tr class="videoRows">
-                                        <th rowspan="3">
+                                        <th rowspan="3" valign="top">
                                             <div @click="openVideo(video.id)" class="videoThumb">
                                                 <img :src="video.thumbnailUrl" style="width:246px;height:138px" />
                                                 <p>{{video.duration}}</p>
@@ -1074,7 +1046,7 @@
                     <div class="videoBox">
                         <table>
                             <tr class="videoRows">
-                                <th rowspan="4">
+                                <th rowspan="4" valign="top">
                                     <div @click="openVideo(video.id)" class="videoThumb">
                                         <img :src="video.thumbnailUrl" style="width:246px;height:138px" />
                                         <p>{{video.duration}}</p>
@@ -1119,7 +1091,7 @@
                                 </th>
                             </tr>
                             <tr class="videoRows">
-                                <th rowspan="3">
+                                <th rowspan="3" valign="top">
                                     <div @click="openVideo(video.id)" class="videoThumb">
                                         <img :src="video.thumbnailUrl" style="width:246px;height:138px" />
                                         <p>{{video.duration}}</p>
