@@ -124,13 +124,19 @@
 
         input[type=number] {
             padding: 2px;
-            border: solid var(--font_text) 1px;
-            border-radius: 0px;
+            border: solid var(--font_title) 1px;
+            border-radius: 0;
             width: 250px;
-            color: #131313;
+            font-weight: bold;
+            color: var(--font_title);
+            background: var(--nav_bg);
             -moz-appearance: textfield;
             -webkit-appearance: textfield;
         }
+
+            input[type=number]:hover {
+                border-color: var(--mainColor);
+            }
 
         input[type=text].search {
             display: none;
@@ -593,7 +599,7 @@
         .numberInput {
             box-sizing: border-box;
             justify-content: center;
-            display: inline-flex;
+            display: flex;
             padding: 0;
         }
 
@@ -883,7 +889,7 @@
                     <td>Channel Retrieval (Days)</td>
                     <td>
                         <div class="numberInput">
-                            <button @click="changeSetting('NCT',-1)" class="material-icons" style="margin-left: 25%">remove</button>
+                            <button @click="changeSetting('NCT',-1)" class="material-icons">remove</button>
                             <input v-model="settingNCT" type="number" id="NCT" name="NCT" min="1" max="30" />
                             <button @click="changeSetting('NCT',+1)" class="material-icons">add</button>
                         </div>
@@ -893,7 +899,7 @@
                     <td>Retrieval Time (Days)</td>
                     <td>
                         <div class="numberInput">
-                            <button @click="changeSetting('RT',-1)" class="material-icons" style="margin-left: 25%">remove</button>
+                            <button @click="changeSetting('RT',-1)" class="material-icons">remove</button>
                             <input v-model="settingRT" type="number" id="RT" name="RT" min="1" max="7" />
                             <button @click="changeSetting('RT',+1)" class="material-icons">add</button>
                         </div>
@@ -903,7 +909,7 @@
                     <td>Deletion Time (Days)</td>
                     <td>
                         <div class="numberInput">
-                            <button @click="changeSetting('DT',-1)" class="material-icons" style="margin-left: 25%">remove</button>
+                            <button @click="changeSetting('DT',-1)" class="material-icons">remove</button>
                             <input v-model="settingDT" type="number" id="DT" name="DT" min="7" />
                             <button @click="changeSetting('DT',+1)" class="material-icons">add</button>
                         </div>
@@ -913,7 +919,7 @@
                     <td>Playlist Playback Size</td>
                     <td>
                         <div class="numberInput">
-                            <button @click="changeSetting('PPS',-1)" class="material-icons" style="margin-left: 25%">remove</button>
+                            <button @click="changeSetting('PPS',-1)" class="material-icons">remove</button>
                             <input v-model="settingPPS" type="number" id="PPS" name="PPS" min="1" />
                             <button @click="changeSetting('PPS',+1)" class="material-icons">add</button>
                         </div>
@@ -923,7 +929,7 @@
                     <td>Accent Color</td>
                     <td>
                         <div class="numberInput">
-                            <button @click="resetColor" class="material-icons" style="margin-left: 25%">replay</button>
+                            <button @click="resetColor" class="material-icons">replay</button>
                             <input v-model="settingColor" id="colorPicker" @change="setColor()" class="jscolor" />
                             <button class="material-icons" style="color: transparent; background: transparent; cursor: default; border: transparent;">add</button>
                         </div>
