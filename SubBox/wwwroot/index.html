@@ -303,6 +303,7 @@
                 display: -webkit-box;
                 overflow: hidden;
                 text-overflow: ellipsis;
+                word-break: break-word;
                 width: 80%;
             }
 
@@ -978,10 +979,10 @@
                             <div class="videoBox">
                                 <table style="display: inline-block; border-collapse: collapse; width:90%">
                                     <tr>
-                                        <th style="display:inline-block;padding:10px">
+                                        <td colspan="2" style="padding:10px">
                                             <img :src="video.channelPicUrl" style="left:0;width:32px;height:32px;border-radius: 50%;vertical-align:middle;cursor:pointer;" @click="openChannel(video.channelName)" />
                                             <span class="videoHeaderName" @click="openChannel(video.channelName)">{{video.channelTitle}}</span>
-                                        </th>
+                                        </td>
                                     </tr>
                                     <tr class="videoRows">
                                         <th rowspan="3" valign="top">
@@ -1085,10 +1086,10 @@
                     <div class="videoBox">
                         <table style="display: inline-block; border-collapse: collapse; width:90%">
                             <tr>
-                                <th style="display:inline-block;padding:10px">
+                                <td colspan="2" style="padding:10px">
                                     <img :src="video.channelPicUrl" style="left:0;width:32px;height:32px;border-radius: 50%;vertical-align:middle;cursor:pointer;" @click="openChannel(video.channelName)" />
                                     <span class="videoHeaderName" @click="openChannel(video.channelName)">{{video.channelTitle}}</span>
-                                </th>
+                                </td>
                             </tr>
                             <tr class="videoRows">
                                 <th rowspan="3" valign="top">
