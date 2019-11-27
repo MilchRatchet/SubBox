@@ -29,6 +29,10 @@
             margin: 0;
             font-size: 48px;
             font-family: 'Roboto', sans-serif;
+            -moz-user-select: none;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
         }
 
         section {
@@ -60,7 +64,7 @@
             }
 
         img {
-            height: 320px;
+            height: 400px;
         }
 
         b {
@@ -114,13 +118,9 @@
             }
 
         .ImageDiv {
-            width: 30%;
+            width: 34%;
             padding: 2%;
         }
-
-            .ImageDiv img {
-                box-shadow: 0 0 5px 0 black;
-            }
 
         .TextDiv {
             width: 30%;
@@ -133,6 +133,45 @@
                 line-height: 24px;
             }
 
+        .EndSection {
+            pointer-events: none;
+            background: linear-gradient(to right, #db4437 50%, #fafafa 50%);
+            background-size: 200% 100%;
+            background-position: right bottom;
+            transition: 1s;
+        }
+
+            .EndSection:hover {
+                background: linear-gradient(to right, #db4437 50%, #fafafa 50%);
+                background-size: 200% 100%;
+                background-position: left bottom;
+                transition: 1s;
+            }
+
+            .EndSection:hover p {
+                background: linear-gradient(to right, #fafafa 50%, #131313 50%);
+                background-size: 400% 100%;
+                background-position: left bottom;
+                background-clip: text;
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                transition: 1s ease;
+            }
+
+            .EndSection:hover a {
+                color: #131313;
+                border-radius: 0;
+                background: linear-gradient(to right, #fafafa 50%, #db4437 50%);
+                background-size: 200% 100%;
+                background-position: left bottom;
+                transition: 1s ease;
+            }
+
+            .EndSection:hover img {
+                filter: brightness(0);
+                transition: 1s ease;
+            }
+
         .EndDiv {
             text-align: center;
         }
@@ -142,22 +181,40 @@
                 line-height: 48px;
                 display: flex;
                 justify-content: center;
+                background: linear-gradient(to right, #fafafa 50%, #131313 50%);
+                background-size: 400% 100%;
+                background-position: right bottom;
+                background-clip: text;
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                transition: 1s ease;
             }
 
-                .EndDiv p a {
-                    text-decoration: underline;
-                    cursor: pointer;
-                    font-size: 36px;
-                    color: #db4437;
-                    line-height: 48px;
-                    display: flex;
-                    align-items: center;
-                }
+            .EndDiv a {
+                display: flex;
+                justify-content: center;
+                pointer-events: auto;
+                text-decoration: none;
+                cursor: pointer;
+                font-size: 36px;
+                color: #fafafa;
+                background: linear-gradient(to right, #fafafa 50%, #db4437 50%);
+                background-size: 200% 100%;
+                background-position: right bottom;
+                padding: 15px;
+                padding-left: 30px;
+                padding-right: 30px;
+                border-radius: 100px;
+                line-height: 48px;
+                display: flex;
+                align-items: center;
+                transition: 1s ease;       
+            }
 
-                    .EndDiv p a:hover {
-                        text-decoration: none;
-                        color: #ff0000;
-                    }
+            .EndDiv img {
+                filter: brightness(1);
+                transition: 1s ease;
+            }
 
         .miniLogo {
             height: 28px;
@@ -183,7 +240,7 @@
 
         <section>
             <div class="ImageDiv">
-                <img src="media/test.png" />
+                <img src="media/intro1.png" />
             </div>
             <div class="TextDiv">
                 <p class="TextDivHeader"><img src="media/LogoRed.png" class="miniLogo" /><b>SubBox</b> - ASP.NET Youtube Tool</p>
@@ -197,13 +254,13 @@
                 <p>Add your favourite channels through entering their username. Their username might not be the name you are familiar with, in that case just open their channel on Youtube and copy their name there from the link as shown.</p>
             </div>
             <div class="ImageDiv">
-                <img src="media/test.png" />
+                <img src="media/intro2.png" />
             </div>
         </section>
 
         <section>
             <div class="ImageDiv">
-                <img src="media/test.png" />
+                <img src="media/intro3.png" />
             </div>
             <div class="TextDiv">
                 <p class="TextDivHeader"><img src="media/LogoRed.png" class="miniLogo" /><b>SubBox</b> - Manage Your Channels</p>
@@ -221,13 +278,13 @@
                 <p>Add playlists you want to watch by simply entering the respective playlist id. To get the playlist id, just open the playlist on Youtube and copy the id from the link. You will always see each current video of every playlist in your list marked with the PLAYLIST box.</p>
             </div>
             <div class="ImageDiv">
-                <img src="media/test.png" />
+                <img src="media/intro4.png" />
             </div>
         </section>
 
         <section>
             <div class="ImageDiv">
-                <img src="media/test.png" />
+                <img src="media/intro5.png" />
             </div>
             <div class="TextDiv">
                 <p class="TextDivHeader"><img src="media/LogoRed.png" class="miniLogo" /><b>SubBox</b> - Using Playlists</p>
@@ -245,17 +302,17 @@
                 <p>If you removed videos from your list on accident or you changed your mind, you can just click on the trashbin icon to get a list of all removed videos. Be aware these videos will be permanently deleted after they have reached a certain age. You can set this age yourself, more on that later.</p>
             </div>
             <div class="ImageDiv">
-                <img src="media/test.png" />
+                <img src="media/intro6.png" />
             </div>
         </section>
 
         <section>
             <div class="ImageDiv">
-                <img src="media/test.png" />
+                <img src="media/intro7.png" />
             </div>
             <div class="TextDiv">
                 <p class="TextDivHeader"><img src="media/LogoRed.png" class="miniLogo" /><b>SubBox</b> - Search and Tags</p>
-                <p>Hover over the "SubBox" to use the search bar. The tags feature is planned.</p>
+                <p>Hover over the "SubBox" to use the search bar. If one search keyword isn't enough, you can make use of tags. Just create a tag and add all keywords you want to combine. When selecting a tag, all videos containing atleast one of the keywords will be shown.</p>
             </div>
         </section>
 
@@ -272,7 +329,7 @@
 
             </div>
             <div class="ImageDiv">
-                <img src="media/test.png" />
+                <img src="media/intro8.png" />
             </div>
         </section>
 
@@ -280,10 +337,10 @@
             <p>Check SubBox on <a target="_blank" rel="noopener noreferrer" href="https://github.com/MilchRatchet/SubBox"><i class="bd-github"></i> Github</a> to not miss future updates!</p>
         </section>
 
-        <section>
+        <section class="EndSection">
             <div class="EndDiv">
                 <p>This is all you need to know.</p>
-                <p>Continue to <a class="leaveButton" @click="leave()"><img src="media/LogoRed.png" style="height: 40px" />SubBox</a></p>
+                <a class="leaveButton" @click="leave()">Continue to <img src="media/LogoWhite.png" style="height: 40px" />SubBox</a>
             </div>
 
         </section>
