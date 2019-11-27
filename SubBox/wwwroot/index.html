@@ -148,6 +148,19 @@
             padding: 0;
         }
 
+        @supports (backdrop-filter: blur(10px)) {
+
+            .mainNav, .overlay, .settingsOverlay {
+                opacity: 0.8;
+                backdrop-filter: blur(600px);
+            }
+
+                .mainNav:hover, .overlay:hover, .mainNav:hover ~ .overlay, .settingsOverlay:hover, .mainNav:hover ~ .settingsOverlay {
+                    opacity: 1;
+                    backdrop-filter: none;
+                }
+        }
+
         .Title {
             background-color: none;
             margin-top: 8px;
@@ -311,7 +324,7 @@
             position: fixed;
             top: 40px;
             margin-left: 0%;
-            width: 350px;
+            width: 400px;
             background-color: var(--nav_bg);
             z-index: 2;
             display: block;
@@ -339,11 +352,11 @@
         .channelNameColumn {
             color: var(--font_title);
             padding-left: 10px;
-            width: 250px;
+            width: 275px;
         }
 
         .channelButtonColumn {
-            width: 100px;
+            width: 85px;
         }
 
         .channelRow {
@@ -782,143 +795,6 @@
 <body>
     <div id="app" :class="night ? 'dark-mode' : 'light-mode'">
 
-        <div v-show="tagsMode" class="overlay">
-            <div class="addTagDiv">
-                <input class="addTagInput" v-model="addTag" type="text" autocomplete="off" placeholder="Enter Tag Name..."/>
-                <button @click="submitTag" class="material-icons addTagButton">add</button>
-            </div>
-            <table class="channelList" v-for="tag in tags">
-                <tr v-bind:class="{ locked: selectedTag != null && selectedTag.name == tag.name }" class="channelRow">
-                    <td class="channelNameColumn" style="width: 180px">
-                        {{tag.name}}
-                    </td>
-                    <td class="channelButtonColumn">
-                        <button @click="selectTag(tag)" class="material-icons deleteChannelButton">star</button>
-                        <button @click="editTag(tag)" class="material-icons deleteChannelButton">create</button>
-                        <button @click="deleteTag(tag)" class="material-icons deleteChannelButton">clear</button>
-                    </td>
-                </tr>
-                <tr class="tagFilterRow" v-if="tag.inEdit">
-                    <td colspan="2">
-                        <table class="tagFilterTable" v-for="(tagFilter,index) in tag.filterList">
-                            <tr>
-                                <td style="width: 80%">
-                                    {{index + 1}}: {{tagFilter}}
-                                </td>
-                                <td>
-                                    <button @click="deleteFilter(tag,tagFilter)" class="material-icons deleteTagFilterButton">clear</button>
-                                </td>
-                            </tr>
-                        </table>
-                        <div class="addTagFilterDiv">
-                            <input class="addTagFilterInput" v-model="addTagFilter" type="text" autocomplete="off" placeholder="Enter Filter..." />
-                            <button @click="addFilterToTag(tag)" class="material-icons addTagFilterButton">add</button>
-                        </div>
-                        <button @click="saveFilters(tag)" class="material-icons closeChannelsButton">save</button>
-                    </td>
-                </tr>
-            </table>
-            <button @click="showTags" class="material-icons closeChannelsButton">exit_to_app</button>
-        </div>
-
-
-
-
-        <div v-show="channelMode" class="overlay">
-            <table class="channelList" v-for="channel in channels">
-                <tr v-bind:class="{ locked: channel.locked }" class="channelRow">
-                    <td>
-                        <img :src="channel.thumbnailUrl" @click="openChannel(channel.username)" />
-                    </td>
-                    <td class="channelNameColumn">
-                        {{channel.displayname}}
-                    </td>
-                    <td class="channelButtonColumn">
-                        <button @click="setFilter(channel)" class="material-icons deleteChannelButton">star</button>
-                        <button @click="markChannelDeletion(channel)" class="material-icons deleteChannelButton">clear</button>
-                    </td>
-                </tr>
-                <tr v-if="removeChannel != null && removeChannel.id == channel.id" class="removeChannelRow">
-                    <td style="padding-left: 10px;" colspan="2">
-                        Remove {{channel.displayname}}?
-                    </td>
-                    <td colspan="1">
-                        <button @click="deleteChannel(channel)" class="material-icons deleteTagFilterButton">check</button>
-                        <button @click="removeChannel = null;" class="material-icons deleteTagFilterButton">clear</button>
-                    </td>
-                </tr>
-            </table>
-            <button @click="closeChannels" class="material-icons closeChannelsButton">exit_to_app</button>
-        </div>
-
-        <div v-show="settingsMode" class="settingsOverlay">
-            <table>
-                <tr style="border-bottom: 1px solid var(--font_title)">
-                    <td colspan="2">
-                        <p>SubBox - Settings</p>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Channel Retrieval (Days)</td>
-                    <td>
-                        <div class="numberInput">
-                            <button @click="changeSetting('NCT',-1)" class="material-icons">remove</button>
-                            <input v-model="settingNCT" type="number" id="NCT" name="NCT" min="1" max="30" />
-                            <button @click="changeSetting('NCT',+1)" class="material-icons">add</button>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Retrieval Time (Days)</td>
-                    <td>
-                        <div class="numberInput">
-                            <button @click="changeSetting('RT',-1)" class="material-icons">remove</button>
-                            <input v-model="settingRT" type="number" id="RT" name="RT" min="1" max="7" />
-                            <button @click="changeSetting('RT',+1)" class="material-icons">add</button>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Deletion Time (Days)</td>
-                    <td>
-                        <div class="numberInput">
-                            <button @click="changeSetting('DT',-1)" class="material-icons">remove</button>
-                            <input v-model="settingDT" type="number" id="DT" name="DT" min="7" />
-                            <button @click="changeSetting('DT',+1)" class="material-icons">add</button>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Playlist Playback Size</td>
-                    <td>
-                        <div class="numberInput">
-                            <button @click="changeSetting('PPS',-1)" class="material-icons">remove</button>
-                            <input v-model="settingPPS" type="number" id="PPS" name="PPS" min="1" />
-                            <button @click="changeSetting('PPS',+1)" class="material-icons">add</button>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Accent Color</td>
-                    <td>
-                        <div class="numberInput">
-                            <button @click="resetColor" class="material-icons">replay</button>
-                            <input v-model="settingColor" id="colorPicker" @change="setColor()" class="jscolor" />
-                            <button class="material-icons" style="color: transparent; background: transparent; cursor: default; border: transparent;">add</button>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        <transition name="fade">
-                            <p class="changeWarning" v-if="changes">Unsaved Changes!</p>
-                        </transition>
-                        <button @click="closeSettings" class="material-icons closeChannelsButton">save</button>
-                    </td>
-                </tr>
-            </table>
-        </div>
-
         <div v-show="uniqueListMode" class="overlayUniqueList">
             <nav>
                 <p>Playlist Contents</p><p class="material-icons">view_list</p><p>|</p>
@@ -1013,7 +889,8 @@
                 </table>
             </div>
         </div>
-        <nav v-show="videoListMode">
+
+        <nav v-show="videoListMode" class="mainNav">
             <button @click="showChannelInput" class="material-icons">add_box</button>
             <div v-show="inputMode" class="channelInput">
                 <input v-model="addChannelName" autocomplete="off" type="text" name="Username" placeholder="Channel Name..." />
@@ -1037,6 +914,143 @@
             <button @click="showSettings" class="material-icons">settings_applications</button>
             <button @click="refresh" class="material-icons refreshButton">autorenew</button>
         </nav>
+
+        <div v-show="settingsMode" class="settingsOverlay">
+            <table>
+                <tr style="border-bottom: 1px solid var(--font_title)">
+                    <td colspan="2">
+                        <p>SubBox - Settings</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Channel Retrieval (Days)</td>
+                    <td>
+                        <div class="numberInput">
+                            <button @click="changeSetting('NCT',-1)" class="material-icons">remove</button>
+                            <input v-model="settingNCT" type="number" id="NCT" name="NCT" min="1" max="30" />
+                            <button @click="changeSetting('NCT',+1)" class="material-icons">add</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Retrieval Time (Days)</td>
+                    <td>
+                        <div class="numberInput">
+                            <button @click="changeSetting('RT',-1)" class="material-icons">remove</button>
+                            <input v-model="settingRT" type="number" id="RT" name="RT" min="1" max="7" />
+                            <button @click="changeSetting('RT',+1)" class="material-icons">add</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Deletion Time (Days)</td>
+                    <td>
+                        <div class="numberInput">
+                            <button @click="changeSetting('DT',-1)" class="material-icons">remove</button>
+                            <input v-model="settingDT" type="number" id="DT" name="DT" min="7" />
+                            <button @click="changeSetting('DT',+1)" class="material-icons">add</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Playlist Playback Size</td>
+                    <td>
+                        <div class="numberInput">
+                            <button @click="changeSetting('PPS',-1)" class="material-icons">remove</button>
+                            <input v-model="settingPPS" type="number" id="PPS" name="PPS" min="1" />
+                            <button @click="changeSetting('PPS',+1)" class="material-icons">add</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Accent Color</td>
+                    <td>
+                        <div class="numberInput">
+                            <button @click="resetColor" class="material-icons">replay</button>
+                            <input v-model="settingColor" id="colorPicker" @change="setColor()" class="jscolor" />
+                            <button class="material-icons" style="color: transparent; background: transparent; cursor: default; border: transparent;">add</button>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <transition name="fade">
+                            <p class="changeWarning" v-if="changes">Unsaved Changes!</p>
+                        </transition>
+                        <button @click="closeSettings" class="material-icons closeChannelsButton">save</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div v-show="tagsMode" class="overlay">
+            <div class="addTagDiv">
+                <input class="addTagInput" v-model="addTag" type="text" autocomplete="off" placeholder="Enter Tag Name..." />
+                <button @click="submitTag" class="material-icons addTagButton">add</button>
+            </div>
+            <table class="channelList" v-for="tag in tags">
+                <tr v-bind:class="{ locked: selectedTag != null && selectedTag.name == tag.name }" class="channelRow">
+                    <td class="channelNameColumn" style="width: 210px">
+                        {{tag.name}}
+                    </td>
+                    <td class="channelButtonColumn" style="width: 100px">
+                        <button @click="selectTag(tag)" class="material-icons deleteChannelButton">star</button>
+                        <button @click="editTag(tag)" class="material-icons deleteChannelButton">create</button>
+                        <button @click="deleteTag(tag)" class="material-icons deleteChannelButton">clear</button>
+                    </td>
+                </tr>
+                <tr class="tagFilterRow" v-if="tag.inEdit">
+                    <td colspan="2">
+                        <table class="tagFilterTable" v-for="(tagFilter,index) in tag.filterList">
+                            <tr>
+                                <td style="width: 80%">
+                                    {{index + 1}}: {{tagFilter}}
+                                </td>
+                                <td>
+                                    <button @click="deleteFilter(tag,tagFilter)" class="material-icons deleteTagFilterButton">clear</button>
+                                </td>
+                            </tr>
+                        </table>
+                        <div class="addTagFilterDiv">
+                            <input class="addTagFilterInput" v-model="addTagFilter" type="text" autocomplete="off" placeholder="Enter Filter..." />
+                            <button @click="addFilterToTag(tag)" class="material-icons addTagFilterButton">add</button>
+                        </div>
+                        <button @click="saveFilters(tag)" class="material-icons closeChannelsButton">save</button>
+                    </td>
+                </tr>
+            </table>
+            <button @click="showTags" class="material-icons closeChannelsButton">exit_to_app</button>
+        </div>
+
+
+
+
+        <div v-show="channelMode" class="overlay">
+            <table class="channelList" v-for="channel in channels">
+                <tr v-bind:class="{ locked: channel.locked }" class="channelRow">
+                    <td>
+                        <img :src="channel.thumbnailUrl" @click="openChannel(channel.username)" />
+                    </td>
+                    <td class="channelNameColumn">
+                        {{channel.displayname}}
+                    </td>
+                    <td class="channelButtonColumn">
+                        <button @click="setFilter(channel)" class="material-icons deleteChannelButton">star</button>
+                        <button @click="markChannelDeletion(channel)" class="material-icons deleteChannelButton">clear</button>
+                    </td>
+                </tr>
+                <tr v-if="removeChannel != null && removeChannel.id == channel.id" class="removeChannelRow">
+                    <td style="padding-left: 10px;" colspan="2">
+                        Remove {{channel.displayname}}?
+                    </td>
+                    <td colspan="1">
+                        <button @click="deleteChannel(channel)" class="material-icons deleteTagFilterButton">check</button>
+                        <button @click="removeChannel = null;" class="material-icons deleteTagFilterButton">clear</button>
+                    </td>
+                </tr>
+            </table>
+            <button @click="closeChannels" class="material-icons closeChannelsButton">exit_to_app</button>
+        </div>
 
         <div class="spacer">
 
@@ -1118,7 +1132,7 @@
                 </td>
             </tr>
         </table>
-        
+
         <div class="bottomDiv">
             <a target="_blank" rel="noopener noreferrer" href="https://github.com/MilchRatchet/SubBox" class="bottomDivEntry"><i class="bd-github"></i> Github</a>
             <a href="http://localhost:5000/tutorial.html" class="bottomDivEntry"><i class="bd-html5"></i>Introduction</a>
