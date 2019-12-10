@@ -18,7 +18,7 @@ namespace SubBox.Models
 
                 var client = new WebClient();
 
-                int Progress = 10;
+                int Progress = 0;
 
                 client.DownloadProgressChanged += (sender, e) => {
                     if (e.ProgressPercentage >= Progress)
@@ -44,7 +44,7 @@ namespace SubBox.Models
 
                 var client = new WebClient();
 
-                int Progress = 10;
+                int Progress = 0;
 
                 client.DownloadProgressChanged += (sender, e) => {
                     if (e.ProgressPercentage >= Progress)
@@ -93,17 +93,77 @@ namespace SubBox.Models
 
                 client.DownloadFileAsync(new Uri("https://ffmpeg.zeranoe.com/builds/win64/static/ffmpeg-4.2.1-win64-static.zip"), "ffmpeg.zip");
             }
+
+            AppSettings.DownloadReady = true;
         }
 
         public static void DownloadVideo(Video v)
         {
             string path = Directory.GetCurrentDirectory() + @"\youtube-dl.exe";
 
+            int height = 2160, fps = 60;
+
+            switch (AppSettings.PreferredQuality)
+            {
+                case AppSettings.DownloadQuality.H2160F60:
+                    {
+                        break;
+                    }
+                case AppSettings.DownloadQuality.H2160F30:
+                    {
+                        fps = 30;
+                        break;
+                    }
+                case AppSettings.DownloadQuality.H1440F60:
+                    {
+                        height = 1440;
+                        break;
+                    }
+                case AppSettings.DownloadQuality.H1440F30:
+                    {
+                        height = 1440;
+                        fps = 30;
+                        break;
+                    }
+                case AppSettings.DownloadQuality.H1080F60:
+                    {
+                        height = 1080;
+                        fps = 60;
+                        break;
+                    }
+                case AppSettings.DownloadQuality.H1080F30:
+                    {
+                        height = 1080;
+                        fps = 30;
+                        break;
+                    }
+                case AppSettings.DownloadQuality.H720F60:
+                    {
+                        height = 720;
+                        fps = 60;
+                        break;
+                    }
+                case AppSettings.DownloadQuality.H720F30:
+                    {
+                        height = 720;
+                        fps = 30;
+                        break;
+                    }
+                default:
+                    {
+                        Logger.Warn("PreferredQuality is of unexpected value");
+                        AppSettings.PreferredQuality = AppSettings.DownloadQuality.H1080F60;
+                        height = 1080;
+                        fps = 60;
+                        break;
+                    }
+            }
+
             var dl = new Process();
 
             dl.StartInfo.FileName = path;
 
-            dl.StartInfo.Arguments = $@"-f bestvideo[height<=1440]+bestaudio/best[height<=1440] -o Videos/%(uploader)s/%(title)s.mp4 https://www.youtube.com/watch?v={v.Id}";
+            dl.StartInfo.Arguments = $@"-f bestvideo[height<={height}][fps<={fps}]+bestaudio/best[height<={height}][fps<={fps}] -o Videos/{v.ChannelId}_%(uploader)s/{v.Id}_%(title)s --restrict-filenames https://www.youtube.com/watch?v={v.Id}";
 
             dl.StartInfo.UseShellExecute = false;
 
@@ -126,7 +186,6 @@ namespace SubBox.Models
                 Logger.Error(m.Message);
             }
             
-
             while (!dl.StandardOutput.EndOfStream)
             {
                 Logger.Info(dl.StandardOutput.ReadLine());

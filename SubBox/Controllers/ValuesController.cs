@@ -211,6 +211,8 @@ namespace SubBox.Controllers
 
                 if (video == null)
                 {
+                    Logger.Warn("video: " + id + " was requested but is not in db");
+
                     return;
                 }
 
@@ -220,8 +222,39 @@ namespace SubBox.Controllers
 
                 context.SaveChanges();
             }
-            catch(Exception)
+            catch(Exception e)
             {
+                Logger.Warn("video: " + id + "could not be reactivated");
+
+                Logger.Error(e.Message);
+
+                return;
+            }
+        }
+
+        //Post: api/values/download/id
+        [HttpPost("download/{id}")]
+        public void DownloadVideo(string id)
+        {
+            try
+            {
+                Video video = context.Videos.Find(id);
+
+                if (video == null)
+                {
+                    Logger.Warn("video: " + id + " was requested but is not in db");
+
+                    return;
+                }
+
+                Downloader.DownloadVideo(video);
+            }
+            catch(Exception e)
+            {
+                Logger.Warn("video: " + id + "could not be downloaded");
+
+                Logger.Error(e.Message);
+
                 return;
             }
         }
@@ -287,9 +320,11 @@ namespace SubBox.Controllers
 
                 context.SaveChanges();
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 Logger.Warn("Couldn't add Tag " + name);
+
+                Logger.Error(e.Message);
             }
         }
 
@@ -309,9 +344,11 @@ namespace SubBox.Controllers
 
                 context.SaveChanges();
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 Logger.Warn("Couldn't update Tag " + name);
+
+                Logger.Error(e.Message);
             }
         }
 
@@ -329,8 +366,6 @@ namespace SubBox.Controllers
 
                     return;
                 }
-
-                Downloader.DownloadVideo(video);
 
                 Logger.Info("Deleting Video: " + video.Title + " by " + video.ChannelTitle);
 
@@ -352,8 +387,12 @@ namespace SubBox.Controllers
 
                 context.SaveChanges();
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                Logger.Warn("video: " + id + " could not be deleted");
+
+                Logger.Error(e.Message);
+
                 return;
             }
         }
@@ -395,9 +434,11 @@ namespace SubBox.Controllers
 
                 context.SaveChanges();
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 Logger.Warn("Couldn't delete Tag " + name);
+
+                Logger.Error(e.Message);
             }
         }
     }

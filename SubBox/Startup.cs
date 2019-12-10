@@ -71,6 +71,8 @@ namespace SubBox
 
             Logger.Info("SubBox Build v"+ version +" - " + BuildTime.Day + "." + BuildTime.Month + "." + BuildTime.Year);
 
+            AppSettings.DownloadReady = false;
+
             Downloader.DownloadFiles();
 
             //load settings
@@ -124,10 +126,14 @@ namespace SubBox
                 {
                     AppSettings.DevMode = false;
                 }
+
+                AppSettings.PreferredQuality = (AppSettings.DownloadQuality) Enum.Parse(typeof(AppSettings.DownloadQuality), options[10]);
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 Logger.Warn("AppSettings could not be applied, reverting to default");
+
+                Logger.Error(e.Message);
 
                 AppSettings.DeletionTimeFrame = 30;
 
@@ -148,6 +154,8 @@ namespace SubBox
                 AppSettings.AutoStart = true;
 
                 AppSettings.DevMode = false;
+
+                AppSettings.PreferredQuality = AppSettings.DownloadQuality.H1080F60;
 
                 AppSettings.Save();
             }
