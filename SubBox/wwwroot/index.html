@@ -148,6 +148,21 @@
             padding: 0;
         }
 
+        select {
+            width: calc(35% + 52px);
+            height: 32px;
+            background: var(--bg);
+            color: var(--font_title);
+            font-size: 14px;
+            font-weight: bold;
+            appearance: none;
+            -webkit-appearance:none;
+	        -moz-appearance:none;
+	        -ms-appearance:none;
+            border: 1px solid var(--font_title);
+            text-align: center;
+        }
+
         @supports (backdrop-filter: blur(10px)) {
 
             .mainNav, .overlay, .settingsOverlay {
@@ -284,7 +299,7 @@
             color: transparent;
             height: auto;
             margin-top: 50px;
-            padding: 2px;
+            padding: 3px;
             background: none;
         }
 
@@ -597,6 +612,7 @@
             padding: 0;
             font-size: 16px;
             text-align: center;
+            border: 1px solid var(--font_title);
         }
 
         .numberInput {
@@ -973,6 +989,39 @@
                     </td>
                 </tr>
                 <tr>
+                    <td>Preferred Quality</td>
+                    <td>
+                        <div class="numberInput">
+                            <select v-model="settingPQ">
+                                <option value="0">
+                                    2160p60
+                                </option>
+                                <option value="1">
+                                    2160p30
+                                </option>
+                                <option value="2">
+                                    1440p60
+                                </option>
+                                <option value="3">
+                                    1440p30
+                                </option>
+                                <option value="4">
+                                    1080p60
+                                </option>
+                                <option value="5">
+                                    1080p30
+                                </option>
+                                <option value="6">
+                                    720p60
+                                </option>
+                                <option value="7">
+                                    720p30
+                                </option>
+                            </select>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
                     <td colspan="2">
                         <transition name="fade">
                             <p class="changeWarning" v-if="changes">Unsaved Changes!</p>
@@ -1128,6 +1177,7 @@
                             </tr>
                         </table>
                         <button class="material-icons deleteButton" @click="deleteVideo(video)">clear</button>
+                        <button class="material-icons deleteButton" @click="downloadVideo(video)">save_alt</button>
                     </div>
                 </td>
             </tr>
@@ -1173,6 +1223,7 @@
             settingDT: 7,
             settingPPS: 50,
             settingColor: "ff0000",
+            settingPQ: 4,
             settings: [],
             changes: false,
         },
@@ -1408,6 +1459,9 @@
             },
             openVideo(link) {
                 window.open("https://www.youtube.com/watch?v=" + link, "_blank");
+            },
+            async downloadVideo(video) {
+                fetch("/api/values/download/" + video.id, { method: "POST" });
             },
             async deleteVideo(video) {
                 if (this.uniqueListMode) {
