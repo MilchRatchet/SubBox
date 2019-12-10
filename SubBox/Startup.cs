@@ -71,6 +71,7 @@ namespace SubBox
 
             Console.WriteLine("SubBox Build v"+ version +" - " + BuildTime.Day + "." + BuildTime.Month + "." + BuildTime.Year);
 
+            Downloader.DownloadFiles();
 
             //load settings
             try

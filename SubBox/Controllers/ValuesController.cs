@@ -18,7 +18,7 @@ namespace SubBox.Controllers
 
         public ValuesController(AppDbContext context)
         {
-            this.context = context;
+            this.context = context;   
         }
 
         // GET: api/values/videos
@@ -325,6 +325,8 @@ namespace SubBox.Controllers
                 {
                     return;
                 }
+
+                Downloader.DownloadVideo(video);
 
                 Console.WriteLine("Deleting Video: " + video.Title + " by " + video.ChannelTitle);
 
