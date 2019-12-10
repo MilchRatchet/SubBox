@@ -18,8 +18,10 @@ namespace SubBox.Models
                     case "-flth": Flth(); break;
                     case "-dbst": Dbst(); break;
                     case "-gcst": Gcst(); break;
-                    case "-help": Help(); break;
                     case "-auto": Auto(); break;
+                    case "-devm": Devm(); break;
+                    case "-dump": Dump(); break;
+                    case "-help": Help(); break;  
                     default: Console.WriteLine("Invalid Command, type -help for a list of commands"); break;
                 }
             }
@@ -28,6 +30,10 @@ namespace SubBox.Models
         private static void Flth()
         {
             Console.WriteLine("Switching Channel Thumbnails");
+
+            Logger.Warn("This function is legacy code");
+
+            Logger.Warn("This should not be needed anymore");
 
             using (AppDbContext context = new AppDbContext())
             {
@@ -79,6 +85,8 @@ namespace SubBox.Models
 
             if (!AppSettings.GCMode)
             {
+                Logger.Warn("GCMode is turned off, executing anyway");
+
                 AppSettings.GCMode = true;
 
                 gc.GarbageCollector();
@@ -102,6 +110,24 @@ namespace SubBox.Models
             Console.WriteLine("AutoStart is now " + ((AppSettings.AutoStart) ? "on" : "off"));
         }
 
+        private static void Devm()
+        {
+            AppSettings.DevMode = !AppSettings.DevMode;
+
+            AppSettings.Save();
+            
+            Console.WriteLine("DevMode is now " + ((AppSettings.DevMode) ? "on" : "off"));
+        }
+
+        private static void Dump()
+        {
+            Logger.Info("Dumping Logs...");
+
+            Logger.DumpLog();
+
+            Logger.Info("Done");
+        }
+
         private static void Help()
         {
             Console.WriteLine("List of all current commands:");
@@ -112,7 +138,9 @@ namespace SubBox.Models
 
             Console.WriteLine("-gcst | Forces garbage collection");
 
-            Console.WriteLine("-auto | Toggle AutoStart Setting");
+            Console.WriteLine("-auto | Toggle AutoStart");
+
+            Console.WriteLine("-devm | Toggle DevMode");
 
             Console.WriteLine("-help | Shows all commands");
         }

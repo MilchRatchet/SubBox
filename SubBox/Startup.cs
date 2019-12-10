@@ -69,7 +69,7 @@ namespace SubBox
 
             DateTime BuildTime = GetBuildDate(Assembly.GetExecutingAssembly());
 
-            Console.WriteLine("SubBox Build v"+ version +" - " + BuildTime.Day + "." + BuildTime.Month + "." + BuildTime.Year);
+            Logger.Info("SubBox Build v"+ version +" - " + BuildTime.Day + "." + BuildTime.Month + "." + BuildTime.Year);
 
             Downloader.DownloadFiles();
 
@@ -77,11 +77,17 @@ namespace SubBox
             try
             {
                 string[] options = File.ReadAllLines("settings.txt");
+
                 AppSettings.RetrievalTimeFrame = int.Parse(options[0]);
+
                 AppSettings.NewChannelTimeFrame = int.Parse(options[1]);
+
                 AppSettings.DeletionTimeFrame = int.Parse(options[2]);
+
                 AppSettings.PlaylistPlaybackSize = int.Parse(options[3]);
+
                 AppSettings.Color = options[4];
+
                 if (options[5]=="True")
                 {
                     AppSettings.NightMode = true;
@@ -89,7 +95,9 @@ namespace SubBox
                 {
                     AppSettings.NightMode = false;
                 }
+
                 AppSettings.LastRefresh = DateTime.ParseExact(options[6], "O", CultureInfo.InvariantCulture);
+
                 if (options[7] == "True")
                 {
                     AppSettings.FirstStart = true;
@@ -98,6 +106,7 @@ namespace SubBox
                 {
                     AppSettings.FirstStart = false;
                 }
+
                 if (options[8] == "True")
                 {
                     AppSettings.AutoStart = true;
@@ -106,18 +115,40 @@ namespace SubBox
                 {
                     AppSettings.AutoStart = false;
                 }
+
+                if (options[9] == "True")
+                {
+                    AppSettings.DevMode = true;
+                }
+                else
+                {
+                    AppSettings.DevMode = false;
+                }
             }
             catch (Exception)
             {
+                Logger.Warn("AppSettings could not be applied, reverting to default");
+
                 AppSettings.DeletionTimeFrame = 30;
+
                 AppSettings.RetrievalTimeFrame = 3;
+
                 AppSettings.NewChannelTimeFrame = 30;
+
                 AppSettings.PlaylistPlaybackSize = 50;
+
                 AppSettings.Color = "DB4437";
+
                 AppSettings.NightMode = false;
+
                 AppSettings.LastRefresh = BuildTime;
+
                 AppSettings.FirstStart = true;
+
                 AppSettings.AutoStart = true;
+
+                AppSettings.DevMode = false;
+
                 AppSettings.Save();
             }
 
@@ -139,7 +170,18 @@ namespace SubBox
 
                 if (AppSettings.AutoStart)
                 {
-                    Process.Start(new ProcessStartInfo("cmd", $"/c start {"http://localhost:5000/".Replace("&", "^&")}"));
+                    Logger.Warn("AutoStart active, opening browser");
+
+                    try
+                    {
+                        Process.Start(new ProcessStartInfo("cmd", $"/c start {"http://localhost:5000/".Replace("&", "^&")}"));
+                    }
+                    catch(Exception e)
+                    {
+                        Logger.Error("Failed starting browser");
+
+                        Logger.Error(e.Message);
+                    }   
                 }
             }).Start();
 

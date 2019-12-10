@@ -97,7 +97,7 @@ namespace SubBox.Controllers
 
             AppSettings.FirstStart = false;
 
-            Console.WriteLine("Tutorial finished. You can always revisit it through the the link at the bottom of the site!");
+            Logger.Info("Tutorial finished. You can always revisit it through the the link at the bottom of the site!");
 
             AppSettings.Save();
         }
@@ -118,7 +118,7 @@ namespace SubBox.Controllers
         {
             string name = ch.Username;
 
-            Console.WriteLine("Adding "+name+" to Database...");
+            Logger.Info("Adding "+name+" to Database...");
 
             DataRetriever fetcher = new DataRetriever();
 
@@ -130,7 +130,7 @@ namespace SubBox.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         public void PostChannel(string name)
         { 
-            Console.WriteLine("Adding " + name + " to Database...");
+            Logger.Info("Adding " + name + " to Database...");
 
             DataRetriever fetcher = new DataRetriever();
 
@@ -158,7 +158,7 @@ namespace SubBox.Controllers
                 }
             }
 
-            Console.WriteLine("Adding Playlist");
+            Logger.Info("Adding Playlist");
 
             DataRetriever fetcher = new DataRetriever();
 
@@ -175,7 +175,7 @@ namespace SubBox.Controllers
 
             if (video == null)
             {
-                Console.WriteLine("End of Playlist");
+                Logger.Warn("End of Playlist found");
 
                 context.Videos.RemoveRange(context.Videos.Where(v => v.List == number));
             }
@@ -191,6 +191,8 @@ namespace SubBox.Controllers
 
             if (video == null)
             {
+                Logger.Warn("No previous video found for playlist: " + number);
+
                 return;
             }
 
@@ -212,7 +214,7 @@ namespace SubBox.Controllers
                     return;
                 }
 
-                Console.WriteLine("Reativating Video: " + video.Title + " by " + video.ChannelTitle);
+                Logger.Info("Reativating Video: " + video.Title + " by " + video.ChannelTitle);
 
                 video.New = true;
 
@@ -261,7 +263,7 @@ namespace SubBox.Controllers
                     break;
 
                 default:
-                    Console.WriteLine("Unknown setting was tried to change");
+                    Logger.Warn("Unknown setting was tried to change");
 
                     break;
             }
@@ -287,7 +289,7 @@ namespace SubBox.Controllers
             }
             catch (Exception)
             {
-                Console.WriteLine("Couldn't add Tag " + name);
+                Logger.Warn("Couldn't add Tag " + name);
             }
         }
 
@@ -309,7 +311,7 @@ namespace SubBox.Controllers
             }
             catch (Exception)
             {
-                Console.WriteLine("Couldn't update Tag " + name);
+                Logger.Warn("Couldn't update Tag " + name);
             }
         }
 
@@ -323,12 +325,14 @@ namespace SubBox.Controllers
 
                 if (video == null)
                 {
+                    Logger.Warn("video:" + id + " was requested but is not present in db");
+
                     return;
                 }
 
                 Downloader.DownloadVideo(video);
 
-                Console.WriteLine("Deleting Video: " + video.Title + " by " + video.ChannelTitle);
+                Logger.Info("Deleting Video: " + video.Title + " by " + video.ChannelTitle);
 
                 video.New = false;
 
@@ -362,10 +366,12 @@ namespace SubBox.Controllers
 
             if (channel == null)
             {
+                Logger.Warn("channel:" + id + " was requested but is not present in db");
+
                 return;
             }
 
-            Console.WriteLine("Deleting Channel: " + channel.Displayname);
+            Logger.Info("Deleting Channel: " + channel.Displayname);
 
             context.Channels.Remove(channel);
 
@@ -391,7 +397,7 @@ namespace SubBox.Controllers
             }
             catch (Exception)
             {
-                Console.WriteLine("Couldn't delete Tag " + name);
+                Logger.Warn("Couldn't delete Tag " + name);
             }
         }
     }

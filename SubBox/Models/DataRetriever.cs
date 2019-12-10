@@ -80,7 +80,7 @@ namespace SubBox.Models
             }
             catch (Exception)
             {
-                Console.WriteLine(name + " couldn't be added");
+                Logger.Info(name + " couldn't be added");
             }
         }
 
@@ -108,20 +108,20 @@ namespace SubBox.Models
                     {
                         try
                         {
-                            Console.WriteLine("Couldn't parse: " + item.Snippet.Title + " by " + item.Snippet.ChannelTitle);
+                            Logger.Warn("Couldn't parse: " + item.Snippet.Title + " by " + item.Snippet.ChannelTitle);
                         }
                         catch (Exception)
                         {
-                            Console.WriteLine("Couldn't parse video information");
+                            Logger.Warn("Couldn't parse video information");
                         }
 
-                        Console.WriteLine(e.Message);
+                        Logger.Error(e.Message);
 
-                        Console.WriteLine(e.InnerException);
+                        Logger.Error(e.InnerException.ToString());
 
-                        Console.WriteLine(e.StackTrace);
+                        Logger.Error(e.StackTrace);
 
-                        Console.WriteLine(e.Source);
+                        Logger.Error(e.Source);
                     }
                 }
 
@@ -131,15 +131,15 @@ namespace SubBox.Models
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine("Couldn't add new videos");
+                    Logger.Warn("Couldn't add new videos");
 
-                    Console.WriteLine(e.Message);
+                    Logger.Error(e.Message);
 
-                    Console.WriteLine(e.InnerException);
+                    Logger.Error(e.InnerException.ToString());
 
-                    Console.WriteLine(e.StackTrace);
+                    Logger.Error(e.StackTrace);
 
-                    Console.WriteLine(e.Source);
+                    Logger.Error(e.Source);
                 }
             }
         }
@@ -206,7 +206,7 @@ namespace SubBox.Models
 
             if (diffSec < RefreshLimit)
             {
-                Console.WriteLine("Can only refresh every " + RefreshLimit + " seconds! " + (RefreshLimit - diffSec) + " seconds remaining");
+                Logger.Info("Can only refresh every " + RefreshLimit + " seconds! " + (RefreshLimit - diffSec) + " seconds remaining");
 
                 return;
             }
@@ -217,7 +217,7 @@ namespace SubBox.Models
 
             GarbageCollector();
 
-            Console.WriteLine("Refreshing...");
+            Logger.Info("Refreshing...");
 
             LifeTime = AppSettings.RetrievalTimeFrame;
 
@@ -253,7 +253,7 @@ namespace SubBox.Models
             }
 
             if (videoIds.Count == 0) {
-                Console.WriteLine("Finished loading 0 new Videos");
+                Logger.Info("Finished loading 0 new Videos");
 
                 return;
             };
@@ -275,7 +275,7 @@ namespace SubBox.Models
 
             using (AppDbContext context = new AppDbContext())
             {
-                Console.WriteLine("Finished loading " + (context.Videos.LongCount() - count) + " new Videos");
+                Logger.Info("Finished loading " + (context.Videos.LongCount() - count) + " new Videos");
             }  
         }
 
@@ -344,20 +344,20 @@ namespace SubBox.Models
                             {
                                 try
                                 {
-                                    Console.WriteLine("Couldn't parse: " + item.Snippet.Title + " by " + item.Snippet.ChannelTitle);
+                                    Logger.Warn("Couldn't parse: " + item.Snippet.Title + " by " + item.Snippet.ChannelTitle);
                                 }
                                 catch (Exception)
                                 {
-                                    Console.WriteLine("Couldn't parse video information");
+                                    Logger.Warn("Couldn't parse video information");
                                 }
 
-                                Console.WriteLine(e.Message);
+                                Logger.Error(e.Message);
 
-                                Console.WriteLine(e.InnerException);
+                                Logger.Error(e.InnerException.ToString());
 
-                                Console.WriteLine(e.StackTrace);
+                                Logger.Error(e.StackTrace);
 
-                                Console.WriteLine(e.Source);
+                                Logger.Error(e.Source);
                             }
                         }
 
@@ -367,15 +367,15 @@ namespace SubBox.Models
                         }
                         catch (Exception e)
                         {
-                            Console.WriteLine("Couldn't add playlist");
+                            Logger.Info("Couldn't add playlist");
 
-                            Console.WriteLine(e.Message);
+                            Logger.Error(e.Message);
 
-                            Console.WriteLine(e.InnerException);
+                            Logger.Error(e.InnerException.ToString());
 
-                            Console.WriteLine(e.StackTrace);
+                            Logger.Error(e.StackTrace);
 
-                            Console.WriteLine(e.Source);
+                            Logger.Error(e.Source);
                         }
 
                     }
@@ -391,7 +391,7 @@ namespace SubBox.Models
                 }
                 catch (Exception)
                 {
-                    Console.WriteLine("Error retrieving the playlist of id: " + listId);
+                    Logger.Info("Error retrieving the playlist of id: " + listId);
 
                     return;
                 }
@@ -508,7 +508,12 @@ namespace SubBox.Models
 
         public void GarbageCollector()
         {
-            if (!AppSettings.GCMode) return;
+            if (!AppSettings.GCMode)
+            {
+                Logger.Warn("Suppressed GC Call");
+
+                return;
+            }
 
             LifeTime = AppSettings.DeletionTimeFrame;
 
@@ -530,21 +535,6 @@ namespace SubBox.Models
                 context.Videos.RemoveRange(context.Videos.Where(v => v.Index < -AppSettings.PlaylistPlaybackSize));
 
                 context.SaveChanges();
-            }
-        }
-
-        public void PrintAllVideos()
-        {
-            List<Video> Videos;
-
-            using (AppDbContext context = new AppDbContext())
-            {
-                Videos = context.Videos.ToList();
-            }
-
-            foreach (Video v in Videos)
-            {
-                Console.WriteLine(v.Title + " by " + v.ChannelName);
             }
         }
     }

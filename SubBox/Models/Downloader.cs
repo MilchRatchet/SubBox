@@ -12,9 +12,9 @@ namespace SubBox.Models
         {
             if (!File.Exists("youtube-dl.exe"))
             {
-                Console.WriteLine("youtube-dl.exe not found");
+                Logger.Info("youtube-dl.exe not found");
 
-                Console.WriteLine("Downloading youtube-dl.exe...");
+                Logger.Info("Downloading youtube-dl.exe...");
 
                 var client = new WebClient();
 
@@ -38,9 +38,9 @@ namespace SubBox.Models
 
             if (!File.Exists("ffmpeg.exe"))
             {
-                Console.WriteLine("ffmpeg.exe not found");
+                Logger.Info("ffmpeg.exe not found");
 
-                Console.WriteLine("Downloading ffmpeg.exe...");
+                Logger.Info("Downloading ffmpeg.exe...");
 
                 var client = new WebClient();
 
@@ -64,6 +64,8 @@ namespace SubBox.Models
                 {
                     if (Directory.Exists("ffmpeg"))
                     {
+                        Logger.Warn("ffmpeg dir exists unexpectedly");
+
                         Directory.Delete("ffmpeg", true);
                     }
 
@@ -79,9 +81,13 @@ namespace SubBox.Models
 
                         Directory.Delete("ffmpeg", true);
                     }
-                    catch (Exception)
+                    catch (Exception m)
                     {
+                        Logger.Info("Failed installing ffmpeg");
 
+                        Logger.Info("Retry or install manually");
+
+                        Logger.Error(m.Message);
                     }
                 };
 
@@ -107,11 +113,23 @@ namespace SubBox.Models
 
             dl.StartInfo.CreateNoWindow = true;
 
-            dl.Start();
+            try
+            {
+                dl.Start();
+            }
+            catch (Exception m)
+            {
+                Logger.Info("Couldn't start Download");
+
+                Logger.Info("Make sure youtube-dl.exe is found in the main dir");
+
+                Logger.Error(m.Message);
+            }
+            
 
             while (!dl.StandardOutput.EndOfStream)
             {
-                Console.WriteLine(dl.StandardOutput.ReadLine());
+                Logger.Info(dl.StandardOutput.ReadLine());
             }
         }
     }
