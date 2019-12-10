@@ -99,6 +99,11 @@ namespace SubBox.Models
 
         public static void DownloadVideo(Video v)
         {
+            if (!AppSettings.DownloadReady)
+            {
+                Logger.Info("Tools for downloading are not ready yet");
+            }
+
             string path = Directory.GetCurrentDirectory() + @"\youtube-dl.exe";
 
             int height = 2160, fps = 60;
@@ -190,6 +195,8 @@ namespace SubBox.Models
             {
                 Logger.Info(dl.StandardOutput.ReadLine());
             }
+
+            LocalCollection.AddLocalVideo(v, v.Id);
         }
     }
 }
