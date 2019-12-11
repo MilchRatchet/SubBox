@@ -168,8 +168,10 @@ namespace SubBox.Models
 
             dl.StartInfo.FileName = path;
 
-            dl.StartInfo.Arguments = $@"-f bestvideo[height<={height}][fps<={fps}]+bestaudio/best[height<={height}][fps<={fps}] -o Videos/{v.ChannelId}_%(uploader)s/{v.Id}_%(title)s --restrict-filenames https://www.youtube.com/watch?v={v.Id}";
+            const char quote = '\u0022';
 
+            dl.StartInfo.Arguments = $@"-f " + quote + $@"bestvideo[height<={height}][fps<={fps}][ext=webm]+bestaudio[ext=webm]/webm" + quote + $@" -o wwwroot/Videos/{v.ChannelId}&%(uploader)s/{v.Id}&%(title)s --restrict-filenames https://www.youtube.com/watch?v={v.Id}";
+            
             dl.StartInfo.UseShellExecute = false;
 
             dl.StartInfo.RedirectStandardOutput = true;
@@ -196,7 +198,7 @@ namespace SubBox.Models
                 Logger.Info(dl.StandardOutput.ReadLine());
             }
 
-            LocalCollection.AddLocalVideo(v, v.Id);
+            LocalCollection.CollectAllDownloadedVideos();
         }
     }
 }

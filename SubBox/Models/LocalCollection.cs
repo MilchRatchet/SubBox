@@ -46,14 +46,14 @@ namespace SubBox.Models
         {
             DownloadedVideos = new Dictionary<string, LocalVideo>();
 
-            if (!Directory.Exists("Videos"))
+            if (!Directory.Exists(@"wwwroot\Videos"))
             {
-                Logger.Warn("No Folder Videos Found");
+                Logger.Warn("No Folder Videos in wwwroot Found");
 
                 return;
             }
 
-            string[] LocalChannels = Directory.GetDirectories("Videos");
+            string[] LocalChannels = Directory.GetDirectories(@"wwwroot\Videos");
 
             using (AppDbContext context = new AppDbContext())
             {
@@ -63,7 +63,7 @@ namespace SubBox.Models
 
                     foreach (string v in LocalVideos)
                     {
-                        string id = v.Split('\\')[2].Split('_')[0];
+                        string id = v.Split('\\')[3].Split('&')[0];
 
                         Video video = context.Videos.Find(id);
                         
@@ -71,21 +71,38 @@ namespace SubBox.Models
                         {
                             Logger.Warn(id + " is local but not in db");
 
-                            video = new Video()
+                            try
                             {
-                                Id = id,
+                                video = new Video()
+                                {
+                                    Id = id,
 
-                                ChannelId = v.Split('\\')[1].Split('_')[0],
+                                    ChannelTitle = v.Split('\\')[2].Substring(v.Split('\\')[2].IndexOf('&') + 1),
 
-                                Title = v.Substring(v.IndexOf('_'))
-                            };
+                                    ChannelPicUrl = @"http://localhost:5000/media/LogoWhite.png",
+
+                                    ThumbnailUrl = $@"https://i.ytimg.com/vi/{id}/mqdefault.jpg",
+
+                                    Title = v.Split('\\')[3].Substring(v.Split('\\')[3].IndexOf('&') + 1)
+                                };
+                            }
+                            catch (Exception e)
+                            {
+                                Logger.Warn("Could not add video that is not in db");
+
+                                Logger.Error(e.Message);
+
+                                continue;
+                            }
                         }
 
                         LocalVideo lv = new LocalVideo()
                         {
                             Data = video,
 
-                            Dir = @$"Videos\{ch}\{v}"
+                            Dir = v.Substring(7),
+
+                            Size = new FileInfo(Directory.GetCurrentDirectory() + @"\wwwroot\" + v.Substring(7)).Length
                         };
 
                         try

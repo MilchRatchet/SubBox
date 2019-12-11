@@ -30,6 +30,15 @@ namespace SubBox.Controllers
             return result;
         }
 
+        // GET: api/values/localvideos
+        [HttpGet("localvideos")]
+        public IEnumerable<KeyValuePair<string,LocalVideo>> GetLocalVideos()
+        {
+            var result = LocalCollection.DownloadedVideos.ToList();
+
+            return result;
+        }
+
         // GET: api/values/videos/old
         [HttpGet("videos/old")]
         public async Task<ActionResult<IEnumerable<Video>>> GetOldVideos()

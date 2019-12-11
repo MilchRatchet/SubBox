@@ -172,6 +172,11 @@ namespace SubBox
 
             new Thread(() =>
             {
+                LocalCollection.CollectAllDownloadedVideos();
+            }).Start();
+
+            new Thread(() =>
+            {
                 DataRetriever Fetcher = new DataRetriever();
 
                 Fetcher.UpdateVideoList();
