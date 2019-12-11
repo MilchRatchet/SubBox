@@ -9,6 +9,8 @@ namespace SubBox.Models
     {
         public string Dir { get; set; }
 
+        public long Size { get; set; }
+
         public Video Data { get; set; }
     }
 }

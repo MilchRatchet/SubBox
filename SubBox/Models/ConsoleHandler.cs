@@ -21,6 +21,7 @@ namespace SubBox.Models
                     case "-auto": Auto(); break;
                     case "-devm": Devm(); break;
                     case "-dump": Dump(); break;
+                    case "-dlsv": Dlsv(); break;
                     case "-help": Help(); break;  
                     default: Console.WriteLine("Invalid Command, type -help for a list of commands"); break;
                 }
@@ -67,15 +68,32 @@ namespace SubBox.Models
             {
                 Console.WriteLine("Videos: ");
 
-                Console.WriteLine("   Size=" + context.Videos.LongCount());
+                Console.WriteLine("   Count=" + context.Videos.LongCount());
 
-                Console.WriteLine("   PlaylistSize=" + context.Videos.Where(v => v.List != 0).LongCount());
+                Console.WriteLine("   CountInPlaylist=" + context.Videos.Where(v => v.List != 0).LongCount());
 
-                Console.WriteLine("   TrashbinSize=" + context.Videos.Where(v => v.New == false).LongCount());
+                Console.WriteLine("   CountInTrashbin=" + context.Videos.Where(v => v.New == false).LongCount());
 
                 Console.WriteLine("Channels: ");
 
-                Console.WriteLine("   Size=" + context.Channels.LongCount());
+                Console.WriteLine("   Count=" + context.Channels.LongCount());
+
+                Console.WriteLine("LocalVideos: ");
+
+                Console.WriteLine("   Count=" + LocalCollection.DownloadedVideos.Count);
+
+                long size = 0;
+
+                foreach(KeyValuePair<string,LocalVideo> lv in LocalCollection.DownloadedVideos)
+                {
+                    size += lv.Value.Size;
+                }
+
+                size /= 1024;
+
+                size /= 1024;
+
+                Console.WriteLine("   Size=" + size + "MiB");
             }
         }
 
@@ -128,6 +146,35 @@ namespace SubBox.Models
             Logger.Info("Done");
         }
 
+        private static void Dlsv()
+        {
+            Console.WriteLine("Enter link of youtube video");
+
+            string link = Console.ReadLine();
+
+            try
+            {
+                string id = link.Split("?v=")[1];
+
+                id = id.Split("&t=")[0];
+
+                Downloader.DownloadVideo(new Video()
+                {
+                    Id = id,
+
+                    ChannelId = "NULLID"
+                });
+
+                Logger.Info("Successfully downloaded video");
+            }
+            catch (Exception e)
+            {
+                Logger.Info("Failed downloading video");
+
+                Logger.Error(e.Message);
+            }
+        }
+
         private static void Help()
         {
             Console.WriteLine("List of all current commands:");
@@ -141,6 +188,8 @@ namespace SubBox.Models
             Console.WriteLine("-auto | Toggle AutoStart");
 
             Console.WriteLine("-devm | Toggle DevMode");
+
+            Console.WriteLine("-dlsv | Download individual video");
 
             Console.WriteLine("-help | Shows all commands");
         }
