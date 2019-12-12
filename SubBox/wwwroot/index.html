@@ -292,6 +292,19 @@
                 color: var(--font_title);
             }
 
+            .videoBox:hover .dlStatus1Button {
+                color: var(--secColor);
+                background: var(--mainColor);
+            }
+
+            .videoBox:hover .dlStatus2Button {
+                color: #fafafa;
+                background: linear-gradient(to right, #8f54f1, #00bf9f, #00bf9f);
+                background-position: left;
+                background-size: 200%;
+                transition: 0.5s background;
+            }
+
         .deleteButton {
             border-radius: 0;
             float: right;
@@ -307,6 +320,27 @@
                 color: var(--secColor) !important;
                 background-color: var(--mainColor);
             }
+
+        .dlStatus2Button, .dlStatus1Button {
+            background: none;
+            border-radius: 0;
+            float: right;
+            position: relative;
+            color: transparent;
+            height: 30px;
+            font-size: 16px;
+            margin-top: 50px;
+            padding: 1px 7px 1px 7px;
+            background: none;
+        }
+
+            .dlStatus2Button:hover {
+                background: linear-gradient(to right, #8f54f1, #00bf9f, #00bf9f);
+                background-position: right !important;
+                background-size: 200%;
+                transition: 0.5s;
+            }
+
 
         .videoTextChannel {
             cursor: pointer;
@@ -332,7 +366,7 @@
                 overflow: hidden;
                 text-overflow: ellipsis;
                 word-break: break-word;
-                width: 80%;
+                width: 100%;
             }
 
         .overlay {
@@ -1072,9 +1106,6 @@
             <button @click="showTags" class="material-icons closeChannelsButton">exit_to_app</button>
         </div>
 
-
-
-
         <div v-show="channelMode" class="overlay">
             <table class="channelList" v-for="channel in channels">
                 <tr v-bind:class="{ locked: channel.locked }" class="channelRow">
@@ -1148,7 +1179,7 @@
             <tr v-for="video in filteredVideos">
                 <td>
                     <div class="videoBox">
-                        <table style="display: inline-block; border-collapse: collapse; width:90%">
+                        <table style="display: inline-block; border-collapse: collapse; width:80%">
                             <tr>
                                 <td colspan="2" style="padding:10px">
                                     <img :src="video.channelPicUrl" style="left:0;width:32px;height:32px;border-radius: 50%;vertical-align:middle;cursor:pointer;" @click="openChannel(video.channelName)" />
@@ -1178,7 +1209,9 @@
                             </tr>
                         </table>
                         <button class="material-icons deleteButton" @click="deleteVideo(video)">clear</button>
-                        <button class="material-icons deleteButton" @click="downloadVideo(video)">save_alt</button>
+                        <button v-show="video.dlstatus == 0" class="material-icons deleteButton" @click="downloadVideo(video)">save_alt</button>
+                        <button v-show="video.dlstatus == 1" class="dlStatus1Button" style="cursor: default;">Downloading</button>
+                        <button v-show="video.dlstatus == 2" class="dlStatus2Button" @click="window.location.replace('http://localhost:5000/localbrowser.html');">Available in Nightly</button>
                     </div>
                 </td>
             </tr>
@@ -1227,6 +1260,7 @@
             settingPQ: 4,
             settings: [],
             changes: false,
+            dlPending: 0,
         },
         computed: {
             filteredVideos: function () {
@@ -1266,6 +1300,21 @@
                 var result = await fetch("/api/values/videos");
 
                 this.videos = await result.json();
+
+                this.checkDownloadStatus();
+            },
+            async checkDownloadStatus() {
+                var result = await fetch("/api/values/localvideos");
+
+                locals = await result.json();
+
+                this.videos.forEach(function (v) {
+                    Vue.set(v, 'dlstatus', (locals.some((l) => l.Key == v.id)) ? 2 : 0);
+
+                    if (v.dlstatus == 2) {
+                        console.log(v.title);
+                    }
+                });
             },
             async listUpdate() {
                 var result = await fetch("/api/values/lists");
@@ -1310,6 +1359,8 @@
                 this.setSecondColor();
 
                 this.night = (this.settings[5] == "True");
+
+                this.settingPQ = this.settings[6];
 
                 this.setBodyColor();
             },
@@ -1463,6 +1514,30 @@
             },
             async downloadVideo(video) {
                 fetch("/api/values/download/" + video.id, { method: "POST" });
+
+                Vue.set(video, 'dlstatus', 1);
+
+                this.dlPending += 1;
+
+                if (this.dlPending == 1) {
+                    var updater = setInterval(async function () {
+                        var result = await fetch("/api/values/localvideos");
+
+                        locals = await result.json();
+
+                        pending = app.videos.filter((v) => v.dlstatus == 1);
+
+                        pending.forEach(function (v) {
+                            if (locals.some((t) => t.Key == v.id)) {
+                                Vue.set(v, 'dlstatus', 2);
+
+                                this.dlPending -= 1;
+                            }
+                        });
+
+                        if (this.dlPending == 0) clearInterval(updater);
+                    }, 5000);
+                }
             },
             async deleteVideo(video) {
                 if (this.uniqueListMode) {
@@ -1575,7 +1650,9 @@
 
                 fetch("/api/values/settings/PPS/" + this.settingPPS, { method: "POST" }),
 
-                fetch("/api/values/settings/COLOR/" + this.settingColor, { method: "POST" })]);
+                fetch("/api/values/settings/COLOR/" + this.settingColor, { method: "POST" }),
+
+                fetch("/api/values/settings/PQ/" + this.settingPQ, { method: "POST" })]);
 
                 fetch("/api/values/settings/save", { method: "POST" });
             },

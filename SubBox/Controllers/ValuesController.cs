@@ -79,7 +79,7 @@ namespace SubBox.Controllers
         [HttpGet("settings")]
         public string[] GetSettings()
         {
-            return new string[] { AppSettings.RetrievalTimeFrame.ToString(), AppSettings.NewChannelTimeFrame.ToString(), AppSettings.DeletionTimeFrame.ToString(), AppSettings.PlaylistPlaybackSize.ToString(), AppSettings.Color, AppSettings.NightMode.ToString() };
+            return new string[] { AppSettings.RetrievalTimeFrame.ToString(), AppSettings.NewChannelTimeFrame.ToString(), AppSettings.DeletionTimeFrame.ToString(), AppSettings.PlaylistPlaybackSize.ToString(), AppSettings.Color, AppSettings.NightMode.ToString(), ((int) AppSettings.PreferredQuality).ToString() };
         }
 
         // GET: api/values/first
@@ -247,16 +247,7 @@ namespace SubBox.Controllers
         {
             try
             {
-                Video video = context.Videos.Find(id);
-
-                if (video == null)
-                {
-                    Logger.Warn("video: " + id + " was requested but is not in db");
-
-                    return;
-                }
-
-                Downloader.DownloadVideo(video);
+                Downloader.DownloadVideo(id);
             }
             catch(Exception e)
             {
@@ -291,6 +282,11 @@ namespace SubBox.Controllers
 
                 case "PPS":
                     AppSettings.PlaylistPlaybackSize = int.Parse(value);
+
+                    break;
+
+                case "PQ":
+                    AppSettings.PreferredQuality = (AppSettings.DownloadQuality) int.Parse(value);
 
                     break;
 
@@ -404,6 +400,32 @@ namespace SubBox.Controllers
 
                 return;
             }
+        }
+
+        // DELETE: api/values/localvideo/dir
+        [HttpDelete("localvideo/{dir}")]
+        public void DeleteLocalVideo(string dir)
+        {
+            dir = dir.Replace('*', '\\');
+
+            try
+            {
+                string path = @"wwwroot" + dir;
+
+                System.IO.File.Delete(path);
+
+                Logger.Info("Deleted local video at " + path);
+            }
+            catch (Exception e)
+            {
+                Logger.Info("Could not delete Video");
+
+                Logger.Error(e.Message);
+
+                return;
+            }
+
+            LocalCollection.CollectAllDownloadedVideos();
         }
 
         // DELETE: api/values/channel/id

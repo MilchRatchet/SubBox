@@ -158,12 +158,7 @@ namespace SubBox.Models
 
                 id = id.Split("&t=")[0];
 
-                Downloader.DownloadVideo(new Video()
-                {
-                    Id = id,
-
-                    ChannelId = "NULLID"
-                });
+                Downloader.DownloadVideo(id);
 
                 Logger.Info("Successfully downloaded video");
             }

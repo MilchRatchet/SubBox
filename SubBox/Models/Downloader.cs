@@ -97,7 +97,7 @@ namespace SubBox.Models
             AppSettings.DownloadReady = true;
         }
 
-        public static void DownloadVideo(Video v)
+        public static void DownloadVideo(string id)
         {
             if (!AppSettings.DownloadReady)
             {
@@ -170,7 +170,7 @@ namespace SubBox.Models
 
             const char quote = '\u0022';
 
-            dl.StartInfo.Arguments = $@"-f " + quote + $@"bestvideo[height<={height}][fps<={fps}][ext=webm]+bestaudio[ext=webm]/webm" + quote + $@" -o wwwroot/Videos/{v.ChannelId}&%(uploader)s/{v.Id}&%(title)s --restrict-filenames https://www.youtube.com/watch?v={v.Id}";
+            dl.StartInfo.Arguments = $@"-f " + quote + $@"bestvideo[height<={height}][fps<={fps}][ext=webm]+bestaudio[ext=webm]/webm" + quote + $@" -o wwwroot/Videos/%(channel_id)s&%(uploader)s/%(id)s&%(title)s --restrict-filenames https://www.youtube.com/watch?v={id}";
             
             dl.StartInfo.UseShellExecute = false;
 

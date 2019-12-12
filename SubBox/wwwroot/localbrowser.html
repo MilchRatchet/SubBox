@@ -66,9 +66,10 @@
         .grid {
             z-index: 2;
             display: inline-grid;
-            grid-auto-flow: column;
-            grid-template-columns: repeat(auto-fill, 360px);
-            grid-gap: 10px;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            grid-gap: 20px;
+            align-items: start;
+            align-content: start;
             width: 90%;
             margin-left: 5%;
             margin-top: 60px;
@@ -178,6 +179,35 @@
                 -webkit-text-fill-color: transparent;
             }
 
+        .exitButton {
+            cursor: pointer;
+            position: absolute;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            right: 0;
+            height: 40px;
+            width: 150px;
+            font-size: 20px;
+            margin-right: 0;
+            margin-top: 0;
+            border: none;
+            background: linear-gradient(to right, #131313 50%, #db4437 50%);
+            background-size: 200%;
+            background-position: left;
+            color: #fafafa;
+            border-bottom-left-radius: 5px;
+            transition: 0.5s;
+        }
+
+            .exitButton:hover {
+                color: #fafafa;
+                background: linear-gradient(to right, #131313 50%, #db4437 50%);
+                background-size: 200%;
+                background-position: right;
+                transition: 0.5s;
+            }
+
     </style>
 </head>
 <body>
@@ -186,12 +216,15 @@
             <img height="32" src="media/LogoWhite.png"/>
             <p>SubBox Nightly</p>
         </nav>
+        <button @click="window.location.replace('http://localhost:5000/');" class="exitButton">
+           <img height="32" src="media/LogoWhite.png"/>SubBox
+        </button>
         <div v-show="selectedDir !== ''" class="videoOverlay">
             <video :src="selectedDir" controls></video>
             <div class="navigationBox">
                 <p>{{selectedSize}} MiB</p>
                 <div>
-                    <button @click="delete(video)" class="deleteButton">Delete from Harddrive</button>
+                    <button @click="deleteVideo()" class="deleteButton">Delete from Harddrive</button>
                     <button @click="back()">Back to SubBox Nightly</button>
                 </div>
             </div>
@@ -228,11 +261,17 @@
 
                     this.selectedSize = Math.round(video.Value.size/(1024*1024) *10)/10;
                 },
+                async deleteVideo() {
+                    var re = new RegExp('\\\\', 'g');
+
+                    await fetch("/api/values/localvideo/" + this.selectedDir.replace(re,'*'), { method: "DELETE" }); 
+
+                    this.back();
+
+                    this.update();
+                },
                 back() {
                     this.selectedDir = "";
-                },
-                delete(video) {
-
                 },
             },
             el: "#app",
