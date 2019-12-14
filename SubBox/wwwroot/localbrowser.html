@@ -63,6 +63,25 @@
                 transition: 1s;
             }
 
+        input {
+            width: 250px;
+            background: none;
+            border-image: linear-gradient(to top right, #8f54f1, #00efbf);
+            border-image-slice: 1;
+            border-style: solid;
+            border-width: 1px;
+            color: #ffffff;
+            font-size: 16px;
+            padding: 5px;
+        }
+
+            input:hover, input:focus {
+                border-image: linear-gradient(to top right,#ff7500,#ce01ff);
+                border-image-slice: 1;
+                border-style: solid;
+                border-width: 1px;
+            }
+
         .grid {
             z-index: 2;
             display: inline-grid;
@@ -92,7 +111,6 @@
                 border-image-slice: 1;
                 border-style: solid;
                 border-width: 2px;
-                transition: 1s;
             }
 
         .channelPic {
@@ -208,6 +226,14 @@
                 transition: 0.5s;
             }
 
+        .filterDiv {
+            position: absolute;
+            display: flex;
+            top: 5px;
+            left: calc(50% - 125px);
+            width: 250px;
+        }
+
     </style>
 </head>
 <body>
@@ -219,6 +245,9 @@
         <button @click="window.location.replace('http://localhost:5000/');" class="exitButton">
            <img height="32" src="media/LogoWhite.png"/>SubBox
         </button>
+        <div class="filterDiv">
+            <input v-model="filter" type="text" autocomplete="off" placeholder="Search"/>
+        </div>
         <div v-show="selectedDir !== ''" class="videoOverlay">
             <video :src="selectedDir" controls></video>
             <div class="navigationBox">
@@ -230,12 +259,12 @@
             </div>
         </div>
         <div class="grid">
-            <div v-for="video in videos" class="gridVideo" @click="select(video)">
+            <div v-for="video in filteredVideos" class="gridVideo" @click="select(video)">
                 <div class="infoBox">
-                    <img class="channelPic" :src="video.Value.data.channelPicUrl" />
+                    <img class="channelPic" :src="video.Value.data.channelPicUrl" alt="NOIMG" onerror="this.onerror = null; this.src='media/LogoWhite.png'"/>
                     <span class="videoHeaderName">{{video.Value.data.channelTitle}}</span>
                 </div>
-                <img :src="video.Value.data.thumbnailUrl" />
+                <img :src="video.Value.data.thumbnailUrl" alt="NOIMG" onerror="this.onerror = null; this.src='media/LogoWhite.png'"/>
                 <div class="titleBox">
                     <p>{{video.Value.data.title}}</p>
                 </div> 
@@ -247,8 +276,24 @@
         var app = new Vue({
             data: {
                 videos: [],
+                filter: "",
                 selectedDir: "",
                 selectedSize: 0,
+            },
+            computed: {
+                filteredVideos: function () {
+                    if (this.filter === "") {
+                        return this.videos;
+                    }
+
+                    console.log("ok");
+
+                    filterUp = this.filter.toUpperCase();
+
+                    return this.videos.filter(function (u) {
+                        return (u.Value.data.title + u.Value.data.description + u.Value.data.channelTitle).toUpperCase().includes(filterUp);
+                    });
+                },
             },
             methods: {
                 async update() {
