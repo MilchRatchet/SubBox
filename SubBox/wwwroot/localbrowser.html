@@ -12,7 +12,7 @@
             width: 100%;
             height: 100%;
             color: #fafafa;
-            background: #080808;
+            background: #0d0d0d;
             padding: 0;
             margin: 0;
             -moz-user-select: none;
@@ -37,6 +37,15 @@
             width: 60%;
         }
 
+        table {
+            border-collapse: collapse;
+        }
+
+        table td{
+            max-width: 265px;
+            line-height: 16px;
+        }
+
         nav {
             display: flex;
             align-items: center;
@@ -45,7 +54,7 @@
             width: 200px;
             height: 32px;
             border-bottom-right-radius: 5px;
-            background: linear-gradient(to right, #8f54f1, #00bf9f, #00bf9f);
+            background: linear-gradient(to right, #8f54f1, #8fa5f1, #00bf9f);
             background-position: left;
             background-size: 200%;
             padding: 5px;
@@ -53,15 +62,13 @@
             cursor: default;
         }
 
-        nav p {
-            margin-left: 5px;
-            font-size: 20px;
-        }
+            nav p {
+                margin-left: 5px;
+                font-size: 20px;
+            }
 
             nav:hover {
-                background: linear-gradient(to right,#8f54f1, #00bf9f, #00bf9f);
                 background-position: right;
-                background-size: 200%;
                 transition: 1s;
             }
 
@@ -88,6 +95,7 @@
             z-index: 2;
             display: inline-grid;
             grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            grid-auto-rows: 240px;
             grid-gap: 20px;
             align-items: start;
             align-content: start;
@@ -97,7 +105,6 @@
         }
 
         .gridVideo {
-            box-shadow: 0 0 20px 0 black;
             border-radius: 0;
             width: 320px;
             height: 256px;
@@ -105,7 +112,9 @@
             border-image-slice: 1;
             border-style: solid;
             border-width: 3px;
-            cursor: pointer;
+            cursor: default;
+            height: 180px;
+            transition: 0.2s;
         }
 
             .gridVideo:hover {
@@ -113,25 +122,55 @@
                 border-image-slice: 1;
                 border-style: solid;
                 border-width: 3px;
+                height: 238px;
+                transition: 0.2s;
+            }
+
+            .gridVideo:hover .infoBox {
+                opacity: 100%;
+                margin-top: 0;
+                transition: opacity 0.3s;
+            }
+
+            .gridVideo img:hover {
+                cursor: pointer;
             }
 
         .channelPic {
             border-radius: 100%;
             width: 32px;
             height: 32px;
+            margin-top: -5px;
         }
 
         .infoBox {
+            opacity: 0%;
+            margin-top: -100px;
             padding: 6px;
             align-items: center;
             display: flex;
         }
 
-        .videoHeaderName {
-            line-height: 20px;
+        .videoTitle {
             display: inline-block;
             margin-left: 5px;
             font-weight: bold;
+            width: 100%;
+            font-size: 15px;
+        }
+
+        .videoThumb {
+            width: 320px;
+            height: 180px;
+        }
+
+        .channelTitle {
+            display: inline-block;
+            margin-left: 5px;
+            margin-top: -50px;
+            width: 100%;
+            color: #b8b8b8;
+            font-size: 15px;
         }
 
         .titleBox {
@@ -149,7 +188,7 @@
             height: 100%;
             align-items: center;
             justify-content: center;
-            backdrop-filter: blur(600px);
+            backdrop-filter: blur(60px);
         }
 
         .navigationBox {
@@ -160,30 +199,30 @@
             padding: 5px;
         }
 
-        .navigationBox button {
-            border: none;
-            background: linear-gradient(to right, #c809ff, #3847fa, #00af8f);
-            background-position: left;
-            background-size: 200%;
-            transition: 0.5s;
-            color: #fafafa;
-            font-family: 'Roboto', sans-serif;
-            font-size: 16px;
-            font-weight: bold;
-            padding: 2px 10px 2px 10px;
-            margin: 0 5px 0 5px;
-        }
+            .navigationBox button {
+                border: none;
+                background: linear-gradient(to right, #009f5f, #008f5f, #118f9f, #117fbf);
+                background-position: left;
+                background-size: 200%;
+                transition: 0.5s;
+                color: #fafafa;
+                font-family: 'Roboto', sans-serif;
+                font-size: 16px;
+                font-weight: bold;
+                padding: 2px 10px 2px 10px;
+                margin: 0 5px 0 5px;
+            }
 
             .navigationBox button:hover {
                 background-position: right;
                 transition: 0.5s;
             }
 
-        .navigationBox .deleteButton {
-            background: linear-gradient(to right, #8f00ff, #db4437, #db4437);
-            background-position: left;
-            background-size: 200%;
-        }
+            .navigationBox .deleteButton {
+                background: linear-gradient(to right, #cf006f, #db4437, #db4437);
+                background-position: left;
+                background-size: 200%;
+            }
 
             .navigationBox .deleteButton:hover {
                 background-position: right;
@@ -191,7 +230,6 @@
 
             .navigationBox p {
                 cursor: default;
-
                 float: left;
                 background: linear-gradient(to right, #5f94f1, #00efbf);
                 background-clip: text;
@@ -251,7 +289,7 @@
             <input v-model="filter" type="text" autocomplete="off" placeholder="Search"/>
         </div>
         <div v-show="selectedDir !== ''" class="videoOverlay">
-            <video :src="selectedDir" controls></video>
+            <video poster="" onloadstart="this.volume=0.1" :src="selectedDir" controls></video>
             <div class="navigationBox">
                 <p>{{selectedSize}} MiB</p>
                 <div>
@@ -261,15 +299,25 @@
             </div>
         </div>
         <div class="grid">
-            <div v-for="video in filteredVideos" class="gridVideo" @click="select(video)">
+            <div v-for="video in filteredVideos" class="gridVideo" >
+                <img class="videoThumb" :src="video.Value.dir + '.jpg'" alt="NOIMG" onerror="this.onerror = null; this.src='media/thumbnail.jpg'" @click="select(video)" />
                 <div class="infoBox">
-                    <img class="channelPic" :src="video.Value.data.channelPicUrl" alt="NOIMG" onerror="this.onerror = null; this.src='media/LogoWhite.png'"/>
-                    <span class="videoHeaderName">{{video.Value.data.channelTitle}}</span>
+                    <table>
+                        <tr>
+                            <td rowspan="2">                    
+                                <img class="channelPic" :src="video.Value.data.channelPicUrl" alt="NOIMG" onerror="this.onerror = null; this.src='media/LogoWhite.png'" />
+                            </td>
+                            <td>
+                                <p class="videoTitle">{{video.Value.data.title}}</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span class="channelTitle">{{video.Value.data.channelTitle}}</span>
+                            </td>
+                        </tr>
+                    </table>     
                 </div>
-                <img :src="video.Value.data.thumbnailUrl" alt="NOIMG" onerror="this.onerror = null; this.src='media/LogoWhite.png'"/>
-                <div class="titleBox">
-                    <p>{{video.Value.data.title}}</p>
-                </div> 
             </div>
         </div>
     </div>
@@ -303,14 +351,16 @@
 
                     this.videos = await result.json();
                 },
-                select(video) {
+                async select(video) {  
                     window.scrollTo(0, 0);
 
                     document.body.style.overflow = "hidden";
 
-                    this.selectedDir = video.Value.dir; 
+                    this.selectedDir = video.Value.dir + ".webm"; 
 
-                    this.selectedSize = Math.round(video.Value.size/(1024*1024) *10)/10;
+                    this.selectedSize = Math.round(video.Value.size / (1024 * 1024) * 10) / 10;
+
+                    document.getElementsByTagName('video')[0].volume = 0.1;
                 },
                 async deleteVideo() {
                     var re = new RegExp('\\\\', 'g');
@@ -326,12 +376,37 @@
 
                     document.body.style.overflow = "auto";
                 },
+                GetURLParameter(sParam) {
+                    var sPageURL = window.location.search.substring(1);
+
+                    var sURLVariables = sPageURL.split('&');
+
+                    for (var i = 0; i < sURLVariables.length; i++) 
+                    {
+                        var sParameterName = sURLVariables[i].split('=');
+
+                        if (sParameterName[0] == sParam) 
+                        {
+                            return sParameterName[1];
+                        }
+                    }
+
+                    return null;
+                },
             },
             el: "#app",
             async mounted() {
-                this.update();
+                await this.update();
 
-                document.getElementsByTagName('video')[0].volume = 0.1;
+                var openId = this.GetURLParameter('id');
+                
+                if (openId !== null) {
+                    var video = this.videos.find((v) => v.Value.data.id == openId);
+
+                    if (video !== undefined) {
+                        this.select(video);
+                    }   
+                }
             }
         });
     </script>

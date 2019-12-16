@@ -65,6 +65,22 @@ namespace SubBox.Models
                     {
                         string id = v.Split('\\')[3].Split('&')[0];
 
+                        string ext = Path.GetExtension(v.Substring(7));
+
+                        Logger.Error(ext);
+
+                        if (ext != ".webm")
+                        {
+                            if (ext == ".jpg")
+                            {
+                                continue;
+                            }
+
+                            Logger.Warn("Found non webm/jpg file in Videos");
+
+                            continue;
+                        }
+
                         Video video = context.Videos.Find(id);
                         
                         if (video==null)
@@ -77,13 +93,13 @@ namespace SubBox.Models
                                 {
                                     Id = id,
 
-                                    ChannelTitle = v.Split('\\')[2].Substring(v.Split('\\')[2].IndexOf('&') + 1),
+                                    ChannelTitle = v.Split('\\')[2].Substring(v.Split('\\')[2].IndexOf('&') + 1).Replace('_', ' '),
 
                                     ChannelPicUrl = @"http://localhost:5000/media/LogoWhite.png",
 
                                     ThumbnailUrl = $@"https://i.ytimg.com/vi/{id}/mqdefault.jpg",
 
-                                    Title = v.Split('\\')[3].Substring(v.Split('\\')[3].IndexOf('&') + 1)
+                                    Title = v.Split('\\')[3].Substring(v.Split('\\')[3].IndexOf('&') + 1).Replace('_', ' ')
                                 };
                             }
                             catch (Exception e)
@@ -100,7 +116,7 @@ namespace SubBox.Models
                         {
                             Data = video,
 
-                            Dir = v.Substring(7),
+                            Dir = v.Substring(7).Remove(v.Length - 12),
 
                             Size = new FileInfo(Directory.GetCurrentDirectory() + @"\wwwroot\" + v.Substring(7)).Length
                         };

@@ -299,7 +299,7 @@
 
             .videoBox:hover .dlStatus2Button {
                 color: #fafafa;
-                background: linear-gradient(to right, #8f54f1, #00bf9f, #00bf9f);
+                background: linear-gradient(to right, #8f54f1, #8f85f1, #00bf9f);
                 background-position: left;
                 background-size: 200%;
                 transition: 0.5s background;
@@ -335,9 +335,7 @@
         }
 
             .dlStatus2Button:hover {
-                background: linear-gradient(to right, #8f54f1, #00bf9f, #00bf9f);
                 background-position: right !important;
-                background-size: 200%;
                 transition: 0.5s;
             }
 
@@ -1027,7 +1025,7 @@
                     <td>Preferred Quality</td>
                     <td>
                         <div class="numberInput">
-                            <select v-model="settingPQ">
+                            <select v-model="settingPQ" @change="changes = true;">
                                 <option value="0">
                                     2160p60
                                 </option>
@@ -1211,7 +1209,7 @@
                         <button class="material-icons deleteButton" @click="deleteVideo(video)">clear</button>
                         <button v-show="video.dlstatus == 0" class="material-icons deleteButton" @click="downloadVideo(video)">save_alt</button>
                         <button v-show="video.dlstatus == 1" class="dlStatus1Button" style="cursor: default;">Downloading</button>
-                        <button v-show="video.dlstatus == 2" class="dlStatus2Button" @click="window.location.replace('http://localhost:5000/localbrowser.html');">Available in Nightly</button>
+                        <button v-show="video.dlstatus == 2" class="dlStatus2Button" @click="window.location.replace('http://localhost:5000/localbrowser.html?id=' + video.id);">Available in Nightly</button>
                     </div>
                 </td>
             </tr>
@@ -1310,10 +1308,6 @@
 
                 this.videos.forEach(function (v) {
                     Vue.set(v, 'dlstatus', (locals.some((l) => l.Key == v.id)) ? 2 : 0);
-
-                    if (v.dlstatus == 2) {
-                        console.log(v.title);
-                    }
                 });
             },
             async listUpdate() {

@@ -408,9 +408,11 @@ namespace SubBox.Controllers
         {
             dir = dir.Replace('*', '\\');
 
+            dir = dir.Remove(dir.Length - 5);
+
             try
             {
-                string path = @"wwwroot" + dir;
+                string path = @"wwwroot" + dir + ".webm";
 
                 System.IO.File.Delete(path);
 
@@ -419,6 +421,23 @@ namespace SubBox.Controllers
             catch (Exception e)
             {
                 Logger.Info("Could not delete Video");
+
+                Logger.Error(e.Message);
+
+                return;
+            }
+
+            try
+            {
+                string path = @"wwwroot" + dir + ".jpg";
+
+                System.IO.File.Delete(path);
+
+                Logger.Info("Deleted thumbnail at " + path);
+            }
+            catch (Exception e)
+            {
+                Logger.Info("Could not delete thumbnail");
 
                 Logger.Error(e.Message);
 
