@@ -74,6 +74,7 @@
             background-color: var(--nav_bg);
             height: 40px;
             z-index: 2;
+            box-shadow: 0 5px 10px -5px rgba(0, 0, 0, .3);
         }
 
         button {
@@ -161,19 +162,6 @@
 	        -ms-appearance:none;
             border: 1px solid var(--font_title);
             text-align: center;
-        }
-
-        @supports (backdrop-filter: blur(10px)) {
-
-            .mainNav, .overlay, .settingsOverlay {
-                opacity: 0.8;
-                backdrop-filter: blur(600px);
-            }
-
-                .mainNav:hover, .overlay:hover, .mainNav:hover ~ .overlay, .settingsOverlay:hover, .mainNav:hover ~ .settingsOverlay {
-                    opacity: 1;
-                    backdrop-filter: none;
-                }
         }
 
         .Title {
@@ -378,6 +366,7 @@
             border: 1px solid var(--font_text);
             border-left: none;
             border-top: none;
+            box-shadow: 5px 5px 10px -5px rgba(0, 0, 0, .3);
         }
 
         .channelList {
@@ -407,17 +396,18 @@
         }
 
         .channelRow {
-            border-left: 5px transparent solid;
+            border: none;
             background: linear-gradient(to right, var(--mainColor) 50%, transparent 50%);
             background-size: 200% 100%;
             background-position: right bottom;
             transition: 0.2s background ease;
         }
 
+            .channelRow td:first-child {
+                padding-left: 12px;
+            }
+
             .channelRow:hover {
-                border-left: 5px var(--mainColor) solid;
-                background: linear-gradient(to right, var(--mainColor) 50%, transparent 50%);
-                background-size: 200% 100%;
                 background-position: left bottom;
                 transition: 0.4s background ease;
             }
@@ -439,22 +429,23 @@
                 background: var(--nav_bg);
             }
 
-            .removeChannelRow:hover button {
-                color: var(--font_title);
-            }
+                .removeChannelRow:hover button {
+                    color: var(--font_title);
+                }
 
         .locked {
-            border-left: 5px #daa520 solid;
+            border-left: 5px solid #daa520;
             background: linear-gradient(to right, #daa520 50%, transparent 50%);
             background-size: 200% 100%;
             background-position: right bottom;
             transition: 0.2s background ease;
         }
 
+            .locked td:first-child {
+                padding-left: 8px;
+            }
+
             .locked:hover {
-                border-left: 5px #daa520 solid;
-                background: linear-gradient(to right, #daa520 50%, transparent 50%);
-                background-size: 200% 100%;
                 background-position: left bottom;
                 transition: 0.4s background ease;
             }
@@ -596,6 +587,7 @@
             border: 1px solid var(--font_text);
             border-right: none;
             border-top: none;
+            box-shadow: -5px 5px 10px -5px rgba(0, 0, 0, .3);
         }
 
             .settingsOverlay p {
