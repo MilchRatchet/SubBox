@@ -403,16 +403,16 @@ namespace SubBox.Controllers
         }
 
         // DELETE: api/values/localvideo/dir
-        [HttpDelete("localvideo/{dir}")]
-        public void DeleteLocalVideo(string dir)
+        [HttpDelete("localvideo/{dir}/{thumbdir}")]
+        public void DeleteLocalVideo(string dir, string thumbdir)
         {
             dir = dir.Replace('*', '\\');
 
-            dir = dir.Remove(dir.Length - 5);
+            thumbdir = thumbdir.Replace('*', '\\');
 
             try
             {
-                string path = @"wwwroot" + dir + ".webm";
+                string path = @"wwwroot" + '\\' + dir;
 
                 System.IO.File.Delete(path);
 
@@ -429,7 +429,7 @@ namespace SubBox.Controllers
 
             try
             {
-                string path = @"wwwroot" + dir + ".jpg";
+                string path = @"wwwroot" + '\\' + thumbdir;
 
                 System.IO.File.Delete(path);
 

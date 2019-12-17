@@ -53,84 +53,95 @@ namespace SubBox.Models
                 return;
             }
 
-            string[] LocalChannels = Directory.GetDirectories(@"wwwroot\Videos");
-
             using (AppDbContext context = new AppDbContext())
             {
-                foreach (string ch in LocalChannels)
+                string[] webmFiles = Directory.GetFiles(@"wwwroot\Videos", "*.webm", SearchOption.AllDirectories);
+
+                string[] jpgFiles = Directory.GetFiles(@"wwwroot\Videos", "*.jpg", SearchOption.AllDirectories);
+
+                foreach (string file in webmFiles)
                 {
-                    string[] LocalVideos = Directory.GetFiles(ch);
+                    string id = file.Split('\\')[3].Split('&')[0];
 
-                    foreach (string v in LocalVideos)
+                    string thumbDir = "";
+
+                    foreach (string thumb in jpgFiles)
                     {
-                        string id = v.Split('\\')[3].Split('&')[0];
+                        string thumbId = thumb.Split('\\')[3].Split('&')[0];
 
-                        string ext = Path.GetExtension(v.Substring(7));
-
-                        Logger.Error(ext);
-
-                        if (ext != ".webm")
+                        if (thumbId == id)
                         {
-                            if (ext == ".jpg")
-                            {
-                                continue;
-                            }
+                            thumbDir = thumb;
 
-                            Logger.Warn("Found non webm/jpg file in Videos");
-
-                            continue;
+                            break;
                         }
+                    }
 
-                        Video video = context.Videos.Find(id);
-                        
-                        if (video==null)
-                        {
-                            Logger.Warn(id + " is local but not in db");
+                    Video video = context.Videos.Find(id);
 
-                            try
-                            {
-                                video = new Video()
-                                {
-                                    Id = id,
-
-                                    ChannelTitle = v.Split('\\')[2].Substring(v.Split('\\')[2].IndexOf('&') + 1).Replace('_', ' '),
-
-                                    ChannelPicUrl = @"http://localhost:5000/media/LogoWhite.png",
-
-                                    ThumbnailUrl = $@"https://i.ytimg.com/vi/{id}/mqdefault.jpg",
-
-                                    Title = v.Split('\\')[3].Substring(v.Split('\\')[3].IndexOf('&') + 1).Replace('_', ' ')
-                                };
-                            }
-                            catch (Exception e)
-                            {
-                                Logger.Warn("Could not add video that is not in db");
-
-                                Logger.Error(e.Message);
-
-                                continue;
-                            }
-                        }
-
-                        LocalVideo lv = new LocalVideo()
-                        {
-                            Data = video,
-
-                            Dir = v.Substring(7).Remove(v.Length - 12),
-
-                            Size = new FileInfo(Directory.GetCurrentDirectory() + @"\wwwroot\" + v.Substring(7)).Length
-                        };
+                    if (video == null)
+                    {
+                        Logger.Warn(id + " is local but not in db");
 
                         try
                         {
-                            DownloadedVideos.Add(lv.Data.Id, lv);
+                            video = new Video()
+                            {
+                                Id = id,
+
+                                ChannelTitle = file.Split('\\')[2].Split('&')[1].Replace('_', ' '),
+
+                                ChannelPicUrl = @"http://localhost:5000/media/LogoWhite.png",
+
+                                ThumbnailUrl = $@"https://i.ytimg.com/vi/{id}/mqdefault.jpg",
+
+                                Title = file.Split('\\')[3].Split('&')[1].Replace('_', ' ')
+                            };
                         }
                         catch (Exception e)
                         {
-                            Logger.Warn("LocalVideo could not be added to Collection");
+                            Logger.Warn("Could not add video that is not in db");
 
                             Logger.Error(e.Message);
+
+                            continue;
                         }
+                    }
+
+                    string[] sections = file.Split('\\');
+
+                    string dir = sections[1] + '\\' + sections[2] + '\\' + sections[3];
+
+                    if (thumbDir != "")
+                    {
+                        sections = thumbDir.Split('\\');
+
+                        thumbDir = sections[1] + '\\' + sections[2] + '\\' + sections[3];
+                    } else
+                    {
+                        thumbDir = "UNAVAILABLE";
+                    }
+
+                    LocalVideo lv = new LocalVideo()
+                    {
+                        Data = video,
+
+                        Dir = dir,
+
+                        ThumbDir = thumbDir,
+
+                        Size = new FileInfo(Directory.GetCurrentDirectory() + '\\' + file).Length
+                    };
+
+                    try
+                    {
+                        DownloadedVideos.Add(lv.Data.Id, lv);
+                    }
+                    catch (Exception e)
+                    {
+                        Logger.Warn("LocalVideo could not be added to Collection");
+
+                        Logger.Error(e.Message);
                     }
                 }
             }

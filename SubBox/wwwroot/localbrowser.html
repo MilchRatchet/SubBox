@@ -35,16 +35,17 @@
 
         video {
             width: 60%;
+            box-shadow: 0 0 20px -5px rgba(0, 0, 0, 1);
         }
 
         table {
             border-collapse: collapse;
         }
 
-        table td{
-            max-width: 265px;
-            line-height: 16px;
-        }
+            table td {
+                max-width: 265px;
+                line-height: 16px;
+            }
 
         nav {
             display: flex;
@@ -215,6 +216,7 @@
 
             .navigationBox button:hover {
                 background-position: right;
+                box-shadow: 0 0 15px -5px #117fbf;
                 transition: 0.5s;
             }
 
@@ -225,6 +227,7 @@
             }
 
             .navigationBox .deleteButton:hover {
+                box-shadow: 0 0 15px -5px #db4437;
                 background-position: right;
             }
 
@@ -300,7 +303,7 @@
         </div>
         <div class="grid">
             <div v-for="video in filteredVideos" class="gridVideo" >
-                <img class="videoThumb" :src="video.Value.dir + '.jpg'" alt="NOIMG" onerror="this.onerror = null; this.src='media/thumbnail.jpg'" @click="select(video)" />
+                <img class="videoThumb" :src="video.Value.thumbDir" alt="NOIMG" onerror="this.onerror = null; this.src='media/thumbnail.jpg'" @click="select(video)" />
                 <div class="infoBox">
                     <table>
                         <tr>
@@ -328,6 +331,7 @@
                 videos: [],
                 filter: "",
                 selectedDir: "",
+                selectedThumbDir: "",
                 selectedSize: 0,
             },
             computed: {
@@ -356,7 +360,9 @@
 
                     document.body.style.overflow = "hidden";
 
-                    this.selectedDir = video.Value.dir + ".webm"; 
+                    this.selectedDir = video.Value.dir; 
+
+                    this.selectedThumbDir = video.Value.thumbDir;
 
                     this.selectedSize = Math.round(video.Value.size / (1024 * 1024) * 10) / 10;
 
@@ -365,7 +371,7 @@
                 async deleteVideo() {
                     var re = new RegExp('\\\\', 'g');
 
-                    await fetch("/api/values/localvideo/" + this.selectedDir.replace(re,'*'), { method: "DELETE" }); 
+                    await fetch("/api/values/localvideo/" + this.selectedDir.replace(re,'*') + "/" + this.selectedThumbDir.replace(re,'*'), { method: "DELETE" }); 
 
                     this.back();
 
