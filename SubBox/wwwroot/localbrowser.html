@@ -133,10 +133,6 @@
                 transition: opacity 0.3s;
             }
 
-            .gridVideo img:hover {
-                cursor: pointer;
-            }
-
         .channelPic {
             border-radius: 100%;
             width: 32px;
@@ -160,9 +156,29 @@
             font-size: 15px;
         }
 
+        .videoThumbDiv {
+            position: relative;
+            cursor: pointer;
+        }
+
         .videoThumb {
             width: 320px;
             height: 180px;
+        }
+
+        .videoThumbDuration {
+            font-size: 12px;
+            font-weight: 500;
+            bottom: 6px;
+            right: 3px;
+            color: white;
+            background: rgba(0,0,0,0.8);
+            position: absolute;
+            padding-left: 4px;
+            padding-right: 4px;
+            padding-top: 2px;
+            padding-bottom: 2px;
+            border-radius: 2px;
         }
 
         .channelTitle {
@@ -303,7 +319,11 @@
         </div>
         <div class="grid">
             <div v-for="video in filteredVideos" class="gridVideo" >
-                <img class="videoThumb" :src="video.Value.thumbDir" alt="NOIMG" onerror="this.onerror = null; this.src='media/thumbnail.jpg'" @click="select(video)" />
+                <div class="videoThumbDiv" @click="select(video)">
+                    <img class="videoThumb" :src="video.Value.thumbDir" alt="NOIMG" onerror="this.onerror = null; this.src='media/thumbnail.jpg'" />
+                    <p class="videoThumbDuration" v-if="video.Value.data.duration !== 'NULL'">{{video.Value.data.duration}}</p>
+                </div>
+
                 <div class="infoBox">
                     <table>
                         <tr>
