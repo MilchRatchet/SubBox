@@ -20,7 +20,7 @@ namespace SubBox.Models
                     case "-gcst": Gcst(); break;
                     case "-auto": Auto(); break;
                     case "-devm": Devm(); break;
-                    case "-dump": Dump(); break;
+                    case "-logf": Logf(); break;
                     case "-dlsv": Dlsv(); break;
                     case "-help": Help(); break;  
                     default: Console.WriteLine("Invalid Command, type -help for a list of commands"); break;
@@ -137,7 +137,7 @@ namespace SubBox.Models
             Console.WriteLine("DevMode is now " + ((AppSettings.DevMode) ? "on" : "off"));
         }
 
-        private static void Dump()
+        private static void Logf()
         {
             Logger.Info("Dumping Logs...");
 
@@ -183,6 +183,8 @@ namespace SubBox.Models
             Console.WriteLine("-auto | Toggle AutoStart");
 
             Console.WriteLine("-devm | Toggle DevMode");
+
+            Console.WriteLine("-logf | Save log file of this session");
 
             Console.WriteLine("-dlsv | Download individual video");
 
