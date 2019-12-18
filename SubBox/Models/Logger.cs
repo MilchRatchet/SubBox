@@ -45,6 +45,18 @@ namespace SubBox.Models
             Log.Add("Error: " + text);
         }
 
+        //Note that this does not require devmode as there are not supposed to be any references to this in release
+        public static void Debug(string text)
+        {
+            Console.ForegroundColor = ConsoleColor.Cyan;
+
+            Console.WriteLine("Debug: " + text);
+
+            Console.ForegroundColor = ConsoleColor.Gray;
+
+            Log.Add("Debug: " + text);
+        }
+
         public static async void DumpLog()
         {
             await File.WriteAllLinesAsync($"log_{DateTime.Now.ToFileTime()}.txt", Log);
