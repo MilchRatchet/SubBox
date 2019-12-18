@@ -127,11 +127,11 @@
                 transition: 0.2s;
             }
 
-            .gridVideo:hover .infoBox {
-                opacity: 100%;
-                margin-top: 0;
-                transition: opacity 0.3s;
-            }
+                .gridVideo:hover .infoBox {
+                    opacity: 100%;
+                    margin-top: 0;
+                    transition: opacity 0.3s;
+                }
 
         .channelPic {
             border-radius: 100%;
@@ -207,6 +207,22 @@
             justify-content: center;
             backdrop-filter: blur(60px);
         }
+
+        .emptyOverlay {
+            z-index: 4;
+            position: absolute;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            margin-top: 50px;
+            height: 90%;
+        }
+
+            .emptyOverlay p {
+                font-size: 26px;
+                font-weight: bold;
+            }
 
         .navigationBox {
             display: flex;
@@ -316,6 +332,10 @@
                     <button @click="back()">Back to SubBox Nightly</button>
                 </div>
             </div>
+        </div>
+        <div v-show="filteredVideos.length == 0" class="emptyOverlay">
+            <p v-show="filter == ''">No Local Videos available. You can download them with the download button next to each Video.</p>
+            <p v-show="filter != ''">No Local Videos available that fit the search filter.</p>
         </div>
         <div class="grid">
             <div v-for="video in filteredVideos" class="gridVideo" >
