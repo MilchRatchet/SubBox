@@ -10,7 +10,20 @@ namespace SubBox.Models
     {
         public static void DownloadFiles()
         {
-            if (!File.Exists("youtube-dl.exe"))
+            bool youtubedl = File.Exists("youtube-dl.exe");
+
+            bool ffmpeg = File.Exists("ffmpeg.exe");
+
+            if (youtubedl && ffmpeg)
+            {
+                AppSettings.DownloadReady = true;
+
+                Logger.Info("Downloading videos is now available");
+
+                return;
+            }
+
+            if (!youtubedl)
             {
                 Logger.Info("youtube-dl.exe not found");
 
@@ -33,10 +46,22 @@ namespace SubBox.Models
                     }
                 };
 
+                client.DownloadFileCompleted += (sender, e) =>
+                {
+                    youtubedl = true;
+
+                    if (youtubedl && ffmpeg)
+                    {
+                        AppSettings.DownloadReady = true;
+
+                        Logger.Info("Downloading videos is now available");
+                    }
+                };
+
                 client.DownloadFileAsync(new Uri("https://youtube-dl.org/downloads/latest/youtube-dl.exe"), "youtube-dl.exe");
             }
 
-            if (!File.Exists("ffmpeg.exe"))
+            if (!ffmpeg)
             {
                 Logger.Info("ffmpeg.exe not found");
 
@@ -80,6 +105,15 @@ namespace SubBox.Models
                         File.Move(dir + @"\bin\ffmpeg.exe", Directory.GetCurrentDirectory() + @"\ffmpeg.exe");
 
                         Directory.Delete("ffmpeg", true);
+
+                        ffmpeg = true;
+
+                        if (youtubedl && ffmpeg)
+                        {
+                            AppSettings.DownloadReady = true;
+
+                            Logger.Info("Downloading videos is now available");
+                        }
                     }
                     catch (Exception m)
                     {
@@ -93,8 +127,6 @@ namespace SubBox.Models
 
                 client.DownloadFileAsync(new Uri("https://ffmpeg.zeranoe.com/builds/win64/static/ffmpeg-4.2.1-win64-static.zip"), "ffmpeg.zip");
             }
-
-            AppSettings.DownloadReady = true;
         }
 
         public static void DownloadVideo(string id)
@@ -102,6 +134,8 @@ namespace SubBox.Models
             if (!AppSettings.DownloadReady)
             {
                 Logger.Info("Tools for downloading are not ready yet");
+
+                return;
             }
 
             string path = Directory.GetCurrentDirectory() + @"\youtube-dl.exe";
