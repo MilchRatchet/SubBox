@@ -74,7 +74,7 @@
             background-color: var(--nav_bg);
             height: 40px;
             z-index: 2;
-            box-shadow: 0 5px 10px -5px rgba(0, 0, 0, .3);
+            box-shadow: 0 5px 10px -8px rgba(0, 0, 0, .2);
         }
 
         button {
@@ -366,7 +366,7 @@
             border: 1px solid var(--font_text);
             border-left: none;
             border-top: none;
-            box-shadow: 5px 5px 10px -5px rgba(0, 0, 0, .3);
+            box-shadow: 5px 5px 10px -8px rgba(0, 0, 0, .2);
         }
 
         .channelList {
@@ -587,7 +587,7 @@
             border: 1px solid var(--font_text);
             border-right: none;
             border-top: none;
-            box-shadow: -5px 5px 10px -5px rgba(0, 0, 0, .3);
+            box-shadow: -5px 5px 10px -8px rgba(0, 0, 0, .2);
         }
 
             .settingsOverlay p {
@@ -829,6 +829,53 @@
             background: var(--mainColor);
             color: var(--secColor) !important;
         }
+
+        .tooltip {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+            .tooltip:hover .tooltiptext{
+                visibility: visible;
+                opacity: 100;
+                transition-delay: 0.5s;
+                transition-duration: 0.3s;
+            }
+
+        .tooltiptext {
+            font-size: 14px;
+            font-family: 'Roboto', sans-serif;
+            padding: 8px;
+            width: auto;
+            visibility: hidden;
+            opacity: 0;
+            color: var(--secColor);
+            background: var(--mainColor);
+            text-align: center;
+            position: absolute;
+            z-index: 1;
+            box-shadow: 0 5px 10px -6px rgba(0,0,0,0.3);
+        }
+
+        .ttleft {
+            right: 110%;   
+        }
+
+        .ttright {
+            left: 110%;
+        }
+
+        .ttup {
+            bottom: 110%;
+        }
+
+        .ttdown {
+            top: 110%; 
+            
+        }
+
     </style>
 </head>
 
@@ -839,12 +886,12 @@
             <nav>
                 <p>Playlist Contents</p><p class="material-icons">view_list</p><p>|</p>
                 <p class="Title" style="margin-top:0; margin-right: 6px">{{uniqueList.length}} Video{{(uniqueList.length != 1) ? 's' : ''}}</p>
-                <button @click="showListInput()" class="material-icons">playlist_add</button>
+                <button @click="showListInput()" class="material-icons tooltip"><div class="tooltiptext ttdown">Extend Playlist</div>playlist_add</button>
                 <div v-show="inputListMode" class="inputList">
                     <input v-model="addPlayList" autocomplete="off" type="text" name="PlaylistIdUnqiue" placeholder="Playlist Id..." />
                     <button @click="submitPlaylist" class="material-icons">search</button>
                 </div>
-                <button @click="closeUniqueList" class="material-icons closeUniqueListButton">exit_to_app</button>
+                <button @click="closeUniqueList" class="material-icons closeUniqueListButton tooltip"><div class="tooltiptext ttdown">Back</div>exit_to_app</button>
             </nav>
 
             <div class="scrollList">
@@ -875,7 +922,7 @@
                                         </td>
                                     </tr>
                                 </table>
-                                <button class="material-icons deleteButton" style="margin-top: 0" @click="deleteVideo(video)">clear</button>
+                                <button class="material-icons deleteButton tooltip" style="margin-top: 0" @click="deleteVideo(video)"><div class="tooltiptext ttright">Remove from Playlist</div>clear</button>
                             </div>
                         </td>
                     </tr>
@@ -886,7 +933,7 @@
             <nav>
                 <p>Removed Videos</p><p class="material-icons">view_list</p><p>|</p>
                 <p class="Title" style="margin-top:0;">{{oldVideos.length}} Video{{(oldVideos.length != 1) ? 's' : ''}}</p>
-                <button @click="closeTrashbin" class="material-icons closeUniqueListButton">exit_to_app</button>
+                <button @click="closeTrashbin" class="material-icons closeUniqueListButton tooltip"><div class="tooltiptext ttdown">Back</div>exit_to_app</button>
             </nav>
             <div class="scrollList">
                 <table class="uniqueList">
@@ -922,7 +969,7 @@
                                         </td>
                                     </tr>
                                 </table>
-                                <button class="material-icons deleteButton" @click="reactivateVideo(video)">add</button>
+                                <button class="material-icons deleteButton tooltip" @click="reactivateVideo(video)"><div class="tooltiptext ttright">Add back to SubBox</div>add</button>
                             </div>
                         </td>
                     </tr>
@@ -931,28 +978,28 @@
         </div>
 
         <nav v-show="videoListMode" class="mainNav">
-            <button @click="showChannelInput" class="material-icons">add_box</button>
+            <button @click="showChannelInput" class="material-icons tooltip"><div class="tooltiptext ttdown" style="padding-left: 55px">Add Channel</div>add_box</button>
             <div v-show="inputMode" class="channelInput">
                 <input v-model="addChannelName" autocomplete="off" type="text" name="Username" placeholder="Channel Name..." />
                 <button class="material-icons" @click="onSubmit">search</button>
             </div>
-            <button @click="showChannels" class="material-icons">{{(filter === 'SubBox') ? 'account_box' : 'star'}}</button>
-            <button @click="showListInput()" class="material-icons">playlist_add</button>
+            <button @click="showChannels" class="material-icons tooltip"><div class="tooltiptext ttdown">Channel List</div>{{(filter === 'SubBox') ? 'account_box' : 'star'}}</button>
+            <button @click="showListInput()" class="material-icons tooltip"><div class="tooltiptext ttdown">Add Playlist</div>playlist_add</button>
             <div v-show="inputListMode" class="inputList">
                 <input v-model="addPlayList" autocomplete="off" type="text" name="PlaylistId" placeholder="Playlist Id..." />
                 <button @click="submitPlaylist" class="material-icons">search</button>
             </div>
-            <button @click="showOldVideos" class="material-icons">delete</button>
-            <button @click="showTags" class="material-icons">label</button>
+            <button @click="showOldVideos" class="material-icons tooltip"><div class="tooltiptext ttdown">Trashbin</div>delete</button>
+            <button @click="showTags" class="material-icons tooltip"><div class="tooltiptext ttdown">Tags</div>label</button>
             <p class="selectedTag" v-if="selectedTag != null">{{selectedTag.name}}</p>
             <div class="topbar" style="margin-left: auto">
                 <input class="search" v-model="searchFilter" type="text" autocomplete="off" placeholder="Search" />
                 <p class="Title" style="cursor: default;">{{filter}} - {{filteredVideos.length}}</p>
             </div>
 
-            <button style="margin-left: auto" @click="switchDesign" class="material-icons">highlight</button>
-            <button @click="showSettings" class="material-icons">settings_applications</button>
-            <button @click="window.location.replace('http://localhost:5000/localbrowser.html');" class="material-icons">archive</button>
+            <button style="margin-left: auto" @click="switchDesign" class="material-icons tooltip"><div class="tooltiptext ttdown">Light/Dark Theme</div>highlight</button>
+            <button @click="showSettings" class="material-icons tooltip"><div class="tooltiptext ttdown">Settings</div>settings_applications</button>
+            <button @click="window.location.replace('http://localhost:5000/localbrowser.html');" class="material-icons tooltip"><div class="tooltiptext ttdown">SubBox Nightly</div>archive</button>
             <button @click="refresh" class="material-icons refreshButton">autorenew</button>
         </nav>
 
@@ -1157,7 +1204,7 @@
                                     <p class="playlistHint">PLAYLIST</p>
                                     <button @click="prev(video.list)" style="margin-left: auto" class="material-icons listButton">fast_rewind</button>
                                     <button @click="next(video.list)" class="material-icons listButton">fast_forward</button>
-                                    <button @click="showUniqueList(video.list)" class="material-icons listButton">view_list</button>
+                                    <button @click="showUniqueList(video.list)" class="material-icons listButton tooltip"><div class="tooltiptext ttright">Show Playlist</div>view_list</button>
                                 </td>
                             </tr>
                         </table>
@@ -1198,8 +1245,8 @@
                                 </td>
                             </tr>
                         </table>
-                        <button class="material-icons deleteButton" @click="deleteVideo(video)">clear</button>
-                        <button v-show="video.dlstatus == 0" class="material-icons deleteButton" @click="downloadVideo(video)">save_alt</button>
+                        <button class="material-icons deleteButton tooltip" @click="deleteVideo(video)"><div class="tooltiptext ttright">Move to Trashbin</div>clear</button>
+                        <button v-show="video.dlstatus == 0" class="material-icons deleteButton tooltip" @click="downloadVideo(video)"><div class="tooltiptext ttleft">Download Video</div>save_alt</button>
                         <button v-show="video.dlstatus == 1" class="dlStatus1Button" style="cursor: default;">Downloading</button>
                         <button v-show="video.dlstatus == 2" class="dlStatus2Button" @click="window.location.replace('http://localhost:5000/localbrowser.html?id=' + video.id);">Available in Nightly</button>
                     </div>
