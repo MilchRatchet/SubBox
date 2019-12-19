@@ -135,6 +135,8 @@ namespace SubBox.Models
             {
                 Logger.Info("Tools for downloading are not ready yet");
 
+                _ = StatusBoard.PutStatus("downloadResult", id, false);
+
                 return;
             }
 
@@ -225,6 +227,8 @@ namespace SubBox.Models
                 Logger.Info("Make sure youtube-dl.exe is found in the main dir");
 
                 Logger.Error(m.Message);
+
+                _ = StatusBoard.PutStatus("downloadResult", id, false);
             }
             
             while (!dl.StandardOutput.EndOfStream)
@@ -233,6 +237,8 @@ namespace SubBox.Models
             }
 
             LocalCollection.CollectAllDownloadedVideos();
+
+            _ = StatusBoard.PutStatus("downloadResult", id, true);
         }
     }
 }

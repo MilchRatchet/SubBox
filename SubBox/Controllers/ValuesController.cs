@@ -25,54 +25,42 @@ namespace SubBox.Controllers
         [HttpGet("videos")]
         public async Task<ActionResult<IEnumerable<Video>>> GetVideos()
         {
-            var result = await context.Videos.Where(v => v.New && v.List == 0).OrderByDescending(v => v.PublishedAt.Ticks).ToListAsync();
-
-            return result;
+            return await context.Videos.Where(v => v.New && v.List == 0).OrderByDescending(v => v.PublishedAt.Ticks).ToListAsync();
         }
 
         // GET: api/values/localvideos
         [HttpGet("localvideos")]
         public IEnumerable<KeyValuePair<string,LocalVideo>> GetLocalVideos()
         {
-            var result = LocalCollection.DownloadedVideos.ToList();
-
-            return result;
+            return LocalCollection.DownloadedVideos.ToList();
         }
 
         // GET: api/values/videos/old
         [HttpGet("videos/old")]
         public async Task<ActionResult<IEnumerable<Video>>> GetOldVideos()
         {
-            var result = await context.Videos.Where(v => !v.New && v.List == 0).OrderByDescending(v => v.PublishedAt.Ticks).ToListAsync();
-
-            return result;
+            return await context.Videos.Where(v => !v.New && v.List == 0).OrderByDescending(v => v.PublishedAt.Ticks).ToListAsync();
         }
 
         // GET: api/values/channels
         [HttpGet("channels")]
         public async Task<ActionResult<IEnumerable<Channel>>> GetChannels()
         {
-            var result = await context.Channels.ToListAsync();
-
-            return result;
+            return await context.Channels.ToListAsync();
         }
 
         // GET: api/values/lists
         [HttpGet("lists")]
         public async Task<ActionResult<IEnumerable<Video>>> GetLists()
         {
-            var result = await context.Videos.Where(v => v.List != 0 && v.Index == 0).OrderBy(v => v.List).ToListAsync();
-
-            return result;
+            return await context.Videos.Where(v => v.List != 0 && v.Index == 0).OrderBy(v => v.List).ToListAsync();
         }
 
         // GET: api/values/list/all/number
         [HttpGet("list/all/{number}")]
         public async Task<ActionResult<IEnumerable<Video>>> GetAllVideosInList(int number)
         {
-            var result = await context.Videos.Where(v => v.List == number).OrderBy(v => v.Index).ToListAsync();
-
-            return result;
+            return await context.Videos.Where(v => v.List == number).OrderBy(v => v.Index).ToListAsync(); ;
         }
 
         // GET: api/values/settings
@@ -93,9 +81,14 @@ namespace SubBox.Controllers
         [HttpGet("tags")]
         public async Task<ActionResult<IEnumerable<Tag>>> GetTags()
         {
-            var result = await context.Tags.ToListAsync();
+            return await context.Tags.ToListAsync();
+        }
 
-            return result;
+        // GET: api/values/status/{kind}/{key}
+        [HttpGet("status/{kind}/{key}")]
+        public async Task<ActionResult<StatusUpdate>> GetStatusUpdate(string kind, string key)
+        {
+            return await StatusBoard.GetStatus(kind, key);
         }
 
         // POST: api/values/firstdone

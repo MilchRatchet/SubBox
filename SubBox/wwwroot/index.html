@@ -1250,7 +1250,6 @@
             settingPQ: 4,
             settings: [],
             changes: false,
-            dlPending: 0,
         },
         computed: {
             filteredVideos: function () {
@@ -1503,27 +1502,17 @@
 
                 Vue.set(video, 'dlstatus', 1);
 
-                this.dlPending += 1;
+                var updater = setInterval(async function () {
+                    var result = await fetch("/api/values/status/downloadResult/" + video.id);
 
-                if (this.dlPending == 1) {
-                    var updater = setInterval(async function () {
-                        var result = await fetch("/api/values/localvideos");
+                    var status = await result.json();
 
-                        locals = await result.json();
+                    if (status.kind == "downloadResult") {
+                        Vue.set(video, 'dlstatus', ((status.value) ? 2 : 0));
 
-                        pending = app.videos.filter((v) => v.dlstatus == 1);
-
-                        pending.forEach(function (v) {
-                            if (locals.some((t) => t.Key == v.id)) {
-                                Vue.set(v, 'dlstatus', 2);
-
-                                this.dlPending -= 1;
-                            }
-                        });
-
-                        if (this.dlPending == 0) clearInterval(updater);
-                    }, 5000);
-                }
+                        clearInterval(updater);
+                    }
+                }, 5000);
             },
             async deleteVideo(video) {
                 if (this.uniqueListMode) {
