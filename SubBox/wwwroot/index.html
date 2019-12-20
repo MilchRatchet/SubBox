@@ -534,7 +534,7 @@
             width: 100%;
             height: 97%;
             background-color: var(--bg);
-            z-index: 2;
+            z-index: 3;
             display: flex;
             padding: 0;
         }
@@ -832,7 +832,7 @@
 
         .tooltip {
             position: relative;
-            display: flex;
+            display: inline-flex;
             align-items: center;
             justify-content: center;
         }
@@ -840,7 +840,7 @@
             .tooltip:hover .tooltiptext{
                 visibility: visible;
                 opacity: 100;
-                transition-delay: 0.5s;
+                transition-delay: 0.7s;
                 transition-duration: 0.3s;
             }
 
@@ -848,32 +848,37 @@
             font-size: 14px;
             font-family: 'Roboto', sans-serif;
             padding: 8px;
-            width: auto;
             visibility: hidden;
             opacity: 0;
             color: var(--secColor);
             background: var(--mainColor);
             text-align: center;
             position: absolute;
+            display: inline-block;
+            white-space: nowrap;
             z-index: 1;
             box-shadow: 0 5px 10px -6px rgba(0,0,0,0.3);
         }
 
+        .tooltiptextInverseColor {
+            color: var(--mainColor);
+            background: var(--secColor);
+        }
+
         .ttleft {
-            right: 110%;   
+            right: calc(100% + 5px);  
         }
 
         .ttright {
-            left: 110%;
+            left: calc(100% + 5px);
         }
 
         .ttup {
-            bottom: 110%;
+            bottom: calc(100% + 5px);
         }
 
         .ttdown {
-            top: 110%; 
-            
+            top: calc(100% + 5px);            
         }
 
     </style>
@@ -1011,7 +1016,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>Channel Retrieval (Days)</td>
+                    <td><div class="tooltip"><div class="tooltiptext ttleft">Timespan of Videos that gets retrieved when adding a Channel</div>Channel Retrieval (Days)</div></td>
                     <td>
                         <div class="numberInput">
                             <button @click="changeSetting('NCT',-1)" class="material-icons">remove</button>
@@ -1021,7 +1026,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>Retrieval Time (Days)</td>
+                    <td><div class="tooltip"><div class="tooltiptext ttleft">Timespan of Videos that gets retrieved when Refreshing</div>Retrieval Time (Days)</div></td>
                     <td>
                         <div class="numberInput">
                             <button @click="changeSetting('RT',-1)" class="material-icons">remove</button>
@@ -1031,7 +1036,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>Deletion Time (Days)</td>
+                    <td><div class="tooltip"><div class="tooltiptext ttleft">Automatically delete Videos in the Trashbin once they hit a certain Age in Days</div>Deletion Time (Days)</div></td>
                     <td>
                         <div class="numberInput">
                             <button @click="changeSetting('DT',-1)" class="material-icons">remove</button>
@@ -1041,7 +1046,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>Playlist Playback Size</td>
+                    <td><div class="tooltip"><div class="tooltiptext ttleft">Amount of Videos in a Playlist you go back to before they get deleted</div>Playlist Playback Size</div></td>
                     <td>
                         <div class="numberInput">
                             <button @click="changeSetting('PPS',-1)" class="material-icons">remove</button>
@@ -1061,7 +1066,9 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>Preferred Quality</td>
+                    <td>
+                        <div class="tooltip"><div class="tooltiptext ttleft">Video Quality used when Downloading</div>Preferred Quality</div>
+                    </td>
                     <td>
                         <div class="numberInput">
                             <select v-model="settingPQ" @change="changes = true;">
@@ -1098,7 +1105,7 @@
                         <transition name="fade">
                             <p class="changeWarning" v-if="changes">Unsaved Changes!</p>
                         </transition>
-                        <button @click="closeSettings" class="material-icons closeChannelsButton">save</button>
+                        <button @click="closeSettings" class="material-icons closeChannelsButton tooltip"><div class="tooltiptext ttleft">Save Changes</div>save</button>
                     </td>
                 </tr>
             </table>
@@ -1115,9 +1122,9 @@
                         {{tag.name}}
                     </td>
                     <td class="channelButtonColumn" style="width: 100px">
-                        <button @click="selectTag(tag)" class="material-icons deleteChannelButton">star</button>
-                        <button @click="editTag(tag)" class="material-icons deleteChannelButton">create</button>
-                        <button @click="deleteTag(tag)" class="material-icons deleteChannelButton">clear</button>
+                        <button @click="selectTag(tag)" class="material-icons deleteChannelButton tooltip"><div class="tooltiptext tooltiptextInverseColor ttleft">Select Tag</div>star</button>
+                        <button @click="editTag(tag)" class="material-icons deleteChannelButton tooltip"><div class="tooltiptext tooltiptextInverseColor ttright">Edit Tag</div>create</button>
+                        <button @click="deleteTag(tag)" class="material-icons deleteChannelButton tooltip"><div class="tooltiptext tooltiptextInverseColor ttright">Delete Tag</div>clear</button>
                     </td>
                 </tr>
                 <tr class="tagFilterRow" v-if="tag.inEdit">
@@ -1128,7 +1135,7 @@
                                     {{index + 1}}: {{tagFilter}}
                                 </td>
                                 <td>
-                                    <button @click="deleteFilter(tag,tagFilter)" class="material-icons deleteTagFilterButton">clear</button>
+                                    <button @click="deleteFilter(tag,tagFilter)" class="material-icons deleteTagFilterButton tooltip"><div class="tooltiptext ttleft">Delete Tag Filter</div>clear</button>
                                 </td>
                             </tr>
                         </table>
@@ -1136,11 +1143,11 @@
                             <input class="addTagFilterInput" v-model="addTagFilter" type="text" autocomplete="off" placeholder="Enter Filter..." />
                             <button @click="addFilterToTag(tag)" class="material-icons addTagFilterButton">add</button>
                         </div>
-                        <button @click="saveFilters(tag)" class="material-icons closeChannelsButton">save</button>
+                        <button @click="saveFilters(tag)" class="material-icons closeChannelsButton tooltip"><div class="tooltiptext ttleft">Save Changes</div>save</button>
                     </td>
                 </tr>
             </table>
-            <button @click="showTags" class="material-icons closeChannelsButton">exit_to_app</button>
+            <button @click="showTags" class="material-icons closeChannelsButton tooltip"><div class="tooltiptext ttleft">Close Window</div>exit_to_app</button>
         </div>
 
         <div v-show="channelMode" class="overlay">
@@ -1153,8 +1160,8 @@
                         {{channel.displayname}}
                     </td>
                     <td class="channelButtonColumn">
-                        <button @click="setFilter(channel)" class="material-icons deleteChannelButton">star</button>
-                        <button @click="markChannelDeletion(channel)" class="material-icons deleteChannelButton">clear</button>
+                        <button @click="setFilter(channel)" class="material-icons deleteChannelButton tooltip"><div class="tooltiptext tooltiptextInverseColor ttleft">Only Show Videos by {{channel.displayname}}</div>star</button>
+                        <button @click="markChannelDeletion(channel)" class="material-icons deleteChannelButton tooltip"><div class="tooltiptext tooltiptextInverseColor ttright">Remove Channel</div>clear</button>
                     </td>
                 </tr>
                 <tr v-if="removeChannel != null && removeChannel.id == channel.id" class="removeChannelRow">
@@ -1162,12 +1169,12 @@
                         Remove {{channel.displayname}}?
                     </td>
                     <td colspan="1">
-                        <button @click="deleteChannel(channel)" class="material-icons deleteTagFilterButton">check</button>
-                        <button @click="removeChannel = null;" class="material-icons deleteTagFilterButton">clear</button>
+                        <button @click="deleteChannel(channel)" class="material-icons deleteTagFilterButton tooltip"><div class="tooltiptext ttright">Remove Channel</div>check</button>
+                        <button @click="removeChannel = null;" class="material-icons deleteTagFilterButton tooltip"><div class="tooltiptext ttleft">Keep Channel</div>clear</button>
                     </td>
                 </tr>
             </table>
-            <button @click="closeChannels" class="material-icons closeChannelsButton">exit_to_app</button>
+            <button @click="closeChannels" class="material-icons closeChannelsButton tooltip"><div class="tooltiptext ttleft">Close Window</div>exit_to_app</button>
         </div>
 
         <div class="spacer">
@@ -1202,8 +1209,8 @@
                             <tr>
                                 <td style="display: flex;">
                                     <p class="playlistHint">PLAYLIST</p>
-                                    <button @click="prev(video.list)" style="margin-left: auto" class="material-icons listButton">fast_rewind</button>
-                                    <button @click="next(video.list)" class="material-icons listButton">fast_forward</button>
+                                    <button @click="prev(video.list)" style="margin-left: auto" class="material-icons listButton tooltip"><div class="tooltiptext ttleft">Previous Video</div>fast_rewind</button>
+                                    <button @click="next(video.list)" class="material-icons listButton tooltip"><div class="tooltiptext ttright">Next Video</div>fast_forward</button>
                                     <button @click="showUniqueList(video.list)" class="material-icons listButton tooltip"><div class="tooltiptext ttright">Show Playlist</div>view_list</button>
                                 </td>
                             </tr>
