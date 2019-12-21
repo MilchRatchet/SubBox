@@ -1,11 +1,13 @@
 ﻿<!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="utf-8" />
-    <script src="/vue.min.js"></script>
+    <script src="js/vue.min.js"></script>
     <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="../css/brand-icons.css">
+    <link rel="stylesheet" href="css/tutorial.css">
     <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
     <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
     <link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
@@ -24,217 +26,17 @@
     <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
     <meta name="theme-color" content="#ffffff">
     <title>SubBox - Introduction</title>
-    <style>
-        * {
-            margin: 0;
-            font-size: 48px;
-            font-family: 'Roboto', sans-serif;
-            -moz-user-select: none;
-            -webkit-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-        }
-
-        section {
-            display: flex;
-            height: 540px;
-            width: 100%;
-            padding: 0px;
-            justify-content: center;
-            align-items: center;
-            background-color: #fafafa;
-        }
-
-        button {
-            border: none;
-            background-color: transparent;
-            color: #131313;
-            cursor: pointer;
-            vertical-align: central;
-        }
-
-        .refreshButton {
-            color: #fafafa;
-            transition: transform 1s;
-        }
-
-            .refreshButton:hover {
-                transform: rotate(360deg);
-                transition: transform 1s;
-            }
-
-        img {
-            height: 400px;
-        }
-
-        b {
-            font-size: 24px;
-            margin-right: 5px;
-        }
-
-        p {
-            margin: 10px;
-        }
-
-        ul {
-            list-style-type: none;
-        }
-
-        li {
-            font-size: 16px;
-            line-height: 24px;
-        }
-
-        .miniSection {
-            height: 100px;
-            background-color: #131313;
-        }
-
-            .miniSection p {
-                color: #fafafa;
-                font-size: 20px;
-                display: flex;
-            }
-
-            .miniSection a {
-                margin-left: 5px;
-                margin-right: 5px;
-                color: #fafafa;
-                text-decoration: none;
-                font-size: 20px;
-            }
-
-                .miniSection a:hover {
-                    color: #db4437;
-                }
-
-        .Title {
-            text-align: center;
-        }
-
-            .Title img {
-                height: 320px;
-                vertical-align: central;
-            }
-
-        .ImageDiv {
-            width: 34%;
-            padding: 2%;
-        }
-
-        .TextDiv {
-            width: 30%;
-            padding: 2%;
-            text-align: left;
-        }
-
-            .TextDiv p {
-                font-size: 16px;
-                line-height: 24px;
-            }
-
-        .EndSection {
-            pointer-events: none;
-            background: linear-gradient(to right, #db4437 50%, #fafafa 50%);
-            background-size: 200% 100%;
-            background-position: right bottom;
-            transition: 1s;
-        }
-
-            .EndSection:hover {
-                background: linear-gradient(to right, #db4437 50%, #fafafa 50%);
-                background-size: 200% 100%;
-                background-position: left bottom;
-                transition: 1s;
-            }
-
-            .EndSection:hover p {
-                background: linear-gradient(to right, #fafafa 50%, #131313 50%);
-                background-size: 400% 100%;
-                background-position: left bottom;
-                background-clip: text;
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
-                transition: 1s ease;
-            }
-
-            .EndSection:hover a {
-                color: #131313;
-                border-radius: 0;
-                background: linear-gradient(to right, #fafafa 50%, #db4437 50%);
-                background-size: 200% 100%;
-                background-position: left bottom;
-                transition: 1s ease;
-            }
-
-            .EndSection:hover img {
-                filter: brightness(0);
-                transition: 1s ease;
-            }
-
-        .EndDiv {
-            text-align: center;
-        }
-
-            .EndDiv p {
-                font-size: 36px;
-                line-height: 48px;
-                display: flex;
-                justify-content: center;
-                background: linear-gradient(to right, #fafafa 50%, #131313 50%);
-                background-size: 400% 100%;
-                background-position: right bottom;
-                background-clip: text;
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
-                transition: 1s ease;
-            }
-
-            .EndDiv a {
-                display: flex;
-                justify-content: center;
-                pointer-events: auto;
-                text-decoration: none;
-                cursor: pointer;
-                font-size: 36px;
-                color: #fafafa;
-                background: linear-gradient(to right, #fafafa 50%, #db4437 50%);
-                background-size: 200% 100%;
-                background-position: right bottom;
-                padding: 15px;
-                padding-left: 30px;
-                padding-right: 30px;
-                border-radius: 100px;
-                line-height: 48px;
-                display: flex;
-                align-items: center;
-                transition: 1s ease;       
-            }
-
-            .EndDiv img {
-                filter: brightness(1);
-                transition: 1s ease;
-            }
-
-        .miniLogo {
-            height: 28px;
-            margin-right: 5px;
-        }
-
-        .TextDivHeader {
-            font-size: 24px !important;
-            display: flex;
-            align-items: center;
-        }
-    </style>
 </head>
+
 <body>
 
     <div id="app" style="width:100%">
-        <section class="vertical-scrolling" style="background-color: #db4437; color: #fafafa">
+        <section class="vertical-scrolling" style="background-color: #db4437; color: #fafafa; height: 360px">
             <div class="Title">
-                <p>Welcome to</p>
-                <p style="font-size: 200px; display: flex; align-items: center;"><img src="media/LogoWhite.png" />SubBox</p>
+                <p style="font-size: 36px;">Welcome to</p>
+                <p style="font-size: 120px; display: flex; align-items: center;">
+                    <img src="media/LogoWhite.png" />SubBox
+                </p>
             </div>
         </section>
 
@@ -243,15 +45,28 @@
                 <img src="media/intro1.png" />
             </div>
             <div class="TextDiv">
-                <p class="TextDivHeader"><img src="media/LogoRed.png" class="miniLogo" /><b>SubBox</b> - ASP.NET Youtube Tool</p>
-                <p>SubBox is an easy to use tool to manage the uploaded videos of your favourite Youtube channels. Never forget about uploaded videos again and watch them when it is right for you. </p>
+                <p class="TextDivHeader">
+                    <img src="media/LogoRed.png" class="miniLogo" /><b>SubBox</b> - ASP.NET Youtube
+                    Tool
+                </p>
+                <p>
+                    SubBox is an easy to use tool to manage the uploaded videos of your favourite Youtube channels. Never
+                    forget about uploaded videos again and watch them when it is right for you.
+                </p>
             </div>
         </section>
 
         <section>
             <div class="TextDiv">
-                <p class="TextDivHeader"><img src="media/LogoRed.png" class="miniLogo" /><b>SubBox</b> - Add Your Favourite Channels</p>
-                <p>Add your favourite channels through entering their username. Their username might not be the name you are familiar with, in that case just open their channel on Youtube and copy their name there from the link as shown.</p>
+                <p class="TextDivHeader">
+                    <img src="media/LogoRed.png" class="miniLogo" /><b>SubBox</b> - Add Your
+                    Favourite Channels
+                </p>
+                <p>
+                    Add your favourite channels through entering their username. Their username might not be the name you
+                    are familiar with, in that case just open their channel on Youtube and copy their name there from
+                    the link as shown.
+                </p>
             </div>
             <div class="ImageDiv">
                 <img src="media/intro2.png" />
@@ -263,19 +78,35 @@
                 <img src="media/intro3.png" />
             </div>
             <div class="TextDiv">
-                <p class="TextDivHeader"><img src="media/LogoRed.png" class="miniLogo" /><b>SubBox</b> - Manage Your Channels</p>
-                <p>Through the channels button you can get a list of all your currently added channels. Here you can decide to show only videos of one particular channel by clicking on the star icon. Remove a channel with the delete button.</p>
+                <p class="TextDivHeader">
+                    <img src="media/LogoRed.png" class="miniLogo" /><b>SubBox</b> - Manage Your
+                    Channels
+                </p>
+                <p>
+                    Through the channels button you can get a list of all your currently added channels. Here you can
+                    decide to show only videos of one particular channel by clicking on the star icon. Remove a channel
+                    with the delete button.
+                </p>
             </div>
         </section>
 
         <section class="miniSection">
-            <p>Click on the <button class="material-icons refreshButton">autorenew</button> button in the top right corner to update your list manually.</p>
+            <p>
+                Click on the <button class="material-icons refreshButton">autorenew</button> button in the top right
+                corner to update your list manually.
+            </p>
         </section>
 
         <section>
             <div class="TextDiv">
-                <p class="TextDivHeader"><img src="media/LogoRed.png" class="miniLogo" /><b>SubBox</b> - Add Playlists</p>
-                <p>Add playlists you want to watch by simply entering the respective playlist id. To get the playlist id, just open the playlist on Youtube and copy the id from the link. You will always see each current video of every playlist in your list marked with the PLAYLIST box.</p>
+                <p class="TextDivHeader">
+                    <img src="media/LogoRed.png" class="miniLogo" /><b>SubBox</b> - Add Playlists
+                </p>
+                <p>
+                    Add playlists you want to watch by simply entering the respective playlist id. To get the playlist
+                    id, just open the playlist on Youtube and copy the id from the link. You will always see each
+                    current video of every playlist in your list marked with the PLAYLIST box.
+                </p>
             </div>
             <div class="ImageDiv">
                 <img src="media/intro4.png" />
@@ -287,8 +118,14 @@
                 <img src="media/intro5.png" />
             </div>
             <div class="TextDiv">
-                <p class="TextDivHeader"><img src="media/LogoRed.png" class="miniLogo" /><b>SubBox</b> - Using Playlists</p>
-                <p>Use the arrow buttons on the playlist video to go to the next/previous video or use the list button to get a overview over the whole playlist. You want to combine playlists? Just click the list button on an already created playlist and use the add button.</p>
+                <p class="TextDivHeader">
+                    <img src="media/LogoRed.png" class="miniLogo" /><b>SubBox</b> - Using Playlists
+                </p>
+                <p>
+                    Use the arrow buttons on the playlist video to go to the next/previous video or use the list button
+                    to get a overview over the whole playlist. You want to combine playlists? Just click the list button
+                    on an already created playlist and use the add button.
+                </p>
             </div>
         </section>
 
@@ -298,8 +135,14 @@
 
         <section>
             <div class="TextDiv">
-                <p class="TextDivHeader"><img src="media/LogoRed.png" class="miniLogo" /><b>SubBox</b> - The Trashbin</p>
-                <p>If you removed videos from your list on accident or you changed your mind, you can just click on the trashbin icon to get a list of all removed videos. Be aware these videos will be permanently deleted after they have reached a certain age. You can set this age yourself, more on that later.</p>
+                <p class="TextDivHeader">
+                    <img src="media/LogoRed.png" class="miniLogo" /><b>SubBox</b> - The Trashbin
+                </p>
+                <p>
+                    If you removed videos from your list on accident or you changed your mind, you can just click on the
+                    trashbin icon to get a list of all removed videos. Be aware these videos will be permanently deleted
+                    after they have reached a certain age. You can set this age yourself, more on that later.
+                </p>
             </div>
             <div class="ImageDiv">
                 <img src="media/intro6.png" />
@@ -311,15 +154,36 @@
                 <img src="media/intro7.png" />
             </div>
             <div class="TextDiv">
-                <p class="TextDivHeader"><img src="media/LogoRed.png" class="miniLogo" /><b>SubBox</b> - Search and Tags</p>
-                <p>Hover over the "SubBox" to use the search bar. If one search keyword isn't enough, you can make use of tags. Just create a tag and add all keywords you want to combine. When selecting a tag, all videos containing atleast one of the keywords will be shown.</p>
+                <p class="TextDivHeader">
+                    <img src="media/LogoRed.png" class="miniLogo" /><b>SubBox</b> - Search and Tags
+                </p>
+                <p>
+                    Hover over the "SubBox" to use the search bar. If one search keyword isn't enough, you can make use
+                    of tags. Just create a tag and add all keywords you want to combine. When selecting a tag, all
+                    videos containing atleast one of the keywords will be shown.
+                </p>
             </div>
+        </section>
+
+        <section class="miniSection">
+            <p>
+                Don't know what a button or a setting does? Hover over it with your Mouse to display a tooltip.<button class="material-icons tooltip">
+                    <div class="tooltiptext ttleft">I think you got the point.</div>visibility
+                </button>
+            </p>
         </section>
 
         <section>
             <div class="TextDiv">
-                <p class="TextDivHeader"><img src="media/LogoPurple.png" class="miniLogo" /><b>SubBox</b> - Customize To Your Needs</p>
-                <p>Bright themes hurt your eyes? You can switch to a more comfortable dark theme with just one click on the lightbulb. Red is nice and all but you prefer different colors? Switch to any accent color of your choice in the settings tab. In there you can also set your preferences for: </p>
+                <p class="TextDivHeader">
+                    <img src="media/LogoPurple.png" class="miniLogo" /><b>SubBox</b> - Customize To
+                    Your Needs
+                </p>
+                <p>
+                    Bright themes hurt your eyes? You can switch to a more comfortable dark theme with just one click on
+                    the lightbulb. Red is nice and all but you prefer different colors? Switch to any accent color of
+                    your choice in the settings tab. In there you can also set your preferences for:
+                </p>
                 <ul>
                     <li>- How many days of videos you want to retrieve when adding new channels</li>
                     <li>- How many days of videos you want to retrieve everytime you refresh</li>
@@ -333,33 +197,43 @@
             </div>
         </section>
 
+        <section>
+            <div class="ImageDiv">
+                <img src="media/intro9.png" />
+            </div>
+            <div class="TextDiv">
+                <p class="TextDivHeader"><img src="media/LogoPurple.png" class="miniLogo" /><b>SubBox</b> - Nigthly</p>
+                <p>
+                    Download Videos in your SubBox and watch them later from your Harddrive without the need for
+                    Internet. The desired Video Quality for your downloads can be set in the Settings Menu. Individual
+                    Videos outside of your SubBox can be downloaded with the console command "-dlsv".
+                </p>
+            </div>
+        </section>
+
         <section class="miniSection">
-            <p>Check SubBox on <a target="_blank" rel="noopener noreferrer" href="https://github.com/MilchRatchet/SubBox"><i class="bd-github"></i> Github</a> to not miss future updates!</p>
+            <p>
+                Check SubBox on <a target="_blank" rel="noopener noreferrer"
+                                   href="https://github.com/MilchRatchet/SubBox"><i class="bd-github"></i> Github</a> to not miss
+                future updates!
+            </p>
         </section>
 
         <section class="EndSection">
             <div class="EndDiv">
                 <p>This is all you need to know.</p>
-                <a class="leaveButton" @click="leave()">Continue to <img src="media/LogoWhite.png" style="height: 40px" />SubBox</a>
+                <a class="leaveButton" @click="leave()">
+                    Continue to <img src="media/LogoWhite.png"
+                                     style="height: 40px" />SubBox
+                </a>
             </div>
 
         </section>
 
     </div>
 
+    <script src="js/tutorial.js"></script>
 
-    <script>
-        var app = new Vue({
-            methods: {
-                async leave() {
-                    await fetch("api/values/firstdone", { method: "POST" });
-
-                    window.location.replace("http://localhost:5000/");
-                }
-            },
-            el: "#app"
-        });
-    </script>
 </body>
 
 </html>

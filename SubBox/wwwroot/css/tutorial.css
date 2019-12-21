@@ -1,0 +1,253 @@
+* {
+    margin: 0;
+    font-size: 48px;
+    font-family: 'Roboto', sans-serif;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+section {
+    display: flex;
+    height: 540px;
+    width: 100%;
+    padding: 0px;
+    justify-content: center;
+    align-items: center;
+    background-color: #fafafa;
+}
+
+button {
+    border: none;
+    background-color: transparent;
+    color: #131313;
+    cursor: pointer;
+    vertical-align: central;
+}
+
+.refreshButton {
+    color: #fafafa;
+    transition: transform 1s;
+}
+
+.refreshButton:hover {
+    transform: rotate(360deg);
+    transition: transform 1s;
+}
+
+img {
+    height: 400px;
+}
+
+b {
+    font-size: 24px;
+    margin-right: 5px;
+}
+
+p {
+    margin: 10px;
+}
+
+ul {
+    list-style-type: none;
+}
+
+li {
+    font-size: 16px;
+    line-height: 24px;
+}
+
+.miniSection {
+    height: 100px;
+    background-color: #131313;
+}
+
+.miniSection p {
+    color: #fafafa;
+    font-size: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.miniSection a {
+    margin-left: 5px;
+    margin-right: 5px;
+    color: #fafafa;
+    text-decoration: none;
+    font-size: 20px;
+}
+
+.miniSection a:hover {
+    color: #db4437;
+}
+
+.Title {
+    text-align: center;
+}
+
+.Title img {
+    height: 200px;
+    vertical-align: central;
+}
+
+.ImageDiv {
+    width: 40%;
+    padding: 10% 2% 10% 2%;
+}
+
+    .ImageDiv img {
+        width: 95%;
+        height: auto;
+    }
+
+.TextDiv {
+    width: 30%;
+    padding: 2%;
+    text-align: left;
+}
+
+.TextDiv p {
+    font-size: 16px;
+    line-height: 24px;
+}
+
+.EndSection {
+    pointer-events: none;
+    background: linear-gradient(to right, #db4437 50%, #fafafa 50%);
+    background-size: 200% 100%;
+    background-position: right bottom;
+    transition: 1s;
+}
+
+.EndSection:hover {
+    background: linear-gradient(to right, #db4437 50%, #fafafa 50%);
+    background-size: 200% 100%;
+    background-position: left bottom;
+    transition: 1s;
+}
+
+.EndSection:hover p {
+    background: linear-gradient(to right, #fafafa 50%, #131313 50%);
+    background-size: 400% 100%;
+    background-position: left bottom;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    transition: 1s ease;
+}
+
+.EndSection:hover a {
+    color: #131313;
+    border-radius: 0;
+    background: linear-gradient(to right, #fafafa 50%, #db4437 50%);
+    background-size: 200% 100%;
+    background-position: left bottom;
+    transition: 1s ease;
+}
+
+.EndSection:hover img {
+    filter: brightness(0);
+    transition: 1s ease;
+}
+
+.EndDiv {
+    text-align: center;
+}
+
+.EndDiv p {
+    font-size: 36px;
+    line-height: 48px;
+    display: flex;
+    justify-content: center;
+    background: linear-gradient(to right, #fafafa 50%, #131313 50%);
+    background-size: 400% 100%;
+    background-position: right bottom;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    transition: 1s ease;
+}
+
+.EndDiv a {
+    display: flex;
+    justify-content: center;
+    pointer-events: auto;
+    text-decoration: none;
+    cursor: pointer;
+    font-size: 36px;
+    color: #fafafa;
+    background: linear-gradient(to right, #fafafa 50%, #db4437 50%);
+    background-size: 200% 100%;
+    background-position: right bottom;
+    padding: 15px;
+    padding-left: 30px;
+    padding-right: 30px;
+    border-radius: 100px;
+    line-height: 48px;
+    display: flex;
+    align-items: center;
+    transition: 1s ease;
+}
+
+.EndDiv img {
+    filter: brightness(1);
+    transition: 1s ease;
+}
+
+.miniLogo {
+    height: 28px;
+    margin-right: 5px;
+}
+
+.TextDivHeader {
+    font-size: 24px !important;
+    display: flex;
+    align-items: center;
+}
+
+.tooltip {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #fafafa;
+    background: transparent;
+    width: 40px;
+    height: 40px;
+    margin-left: 10px;
+    padding: 5px;
+}
+
+.tooltip:hover {
+    background: #db4437;
+    color: #fafafa;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 100;
+    transition-delay: 0.7s;
+    transition-duration: 0.3s;
+}
+
+.tooltiptext {
+    font-size: 14px;
+    font-family: 'Roboto', sans-serif;
+    padding: 8px;
+    visibility: hidden;
+    opacity: 0;
+    color: #fafafa;
+    background: #db4437;
+    text-align: center;
+    position: absolute;
+    display: inline-block;
+    white-space: nowrap;
+    z-index: 1;
+    box-shadow: 0 5px 10px -6px rgba(0, 0, 0, 0.3);
+}
+
+.ttleft {
+    right: calc(100% + 5px);
+}

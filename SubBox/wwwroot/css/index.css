@@ -1,0 +1,854 @@
+.dark-mode {
+    background-color: #131313;
+    --bg: #131313;
+    --nav_bg: #0b0b0b;
+    --font_title: #fafafa;
+    --font_text: #b8b8b8;
+    --video_bd_bot: #969696;
+}
+
+.light-mode {
+    background-color: #fafafa;
+    --bg: #fafafa;
+    --nav_bg: #ffffff;
+    --font_title: #131313;
+    --font_text: #969696;
+    --video_bd_bot: #969696;
+}
+
+:root {
+    --mainColor: #db4437;
+    --secColor: white;
+}
+
+body {
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+    --red: #db4437;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+i {
+    margin-right: 2px;
+}
+
+nav {
+    display: flex;
+    align-items: center;
+    top: 0;
+    left: 0;
+    right: 0;
+    position: fixed;
+    width: 100%;
+    background-color: var(--nav_bg);
+    height: 40px;
+    z-index: 2;
+    box-shadow: 0 5px 10px -8px rgba(0, 0, 0, .2);
+}
+
+button {
+    padding: 5px;
+    margin: 5px;
+    border: transparent;
+    background-color: transparent;
+    color: var(--font_title);
+    cursor: pointer;
+}
+
+nav button {
+    height: 100%;
+    width: 40px;
+    margin: 0;
+    padding: 0;
+    border-radius: 0px;
+}
+
+nav p {
+    margin-left: 10px;
+    font-size: 22px;
+    color: var(--font_title);
+}
+
+nav button:hover {
+    color: var(--secColor);
+    background-color: var(--mainColor);
+}
+
+input[type=text] {
+    margin-right: 2px;
+    margin-left: 2px;
+    border-radius: 0;
+    padding: 2px;
+    border: solid var(--font_text) 1px;
+    width: 250px;
+    color: var(--font_title);
+    background-color: var(--bg);
+}
+
+    input[type=text]:focus, input[type=text]:hover {
+        border: solid var(--mainColor) 1px;
+    }
+
+input[type=number] {
+    padding: 2px;
+    border: solid var(--font_title) 1px;
+    border-radius: 0;
+    width: 250px;
+    font-weight: bold;
+    color: var(--font_title);
+    background: var(--nav_bg);
+    -moz-appearance: textfield;
+    -webkit-appearance: textfield;
+}
+
+    input[type=number]:hover, input[type=number]:focus {
+        border-color: var(--mainColor);
+    }
+
+input[type=text].search {
+    display: none;
+    padding: 4px;
+    margin: 0;
+    margin-top: 4px;
+    height: 18px;
+    width: 300px;
+}
+
+tr {
+    padding: 0;
+}
+
+select {
+    width: calc(35% + 52px);
+    height: 32px;
+    background: var(--nav_bg);
+    color: var(--font_title);
+    font-size: 14px;
+    font-weight: bold;
+    appearance: none;
+    -webkit-appearance:none;
+    -moz-appearance:none;
+    -ms-appearance:none;
+    border: 1px solid var(--font_title);
+    text-align: center;
+}
+
+.Title {
+    background-color: none;
+    margin-top: 8px;
+    margin-bottom: 0;
+    margin-left: 6px;
+    color: var(--font_title);
+    cursor: default;
+    letter-spacing: 1px;
+    font-weight: bold;
+    background: linear-gradient(to right, var(--mainColor) 50%, var(--font_title) 50%);
+    background-size: 400% 100%;
+    background-position: right bottom;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    transition: 1s ease;
+}
+
+nav:hover .Title {
+    color: var(--mainColor);
+    font-weight: bold;
+    background: linear-gradient(to right,var(--mainColor) 40%, var(--font_title) 40% 65%, var(--mainColor) 65% 75%, var(--font_title) 75%);
+    background-size: 400% 100%;
+    background-position: left bottom;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    transition: 2s ease;
+}
+
+.topbar {
+    height: 40px;
+}
+
+    .topbar:hover .Title {
+        display: none;
+    }
+
+    .topbar:hover .search {
+        display: flex;
+    }
+
+.search:focus {
+    display: flex !important;
+}
+
+    .search:focus ~ .Title {
+        display: none !important;
+    }
+
+.channelInput {
+    display: flex;
+    align-items: center;
+    vertical-align: middle;
+    height: 100%;
+}
+
+.refreshButton {
+    height: 32px;
+    width: 32px;
+    margin-left: 4px;
+    transition: transform 1s;
+    border-radius: 100%;
+}
+
+    .refreshButton:hover {
+        transform: rotate(360deg);
+        transition: transform 1s;
+        border-radius: 100%;
+    }
+
+.videoTitle {
+    width: 100%;
+    font-size: 18px;
+    color: var(--font_title);
+    padding-top: 0;
+    padding-bottom: 0;
+    padding-left: 10px;
+    margin: 0;
+    cursor: pointer;
+}
+
+.videoText {
+    font-size: 13px;
+    color: var(--font_text);
+    padding-top: 0;
+    padding-bottom: 0;
+    padding-left: 10px;
+}
+
+.videoHeaderName {
+    color: var(--font_title);
+    display: inline-block;
+    cursor: pointer;
+    font-size: 16px;
+    line-height: 20px;
+    font-weight: bold;
+    margin-left: 5px;
+}
+
+.videoList {
+    margin-left: auto;
+    margin-right: auto;
+    width: 60%;
+}
+
+.videoBox {
+    border-bottom-color: var(--video_bd_bot);
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+}
+
+    .videoBox:hover .deleteButton {
+        color: var(--font_title);
+    }
+
+    .videoBox:hover .dlStatus1Button {
+        color: var(--secColor);
+        background: var(--mainColor);
+    }
+
+    .videoBox:hover .dlStatus2Button {
+        color: #fafafa;
+        background: linear-gradient(to right, #8f54f1, #8f85f1, #00bf9f);
+        background-position: left;
+        background-size: 200%;
+        transition: 0.5s background;
+    }
+
+.deleteButton {
+    border-radius: 0;
+    float: right;
+    position: relative;
+    color: transparent;
+    height: auto;
+    margin-top: 50px;
+    padding: 3px;
+    background: none;
+}
+
+    .deleteButton:hover {
+        color: var(--secColor) !important;
+        background-color: var(--mainColor);
+    }
+
+.dlStatus2Button, .dlStatus1Button {
+    background: none;
+    border-radius: 0;
+    float: right;
+    position: relative;
+    color: transparent;
+    height: 30px;
+    font-size: 16px;
+    margin-top: 50px;
+    padding: 1px 7px 1px 7px;
+    background: none;
+}
+
+    .dlStatus2Button:hover {
+        background-position: right !important;
+        transition: 0.5s;
+    }
+
+
+.videoTextChannel {
+    cursor: pointer;
+}
+
+    .videoTextChannel:hover {
+        color: var(--font_title);
+    }
+
+.videoDesc {
+    vertical-align: top;
+    padding-left: 10px;
+    color: var(--font_text);
+    font-size: 13px;
+}
+
+    .videoDesc p {
+        max-height: 2.4em;
+        line-height: 1.2em;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        display: -webkit-box;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        word-break: break-word;
+        width: 100%;
+    }
+
+.overlay {
+    position: fixed;
+    top: 40px;
+    margin-left: 0%;
+    width: 400px;
+    background-color: var(--nav_bg);
+    z-index: 2;
+    display: block;
+    border: 1px solid var(--font_text);
+    border-left: none;
+    border-top: none;
+    box-shadow: 5px 5px 10px -8px rgba(0, 0, 0, .2);
+}
+
+.channelList {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+    .channelList img {
+        margin-top: 5px;
+        margin-bottom: 5px;
+        margin-left: 10px;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        vertical-align: middle;
+        cursor: pointer;
+    }
+
+.channelNameColumn {
+    color: var(--font_title);
+    padding-left: 10px;
+    width: 275px;
+}
+
+.channelButtonColumn {
+    width: 85px;
+}
+
+.channelRow {
+    border: none;
+    background: linear-gradient(to right, var(--mainColor) 50%, transparent 50%);
+    background-size: 200% 100%;
+    background-position: right bottom;
+    transition: 0.2s background ease;
+}
+
+    .channelRow td:first-child {
+        padding-left: 12px;
+    }
+
+    .channelRow:hover {
+        background-position: left bottom;
+        transition: 0.4s background ease;
+    }
+
+        .channelRow:hover td {
+            color: var(--secColor) !important;
+        }
+
+        .channelRow:hover button {
+            color: var(--secColor);
+        }
+
+.removeChannelRow {
+    background: var(--bg);
+    color: var(--font_title);
+} 
+
+    .removeChannelRow:hover {
+        background: var(--nav_bg);
+    }
+
+        .removeChannelRow:hover button {
+            color: var(--font_title);
+        }
+
+.locked {
+    border-left: 5px solid #daa520;
+    background: linear-gradient(to right, #daa520 50%, transparent 50%);
+    background-size: 200% 100%;
+    background-position: right bottom;
+    transition: 0.2s background ease;
+}
+
+    .locked td:first-child {
+        padding-left: 8px;
+    }
+
+    .locked:hover {
+        background-position: left bottom;
+        transition: 0.4s background ease;
+    }
+
+        .locked:hover .deleteChannelButton:hover {
+            color: #daa520 !important;
+        }
+
+button.deleteChannelButton:hover {
+    color: var(--mainColor);
+    background: linear-gradient(to top, var(--secColor) 50%, transparent 50%);
+    background-size: 100% 200%;
+    background-position: right bottom;
+    transition: 0.2s;
+}
+
+.deleteChannelButton {
+    display: inline-block;
+    border-radius: 0;
+    padding: 1px !important;
+    color: transparent;
+    background: linear-gradient(to top, var(--secColor) 50%, transparent 50%);
+    background-size: 100% 200%;
+    background-position: right top;
+    transition: background 0.1s;
+}
+
+.closeChannelsButton {
+    float: right;
+    border-radius: 5px;
+    background: linear-gradient(to right, var(--mainColor) 50%, transparent 50%);
+    background-size: 200% 100%;
+    background-position: right bottom;
+    transition: 0.1s ease;
+}
+
+    .closeChannelsButton:hover {
+        color: var(--secColor);
+        border-radius: 5px;
+        background: linear-gradient(to right, var(--mainColor) 50%, transparent 50%);
+        background-size: 200% 100%;
+        background-position: left bottom;
+        transition: 0.2s ease;
+    }
+
+.listList {
+    margin-left: auto;
+    margin-right: auto;
+    width: 60%;
+}
+
+.spacer {
+    display: flex;
+    width: 100%;
+    margin-top: 40px;
+    height: 30px;
+}
+
+.videoBox:hover .listButton {
+    color: var(--font_title);
+}
+
+.listButton {
+    border-radius: 0;
+    padding: 2px;
+    color: transparent;
+    background-color: transparent;
+    border: 1px solid transparent;
+}
+
+    .listButton:hover {
+        color: var(--secColor) !important;
+        background-color: var(--mainColor);
+    }
+
+.inputList {
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+
+.overlayUniqueList {
+    position: fixed;
+    top: 40px;
+    margin-left: 0;
+    width: 100%;
+    height: 97%;
+    background-color: var(--bg);
+    z-index: 3;
+    display: flex;
+    padding: 0;
+}
+
+.scrollList {
+    width: 100%;
+    overflow: auto;
+    margin: 0;
+}
+
+.uniqueList {
+    margin-left: auto;
+    margin-right: auto;
+    width: 60%;
+}
+
+.closeUniqueListButton {
+    margin-left: auto;
+    margin-right: 0;
+}
+
+    .closeUniqueListButton:hover {
+        color: var(--secColor);
+        transition: 0.2s;
+    }
+
+.playlistHint {
+    color: var(--mainColor);
+    font-size: 12px;
+    border: 1px var(--mainColor) solid;
+    font-weight: 500;
+    margin-left: 10px;
+    display: inline-block;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    padding-left: 3px;
+    padding-right: 3px;
+    line-height: 12px;
+    cursor: default;
+}
+
+.settingsOverlay {
+    position: fixed;
+    top: 40px;
+    margin-left: 80%;
+    width: 20%;
+    background-color: var(--nav_bg);
+    z-index: 2;
+    display: block;
+    border: 1px solid var(--font_text);
+    border-right: none;
+    border-top: none;
+    box-shadow: -5px 5px 10px -8px rgba(0, 0, 0, .2);
+}
+
+    .settingsOverlay p {
+        text-align: center;
+        color: var(--font_title);
+        margin: 0;
+    }
+
+    .settingsOverlay table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .settingsOverlay td {
+        justify-items: center;
+        width: 50%;
+        color: var(--font_title);
+        padding-left: 10px;
+    }
+
+    .settingsOverlay tr:hover td {
+        background-color: var(--bg);
+    }
+
+    .settingsOverlay td:first-of-type {
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
+
+    .settingsOverlay tr:nth-child(2) td {
+        padding-top: 5px;
+    }
+
+    .settingsOverlay button {
+        float: right;
+    }
+
+.numberInput button:hover {
+    color: var(--secColor);
+    background: var(--mainColor);
+}
+
+.settingsOverlay input {
+    width: 35%;
+    margin: 0;
+    padding: 0;
+    font-size: 16px;
+    text-align: center;
+    border: 1px solid var(--font_title);
+}
+
+.numberInput {
+    box-sizing: border-box;
+    justify-content: center;
+    display: flex;
+    padding: 0;
+}
+
+    .numberInput button {
+        align-items: center;
+        justify-content: center;
+        border: 1px var(--font_title) solid;
+        border-radius: 0;
+        cursor: pointer;
+        margin: 0;
+        padding: 0;
+        position: relative;
+        background: transparent;
+    }
+
+.videoThumb {
+    position: relative;
+    cursor: pointer;
+}
+
+    .videoThumb p {
+        font-size: 12px;
+        font-weight: 500;
+        bottom: -6px;
+        right: 3px;
+        color: white;
+        background: rgba(0,0,0,0.8);
+        position: absolute;
+        padding-left: 4px;
+        padding-right: 4px;
+        padding-top: 2px;
+        padding-bottom: 2px;
+        border-radius: 2px;
+    }
+
+.changeWarning {
+    margin-top: 4px !important;
+    cursor: default;
+    float: left;
+    width: 180px;
+    padding: 3px;
+    border-radius: 2px;
+    color: var(--secColor) !important;
+    font-size: 18px;
+    border: 1px solid var(--font_title);
+    background: linear-gradient(to right, var(--mainColor) 50%, transparent 50%);
+    background-size: 200% 100%;
+    background-position: left bottom;
+}
+
+.fade-enter-active {
+    transition: 0.3s;
+}
+
+.fade-leave-active {
+    transition: 0s;
+}
+
+.fade-enter, .fade-leave-to {
+    background-position: right bottom;
+}
+
+.bottomDiv {
+    text-align: center;
+}
+
+.bottomDivEntry {
+    text-decoration: none;
+    cursor: pointer;
+    font-size: 12px;
+    color: var(--font_title);
+    margin: 20px;
+    display: inline-flex;
+}
+
+    .bottomDivEntry:hover {
+        color: var(--font_text);
+    }
+
+.addTagDiv {
+    width: 100%;
+    height: 24px;
+    display: flex;
+    vertical-align: central;
+    padding: 3px;
+    margin-bottom: 10px;
+}
+
+input[type=text].addTagInput {
+    margin-left: 10px;
+    margin-right: 0;
+    width: 75%;
+    height: 100%;
+}
+
+.addTagButton {
+    border-radius: 0;
+    margin: 0;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    border: 1px solid var(--font_text);
+}
+
+        .addTagButton:hover {
+            background: var(--mainColor);
+            color: var(--secColor);
+        }
+
+.addTagFilterDiv {
+    width: 100%;
+    height: 24px;
+    display: flex;
+    vertical-align: central;
+    padding: 3px;
+    margin-bottom: 10px;
+}
+
+input[type=text].addTagFilterInput {
+    margin-left: 15px;
+    margin-right: 0;
+    width: 75%;
+    height: 100%;
+}
+
+.addTagFilterButton {
+    border-radius: 0;
+    margin: 0;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    border: 1px solid var(--font_text);
+}
+
+    .addTagFilterButton:hover {
+        background: var(--mainColor);
+        color: var(--secColor);
+    }
+
+.tagFilterTable {
+    width: 100%;
+    border-collapse: collapse;
+    color: var(--font_title);
+}
+
+    .tagFilterTable td {
+        padding: 0;
+        padding-left: 20px;
+    }
+
+        .tagFilterTable tr:hover {
+            background: var(--nav_bg);
+            color: var(--font_title);
+        }
+
+        .tagFilterTable tr:hover button {
+            color: var(--font_title);
+        }
+
+.tagFilterRow {
+    background: var(--bg);
+    border-right: 1px solid var(--font_title);
+}
+
+.selectedTag {
+    cursor: default;
+    border-radius: 4px;
+    padding: 4px;
+    font-size: 16px;
+    background: var(--mainColor);
+    color: var(--secColor);
+}
+.deleteTagFilterButton {
+    border-radius: 0;
+    padding: 0;
+    float: right;
+    width: 24px;
+    height: 24px;
+    color: transparent;
+    background: transparent;
+}
+
+button.deleteTagFilterButton:hover {
+    background: var(--mainColor);
+    color: var(--secColor) !important;
+}
+
+.tooltip {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+    .tooltip:hover .tooltiptext{
+        visibility: visible;
+        opacity: 100;
+        transition-delay: 0.7s;
+        transition-duration: 0.3s;
+    }
+
+.tooltiptext {
+    font-size: 14px;
+    font-family: 'Roboto', sans-serif;
+    padding: 8px;
+    visibility: hidden;
+    opacity: 0;
+    color: var(--secColor);
+    background: var(--mainColor);
+    text-align: center;
+    position: absolute;
+    display: inline-block;
+    white-space: nowrap;
+    z-index: 1;
+    box-shadow: 0 5px 10px -6px rgba(0,0,0,0.3);
+}
+
+.tooltiptextInverseColor {
+    color: var(--mainColor);
+    background: var(--secColor);
+}
+
+.ttleft {
+    right: calc(100% + 5px);  
+}
+
+.ttright {
+    left: calc(100% + 5px);
+}
+
+.ttup {
+    bottom: calc(100% + 5px);
+}
+
+.ttdown {
+    top: calc(100% + 5px);            
+}
