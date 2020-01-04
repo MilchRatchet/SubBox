@@ -340,3 +340,5 @@ ASALocalRun/
 healthchecksdb
 /SubBox/Models/Config.cs
 /SubBox/settings.txt
+/SubBox/youtube-dl.exe
+/SubBox/ffmpeg.exe
