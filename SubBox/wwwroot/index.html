@@ -37,7 +37,7 @@
                 <p class="Title" style="margin-top:0; margin-right: 6px">{{uniqueList.length}} Video{{(uniqueList.length != 1) ? 's' : ''}}</p>
                 <button @click="showListInput()" class="material-icons tooltip"><div class="tooltiptext ttdown">Extend Playlist</div>playlist_add</button>
                 <div v-show="inputListMode" class="inputList">
-                    <input v-model="addPlayList" autocomplete="off" type="text" name="PlaylistIdUnqiue" placeholder="Playlist Id..." />
+                    <input @keyup.enter="submitPlaylist" v-model="addPlayList" autocomplete="off" type="text" name="PlaylistIdUnqiue" placeholder="Playlist Id..." />
                     <button @click="submitPlaylist" class="material-icons">search</button>
                 </div>
                 <button @click="closeUniqueList" class="material-icons closeUniqueListButton tooltip"><div class="tooltiptext ttdown">Back</div>exit_to_app</button>
@@ -129,13 +129,13 @@
         <nav v-show="videoListMode" class="mainNav">
             <button @click="showChannelInput" class="material-icons tooltip"><div class="tooltiptext ttdown" style="padding-left: 55px">Add Channel</div>add_box</button>
             <div v-show="inputMode" class="channelInput">
-                <input v-model="addChannelName" autocomplete="off" type="text" name="Username" placeholder="Channel Name..." />
+                <input @keyup.enter="onSubmit" v-model="addChannelName" autocomplete="off" type="text" name="Username" placeholder="Channel Name..." />
                 <button class="material-icons" @click="onSubmit">search</button>
             </div>
             <button @click="showChannels" class="material-icons tooltip"><div class="tooltiptext ttdown">Channel List</div>{{(filter === 'SubBox') ? 'account_box' : 'star'}}</button>
             <button @click="showListInput()" class="material-icons tooltip"><div class="tooltiptext ttdown">Add Playlist</div>playlist_add</button>
             <div v-show="inputListMode" class="inputList">
-                <input v-model="addPlayList" autocomplete="off" type="text" name="PlaylistId" placeholder="Playlist Id..." />
+                <input @keyup.enter="submitPlaylist" v-model="addPlayList" autocomplete="off" type="text" name="PlaylistId" placeholder="Playlist Id..." />
                 <button @click="submitPlaylist" class="material-icons">search</button>
             </div>
             <button @click="showOldVideos" class="material-icons tooltip"><div class="tooltiptext ttdown">Trashbin</div>delete</button>
@@ -257,7 +257,7 @@
 
         <div v-show="tagsMode" class="overlay">
             <div class="addTagDiv">
-                <input class="addTagInput" v-model="addTag" type="text" autocomplete="off" placeholder="Enter Tag Name..." />
+                <input @keyup.enter="submitTag" class="addTagInput" v-model="addTag" type="text" autocomplete="off" placeholder="Enter Tag Name..." />
                 <button @click="submitTag" class="material-icons addTagButton">add</button>
             </div>
             <table class="channelList" v-for="tag in tags">
@@ -284,7 +284,7 @@
                             </tr>
                         </table>
                         <div class="addTagFilterDiv">
-                            <input class="addTagFilterInput" v-model="addTagFilter" type="text" autocomplete="off" placeholder="Enter Filter..." />
+                            <input @keyup.enter="addFilterToTag(tag)"  class="addTagFilterInput" v-model="addTagFilter" type="text" autocomplete="off" placeholder="Enter Filter..." />
                             <button @click="addFilterToTag(tag)" class="material-icons addTagFilterButton">add</button>
                         </div>
                         <button @click="saveFilters(tag)" class="material-icons closeChannelsButton tooltip"><div class="tooltiptext ttleft">Save Changes</div>save</button>
