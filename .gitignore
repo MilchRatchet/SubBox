@@ -342,3 +342,4 @@ healthchecksdb
 /SubBox/settings.txt
 /SubBox/youtube-dl.exe
 /SubBox/ffmpeg.exe
+/SubBox/saves.db
