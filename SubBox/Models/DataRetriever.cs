@@ -35,7 +35,14 @@ namespace SubBox.Models
 
             var Request = service.Channels.List("snippet");
 
-            Request.ForUsername = name;
+            if (name.Length == 24)
+            {
+                Request.Id = name;
+            }
+            else
+            {
+                Request.ForUsername = name;
+            }
 
             var Response = Request.Execute();
 
