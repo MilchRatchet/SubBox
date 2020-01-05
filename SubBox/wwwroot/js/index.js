@@ -32,6 +32,8 @@ var app = new Vue({
         settingPQ: 4,
         settings: [],
         changes: false,
+        inputContext: false,
+        selectedInputForContext: null,
     },
     computed: {
         filteredVideos: function () {
@@ -186,8 +188,18 @@ var app = new Vue({
 
             this.settingsMode = !this.settingsMode;
         },
-        showTags() {
-            this.channelMode = false;
+        async showTags() {
+            if (this.tagsMode && !this.channelMode) {
+                var waiter = fetch("/api/values/channels");
+
+                var result = await waiter;
+
+                this.channels = await result.json();
+            }
+
+            if (!this.tagsMode) {
+                this.channelMode = false;
+            }   
 
             if (this.tagsMode) {
                 this.tags.forEach(function (t) {
@@ -308,12 +320,23 @@ var app = new Vue({
 
                 this.listUpdate();
             } else {
-                var waiter = fetch("/api/values/video/" + video.id, { method: "DELETE" });
+                fetch("/api/values/video/" + video.id, { method: "DELETE" });
 
                 var index = this.videos.indexOf(video);
 
                 this.videos.splice(index, 1);
             }
+        },
+        deleteFilteredVideos() {
+            if (this.filter === "SubBox" && this.searchFilter === "" && this.selectedTag === null) return;
+
+            this.filteredVideos.forEach(function (item) {
+                fetch("/api/values/video/" + item.id, { method: "DELETE" });
+
+                var index = app.videos.indexOf(item);
+
+                app.videos.splice(index, 1);
+            });
         },
         async reactivateVideo(video) {
             var waiter = fetch("/api/values/video/" + video.id, { method: "POST" });
@@ -334,11 +357,11 @@ var app = new Vue({
 
             var waiter = fetch("/api/values/channels");
 
-            if (this.tagsMode) {
-                this.showTags();
-            }
-
             this.channelMode = !this.channelMode;
+
+            if (this.tagsMode) {
+                await this.showTags();
+            }
 
             var result = await waiter;
 
@@ -635,10 +658,69 @@ var app = new Vue({
             fetch("/api/values/tags/set/" + tag.name + "/§" + tag.filter, { method: "POST" });
 
             this.tags.sort();
+        },
+        resetAllFilters() {
+            this.filter = "SubBox";
+
+            this.selectedTag = null;
+
+            this.searchFilter = "";
+
+            this.unlockAllChannels();
+        },
+        actOnClipboard(command) {
+            this.selectedInputForContext.focus();
+
+            this.selectedInputForContext.select();
+
+            document.execCommand(command);
         }
     },
     el: "#app",
     async mounted() {
+
+        const page = document.getElementById("app");
+
+        page.addEventListener("contextmenu", function (event) {
+            if (!app.videoListMode) return;
+
+            event = event || window.event;
+
+            const target = event.target || event.srcElement;
+
+            if (target.nodeName === "INPUT") {
+                app.inputContext = true;
+
+                app.selectedInputForContext = target;
+            }
+
+            event.preventDefault();
+
+            var ctxMenu = document.getElementById("ctxMenu");
+
+            ctxMenu.style.display = "block";
+
+            ctxMenu.style.left = (event.pageX + 1) + "px";
+
+            ctxMenu.style.top = (event.pageY + 1) + "px";
+        }, false);
+
+        page.addEventListener("click", function (event) {
+
+            app.inputContext = false;
+
+            app.selectedInputForContext = null;
+
+            var ctxMenu = document.getElementById("ctxMenu");
+
+            ctxMenu.style.display = "";
+
+            ctxMenu.style.left = "";
+
+            ctxMenu.style.top = "";
+        }, false);
+
+
         var result = await fetch("/api/values/first");
 
         var first = await result.json();

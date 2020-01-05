@@ -31,6 +31,25 @@
 <body>
     <div id="app" :class="night ? 'dark-mode' : 'light-mode'">
 
+        <div id="ctxMenu">
+            <div @click="actOnClipboard('cut')" v-show="inputContext" class="menuButton">
+                <p style="color: transparent" class="material-icons">filter_list</p>
+                <p>Cut</p>
+            </div>
+            <div @click="actOnClipboard('copy')" v-show="inputContext" class="menuButton">
+                <p style="color: transparent" class="material-icons">file_copy</p>
+                <p>Copy</p>
+            </div>
+            <div @click="resetAllFilters()" class="menuButton">
+                <p class="material-icons">filter_list</p>
+                <p>Reset all filters</p>
+            </div>
+            <div @click="deleteFilteredVideos()" class="menuButton">
+                <p class="material-icons">delete_sweep</p>
+                <p>Move all to Trashbin</p>
+            </div>
+        </div>
+
         <div v-show="uniqueListMode" class="overlayUniqueList">
             <nav>
                 <p>Playlist Contents</p><p class="material-icons">view_list</p><p>|</p>
@@ -284,7 +303,10 @@
                             </tr>
                         </table>
                         <div class="addTagFilterDiv">
-                            <input @keyup.enter="addFilterToTag(tag)"  class="addTagFilterInput" v-model="addTagFilter" type="text" autocomplete="off" placeholder="Enter Filter..." />
+                            <input @keyup.enter="addFilterToTag(tag)"  class="addTagFilterInput" v-model="addTagFilter" type="text" autocomplete="off" placeholder="Enter Filter..." list="channels"/>
+                            <datalist id="channels">
+                                <option v-for="ch in channels">{{ch.displayname}}</option>
+                            </datalist>
                             <button @click="addFilterToTag(tag)" class="material-icons addTagFilterButton">add</button>
                         </div>
                         <button @click="saveFilters(tag)" class="material-icons closeChannelsButton tooltip"><div class="tooltiptext ttleft">Save Changes</div>save</button>

@@ -21,6 +21,25 @@
     --secColor: white;
 }
 
+#app {
+    height: 100%;
+}
+
+#ctxMenu {
+    position: absolute;
+    display: none;
+    z-index: 1000;
+    width: auto;
+    height: auto;
+    background-color: transparent;
+    box-shadow: 0 5px 10px -6px rgba(0, 0, 0, .4);
+    font-size: 14px;
+}
+
+html {
+    height: 100%;
+}
+
 body {
     margin: 0;
     font-family: 'Roboto', sans-serif;
@@ -30,6 +49,8 @@ body {
     -ms-user-select: none;
     user-select: none;
     outline: none !important;
+    overflow-x: hidden;
+    height: calc(100% - 40px);
 }
 
 i {
@@ -859,3 +880,25 @@ button.deleteTagFilterButton:hover {
 .ttdown {
     top: calc(100% + 5px);            
 }
+
+.menuButton {
+    display: flex;
+    align-items: center;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    background-color: var(--nav_bg);
+    color: var(--font_title);
+    height: 24px;
+    width: auto;
+    white-space: nowrap;
+}
+
+    .menuButton p {
+        margin-left: 3px;
+        margin-right: 3px;
+    }
+
+    .menuButton:hover {
+        background-color: var(--mainColor);
+        color: var(--secColor);
+    }
