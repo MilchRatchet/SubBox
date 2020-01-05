@@ -32,21 +32,40 @@
     <div id="app" :class="night ? 'dark-mode' : 'light-mode'">
 
         <div id="ctxMenu">
-            <div @click="actOnClipboard('cut')" v-show="inputContext" class="menuButton">
+            <div @click="$event.preventDefault(); actOnClipboard('cut')" v-show="inputContext" class="menuButton">
                 <p style="color: transparent" class="material-icons">filter_list</p>
                 <p>Cut</p>
             </div>
-            <div @click="actOnClipboard('copy')" v-show="inputContext" class="menuButton">
+            <div @click="$event.preventDefault(); actOnClipboard('copy')" v-show="inputContext" class="menuButton">
                 <p style="color: transparent" class="material-icons">file_copy</p>
                 <p>Copy</p>
             </div>
-            <div @click="resetAllFilters()" class="menuButton">
+            <div @click="resetAllFilters()" v-show="videoListMode" class="menuButton">
                 <p class="material-icons">filter_list</p>
                 <p>Reset all filters</p>
             </div>
-            <div @click="deleteFilteredVideos()" class="menuButton">
+            <div @click="deleteFilteredVideos()" v-show="videoListMode" class="menuButton">
                 <p class="material-icons">delete_sweep</p>
                 <p>Move all to Trashbin</p>
+            </div>
+            <div @click="informationMode = !informationMode" class="menuButton">
+                <p class="material-icons">priority_high</p>
+                <p>About</p>
+            </div>
+        </div>
+
+        <div v-show="informationMode" id="informationOverlay">
+            <div class="informationOverlayRow">
+                <p>SubBox Version:</p>
+                <p>1.5.1</p>
+            </div>
+            <div class="informationOverlayRow">
+                <p>Author:</p>
+                <p>MilchRatchet</p>
+            </div>
+            <div class="informationOverlayRow">
+                <p></p>
+                <button @click="informationMode = false" class="material-icons">exit</button>
             </div>
         </div>
 

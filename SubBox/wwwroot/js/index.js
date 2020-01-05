@@ -34,6 +34,8 @@ var app = new Vue({
         changes: false,
         inputContext: false,
         selectedInputForContext: null,
+        informationMode: false,
+        informationContent: [],
     },
     computed: {
         filteredVideos: function () {
@@ -682,13 +684,11 @@ var app = new Vue({
         const page = document.getElementById("app");
 
         page.addEventListener("contextmenu", function (event) {
-            if (!app.videoListMode) return;
-
             event = event || window.event;
 
             const target = event.target || event.srcElement;
 
-            if (target.nodeName === "INPUT") {
+            if (target.nodeName === "INPUT" && target.className !== "search") {
                 app.inputContext = true;
 
                 app.selectedInputForContext = target;

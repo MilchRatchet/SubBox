@@ -29,11 +29,25 @@
     position: absolute;
     display: none;
     z-index: 1000;
-    width: auto;
+    width: 165px;
     height: auto;
     background-color: transparent;
     box-shadow: 0 5px 10px -6px rgba(0, 0, 0, .4);
     font-size: 14px;
+}
+
+#informationOverlay {
+    margin-left: calc(50% - 200px);
+    margin-top: 50px;
+    position: fixed;
+    z-index: 2000;
+    width: 400px;
+    height: auto;
+    background-color: var(--nav_bg);
+    color: var(--font_title);
+    box-shadow: 0 5px 10px -6px rgba(0, 0, 0, .4);
+    padding-top: 10px;
+    padding-top: 10px;
 }
 
 html {
@@ -901,4 +915,21 @@ button.deleteTagFilterButton:hover {
     .menuButton:hover {
         background-color: var(--mainColor);
         color: var(--secColor);
+    }
+
+.informationOverlayRow {
+    padding: 3px;
+    display: flex;
+    width: 100%;
+    height: 24px;
+    align-items: center;
+}
+
+    .informationOverlayRow:hover {
+        background-color: var(--bg);
+    }
+
+    .informationOverlayRow p {
+        width: 50%;
+        display: inline-block;
     }
