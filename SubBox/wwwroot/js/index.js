@@ -307,18 +307,16 @@ var app = new Vue({
                 if (status.kind == "downloadResult") {
                     Vue.set(video, 'dlstatus', ((status.value) ? 2 : 0));
 
-                    if (status.value) {
-                        app.messages.push({
-                            "status": status.value,
-                            "title": video.title,
-                            "channel": video.channelTitle,
-                            "thumbUrl": video.thumbnailUrl,
-                            "videoId": video.id,
-                            "text": ((status.value) ? "Download Finished" : "Download Failed")
-                        });
+                    app.messages.push({
+                        "title": video.title,
+                        "subtitle": video.channelTitle,
+                        "thumbUrl": video.thumbnailUrl,
+                        "text": ((status.value) ? "Download Finished" : "Download Failed"),
+                        "event": ((status.value) ? "window.location.replace('http://localhost:5000/localbrowser.html?id=" + video.id + "');" : "return;")
+                    });
 
-                        setTimeout(() => app.messages.shift(), 10000);
-                    }
+                    setTimeout(() => app.messages.shift(), 10000);
+                    
 
                     clearInterval(updater);
                 }
@@ -700,6 +698,13 @@ var app = new Vue({
                 this.informationContent = await result.json();
             }
         },
+        execEvent(message) {
+            console.log(message.event);
+
+            const func = new Function(message.event);
+
+            func();
+        }
     },
     el: "#app",
     async mounted() {

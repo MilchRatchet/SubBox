@@ -107,11 +107,11 @@
         </div>
 
         <div v-show="messages.length !== 0" id="notifications">
-            <div @click="if (message.status) window.location.replace('http://localhost:5000/localbrowser.html?id=' + message.videoId);" class="message" v-for="message in messages">
+            <div @click="execEvent(message)" class="message" v-for="message in messages">
                 <img :src="message.thumbUrl"/>
                 <div>
                     <p>{{message.title}}</p>
-                    <p style="font-size: 14px">{{message.channel}}</p>
+                    <p style="font-size: 14px">{{message.subtitle}}</p>
                     <p style="font-size: 14px">{{message.text}}</p>
                 </div>
             </div>
