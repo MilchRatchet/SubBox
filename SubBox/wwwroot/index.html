@@ -456,39 +456,35 @@
             <tr v-for="video in filteredVideos">
                 <td>
                     <div class="videoBox">
-                        <table style="display: inline-block; border-collapse: collapse; width:80%">
-                            <tr>
-                                <td colspan="2" style="padding:10px">
-                                    <img :src="video.channelPicUrl" style="left:0;width:32px;height:32px;border-radius: 50%;vertical-align:middle;cursor:pointer;" @click="openChannel(video.channelName)" />
-                                    <span class="videoHeaderName" @click="openChannel(video.channelName)">{{video.channelTitle}}</span>
-                                </td>
-                            </tr>
-                            <tr class="videoRows">
-                                <th rowspan="3" valign="top">
-                                    <div @click="openVideo(video.id)" class="videoThumb">
-                                        <img :src="video.thumbnailUrl" style="width:246px;height:138px" />
-                                        <p>{{video.duration}}</p>
+                        <div class="videoChannelDiv">
+                            <img :src="video.channelPicUrl" style="left:0;width:32px;height:32px;border-radius: 50%;vertical-align:middle;cursor:pointer;" @click="openChannel(video.channelName)" />
+                            <span class="videoHeaderName" @click="openChannel(video.channelName)">{{video.channelTitle}}</span>
+                        </div>
+                        <div class="videoContentDiv">
+                            <div @click="openVideo(video.id)" class="videoThumb">
+                                <img :src="video.thumbnailUrl" style="width:246px;height:138px" />
+                                <p>{{video.duration}}</p>
+                            </div>
+                            <div>
+                                <div class="videoTitleDiv">
+                                    <div @click="openVideo(video.id)" class="videoTitle">
+                                        {{video.title}}
                                     </div>
-                                </th>
-                                <td @click="openVideo(video.id)" class="videoTitle">
-                                    {{video.title}}
-                                </td>
-                            </tr>
-                            <tr class="videoRows">
-                                <td class="videoText">
+                                    <div class="videoTitleButtons">
+                                        <button v-show="video.dlstatus == 0" class="material-icons videoTitleButton tooltip" @click="downloadVideo(video)"><div class="tooltiptext ttleft">Download Video</div>save_alt</button>
+                                        <button v-show="video.dlstatus == 1" class="dlStatus1Button" style="cursor: default;">Downloading</button>
+                                        <button v-show="video.dlstatus == 2" class="dlStatus2Button" @click="window.location.replace('http://localhost:5000/localbrowser.html?id=' + video.id);">Available in Nightly</button>
+                                        <button class="material-icons videoTitleButton tooltip" @click="deleteVideo(video)"><div class="tooltiptext ttright">Move to Trashbin</div>clear</button>
+                                    </div>
+                                </div>
+                                <div class=" videoText">
                                     <span class="videoTextChannel" @click="openChannel(video.channelName)">{{video.channelTitle}}</span> &#9679 {{video.publishedAtString}}
-                                </td>
-                            </tr>
-                            <tr style="height:100px">
-                                <td class="videoDesc">
-                                    <p style="margin-top:5px">{{video.description}}</p>
-                                </td>
-                            </tr>
-                        </table>
-                        <button class="material-icons deleteButton tooltip" @click="deleteVideo(video)"><div class="tooltiptext ttright">Move to Trashbin</div>clear</button>
-                        <button v-show="video.dlstatus == 0" class="material-icons deleteButton tooltip" @click="downloadVideo(video)"><div class="tooltiptext ttleft">Download Video</div>save_alt</button>
-                        <button v-show="video.dlstatus == 1" class="dlStatus1Button" style="cursor: default;">Downloading</button>
-                        <button v-show="video.dlstatus == 2" class="dlStatus2Button" @click="window.location.replace('http://localhost:5000/localbrowser.html?id=' + video.id);">Available in Nightly</button>
+                                </div>
+                                <div class="videoDesc">
+                                    <p>{{video.description}}</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </td>
             </tr>

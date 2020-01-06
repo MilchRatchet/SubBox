@@ -267,8 +267,24 @@ nav:hover .Title {
         border-radius: 100%;
     }
 
-.videoTitle {
+.videoChannelDiv {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+}
+
+.videoContentDiv {
+    display: flex;
+}
+
+.videoTitleDiv {
+    display: inline-flex;
     width: 100%;
+}
+
+.videoTitle {
+    width: calc(100% - 220px);
+    height: 24px;
     font-size: 18px;
     color: var(--font_title);
     padding-top: 0;
@@ -277,6 +293,25 @@ nav:hover .Title {
     margin: 0;
     cursor: pointer;
 }
+
+.videoTitleButtons {
+    display: inline-flex;
+    align-items: center;
+    justify-content: right;
+    width: 220px;
+    height: 24px;
+}
+
+.videoTitleButton {
+    border-radius: 0;
+    padding: 3px;
+    color: transparent;
+}
+
+    .videoTitleButton:hover {
+        color: var(--secColor) !important;
+        background-color: var(--mainColor);
+    }
 
 .videoText {
     font-size: 13px;
@@ -306,9 +341,14 @@ nav:hover .Title {
     border-bottom-color: var(--video_bd_bot);
     border-bottom-style: solid;
     border-bottom-width: 1px;
+    padding-bottom: 5px;
 }
 
     .videoBox:hover .deleteButton {
+        color: var(--font_title);
+    }
+
+    .videoBox:hover .videoTitleButton {
         color: var(--font_title);
     }
 
@@ -344,12 +384,9 @@ nav:hover .Title {
 .dlStatus2Button, .dlStatus1Button {
     background: none;
     border-radius: 0;
-    float: right;
-    position: relative;
     color: transparent;
     height: 30px;
     font-size: 16px;
-    margin-top: 50px;
     padding: 1px 7px 1px 7px;
     background: none;
 }
@@ -373,6 +410,7 @@ nav:hover .Title {
     padding-left: 10px;
     color: var(--font_text);
     font-size: 13px;
+    width: 80%;
 }
 
     .videoDesc p {
@@ -385,6 +423,7 @@ nav:hover .Title {
         text-overflow: ellipsis;
         word-break: break-word;
         width: 100%;
+        margin: 8px 0 0 0;
     }
 
 .overlay {
