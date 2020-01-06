@@ -6,5 +6,12 @@ var app = new Vue({
             window.location.replace("http://localhost:5000/");
         }
     },
-    el: "#app"
+    el: "#app",
+    mounted() {
+        const page = document.getElementById("app");
+
+        page.addEventListener("contextmenu", function (event) {
+            event.preventDefault();
+        }, false);
+    }
 });

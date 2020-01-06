@@ -74,6 +74,12 @@ var app = new Vue({
     },
     el: "#app",
     async mounted() {
+        const page = document.getElementById("app");
+
+        page.addEventListener("contextmenu", function (event) {
+            event.preventDefault();
+        }, false);
+
         await this.update();
 
         var openId = this.GetURLParameter('id');
