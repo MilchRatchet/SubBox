@@ -39,7 +39,7 @@
 
 #informationOverlay {
     margin-left: calc(50% - 200px);
-    margin-top: 50px;
+    margin-top: 10px;
     position: fixed;
     z-index: 2000;
     width: 500px;
@@ -279,33 +279,61 @@ nav:hover .Title {
 
 .videoTitleDiv {
     display: inline-flex;
+    align-items: start;
+    min-height: 24px;
+    height: auto;
     width: 100%;
+    padding-left: 10px;
+}
+
+.videoTitleAndMetaDiv {
+    width: calc(100% - 220px);
+    height: 100%;
 }
 
 .videoTitle {
-    width: calc(100% - 220px);
-    height: 24px;
     font-size: 18px;
     color: var(--font_title);
     padding-top: 0;
     padding-bottom: 0;
-    padding-left: 10px;
     margin: 0;
     cursor: pointer;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    display: -webkit-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-word;
+    max-height: 3.6em;
+    line-height: 1.2em;
 }
 
 .videoTitleButtons {
     display: inline-flex;
-    align-items: center;
+    align-items: start;
     justify-content: right;
     width: 220px;
-    height: 24px;
+    height: 100%;
+    padding: -3px;
+}
+
+.videoTextContentDiv {
+    display: flex;
+    flex-direction: column;
+}
+
+.playlistButtonDiv {
+    flex: 1 1 auto;
+    display: inline-flex;
+    width: 100%;
+    align-items: end;
 }
 
 .videoTitleButton {
     border-radius: 0;
     padding: 3px;
     color: transparent;
+    margin: 2px 5px 2px 5px;
 }
 
     .videoTitleButton:hover {
@@ -316,9 +344,8 @@ nav:hover .Title {
 .videoText {
     font-size: 13px;
     color: var(--font_text);
-    padding-top: 0;
-    padding-bottom: 0;
-    padding-left: 10px;
+    padding-top: 2px;
+    padding-bottom: 2px;
 }
 
 .videoHeaderName {
@@ -341,12 +368,9 @@ nav:hover .Title {
     border-bottom-color: var(--video_bd_bot);
     border-bottom-style: solid;
     border-bottom-width: 1px;
-    padding-bottom: 5px;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
 }
-
-    .videoBox:hover .deleteButton {
-        color: var(--font_title);
-    }
 
     .videoBox:hover .videoTitleButton {
         color: var(--font_title);
@@ -365,22 +389,6 @@ nav:hover .Title {
         transition: 0.5s background;
     }
 
-.deleteButton {
-    border-radius: 0;
-    float: right;
-    position: relative;
-    color: transparent;
-    height: auto;
-    margin-top: 50px;
-    padding: 3px;
-    background: none;
-}
-
-    .deleteButton:hover {
-        color: var(--secColor) !important;
-        background-color: var(--mainColor);
-    }
-
 .dlStatus2Button, .dlStatus1Button {
     background: none;
     border-radius: 0;
@@ -388,6 +396,7 @@ nav:hover .Title {
     height: 30px;
     font-size: 16px;
     padding: 1px 7px 1px 7px;
+    margin: 2px 5px 2px 5px;
     background: none;
 }
 
@@ -743,7 +752,7 @@ button.deleteChannelButton:hover {
     .videoThumb p {
         font-size: 12px;
         font-weight: 500;
-        bottom: -6px;
+        top: 105px;
         right: 3px;
         color: white;
         background: rgba(0,0,0,0.8);
