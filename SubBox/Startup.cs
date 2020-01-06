@@ -18,6 +18,8 @@ namespace SubBox
 {
     public class Startup
     {
+        public static string BuildVersion;
+
         //Found at: https://www.meziantou.net/getting-the-date-of-build-of-a-dotnet-assembly-at-runtime.htm
         private static DateTime GetBuildDate(Assembly assembly)
         {
@@ -65,11 +67,11 @@ namespace SubBox
 
             FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
 
-            string version = fvi.ProductVersion.Split('+')[0];
+            BuildVersion = fvi.ProductVersion.Split('+')[0];
 
             DateTime BuildTime = GetBuildDate(Assembly.GetExecutingAssembly());
 
-            Logger.Info("SubBox Build v"+ version +" - " + BuildTime.Day + "." + BuildTime.Month + "." + BuildTime.Year);
+            Logger.Info("SubBox Build v"+ BuildVersion + " - " + BuildTime.Day + "." + BuildTime.Month + "." + BuildTime.Year);
 
             AppSettings.DownloadReady = false;
 

@@ -48,7 +48,7 @@
                 <p class="material-icons">delete_sweep</p>
                 <p>Move all to Trashbin</p>
             </div>
-            <div @click="informationMode = !informationMode" class="menuButton">
+            <div @click="toggleInformationMode()" class="menuButton">
                 <p class="material-icons">priority_high</p>
                 <p>About</p>
             </div>
@@ -57,15 +57,63 @@
         <div v-show="informationMode" id="informationOverlay">
             <div class="informationOverlayRow">
                 <p>SubBox Version:</p>
-                <p>1.5.1</p>
+                <label>{{informationContent[0]}}</label>
             </div>
             <div class="informationOverlayRow">
                 <p>Author:</p>
-                <p>MilchRatchet</p>
+                <label>{{informationContent[1]}}</label>
             </div>
             <div class="informationOverlayRow">
-                <p></p>
-                <button @click="informationMode = false" class="material-icons">exit</button>
+                <p>Amount of Videos in Total:</p>
+                <label>{{informationContent[2]}}</label>
+            </div>
+            <div class="informationOverlayRow">
+                <p>Amount of Videos in Playlists:</p>
+                <label>{{informationContent[3]}}</label>
+            </div>
+            <div class="informationOverlayRow">
+                <p>Amount of Videos in Trashbin:</p>
+                <label>{{informationContent[4]}}</label>
+            </div>
+            <div class="informationOverlayRow">
+                <p>Amount of Channels:</p>
+                <label>{{informationContent[5]}}</label>
+            </div>
+            <div class="informationOverlayRow">
+                <p>Amount of downloaded Videos:</p>
+                <label>{{informationContent[6]}}</label>
+            </div>
+            <div class="informationOverlayRow">
+                <p>Disk Space occupied:</p>
+                <label>{{informationContent[7]}}</label>
+            </div>
+            <div class="informationOverlayRow">
+                <p>Disk Space remaining:</p>
+                <label>{{informationContent[8]}}</label>
+            </div>
+            <div class="informationOverlayRow">
+                <p>Time of last Refresh:</p>
+                <label>{{informationContent[9]}}</label>
+            </div>
+            <div class="informationOverlayRow">
+                <p>Developer Mode:</p>
+                <label>{{informationContent[10]}}</label>
+            </div>
+            <div class="informationOverlayRow">
+                <p>Autostart:</p>
+                <label>{{informationContent[11]}}</label>
+            </div>
+            <button @click="informationMode = false" class="material-icons tooltip"><div class="tooltiptext ttleft">Close Window</div>exit_to_app</button>
+        </div>
+
+        <div v-show="messages.length !== 0" id="notifications">
+            <div @click="if (message.status) window.location.replace('http://localhost:5000/localbrowser.html?id=' + message.videoId);" class="message" v-for="message in messages">
+                <img :src="message.thumbUrl"/>
+                <div>
+                    <p>{{message.title}}</p>
+                    <p style="font-size: 14px">{{message.channel}}</p>
+                    <p style="font-size: 14px">{{message.text}}</p>
+                </div>
             </div>
         </div>
 

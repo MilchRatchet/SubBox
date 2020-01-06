@@ -36,6 +36,7 @@ var app = new Vue({
         selectedInputForContext: null,
         informationMode: false,
         informationContent: [],
+        messages: [],
     },
     computed: {
         filteredVideos: function () {
@@ -305,6 +306,19 @@ var app = new Vue({
 
                 if (status.kind == "downloadResult") {
                     Vue.set(video, 'dlstatus', ((status.value) ? 2 : 0));
+
+                    if (status.value) {
+                        app.messages.push({
+                            "status": status.value,
+                            "title": video.title,
+                            "channel": video.channelTitle,
+                            "thumbUrl": video.thumbnailUrl,
+                            "videoId": video.id,
+                            "text": ((status.value) ? "Download Finished" : "Download Failed")
+                        });
+
+                        setTimeout(() => app.messages.shift(), 10000);
+                    }
 
                     clearInterval(updater);
                 }
@@ -676,7 +690,16 @@ var app = new Vue({
             this.selectedInputForContext.select();
 
             document.execCommand(command);
-        }
+        },
+        async toggleInformationMode() {
+            this.informationMode = !this.informationMode;
+
+            if (this.informationMode) {
+                var result = await fetch("/api/values/information");
+
+                this.informationContent = await result.json();
+            }
+        },
     },
     el: "#app",
     async mounted() {
@@ -684,6 +707,10 @@ var app = new Vue({
         const page = document.getElementById("app");
 
         page.addEventListener("contextmenu", function (event) {
+            event.preventDefault();
+
+            if (app.informationMode) return;
+
             event = event || window.event;
 
             const target = event.target || event.srcElement;
@@ -693,8 +720,6 @@ var app = new Vue({
 
                 app.selectedInputForContext = target;
             }
-
-            event.preventDefault();
 
             var ctxMenu = document.getElementById("ctxMenu");
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -68,6 +69,47 @@ namespace SubBox.Controllers
         public string[] GetSettings()
         {
             return new string[] { AppSettings.RetrievalTimeFrame.ToString(), AppSettings.NewChannelTimeFrame.ToString(), AppSettings.DeletionTimeFrame.ToString(), AppSettings.PlaylistPlaybackSize.ToString(), AppSettings.Color, AppSettings.NightMode.ToString(), ((int) AppSettings.PreferredQuality).ToString() };
+        }
+
+        // GET: api/values/information
+        [HttpGet("information")]
+        public string[] GetInformation()
+        {
+
+            long size = 0;
+
+            foreach (KeyValuePair<string, LocalVideo> lv in LocalCollection.DownloadedVideos)
+            {
+                size += lv.Value.Size;
+            }
+
+            size /= 1024;
+
+            size /= 1024;
+
+            string disk = Path.GetPathRoot(AppDomain.CurrentDomain.BaseDirectory);
+
+            DriveInfo drive = DriveInfo.GetDrives().First(x => x.Name == disk);
+
+            long availableSpace = 0;
+
+            if (drive != null) availableSpace = drive.AvailableFreeSpace / (1024 * 1024);
+
+            return new string[]
+            {
+                Startup.BuildVersion,
+                "MilchRatchet",
+                "" + context.Videos.LongCount(),
+                "" + context.Videos.Where(v => v.List != 0).LongCount(),
+                "" + context.Videos.Where(v => v.New == false).LongCount(),
+                "" + context.Channels.LongCount(),
+                "" + LocalCollection.DownloadedVideos.Count,
+                size + " MiB",
+                availableSpace + " Mib",
+                AppSettings.LastRefresh.ToString("G"),
+                AppSettings.DevMode ? "On" : "Off",
+                AppSettings.AutoStart ? "Enabled" : "Disabled"
+            };
         }
 
         // GET: api/values/first
