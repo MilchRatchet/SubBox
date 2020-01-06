@@ -101,8 +101,7 @@ input {
     border-radius: 0;
     width: 320px;
     height: 256px;
-    border-image: linear-gradient(to top right, #8f54f1, #00efbf);
-    border-image-slice: 1;
+    border-color: #8f54f1;
     border-style: solid;
     border-width: 3px;
     cursor: default;
@@ -111,8 +110,7 @@ input {
 }
 
     .gridVideo:hover {
-        border-image: linear-gradient(to top right,#ff7500,#ce01ff);
-        border-image-slice: 1;
+        border-color: #ff0166;
         border-style: solid;
         border-width: 3px;
         height: 238px;
@@ -229,7 +227,7 @@ input {
         background: linear-gradient(to right, #009f5f, #008f5f, #118f9f, #117fbf);
         background-position: left;
         background-size: 200%;
-        transition: 0.5s;
+        transition: 0.3s;
         color: #fafafa;
         font-family: 'Roboto', sans-serif;
         font-size: 16px;
@@ -241,7 +239,7 @@ input {
     .navigationBox button:hover {
         background-position: right;
         box-shadow: 0 0 15px -5px #117fbf;
-        transition: 0.5s;
+        transition: 0.3s;
     }
 
     .navigationBox .deleteButton {

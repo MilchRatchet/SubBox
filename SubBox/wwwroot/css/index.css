@@ -87,7 +87,6 @@ body {
     -webkit-user-select: none;
     -ms-user-select: none;
     user-select: none;
-    outline: none !important;
     overflow-x: hidden;
     height: calc(100% - 40px);
 }
