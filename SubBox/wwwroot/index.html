@@ -221,12 +221,7 @@
         </div>
 
         <nav v-show="videoListMode" class="mainNav">
-            <button @click="showChannelInput" class="material-icons tooltip"><div class="tooltiptext ttdown" style="padding-left: 55px">Add Channel</div>add_box</button>
-            <div v-show="inputMode" class="channelInput">
-                <input @keyup.enter="onSubmit" v-model="addChannelName" autocomplete="off" type="text" name="Username" placeholder="Channel Name..." />
-                <button class="material-icons" @click="onSubmit">search</button>
-            </div>
-            <button @click="showChannels" class="material-icons tooltip"><div class="tooltiptext ttdown">Channel List</div>{{(filter === 'SubBox') ? 'account_box' : 'star'}}</button>
+            <button @click="showChannels" class="material-icons tooltip"><div style="left: 0" class="tooltiptext ttdown">Channel List</div>{{(filter === 'SubBox') ? 'account_box' : 'star'}}</button>
             <button @click="showListInput()" class="material-icons tooltip"><div class="tooltiptext ttdown">Add Playlist</div>playlist_add</button>
             <div v-show="inputListMode" class="inputList">
                 <input @keyup.enter="submitPlaylist" v-model="addPlayList" autocomplete="off" type="text" name="PlaylistId" placeholder="Playlist Id..." />
@@ -415,7 +410,15 @@
                     </td>
                 </tr>
             </table>
-            <button @click="closeChannels" class="material-icons closeChannelsButton tooltip"><div class="tooltiptext ttleft">Close Window</div>exit_to_app</button>
+            <div class="channelLastRowDiv">
+                <div>
+                    <input @keyup.enter="submitChannel()" v-model="addChannelName" autocomplete="off" type="text" name="Username" placeholder="Channel Name..." />
+                    <button @click="submitChannel()" class="material-icons addChannelButton">add</button>
+                </div>
+                <div>
+                    <button @click="closeChannels" class="material-icons closeChannelsButton tooltip"><div class="tooltiptext ttleft">Close Window</div>exit_to_app</button>
+                </div>
+            </div>
         </div>
 
         <div class="spacer">

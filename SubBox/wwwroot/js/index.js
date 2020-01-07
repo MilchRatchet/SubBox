@@ -250,20 +250,22 @@ var app = new Vue({
                 this.tagsUpdate();
             }
         },
-        async onSubmit() {
+        async submitChannel() {
             if (this.addChannelName != "") {
                 this.addChannelName = this.addChannelName.trim();
 
                 this.inputMode = false;
 
-                await fetch("/api/values/channel/" + this.addChannelName, { method: "POST" });
+                var waiter = fetch("/api/values/channel/" + this.addChannelName, { method: "POST" });
 
                 this.addChannelName = "";
+
+                await waiter;
 
                 this.update();
 
                 if (this.channelMode) {
-                    await this.showChannels();
+                    this.channelMode = false;
 
                     await this.showChannels();
                 }
