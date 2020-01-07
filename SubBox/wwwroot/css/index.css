@@ -34,7 +34,7 @@
     height: auto;
     background-color: transparent;
     box-shadow: 0 5px 10px -6px rgba(0, 0, 0, .4);
-    font-size: 14px;
+    font-size: 13px;
 }
 
 #informationOverlay {
@@ -974,9 +974,9 @@ button.deleteTagFilterButton:hover {
     padding-bottom: 3px;
     background-color: var(--nav_bg);
     color: var(--font_title);
-    height: 24px;
+    height: 20px;
     width: auto;
-    white-space: nowrap;
+    white-space: pre;
 }
 
     .menuButton p {
@@ -987,6 +987,15 @@ button.deleteTagFilterButton:hover {
     .menuButton:hover {
         background-color: var(--mainColor);
         color: var(--secColor);
+    }
+
+.disabledMenuButton {
+    background-color: var(--font_text);
+}
+
+    .disabledMenuButton:hover {
+        background-color: var(--font_text);
+        color: var(--font_title);
     }
 
 .informationOverlayRow {

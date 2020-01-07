@@ -34,11 +34,19 @@
         <div id="ctxMenu">
             <div @click="$event.preventDefault(); actOnClipboard('cut')" v-show="inputContext" class="menuButton">
                 <p style="color: transparent" class="material-icons">filter_list</p>
-                <p>Cut</p>
+                <p>Cut      [CTRL + X]</p>
             </div>
             <div @click="$event.preventDefault(); actOnClipboard('copy')" v-show="inputContext" class="menuButton">
                 <p style="color: transparent" class="material-icons">file_copy</p>
-                <p>Copy</p>
+                <p>Copy   [CTRL + C]</p>
+            </div>
+            <div v-show="inputContext" class="menuButton disabledMenuButton">
+                <p style="color: transparent" class="material-icons">filter_list</p>
+                <p>Paste  [CTRL + V]</p>
+            </div>
+            <div v-show="inputContext" class="menuButton disabledMenuButton">
+                <p style="color: transparent" class="material-icons">file_copy</p>
+                <p>Delete [DEL]</p>
             </div>
             <div @click="resetAllFilters()" v-show="videoListMode" class="menuButton">
                 <p class="material-icons">filter_list</p>
