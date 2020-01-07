@@ -168,6 +168,12 @@ input[type=number] {
         border-color: var(--mainColor);
     }
 
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
 input[type=text].search {
     display: none;
     padding: 4px;
@@ -194,6 +200,7 @@ select {
     -ms-appearance:none;
     border: 1px solid var(--font_title);
     text-align: center;
+    text-align-last: center;
 }
 
 .Title {
