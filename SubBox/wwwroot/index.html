@@ -40,11 +40,12 @@
                 <p style="color: transparent" class="material-icons">file_copy</p>
                 <p>Copy   [CTRL + C]</p>
             </div>
-            <div v-show="inputContext" class="menuButton disabledMenuButton">
+            <div @click="$event.preventDefault(); actOnClipboard('paste')" v-show="inputContext" class="menuButton" v-bind:class="{tooltip : isFirefox, disabledMenuButton : isFirefox}">
+                <div class="tooltiptext ttright">Unavailable in Firefox</div>
                 <p style="color: transparent" class="material-icons">filter_list</p>
                 <p>Paste  [CTRL + V]</p>
             </div>
-            <div v-show="inputContext" class="menuButton disabledMenuButton">
+            <div @click="$event.preventDefault(); actOnClipboard('delete')" v-show="inputContext" class="menuButton">
                 <p style="color: transparent" class="material-icons">file_copy</p>
                 <p>Delete [DEL]</p>
             </div>
@@ -110,6 +111,10 @@
             <div class="informationOverlayRow">
                 <p>Autostart:</p>
                 <label>{{informationContent[11]}}</label>
+            </div>
+            <div class="informationOverlayRow">
+                <p>Firefox Compatibility Mode:</p>
+                <label>{{(isFirefox ? "On" : "Off")}}</label>
             </div>
             <button @click="informationMode = false" class="material-icons tooltip"><div class="tooltiptext ttleft">Close Window</div>exit_to_app</button>
         </div>

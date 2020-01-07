@@ -37,6 +37,7 @@ var app = new Vue({
         informationMode: false,
         informationContent: [],
         messages: [],
+        isFirefox: false,
     },
     computed: {
         filteredVideos: function () {
@@ -684,7 +685,29 @@ var app = new Vue({
 
             this.unlockAllChannels();
         },
-        actOnClipboard(command) {
+        async actOnClipboard(command) {
+            if (command === 'paste') {
+                if (this.isFirefox) return;
+
+                var event = new Event("input", { bubbles: true });
+
+                this.selectedInputForContext.value = await navigator.clipboard.readText();
+
+                this.selectedInputForContext.dispatchEvent(event);
+
+                return;
+            }
+
+            if (command === 'delete') {
+                var event = new Event("input", { bubbles: true });
+
+                this.selectedInputForContext.value = "";
+
+                this.selectedInputForContext.dispatchEvent(event);
+
+                return;
+            }
+
             this.selectedInputForContext.focus();
 
             this.selectedInputForContext.select();
@@ -711,6 +734,8 @@ var app = new Vue({
     el: "#app",
     async mounted() {
 
+        this.isFirefox = typeof InstallTrigger !== 'undefined';
+
         const page = document.getElementById("app");
 
         page.addEventListener("contextmenu", function (event) {
@@ -718,11 +743,13 @@ var app = new Vue({
 
             if (app.informationMode) return;
 
+            app.inputContext = false;
+
             event = event || window.event;
 
             const target = event.target || event.srcElement;
 
-            if (target.nodeName === "INPUT" && target.className !== "search") {
+            if (target.nodeName === "INPUT" && target.className !== "search" && target.type.toLowerCase() === 'text') {
                 app.inputContext = true;
 
                 app.selectedInputForContext = target;
@@ -740,8 +767,6 @@ var app = new Vue({
         page.addEventListener("click", function (event) {
 
             app.inputContext = false;
-
-            app.selectedInputForContext = null;
 
             var ctxMenu = document.getElementById("ctxMenu");
 

@@ -1036,6 +1036,7 @@ button.deleteTagFilterButton:hover {
 
 .disabledMenuButton {
     background-color: var(--font_text);
+    justify-content: flex-start;
 }
 
     .disabledMenuButton:hover {
