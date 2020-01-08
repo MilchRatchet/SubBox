@@ -349,7 +349,7 @@
             </table>
         </div>
 
-        <div v-show="tagsMode" class="overlay">
+        <div id="tagsUI" v-show="tagsMode" class="overlay">
             <div class="addTagDiv">
                 <input @keyup.enter="submitTag" class="addTagInput" v-model="addTag" type="text" autocomplete="off" placeholder="Enter Tag Name..." />
                 <button @click="submitTag" class="material-icons addTagButton">add</button>
@@ -361,8 +361,8 @@
                     </td>
                     <td class="channelButtonColumn" style="width: 100px">
                         <button @click="selectTag(tag)" class="material-icons deleteChannelButton tooltip"><div class="tooltiptext tooltiptextInverseColor ttleft">Select Tag</div>star</button>
-                        <button @click="editTag(tag)" class="material-icons deleteChannelButton tooltip"><div class="tooltiptext tooltiptextInverseColor ttright">Edit Tag</div>create</button>
-                        <button @click="deleteTag(tag)" class="material-icons deleteChannelButton tooltip"><div class="tooltiptext tooltiptextInverseColor ttright">Delete Tag</div>clear</button>
+                        <button @click="editTag(tag)" class="material-icons deleteChannelButton tooltip"><div class="tooltiptext tooltiptextInverseColor ttleft">Edit Tag</div>create</button>
+                        <button @click="deleteTag(tag)" class="material-icons deleteChannelButton tooltip"><div class="tooltiptext tooltiptextInverseColor ttleft">Delete Tag</div>clear</button>
                     </td>
                 </tr>
                 <tr class="tagFilterRow" v-if="tag.inEdit">
@@ -391,7 +391,7 @@
             <button @click="showTags" class="material-icons closeChannelsButton tooltip"><div class="tooltiptext ttleft">Close Window</div>exit_to_app</button>
         </div>
 
-        <div v-show="channelMode" class="overlay">
+        <div id="channelUI" v-show="channelMode" class="overlay">
             <table class="channelList" v-for="channel in channels">
                 <tr v-bind:class="{ locked: channel.locked }" class="channelRow">
                     <td>
@@ -402,7 +402,7 @@
                     </td>
                     <td class="channelButtonColumn">
                         <button @click="setFilter(channel)" class="material-icons deleteChannelButton tooltip"><div class="tooltiptext tooltiptextInverseColor ttleft">Only Show Videos by {{channel.displayname}}</div>star</button>
-                        <button @click="markChannelDeletion(channel)" class="material-icons deleteChannelButton tooltip"><div class="tooltiptext tooltiptextInverseColor ttright">Remove Channel</div>clear</button>
+                        <button @click="markChannelDeletion(channel)" class="material-icons deleteChannelButton tooltip"><div class="tooltiptext tooltiptextInverseColor ttleft">Remove Channel</div>clear</button>
                     </td>
                 </tr>
                 <tr v-if="removeChannel != null && removeChannel.id == channel.id" class="removeChannelRow">
@@ -410,7 +410,7 @@
                         Remove {{channel.displayname}}?
                     </td>
                     <td colspan="1">
-                        <button @click="deleteChannel(channel)" class="material-icons deleteTagFilterButton tooltip"><div class="tooltiptext ttright">Remove Channel</div>check</button>
+                        <button @click="deleteChannel(channel)" class="material-icons deleteTagFilterButton tooltip"><div class="tooltiptext ttleft">Remove Channel</div>check</button>
                         <button @click="removeChannel = null;" class="material-icons deleteTagFilterButton tooltip"><div class="tooltiptext ttleft">Keep Channel</div>clear</button>
                     </td>
                 </tr>

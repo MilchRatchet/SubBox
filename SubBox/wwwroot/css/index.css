@@ -45,6 +45,7 @@
     width: 500px;
     height: auto;
     background-color: var(--nav_bg);
+    border: 1px solid var(--video_bd_bot);
     color: var(--font_title);
     padding-top: 10px;
     padding-top: 10px;
@@ -53,7 +54,9 @@
 }
 
     #informationOverlay button {
-        padding: 3px;
+        height: 30px;
+        width: 30px;
+        padding: 0;
         margin-left: calc(100% - 40px);
     }
 
@@ -70,6 +73,7 @@
     bottom: 15px;
     height: auto;
     background-color: var(--nav_bg);
+    border: 1px solid var(--video_bd_bot);
     color: var(--font_title);
     font-size: 18px;
     box-shadow: 0 5px 10px -6px rgba(0, 0, 0, .4);
@@ -451,7 +455,7 @@ nav:hover .Title {
     background-color: var(--nav_bg);
     z-index: 2;
     display: block;
-    border: 1px solid var(--font_text);
+    border: 1px solid var(--video_bd_bot);
     border-left: none;
     border-top: none;
     box-shadow: 5px 5px 10px -8px rgba(0, 0, 0, .2);
@@ -477,7 +481,7 @@ nav:hover .Title {
     }
 
 .channelLastRowDiv {
-    padding: 5px 5px 5px 10px;
+    padding: 10px 5px 10px 10px;
     display: flex;
     flex-direction: row;
 }
@@ -715,7 +719,7 @@ button.deleteChannelButton:hover {
     background-color: var(--nav_bg);
     z-index: 2;
     display: block;
-    border: 1px solid var(--font_text);
+    border: 1px solid var(--video_bd_bot);
     border-right: none;
     border-top: none;
     box-shadow: -5px 5px 10px -8px rgba(0, 0, 0, .2);
@@ -1045,7 +1049,7 @@ button.deleteTagFilterButton:hover {
     }
 
 .informationOverlayRow {
-    padding: 3px;
+    padding: 5px 10px 5px 10px;
     display: flex;
     width: calc(100% - 6px);
     height: 28px;
