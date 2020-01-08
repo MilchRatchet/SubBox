@@ -764,7 +764,51 @@ var app = new Vue({
             ctxMenu.style.top = (event.pageY + 1) + "px";
         }, false);
 
+        var setOv = document.querySelector('.settingsOverlay');
+
+        var chOv = document.querySelector('#channelUI');
+
+        var tagsOv = document.querySelector('#tagsUI');
+
+        var infOv = document.querySelector('#informationOverlay');
+
+        var ctxOv = document.querySelector('#ctxMenu');
+
+        console.log(setOv);
+
+        console.log(chOv);
+
+        console.log(tagsOv);
+
         page.addEventListener("click", function (event) {
+
+            event = event || window.event;
+
+            const target = event.target || event.srcElement;
+
+            if (app.settingsMode && target.nodeName !== "BUTTON" && !app.changes) {
+                if (!setOv.contains(target)) {
+                    app.showSettings();
+                }
+            }
+
+            if (app.channelMode && target.nodeName !== "BUTTON") {
+                if (!chOv.contains(target)) {
+                    app.showChannels();
+                }
+            }
+
+            if (app.tagsMode && target.nodeName !== "BUTTON") {
+                if (!tagsOv.contains(target)) {
+                    app.showTags();
+                }
+            }
+
+            if (app.informationMode && !ctxOv.contains(target)) {
+                if (!infOv.contains(target)) {
+                    app.toggleInformationMode();
+                }
+            }
 
             app.inputContext = false;
 
