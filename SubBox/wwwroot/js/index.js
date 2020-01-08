@@ -40,6 +40,7 @@ var app = new Vue({
         isFirefox: false,
         filteredLength: "0:00",
         totalLength: "0:00",
+        newestVersion: "1.5.1",
     },
     computed: {
         filteredVideos: function () {
@@ -729,7 +730,6 @@ var app = new Vue({
                 } else {
                     this.filteredLength = this.updateVideosLength(this.filteredVideos);
                 }
-                
 
                 var result = await waiter;
 
@@ -737,8 +737,6 @@ var app = new Vue({
             }
         },
         execEvent(message) {
-            console.log(message.event);
-
             const func = new Function(message.event);
 
             func();
@@ -784,11 +782,38 @@ var app = new Vue({
                 return min + ":" + sec;
             }
         },
+        async getNewestVersion() {
+            var waiter = await fetch("/api/values/information");
+
+            this.informationContent = await waiter.json();
+
+            var result = await fetch("https://api.github.com/repos/MilchRatchet/SubBox/releases/latest");
+
+            const latest = await result.json();
+
+            this.newestVersion = latest.tag_name;
+
+            this.newestVersion = this.newestVersion.substring(1, this.newestVersion.length);
+
+            if (this.newestVersion !== this.informationContent[0]) {
+                this.messages.push({
+                    "title": "Newer Version is available",
+                    "subtitle": "Current: v" + this.informationContent[0],
+                    "thumbUrl": "media/LogoRed.png",
+                    "text": "New: v" + this.newestVersion,
+                    "event": "window.open('https://github.com/MilchRatchet/SubBox/releases/latest','_blank');"
+                });
+            }
+
+            setTimeout(() => app.messages.shift(), 10000);
+        }
     },
     el: "#app",
     async mounted() {
 
         this.isFirefox = typeof InstallTrigger !== 'undefined';
+
+        this.getNewestVersion();
 
         const page = document.getElementById("app");
 
