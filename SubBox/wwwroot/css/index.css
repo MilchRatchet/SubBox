@@ -27,7 +27,7 @@
 }
 
 #ctxMenu {
-    position: absolute;
+    position: fixed;
     display: none;
     z-index: 1000;
     width: 165px;
@@ -257,6 +257,7 @@ nav:hover .Title {
     .search:focus ~ .Title {
         display: none !important;
     }
+
 
 .channelInput {
     display: flex;

@@ -38,6 +38,8 @@ var app = new Vue({
         informationContent: [],
         messages: [],
         isFirefox: false,
+        filteredLength: "0:00",
+        totalLength: "0:00",
     },
     computed: {
         filteredVideos: function () {
@@ -718,7 +720,18 @@ var app = new Vue({
             this.informationMode = !this.informationMode;
 
             if (this.informationMode) {
-                var result = await fetch("/api/values/information");
+                var waiter = fetch("/api/values/information");
+
+                this.totalLength = this.updateVideosLength(this.videos);
+
+                if (this.uniqueListMode) {
+                    this.filteredLength = this.updateVideosLength(this.uniqueList);
+                } else {
+                    this.filteredLength = this.updateVideosLength(this.filteredVideos);
+                }
+                
+
+                var result = await waiter;
 
                 this.informationContent = await result.json();
             }
@@ -729,7 +742,48 @@ var app = new Vue({
             const func = new Function(message.event);
 
             func();
-        }
+        },
+        updateVideosLength(videoCollection) {
+            let sec = 0;
+
+            let min = 0;
+
+            let h = 0;
+
+            videoCollection.forEach((v) => {
+                const pieces = v.duration.split(':');
+
+                const len = pieces.length;
+
+                sec += parseInt(pieces[len - 1], 10);
+
+                min += parseInt(pieces[len - 2], 10);
+
+                if (len === 3) {
+                    h += parseInt(pieces[0], 10);
+                }
+            });
+
+            min += Math.floor(sec / 60);
+
+            h += Math.floor(min / 60);
+
+            sec = sec % 60;
+
+            min = min % 60;
+
+            if (h > 0) {
+                if (min < 10) min = "0" + min;
+
+                if (sec < 10) sec += "0" + sec;
+
+                return h + ":" + min + ":" + sec;
+            } else {
+                if (sec < 10) sec += "0" + sec;
+
+                return min + ":" + sec;
+            }
+        },
     },
     el: "#app",
     async mounted() {
@@ -759,16 +813,16 @@ var app = new Vue({
 
             ctxMenu.style.display = "block";
 
-            if (event.pageX > window.innerWidth - ctxMenu.offsetWidth) {
+            if (event.clientX > window.innerWidth - ctxMenu.offsetWidth) {
                 ctxMenu.style.left = (window.innerWidth - ctxMenu.offsetWidth - 10) + "px";
             } else {
-                ctxMenu.style.left = (event.pageX + 1) + "px";
+                ctxMenu.style.left = (event.clientX + 1) + "px";
             }
 
-            if (event.pageY > window.innerHeight - ctxMenu.offsetHeight) {
+            if (event.clientY > window.innerHeight - ctxMenu.offsetHeight) {
                 ctxMenu.style.top = (window.innerHeight - ctxMenu.offsetHeight - 1) + "px";
             } else {
-                ctxMenu.style.top = (event.pageY + 1) + "px";
+                ctxMenu.style.top = (event.clientY + 1) + "px";
             }
 
         }, false);
@@ -782,12 +836,6 @@ var app = new Vue({
         var infOv = document.querySelector('#informationOverlay');
 
         var ctxOv = document.querySelector('#ctxMenu');
-
-        console.log(setOv);
-
-        console.log(chOv);
-
-        console.log(tagsOv);
 
         page.addEventListener("click", function (event) {
 
