@@ -759,9 +759,18 @@ var app = new Vue({
 
             ctxMenu.style.display = "block";
 
-            ctxMenu.style.left = (event.pageX + 1) + "px";
+            if (event.pageX > window.innerWidth - ctxMenu.offsetWidth) {
+                ctxMenu.style.left = (window.innerWidth - ctxMenu.offsetWidth - 10) + "px";
+            } else {
+                ctxMenu.style.left = (event.pageX + 1) + "px";
+            }
 
-            ctxMenu.style.top = (event.pageY + 1) + "px";
+            if (event.pageY > window.innerHeight - ctxMenu.offsetHeight) {
+                ctxMenu.style.top = (window.innerHeight - ctxMenu.offsetHeight - 1) + "px";
+            } else {
+                ctxMenu.style.top = (event.pageY + 1) + "px";
+            }
+
         }, false);
 
         var setOv = document.querySelector('.settingsOverlay');
