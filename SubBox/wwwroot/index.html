@@ -157,15 +157,15 @@
 
         <div v-show="uniqueListMode" class="overlayUniqueList">
             <nav>
-                <p>Playlist Contents</p><p class="material-icons">view_list</p><p>|</p>
-                <p class="Title" style="margin-top:0; margin-right: 6px">{{uniqueList.length}} Video{{(uniqueList.length != 1) ? 's' : ''}}</p>
+                <p>Playlist</p><p class="material-icons">view_list</p><p>|</p>
                 <button @click="showListInput()" class="material-icons tooltip"><div class="tooltiptext ttdown">Extend Playlist</div>playlist_add</button>
                 <div v-show="inputListMode" class="inputList">
                     <input @keyup.enter="submitPlaylist" v-model="addPlayList" autocomplete="off" type="text" name="PlaylistIdUnqiue" placeholder="Playlist Id..." />
                     <button @click="submitPlaylist" class="material-icons">search</button>
                 </div>
-                <div style="margin-left: auto;">
+                <div style="display: flex; margin-left: auto;">
                     <input v-model="playlistFilter" type="text" autocomplete="off" placeholder="Search" />
+                    <p class="Title" style="margin-top:0; margin-right: 6px">{{filteredPlaylist.length}} Video{{(filteredPlaylist.length != 1) ? 's' : ''}}</p>
                 </div>
                 <button @click="closeUniqueList" class="material-icons closeUniqueListButton tooltip"><div class="tooltiptext ttdown">Back</div>exit_to_app</button>
             </nav>
@@ -208,7 +208,7 @@
         </div>
         <div v-show="trashbinMode" class="overlayUniqueList">
             <nav>
-                <p>Removed Videos</p><p class="material-icons">view_list</p><p>|</p>
+                <p>Trashbin</p><p class="material-icons">view_list</p><p>|</p>
                 <p class="Title" style="margin-top:0;">{{oldVideos.length}} Video{{(oldVideos.length != 1) ? 's' : ''}}</p>
                 <button @click="closeTrashbin" class="material-icons closeUniqueListButton tooltip"><div class="tooltiptext ttdown">Back</div>exit_to_app</button>
             </nav>
