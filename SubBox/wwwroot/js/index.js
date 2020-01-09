@@ -22,6 +22,7 @@ var app = new Vue({
         night: false,
         filter: "SubBox",
         searchFilter: "",
+        playlistFilter: "",
         selectedTag: null,
         settingsMode: false,
         settingNCT: 1,
@@ -48,6 +49,7 @@ var app = new Vue({
                 return this.videos;
             }
             searchFilterUp = this.searchFilter.toUpperCase();
+
             if (this.filter === "SubBox" && this.selectedTag == null) {
                 return this.videos.filter(function (u) {
                     return (u.title + u.description + u.channelTitle).toUpperCase().includes(searchFilterUp);
@@ -71,6 +73,15 @@ var app = new Vue({
                 }));
             });
         },
+        filteredPlaylist: function () {
+            if (this.playlistFilter === "") return this.uniqueList;
+
+            playlistFilterUp = this.playlistFilter.toUpperCase();
+
+            return this.uniqueList.filter(function (u) {
+                return (u.title + u.description + u.channelTitle).toUpperCase().includes(playlistFilterUp);
+            });
+        }
     },
     functions: {
 
@@ -298,7 +309,11 @@ var app = new Vue({
             }
         },
         openVideo(link) {
-            window.open("https://www.youtube.com/watch?v=" + link, "_blank");
+            let handle = window.open("https://www.youtube.com/watch?v=" + link, "_blank");
+
+            handle.blur();
+
+            window.focus();
         },
         async downloadVideo(video) {
             fetch("/api/values/download/" + video.id, { method: "POST" });
@@ -357,6 +372,53 @@ var app = new Vue({
 
                 app.videos.splice(index, 1);
             });
+        },
+        deleteFilteredPlaylistVideos() {     
+            this.filteredPlaylist.forEach(async function (item) {
+                var waiter = fetch("/api/values/video/" + item.id, { method: "DELETE" });
+
+                var index = app.uniqueList.indexOf(item);
+
+                app.uniqueList.splice(index, 1);
+
+                await waiter;
+            });
+
+            this.playlistFilter = "";
+        },
+        deleteNotFilteredPlaylistVideos() {
+            const NotFilteredPlaylist = this.uniqueList.filter(function (u) {
+                return !app.filteredPlaylist.includes(u);
+            });
+
+            NotFilteredPlaylist.forEach(async function (item) {
+                var waiter = fetch("/api/values/video/" + item.id, { method: "DELETE" });
+
+                var index = app.uniqueList.indexOf(item);
+
+                app.uniqueList.splice(index, 1);
+
+                await waiter;
+            });
+
+            this.playlistFilter = "";
+        },
+        deleteCompletePlaylist() {
+            this.lists.forEach(function (item) {
+                if (item.list === app.inputListModeNumber) {
+                    const index = app.lists.indexOf(item);
+
+                    app.lists.splice(index, 1);
+                }
+            });
+
+            this.closeUniqueList();
+
+            this.uniqueList.forEach(async function (item) {
+                await fetch("/api/values/video/" + item.id, { method: "DELETE" });
+            });
+
+            
         },
         async reactivateVideo(video) {
             var waiter = fetch("/api/values/video/" + video.id, { method: "POST" });
@@ -903,6 +965,7 @@ var app = new Vue({
             ctxMenu.style.top = "";
         }, false);
 
+        document.body.onmousedown = function (e) { if (e.button === 1) return false; }
 
         var result = await fetch("/api/values/first");
 

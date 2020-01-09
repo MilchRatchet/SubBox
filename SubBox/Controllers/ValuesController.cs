@@ -17,6 +17,8 @@ namespace SubBox.Controllers
     {
         private readonly AppDbContext context;
 
+        private static readonly object LockObject = new object();
+
         public ValuesController(AppDbContext context)
         {
             this.context = context;   
@@ -396,44 +398,47 @@ namespace SubBox.Controllers
         [HttpDelete("video/{id}")]
         public void DeleteVideo(string id)
         {
-            try
+            lock (LockObject)
             {
-                Video video = context.Videos.Find(id);
-
-                if (video == null)
+                try
                 {
-                    Logger.Warn("video:" + id + " was requested but is not present in db");
+                    Video video = context.Videos.Find(id);
+
+                    if (video == null)
+                    {
+                        Logger.Warn("video:" + id + " was requested but is not present in db");
+
+                        return;
+                    }
+
+                    Logger.Info("Deleting Video: " + video.Title + " by " + video.ChannelTitle);
+
+                    video.New = false;
+
+                    if (video.List != 0)
+                    {
+                        context.Videos.Remove(video);
+
+                        if (video.Index >= 0)
+                        {
+                            context.Videos.Where(v => v.List == video.List && v.Index > video.Index).ToList().ForEach(v => v.Index -= 1);
+                        }
+                        else
+                        {
+                            context.Videos.Where(v => v.List == video.List && v.Index < video.Index).ToList().ForEach(v => v.Index += 1);
+                        }
+                    }
+
+                    context.SaveChanges();
+                }
+                catch (Exception e)
+                {
+                    Logger.Warn("video: " + id + " could not be deleted");
+
+                    Logger.Error(e.Message);
 
                     return;
                 }
-
-                Logger.Info("Deleting Video: " + video.Title + " by " + video.ChannelTitle);
-
-                video.New = false;
-
-                if (video.List != 0)
-                {
-                    context.Videos.Remove(video);
-
-                    if (video.Index >= 0)
-                    {
-                        context.Videos.Where(v => v.List == video.List && v.Index > video.Index).ToList().ForEach(v => v.Index -= 1);
-                    }
-                    else
-                    {
-                        context.Videos.Where(v => v.List == video.List && v.Index < video.Index).ToList().ForEach(v => v.Index += 1);
-                    }
-                }
-
-                context.SaveChanges();
-            }
-            catch (Exception e)
-            {
-                Logger.Warn("video: " + id + " could not be deleted");
-
-                Logger.Error(e.Message);
-
-                return;
             }
         }
 

@@ -57,6 +57,18 @@
                 <p class="material-icons">delete_sweep</p>
                 <p>Move all to Trashbin</p>
             </div>
+            <div @click="deleteFilteredPlaylistVideos()" v-show="uniqueListMode && playlistFilter !== ''" class="menuButton">
+                <p class="material-icons">delete_sweep</p>
+                <p>Remove all filtered</p>
+            </div>
+            <div @click="deleteNotFilteredPlaylistVideos()" v-show="uniqueListMode && playlistFilter !== ''" class="menuButton">
+                <p class="material-icons">delete_sweep</p>
+                <p>Keep only filtered</p>
+            </div>
+            <div @click="deleteCompletePlaylist()" v-show="uniqueListMode" class="menuButton">
+                <p class="material-icons">delete_sweep</p>
+                <p>Delete whole Playlist</p>
+            </div>
             <div @click="toggleInformationMode()" class="menuButton">
                 <p class="material-icons">priority_high</p>
                 <p>About</p>
@@ -67,6 +79,10 @@
             <div class="informationOverlayRow">
                 <p>SubBox Version:</p>
                 <label>{{informationContent[0]}}</label>
+            </div>
+            <div class="informationOverlayRow">
+                <p>Newest SubBox Version:</p>
+                <label>{{newestVersion}}</label>
             </div>
             <div class="informationOverlayRow">
                 <p>Author:</p>
@@ -148,23 +164,26 @@
                     <input @keyup.enter="submitPlaylist" v-model="addPlayList" autocomplete="off" type="text" name="PlaylistIdUnqiue" placeholder="Playlist Id..." />
                     <button @click="submitPlaylist" class="material-icons">search</button>
                 </div>
+                <div style="margin-left: auto;">
+                    <input v-model="playlistFilter" type="text" autocomplete="off" placeholder="Search" />
+                </div>
                 <button @click="closeUniqueList" class="material-icons closeUniqueListButton tooltip"><div class="tooltiptext ttdown">Back</div>exit_to_app</button>
             </nav>
 
             <div class="scrollList">
                 <table class="uniqueList">
-                    <tr v-for="video in uniqueList">
+                    <tr v-for="video in filteredPlaylist">
                         <td>
                             <div class="videoBox">
                                 <div class="videoContentDiv">
-                                    <div @click="openVideo(video.id)" class="videoThumb">
+                                    <div @click="openVideo(video.id)" @click.middle="openVideo(video.id)" class="videoThumb">
                                         <img :src="video.thumbnailUrl" style="width:246px;height:138px" />
                                         <p>{{video.duration}}</p>
                                     </div>
                                     <div class="videoTextContentDiv">
                                         <div class="videoTitleDiv">
                                             <div class="videoTitleAndMetaDiv">
-                                                <div @click="openVideo(video.id)" class="videoTitle">
+                                                <div @click="openVideo(video.id)" @click.middle="openVideo(video.id)" class="videoTitle">
                                                     {{video.title}}
                                                 </div>
                                                 <div class="videoText">
@@ -203,14 +222,14 @@
                                     <span class="videoHeaderName" @click="openChannel(video.channelName)">{{video.channelTitle}}</span>
                                 </div>
                                 <div class="videoContentDiv">
-                                    <div @click="openVideo(video.id)" class="videoThumb">
+                                    <div @click="openVideo(video.id)" @click.middle="openVideo(video.id)" class="videoThumb">
                                         <img :src="video.thumbnailUrl" style="width:246px;height:138px" />
                                         <p>{{video.duration}}</p>
                                     </div>
                                     <div class="videoTextContentDiv">
                                         <div class="videoTitleDiv">
                                             <div class="videoTitleAndMetaDiv">
-                                                <div @click="openVideo(video.id)" class="videoTitle">
+                                                <div @click="openVideo(video.id)" @click.middle="openVideo(video.id)" class="videoTitle">
                                                     {{video.title}}
                                                 </div>
                                                 <div class="videoText">
@@ -443,14 +462,14 @@
                 <td>
                     <div class="videoBox">
                         <div class="videoContentDiv">
-                            <div @click="openVideo(video.id)" class="videoThumb">
+                            <div @click="openVideo(video.id)" @click.middle="openVideo(video.id)" class="videoThumb">
                                 <img :src="video.thumbnailUrl" style="width:246px;height:138px" />
                                 <p>{{video.duration}}</p>
                             </div>
                             <div class="videoTextContentDiv">
                                 <div class="videoTitleDiv">
                                     <div style="width: 100%" class="videoTitleAndMetaDiv">
-                                        <div @click="openVideo(video.id)" class="videoTitle">
+                                        <div @click="openVideo(video.id)" @click.middle="openVideo(video.id)" class="videoTitle">
                                             {{video.title}}
                                         </div>
                                         <div class="videoText">
@@ -484,14 +503,14 @@
                             <span class="videoHeaderName" @click="openChannel(video.channelName)">{{video.channelTitle}}</span>
                         </div>
                         <div class="videoContentDiv">
-                            <div @click="openVideo(video.id)" class="videoThumb">
+                            <div @click="openVideo(video.id)" @click.middle="openVideo(video.id)" class="videoThumb">
                                 <img :src="video.thumbnailUrl" style="width:246px;height:138px" />
                                 <p>{{video.duration}}</p>
                             </div>
                             <div class="videoTextContentDiv">
                                 <div class="videoTitleDiv">
                                     <div class="videoTitleAndMetaDiv">
-                                        <div @click="openVideo(video.id)" class="videoTitle">
+                                        <div @click="openVideo(video.id)" @click.middle="openVideo(video.id)" class="videoTitle">
                                             {{video.title}}
                                         </div>
                                         <div class="videoText">
