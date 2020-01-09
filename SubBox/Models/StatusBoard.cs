@@ -18,7 +18,7 @@ namespace SubBox.Models
 
             try
             {
-                StatusUpdate status = Board.Find((s) => ((s.Kind == kind) && (s.Key == key)));
+                StatusUpdate status = Board.FirstOrDefault((s) => ((s.Kind == kind) && (s.Key == key)));
 
                 if (status != null)
                 {
@@ -33,7 +33,7 @@ namespace SubBox.Models
 
                     Key = "",
 
-                    Value = false
+                    Value = ""
                 };
             }
             finally
@@ -56,7 +56,7 @@ namespace SubBox.Models
             }
         }
 
-        public async static Task PutStatus(string kind, string key, bool value)
+        public async static Task PutStatus(string kind, string key, string value)
         {
             await PutStatus(new StatusUpdate()
             {
@@ -66,6 +66,23 @@ namespace SubBox.Models
 
                 Value = value
             });
+        }
+
+        public async static Task PrintAllStatus()
+        {
+            await Locker.WaitAsync();
+
+            try
+            {
+                foreach(StatusUpdate s in Board)
+                {
+                    Logger.Info("Kind: " + s.Kind + ", Key: " + s.Key + ", Value: " + s.Value);
+                }
+            }
+            finally
+            {
+                Locker.Release();
+            }
         }
 
     }

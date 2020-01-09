@@ -318,14 +318,27 @@ var app = new Vue({
         async downloadVideo(video) {
             fetch("/api/values/download/" + video.id, { method: "POST" });
 
+            Vue.set(video, 'dlprogress', "0");
+
             Vue.set(video, 'dlstatus', 1);
+
+            var progressUpdater = setInterval(async function () {
+                var result = await fetch("/api/values/status/downloadProgress/" + video.id);
+
+                var progress = await result.json();
+
+                if (progress.kind === "downloadProgress") {
+                    Vue.set(video, 'dlprogress', progress.value);
+                }
+            }, 100);
 
             var updater = setInterval(async function () {
                 var result = await fetch("/api/values/status/downloadResult/" + video.id);
 
                 var status = await result.json();
 
-                if (status.kind == "downloadResult") {
+                if (status.kind === "downloadResult") {
+
                     Vue.set(video, 'dlstatus', ((status.value) ? 2 : 0));
 
                     app.messages.push({
@@ -337,11 +350,12 @@ var app = new Vue({
                     });
 
                     setTimeout(() => app.messages.shift(), 10000);
-                    
+
+                    clearInterval(progressUpdater);
 
                     clearInterval(updater);
                 }
-            }, 5000);
+            }, 1000);
         },
         async deleteVideo(video) {
             if (this.uniqueListMode) {

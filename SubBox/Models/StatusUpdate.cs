@@ -6,13 +6,13 @@
 
         public string Key { get; set; }
 
-        public bool Value { get; set; }
+        public string Value { get; set; }
 
         /*
          * Implemented variants of kind:
-         * - noStatus { key = '', value = (false: default)}
-         * - downloadResult { key = 'id of video', value = (false: failed, true: finished)}
-         * 
+         * - noStatus { key = '', value = ''}
+         * - downloadResult { key = 'id of video', value = ('false': failed, 'true': finished)}
+         * - downloadProgress { key = 'id of video', value = ('XX': two digit percent representation of download progress)}
          * 
          */
     }

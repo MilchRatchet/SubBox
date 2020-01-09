@@ -135,7 +135,7 @@ namespace SubBox.Models
             {
                 Logger.Info("Tools for downloading are not ready yet");
 
-                _ = StatusBoard.PutStatus("downloadResult", id, false);
+                _ = StatusBoard.PutStatus("downloadResult", id, "false");
 
                 return;
             }
@@ -228,17 +228,47 @@ namespace SubBox.Models
 
                 Logger.Error(m.Message);
 
-                _ = StatusBoard.PutStatus("downloadResult", id, false);
+                _ = StatusBoard.PutStatus("downloadResult", id, "false");
             }
+
+            int highestPercent = 0;
+
+            bool videoDone = false;
+
+            long lastUpdate = DateTime.Now.Ticks - 2000000;
             
             while (!dl.StandardOutput.EndOfStream)
             {
-                Logger.Info(dl.StandardOutput.ReadLine());
+                string text = dl.StandardOutput.ReadLine();
+
+                if (!videoDone && (DateTime.Now.Ticks - lastUpdate >= 2000000) && text.Contains("download") && text.Contains("%"))
+                {
+                    lastUpdate = DateTime.Now.Ticks;
+
+                    string progress = text.Substring(12, 2);
+
+                    int progressNumber = Int32.Parse(progress);
+
+                    if (progressNumber < highestPercent)
+                    {
+                        videoDone = true;
+
+                        _ = StatusBoard.PutStatus("downloadProgress", id, "100");
+                    }
+                    else
+                    {
+                        highestPercent = progressNumber;
+
+                        _ = StatusBoard.PutStatus("downloadProgress", id, progress);
+                    }
+                }
+
+                Logger.Info(text);
             }
 
             LocalCollection.CollectAllDownloadedVideos();
 
-            _ = StatusBoard.PutStatus("downloadResult", id, true);
+            _ = StatusBoard.PutStatus("downloadResult", id, "true");
         }
     }
 }
