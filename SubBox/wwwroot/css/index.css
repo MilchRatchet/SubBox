@@ -128,6 +128,8 @@ nav button {
     margin: 0;
     padding: 0;
     border-radius: 0px;
+    border-top: 3px solid transparent;
+    border-bottom: 3px solid transparent;
 }
 
 nav p {
@@ -280,6 +282,11 @@ nav:hover .Title {
         border-radius: 100%;
     }
 
+.activeNavButton {
+    padding-bottom: 0;
+    border-bottom: 3px solid var(--mainColor);
+}
+
 .videoChannelDiv {
     display: flex;
     align-items: center;
@@ -333,6 +340,7 @@ nav:hover .Title {
 .videoTextContentDiv {
     display: flex;
     flex-direction: column;
+    width: 100%;
 }
 
 .playlistButtonDiv {
@@ -461,9 +469,13 @@ nav:hover .Title {
     border-top: none;
     box-shadow: 5px 5px 10px -8px rgba(0, 0, 0, .2);
     max-height: calc(100vh - 40px);
-    overflow-y: auto;
+    overflow-y: hidden;
     overflow-x: hidden;
 }
+
+    .overlay:hover {
+        overflow-y: auto;
+    }
 
 .channelList {
     border-collapse: collapse;

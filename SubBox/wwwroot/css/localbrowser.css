@@ -47,11 +47,11 @@ nav {
     width: 200px;
     height: 32px;
     border-bottom-right-radius: 5px;
-    background: linear-gradient(to right, #8f54f1, #8fa5f1, #00bf9f);
+    background: linear-gradient(to right, #8f54f1, #9f45e1, #ce1160, #de0150);
     background-position: left;
     background-size: 200%;
     padding: 5px;
-    transition: 1s;
+    transition: 0.5s;
     cursor: default;
 }
 
@@ -62,14 +62,13 @@ nav {
 
     nav:hover {
         background-position: right;
-        transition: 1s;
+        transition: 0.5s;
     }
 
 input {
     width: 250px;
     background: none;
-    border-image: linear-gradient(to top right, #8f54f1, #00efbf);
-    border-image-slice: 1;
+    border-color: #8f54f1;
     border-style: solid;
     border-width: 1px;
     color: #ffffff;
@@ -78,10 +77,7 @@ input {
 }
 
     input:hover, input:focus {
-        border-image: linear-gradient(to top right,#ff7500,#ce01ff);
-        border-image-slice: 1;
-        border-style: solid;
-        border-width: 1px;
+        border-color: #ff0166;
     }
 
 .grid {
@@ -227,7 +223,8 @@ input {
         background: linear-gradient(to right, #009f5f, #008f5f, #118f9f, #117fbf);
         background-position: left;
         background-size: 200%;
-        transition: 0.3s;
+        background: #00efbf22;
+        border: 1px solid #00efbf;
         color: #fafafa;
         font-family: 'Roboto', sans-serif;
         font-size: 16px;
@@ -236,30 +233,34 @@ input {
         margin: 0 5px 0 5px;
     }
 
-    .navigationBox button:hover {
-        background-position: right;
-        box-shadow: 0 0 15px -5px #117fbf;
-        transition: 0.3s;
-    }
+        .navigationBox button:hover {
+            color: #ffffff;
+            background: #00efbf88;
+            background-position: right;
+            box-shadow: 0 0 15px -7px #117fbf;
+        }
 
     .navigationBox .deleteButton {
         background: linear-gradient(to right, #cf006f, #db4437, #db4437);
         background-position: left;
         background-size: 200%;
+        background: #db443722;
+        border: 1px solid #db4437;
     }
 
-    .navigationBox .deleteButton:hover {
-        box-shadow: 0 0 15px -5px #db4437;
-        background-position: right;
-    }
+        .navigationBox .deleteButton:hover {
+            background: #db443788;
+            box-shadow: 0 0 15px -7px #db4437;
+            background-position: right;
+        }
 
     .navigationBox p {
+        padding: 2px 6px 2px 6px;
         cursor: default;
         float: left;
-        background: linear-gradient(to right, #5f94f1, #00efbf);
-        background-clip: text;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
+        color: #fafafa;
+        border: 1px solid #9f64ff;
+        background: #9f64ff33;
     }
 
 .exitButton {
