@@ -688,6 +688,8 @@ button.deleteChannelButton:hover {
 }
 
 .scrollList {
+    padding-top: 25px;
+    padding-bottom: 25px;
     width: 100%;
     overflow: auto;
     margin: 0;

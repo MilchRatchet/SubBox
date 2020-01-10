@@ -165,7 +165,7 @@
                 </div>
                 <div style="display: flex; margin-left: auto;">
                     <input v-model="playlistFilter" type="text" autocomplete="off" placeholder="Search" />
-                    <p class="Title" style="margin-top:0; margin-right: 6px">{{filteredPlaylist.length}} Video{{(filteredPlaylist.length != 1) ? 's' : ''}}</p>
+                    <p class="Title" style="margin-top:0;">{{filteredPlaylist.length}}{{ (uniqueList.length !== filteredPlaylist.length) ? (' / ' + uniqueList.length) : ''}}</p>
                 </div>
                 <button @click="closeUniqueList" class="material-icons closeUniqueListButton tooltip"><div class="tooltiptext ttdown">Back</div>exit_to_app</button>
             </nav>
@@ -265,7 +265,7 @@
             <p class="selectedTag" v-if="selectedTag != null">{{selectedTag.name}}</p>
             <div class="topbar" style="margin-left: auto">
                 <input class="search" v-model="searchFilter" type="text" autocomplete="off" placeholder="Search" />
-                <p class="Title" style="cursor: default;">{{filter}} - {{filteredVideos.length}}</p>
+                <p class="Title" style="cursor: default;">{{filter}} - {{filteredVideos.length}}{{ (videos.length !== filteredVideos.length) ? (' / ' + videos.length) : ''}}</p>
             </div>
 
             <button style="margin-left: auto" @click="switchDesign" class="material-icons tooltip"><div class="tooltiptext ttdown">Light/Dark Theme</div>highlight</button>
