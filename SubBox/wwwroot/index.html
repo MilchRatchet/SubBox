@@ -49,11 +49,11 @@
                 <p style="color: transparent" class="material-icons">file_copy</p>
                 <p>Delete [DEL]</p>
             </div>
-            <div @click="resetAllFilters()" v-show="videoListMode" class="menuButton">
+            <div @click="resetAllFilters()" v-show="videoListMode && (filter !== 'SubBox' || searchFilter !== '' || selectedTag !== null)" class="menuButton">
                 <p class="material-icons">filter_list</p>
                 <p>Reset all filters</p>
             </div>
-            <div @click="deleteFilteredVideos()" v-show="videoListMode" class="menuButton">
+            <div @click="deleteFilteredVideos()" v-show="videoListMode && (filter !== 'SubBox' || searchFilter !== '' || selectedTag !== null)" class="menuButton">
                 <p class="material-icons">delete_sweep</p>
                 <p>Move all to Trashbin</p>
             </div>
