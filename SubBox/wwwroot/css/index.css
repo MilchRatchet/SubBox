@@ -283,8 +283,7 @@ nav:hover .Title {
     }
 
 .activeNavButton {
-    padding-bottom: 0;
-    border-bottom: 3px solid var(--mainColor);
+    border-top: 3px solid var(--mainColor);
 }
 
 .videoChannelDiv {

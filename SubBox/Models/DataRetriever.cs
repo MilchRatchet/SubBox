@@ -65,6 +65,8 @@ namespace SubBox.Models
 
                     context.SaveChanges();
 
+                    _ = StatusBoard.PutStatus("channelResult", name, "true");
+
                     List<string> list = RequestVideoIdsFromChannel(NewChannel.Id).GetAwaiter().GetResult();
 
                     if (list.Count == 0) return;
@@ -83,11 +85,13 @@ namespace SubBox.Models
                     }
 
                     Task.WaitAll(waitTasks);
-                }
+                } 
             }
             catch (Exception)
             {
                 Logger.Info(name + " couldn't be added");
+
+                _ = StatusBoard.PutStatus("channelResult", name, "false");
             }
         }
 

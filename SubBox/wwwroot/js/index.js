@@ -42,6 +42,7 @@ var app = new Vue({
         filteredLength: "0:00",
         totalLength: "0:00",
         newestVersion: "1.5.1",
+        messageRunningId: 0,
     },
     computed: {
         filteredVideos: function () {
@@ -269,11 +270,13 @@ var app = new Vue({
             if (this.addChannelName != "") {
                 this.addChannelName = this.addChannelName.trim();
 
-                this.inputMode = false;
-
-                var waiter = fetch("/api/values/channel/" + this.addChannelName, { method: "POST" });
+                const requestString = this.addChannelName;
 
                 this.addChannelName = "";
+
+                this.inputMode = false;
+
+                var waiter = fetch("/api/values/channel/" + requestString, { method: "POST" });
 
                 await waiter;
 
@@ -284,6 +287,55 @@ var app = new Vue({
 
                     await this.showChannels();
                 }
+
+                var updater = setInterval(async function () {
+                    var result = await fetch("/api/values/status/channelResult/" + requestString);
+
+                    var status = await result.json();
+
+                    if (status.kind === "channelResult") {
+
+                        status.value = status.value === 'true';
+
+                        if (!status.value) {
+                            const messageId = app.messageRunningId++;
+
+                            app.messages.push({
+                                "id": messageId,
+                                "title": "Channel could not be added",
+                                "subtitle": "Check out the introduction to look up how to add channels",
+                                "thumbUrl": "media/LogoRed.png",
+                                "text": "Input: " + requestString,
+                                "event": "return;"
+                            });
+
+                            setTimeout(function () { const index = app.messages.findIndex(m => m.id === messageId); app.messages.splice(index, 1); }, 10000);
+
+                            clearInterval(updater);
+
+                            return;
+                        }
+
+                        const channel = app.channels.find(c => (c.id === requestString || c.username === requestString));
+
+                        if (channel !== undefined) {
+                            const messageId = app.messageRunningId++;
+
+                            app.messages.push({
+                                "id": messageId,
+                                "title": channel.displayname + " was added",
+                                "subtitle": "Username: " + channel.username,
+                                "thumbUrl": channel.thumbnailUrl,
+                                "text": "Id: " + channel.id,
+                                "event": "app.filter = '" + channel.displayname + "'; app.lockChannel('" + channel.id + "');"
+                            });
+
+                            setTimeout(function () { const index = app.messages.findIndex(m => m.id === messageId); app.messages.splice(index, 1); }, 10000);
+                        }
+
+                        clearInterval(updater);
+                    }
+                }, 1000);
 
             }
         },
@@ -339,9 +391,14 @@ var app = new Vue({
 
                 if (status.kind === "downloadResult") {
 
+                    status.value = status.value === 'true';
+
                     Vue.set(video, 'dlstatus', ((status.value) ? 2 : 0));
 
+                    const messageId = app.messageRunningId++;
+
                     app.messages.push({
+                        "id": messageId,
                         "title": video.title,
                         "subtitle": video.channelTitle,
                         "thumbUrl": video.thumbnailUrl,
@@ -349,7 +406,7 @@ var app = new Vue({
                         "event": ((status.value) ? "window.location.replace('http://localhost:5000/localbrowser.html?id=" + video.id + "');" : "return;")
                     });
 
-                    setTimeout(() => app.messages.shift(), 10000);
+                    setTimeout(function () { const index = app.messages.findIndex(m => m.id === messageId); app.messages.splice(index, 1); }, 10000);
 
                     clearInterval(progressUpdater);
 
@@ -478,7 +535,13 @@ var app = new Vue({
                 c.locked = false;
             });
         },
-        lockChannel(ch) {
+        lockChannel(id) {
+            const ch = this.channels.find(c => c.id === id);
+
+            console.log(ch);
+
+            if (ch === undefined) return;
+
             if (ch.locked) {
                 ch.locked = false;
                 return;
@@ -665,7 +728,7 @@ var app = new Vue({
                 this.filter = ch.displayname;
             }
 
-            this.lockChannel(ch);
+            this.lockChannel(ch.id);
         },
         selectTag(tag) {
             if (this.selectedTag == null) {
@@ -872,16 +935,119 @@ var app = new Vue({
             this.newestVersion = this.newestVersion.substring(1, this.newestVersion.length);
 
             if (this.newestVersion !== this.informationContent[0]) {
+                const messageId = this.messageRunningId++;
+
                 this.messages.push({
+                    "id" : messageId,
                     "title": "Newer Version is available",
                     "subtitle": "Current: v" + this.informationContent[0],
                     "thumbUrl": "media/LogoRed.png",
                     "text": "New: v" + this.newestVersion,
                     "event": "window.open('https://github.com/MilchRatchet/SubBox/releases/latest','_blank');"
                 });
+
+                setTimeout(function () { const index = app.messages.findIndex(m => m.id === messageId); app.messages.splice(index, 1); }, 10000);
+            }
+        },
+        specialDayMessages() {
+            const date = new Date();
+
+            console.log(date);
+
+            const day = date.getDate();
+
+            const month = date.getMonth();
+
+            if (day === 31 && month === 9) {
+                const messageId = this.messageRunningId++;
+
+                this.messages.push({
+                    "id": messageId,
+                    "title": "If that was you on the phone and you on the bus...",
+                    "subtitle": "   ...then who was flickering the lights?",
+                    "thumbUrl": "media/3110.png",
+                    "text": "Nosferatu " + '\uD83D\uDC7B',
+                    "event": "const index = app.messages.findIndex(m => m.id === '" + messageId + "'); app.messages.splice(index, 1); if (!app.night) app.switchDesign();"
+                });
             }
 
-            setTimeout(() => app.messages.shift(), 10000);
+            if (day > 23 && day < 27 && month === 11) {
+                const messageId = this.messageRunningId++;
+
+                this.messages.push({
+                    "id": messageId,
+                    "title": "Merry Christmas",
+                    "subtitle": '\u2744' + '\u2744' + '\u2744' + '\u2744' + '\u2744' + '\u2744' + '\u2744' + '\u2744' + '\u2744' + '\u2744' + '\u2744' + '\u2744' + '\u2744',
+                    "thumbUrl": "media/2412.png",
+                    "text": '\u2744' + '\u2744' + '\u2744' + '\u2744' + '\u2744' + '\u2744' + '\u2744' + '\u2744' + '\u2744' + '\u2744' + '\u2744' + '\u2744' + '\u2744',
+                    "event": "const index = app.messages.findIndex(m => m.id === '" + messageId + "'); app.messages.splice(index, 1);"
+                });
+            }
+
+            if (day === 31 && month === 11) {
+                const messageId = this.messageRunningId++;
+
+                this.messages.push({
+                    "id": messageId,
+                    "title": "Happy New Year",
+                    "subtitle": "Looking forward to " + (date.getFullYear() + 1),
+                    "thumbUrl": "media/3112.png",
+                    "text": '\uD83D\uDE80' + '\uD83D\uDE80' + '\uD83D\uDE80' + '\uD83D\uDE80' + '\uD83D\uDE80' + '\uD83D\uDE80' + '\uD83D\uDE80' + '\uD83D\uDE80' + '\uD83D\uDE80' + '\uD83D\uDE80' + '\uD83D\uDE80' + '\uD83D\uDE80',
+                    "event": "const index = app.messages.findIndex(m => m.id === '" + messageId + "'); app.messages.splice(index, 1);"
+                });
+            }
+
+            if (day === 9 && month === 9) {
+                const messageId = this.messageRunningId++;
+
+                this.messages.push({
+                    "id": messageId,
+                    "title": "Happy Leif Erikson Day",
+                    "subtitle": "hinga-dinga-durgen",
+                    "thumbUrl": "media/0910.png",
+                    "text": "My favorite holiday, next to April Fool's Day",
+                    "event": "const index = app.messages.findIndex(m => m.id === '" + messageId + "'); app.messages.splice(index, 1);"
+                });
+            }
+
+            if (day === 5 && month === 9) {
+                const messageId = this.messageRunningId++;
+
+                this.messages.push({
+                    "id": messageId,
+                    "title": "SubBox is celebrating its Anniversary",
+                    "subtitle": "Thanks for using SubBox",
+                    "thumbUrl": "media/LogoRed.png",
+                    "text": '\uD83C\uDF89' + '\uD83C\uDF89' + '\uD83C\uDF89' + '\uD83C\uDF89' + '\uD83C\uDF89' + '\uD83C\uDF89' + '\uD83C\uDF89' + '\uD83C\uDF89' + '\uD83C\uDF89' + '\uD83C\uDF89' + '\uD83C\uDF89' + '\uD83C\uDF89',
+                    "event": "const index = app.messages.findIndex(m => m.id === '" + messageId + "'); app.messages.splice(index, 1);"
+                });
+            }
+
+            if (day === 1 && month === 3) {
+                const messageId = this.messageRunningId++;
+
+                this.messages.push({
+                    "id": messageId,
+                    "title": "It is April Fool's Day",
+                    "subtitle": "Don't trust everything you read today",
+                    "thumbUrl": "media/0104.png",
+                    "text": "You never know who wants to fool you" + '\uD83D\uDC40',
+                    "event": "const index = app.messages.findIndex(m => m.id === '" + messageId + "'); app.messages.splice(index, 1); app.openVideo('dQw4w9WgXcQ');"
+                });
+            }
+
+            if (day === 14 && month === 1) {
+                const messageId = this.messageRunningId++;
+
+                this.messages.push({
+                    "id": messageId,
+                    "title": "It is Valentins Day",
+                    "subtitle": "Did you know that it is Youtube's Birthday?",
+                    "thumbUrl": "media/1402.png",
+                    "text": "Youtube just turned " + (date.getFullYear() - 2005) + " years",
+                    "event": "const index = app.messages.findIndex(m => m.id === '" + messageId + "'); app.messages.splice(index, 1);"
+                });
+            }
         }
     },
     el: "#app",
@@ -890,6 +1056,8 @@ var app = new Vue({
         this.isFirefox = typeof InstallTrigger !== 'undefined';
 
         this.getNewestVersion();
+
+        this.specialDayMessages();
 
         const page = document.getElementById("app");
 
