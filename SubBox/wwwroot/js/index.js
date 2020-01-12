@@ -43,6 +43,8 @@ var app = new Vue({
         totalLength: "0:00",
         newestVersion: "1.5.1",
         messageRunningId: 0,
+        confirmationResult: false,
+        confirmationDone: false,
     },
     computed: {
         filteredVideos: function () {
@@ -433,7 +435,9 @@ var app = new Vue({
                 this.videos.splice(index, 1);
             }
         },
-        deleteFilteredVideos() {
+        async deleteFilteredVideos() {
+            if (!(await this.getConfirmation())) return;
+
             if (this.filter === "SubBox" && this.searchFilter === "" && this.selectedTag === null) return;
 
             this.filteredVideos.forEach(function (item) {
@@ -444,7 +448,9 @@ var app = new Vue({
                 app.videos.splice(index, 1);
             });
         },
-        deleteFilteredPlaylistVideos() {     
+        async deleteFilteredPlaylistVideos() {   
+            if (!(await this.getConfirmation())) return;
+
             this.filteredPlaylist.forEach(async function (item) {
                 var waiter = fetch("/api/values/video/" + item.id, { method: "DELETE" });
 
@@ -457,7 +463,9 @@ var app = new Vue({
 
             this.playlistFilter = "";
         },
-        deleteNotFilteredPlaylistVideos() {
+        async deleteNotFilteredPlaylistVideos() {
+            if (!(await this.getConfirmation())) return;
+
             const NotFilteredPlaylist = this.uniqueList.filter(function (u) {
                 return !app.filteredPlaylist.includes(u);
             });
@@ -474,7 +482,9 @@ var app = new Vue({
 
             this.playlistFilter = "";
         },
-        deleteCompletePlaylist() {
+        async deleteCompletePlaylist() {
+            if (!(await this.getConfirmation())) return;
+
             this.lists.forEach(function (item) {
                 if (item.list === app.inputListModeNumber) {
                     const index = app.lists.indexOf(item);
@@ -487,9 +497,7 @@ var app = new Vue({
 
             this.uniqueList.forEach(async function (item) {
                 await fetch("/api/values/video/" + item.id, { method: "DELETE" });
-            });
-
-            
+            });     
         },
         async reactivateVideo(video) {
             var waiter = fetch("/api/values/video/" + video.id, { method: "POST" });
@@ -562,6 +570,8 @@ var app = new Vue({
             this.videoListMode = true;
 
             this.uniqueListMode = false;
+
+            this.playlistFilter = "";
         },
         closeTrashbin() {
             this.videoListMode = true;
@@ -880,6 +890,28 @@ var app = new Vue({
 
             func();
         },
+        async getConfirmation() {
+            var menu = document.getElementById('confirmationMenu');
+
+            menu.style.display = "flex";
+
+            const promise = new Promise((resolve, reject) => {
+
+                const interval = setInterval(function () {
+                    if (!app.confirmationDone) return;
+
+                    menu.style.display = "";
+
+                    app.confirmationDone = false;
+
+                    clearInterval(interval);
+
+                    resolve(app.confirmationResult);
+                }, 100);
+            });
+
+            return promise;
+        },
         updateVideosLength(videoCollection) {
             let sec = 0;
 
@@ -951,8 +983,6 @@ var app = new Vue({
         },
         specialDayMessages() {
             const date = new Date();
-
-            console.log(date);
 
             const day = date.getDate();
 

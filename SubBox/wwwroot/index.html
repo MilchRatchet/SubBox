@@ -31,6 +31,20 @@
 <body>
     <div id="app" :class="night ? 'dark-mode' : 'light-mode'">
 
+        <div id="confirmationMenu">
+            <div>
+                <p>Are you sure?</p>
+                <div>
+                    <button @click="confirmationResult = true; confirmationDone = true;" class="material-icons">
+                        done
+                    </button>
+                    <button @click="confirmationResult = false; confirmationDone = true;" class="material-icons">
+                        close
+                    </button>
+                </div>
+            </div>
+        </div>
+
         <div id="ctxMenu">
             <div @click="$event.preventDefault(); actOnClipboard('cut')" v-show="inputContext" class="menuButton">
                 <p style="color: transparent" class="material-icons">filter_list</p>
@@ -53,7 +67,7 @@
                 <p class="material-icons">filter_list</p>
                 <p>Reset all filters</p>
             </div>
-            <div @click="deleteFilteredVideos()" v-show="videoListMode && (filter !== 'SubBox' || searchFilter !== '' || selectedTag !== null)" class="menuButton">
+            <div @click="deleteFilteredVideos()" v-show="videoListMode && (filter !== 'SubBox' || searchFilter !== '' || selectedTag !== null) && filteredVideos.length !== 0" class="menuButton">
                 <p class="material-icons">delete_sweep</p>
                 <p>Move all to Trashbin</p>
             </div>
