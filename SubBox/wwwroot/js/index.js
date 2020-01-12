@@ -964,7 +964,7 @@ var app = new Vue({
 
             this.newestVersion = latest.tag_name;
 
-            this.newestVersion = this.newestVersion.substring(1, this.newestVersion.length);
+            this.newestVersion = this.newestVersion.substring(2, this.newestVersion.length);
 
             if (this.newestVersion !== this.informationContent[0]) {
                 const messageId = this.messageRunningId++;
