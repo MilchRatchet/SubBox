@@ -220,7 +220,7 @@ input[type=number] {
     width: 250px;
     font-weight: bold;
     color: var(--font_title);
-    background: var(--nav_bg);
+    background-color: var(--bg);
     -moz-appearance: textfield;
     -webkit-appearance: textfield;
 }
@@ -239,7 +239,6 @@ input[type=text].search {
     display: none;
     padding: 4px;
     margin: 0;
-    margin-top: 4px;
     height: 18px;
     width: 300px;
 }
@@ -266,9 +265,7 @@ select {
 
 .Title {
     background-color: none;
-    margin-top: 8px;
-    margin-bottom: 0;
-    margin-left: 6px;
+    margin: 0;
     color: var(--font_title);
     cursor: default;
     letter-spacing: 1px;
@@ -294,8 +291,33 @@ nav:hover .Title {
     transition: 2s ease;
 }
 
+nav div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.navMiddle {
+    width: 350px;
+}
+
+.navLeft {
+    width: calc(50% - 175px);
+    justify-content: flex-start;
+}
+
+.navRight {
+    width: calc(50% - 175px);
+    justify-content: flex-end;
+}
+
 .topbar {
-    height: 40px;
+    height: 100%;
+    justify-content: center;
+    width: 100%;
 }
 
     .topbar:hover .Title {
@@ -515,7 +537,7 @@ nav:hover .Title {
     margin-left: 0%;
     width: 400px;
     background-color: var(--nav_bg);
-    z-index: 2;
+    z-index: 500;
     display: block;
     border: 1px solid var(--video_bd_bot);
     border-left: none;
@@ -728,7 +750,7 @@ button.deleteChannelButton:hover {
     height: 100%;
 }
 
-.overlayUniqueList {
+.videoListDiv {
     position: fixed;
     top: 40px;
     margin-left: 0;
@@ -785,7 +807,7 @@ button.deleteChannelButton:hover {
     margin-left: 80%;
     width: 20%;
     background-color: var(--nav_bg);
-    z-index: 2;
+    z-index: 500;
     display: block;
     border: 1px solid var(--video_bd_bot);
     border-right: none;
@@ -1051,6 +1073,7 @@ button.deleteTagFilterButton:hover {
     font-size: 14px;
     font-family: 'Roboto', sans-serif;
     padding: 8px;
+    height: 14px;
     visibility: hidden;
     opacity: 0;
     color: var(--secColor);

@@ -169,19 +169,25 @@
             </div>
         </div>
 
-        <div v-show="uniqueListMode" class="overlayUniqueList">
+        <div v-show="uniqueListMode" class="videoListDiv">
             <nav>
-                <p>Playlist</p><p class="material-icons">view_list</p><p>|</p>
-                <button @click="showListInput()" class="material-icons tooltip"><div class="tooltiptext ttdown">Extend Playlist</div>playlist_add</button>
-                <div v-show="inputListMode" class="inputList">
-                    <input @keyup.enter="submitPlaylist" v-model="addPlayList" autocomplete="off" type="text" name="PlaylistIdUnqiue" placeholder="Playlist Id..." />
-                    <button @click="submitPlaylist" class="material-icons">search</button>
+                <div class="navLeft">
+                    <p>Playlist</p><p class="material-icons">view_list</p><p>|</p>
+                    <button @click="showListInput()" class="material-icons tooltip"><div class="tooltiptext ttdown">Extend Playlist</div>playlist_add</button>
+                    <div v-show="inputListMode" class="inputList">
+                        <input @keyup.enter="submitPlaylist" v-model="addPlayList" autocomplete="off" type="text" name="PlaylistIdUnqiue" placeholder="Playlist Id..." />
+                        <button @click="submitPlaylist" class="material-icons">search</button>
+                    </div>
                 </div>
-                <div style="display: flex; margin-left: auto;">
-                    <input v-model="playlistFilter" type="text" autocomplete="off" placeholder="Search" />
-                    <p class="Title" style="margin-top:0;">{{filteredPlaylist.length}}{{ (uniqueList.length !== filteredPlaylist.length) ? (' / ' + uniqueList.length) : ''}}</p>
+                <div class="navMiddle">
+                    <div>
+                        <input v-model="playlistFilter" type="text" autocomplete="off" placeholder="Search" />
+                        <p class="Title" style="margin-left: 10px;">{{filteredPlaylist.length}}{{ (uniqueList.length !== filteredPlaylist.length) ? (' / ' + uniqueList.length) : ''}}</p>
+                    </div>
                 </div>
-                <button @click="closeUniqueList" class="material-icons closeUniqueListButton tooltip"><div class="tooltiptext ttdown">Back</div>exit_to_app</button>
+                <div class="navRight">
+                    <button @click="closeUniqueList" class="material-icons closeUniqueListButton tooltip"><div class="tooltiptext ttdown">Back</div>exit_to_app</button>
+                </div>
             </nav>
 
             <div class="scrollList">
@@ -220,11 +226,18 @@
                 </table>
             </div>
         </div>
-        <div v-show="trashbinMode" class="overlayUniqueList">
+        <div v-show="trashbinMode" class="videoListDiv">
             <nav>
-                <p>Trashbin</p><p class="material-icons">view_list</p><p>|</p>
-                <p class="Title" style="margin-top:0;">{{oldVideos.length}} Video{{(oldVideos.length != 1) ? 's' : ''}}</p>
-                <button @click="closeTrashbin" class="material-icons closeUniqueListButton tooltip"><div class="tooltiptext ttdown">Back</div>exit_to_app</button>
+                <div class="navLeft">
+                    <p>Trashbin</p><p class="material-icons">view_list</p><p>|</p>
+                    <p class="Title" style="margin-left: 10px;">{{oldVideos.length}} Video{{(oldVideos.length != 1) ? 's' : ''}}</p>
+                </div>
+                <div class="navMiddle">
+
+                </div>
+                <div class="navRight">
+                    <button @click="closeTrashbin" class="material-icons closeUniqueListButton tooltip"><div class="tooltiptext ttdown">Back</div>exit_to_app</button>
+                </div>
             </nav>
             <div class="scrollList">
                 <table class="uniqueList">
@@ -267,26 +280,7 @@
             </div>
         </div>
 
-        <nav v-show="videoListMode" class="mainNav">
-            <button @click="showChannels" class="material-icons tooltip" v-bind:class="{activeNavButton : channelMode}"><div style="left: 0" class="tooltiptext ttdown">Channel List</div>{{(filter === 'SubBox') ? 'account_box' : 'star'}}</button>
-            <button @click="showListInput()" class="material-icons tooltip" v-bind:class="{activeNavButton : inputListMode}"><div class="tooltiptext ttdown">Add Playlist</div>playlist_add</button>
-            <div v-show="inputListMode" class="inputList">
-                <input @keyup.enter="submitPlaylist" v-model="addPlayList" autocomplete="off" type="text" name="PlaylistId" placeholder="Playlist Id..." />
-                <button @click="submitPlaylist" class="material-icons">search</button>
-            </div>
-            <button @click="showOldVideos" class="material-icons tooltip"><div class="tooltiptext ttdown">Trashbin</div>delete</button>
-            <button @click="showTags" class="material-icons tooltip" v-bind:class="{activeNavButton : tagsMode}"><div class="tooltiptext ttdown">Tags</div>label</button>
-            <p class="selectedTag" v-if="selectedTag != null">{{selectedTag.name}}</p>
-            <div class="topbar" style="margin-left: auto">
-                <input class="search" v-model="searchFilter" type="text" autocomplete="off" placeholder="Search" />
-                <p class="Title" style="cursor: default;">{{filter}} - {{filteredVideos.length}}{{ (videos.length !== filteredVideos.length) ? (' / ' + videos.length) : ''}}</p>
-            </div>
 
-            <button style="margin-left: auto" @click="switchDesign" class="material-icons tooltip"><div class="tooltiptext ttdown">Light/Dark Theme</div>highlight</button>
-            <button @click="showSettings" class="material-icons tooltip" v-bind:class="{activeNavButton : settingsMode}"><div class="tooltiptext ttdown">Settings</div>settings_applications</button>
-            <button @click="window.location.replace('http://localhost:5000/localbrowser.html');" class="material-icons tooltip"><div class="tooltiptext ttdown">SubBox Nightly</div>archive</button>
-            <button @click="refresh" class="material-icons refreshButton">autorenew</button>
-        </nav>
 
         <div v-show="settingsMode" class="settingsOverlay">
             <table>
@@ -471,89 +465,119 @@
         <div class="spacer">
 
         </div>
-        <table v-show="videoListMode && filter==='SubBox' && searchFilter === '' && selectedTag == null" class="listList">
-            <tr v-for="video in lists">
-                <td>
-                    <div class="videoBox">
-                        <div class="videoContentDiv">
-                            <div @click="openVideo(video.id)" @click.middle="openVideo(video.id)" class="videoThumb">
-                                <img :src="video.thumbnailUrl" style="width:246px;height:138px" />
-                                <p>{{video.duration}}</p>
-                            </div>
-                            <div class="videoTextContentDiv">
-                                <div class="videoTitleDiv">
-                                    <div style="width: 100%" class="videoTitleAndMetaDiv">
-                                        <div @click="openVideo(video.id)" @click.middle="openVideo(video.id)" class="videoTitle">
-                                            {{video.title}}
-                                        </div>
-                                        <div class="videoText">
-                                            <span class="videoTextChannel" @click="openChannel(video.channelName)">{{video.channelTitle}}</span> &#9679 {{video.publishedAtString}}
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="videoDesc">
-                                    <p>{{video.description}}</p>
-                                </div>
-
-                                <div class="playlistButtonDiv">
-                                    <p class="playlistHint">PLAYLIST</p>
-                                    <button @click="prev(video.list)" style="margin-left: auto" class="material-icons listButton tooltip"><div class="tooltiptext ttleft">Previous Video</div>fast_rewind</button>
-                                    <button @click="next(video.list)" class="material-icons listButton tooltip"><div class="tooltiptext ttright">Next Video</div>fast_forward</button>
-                                    <button @click="showUniqueList(video.list)" class="material-icons listButton tooltip"><div class="tooltiptext ttright">Show Playlist</div>view_list</button>
-                                </div>
-                            </div>
-                        </div>
+        <div v-show="videoListMode" class="videoListDiv">
+            <nav class="mainNav">
+                <div class="navLeft">
+                    <button @click="showChannels" class="material-icons tooltip" v-bind:class="{activeNavButton : channelMode}"><div style="left: 0" class="tooltiptext ttdown">Channel List</div>{{(filter === 'SubBox') ? 'account_box' : 'star'}}</button>
+                    <button @click="showListInput()" class="material-icons tooltip" v-bind:class="{activeNavButton : inputListMode}"><div class="tooltiptext ttdown">Add Playlist</div>playlist_add</button>
+                    <div v-show="inputListMode" class="inputList">
+                        <input @keyup.enter="submitPlaylist" v-model="addPlayList" autocomplete="off" type="text" name="PlaylistId" placeholder="Playlist Id..." />
+                        <button @click="submitPlaylist" class="material-icons">search</button>
                     </div>
-                </td>
-            </tr>
-        </table>
-        <table v-show="videoListMode" class="videoList">
-            <tr v-for="video in filteredVideos">
-                <td>
-                    <div class="videoBox">
-                        <div class="videoChannelDiv">
-                            <img :src="video.channelPicUrl" style="left:0;width:32px;height:32px;border-radius: 50%;vertical-align:middle;cursor:pointer;" @click="openChannel(video.channelName)" />
-                            <span class="videoHeaderName" @click="openChannel(video.channelName)">{{video.channelTitle}}</span>
-                        </div>
-                        <div class="videoContentDiv">
-                            <div @click="openVideo(video.id)" @click.middle="openVideo(video.id)" class="videoThumb">
-                                <img :src="video.thumbnailUrl" style="width:246px;height:138px" />
-                                <p>{{video.duration}}</p>
-                            </div>
-                            <div class="videoTextContentDiv">
-                                <div class="videoTitleDiv">
-                                    <div class="videoTitleAndMetaDiv">
-                                        <div @click="openVideo(video.id)" @click.middle="openVideo(video.id)" class="videoTitle">
-                                            {{video.title}}
-                                        </div>
-                                        <div class="videoText">
-                                            <span class="videoTextChannel" @click="openChannel(video.channelName)">{{video.channelTitle}}</span> &#9679 {{video.publishedAtString}}
-                                        </div>
-                                    </div>
-                                    <div class="videoTitleButtons">
-                                        <button v-show="video.dlstatus == 0" class="material-icons videoTitleButton tooltip" @click="downloadVideo(video)"><div class="tooltiptext ttleft">Download Video</div>save_alt</button>
-                                        <button v-show="video.dlstatus == 1" class="dlStatus1Button" style="cursor: default;">{{video.dlprogress}}% Finished</button>
-                                        <button v-show="video.dlstatus == 2" class="dlStatus2Button" @click="window.location.replace('http://localhost:5000/localbrowser.html?id=' + video.id);">Available in Nightly</button>
-                                        <button class="material-icons videoTitleButton tooltip" @click="deleteVideo(video)"><div class="tooltiptext ttright">Move to Trashbin</div>clear</button>
-                                    </div>
-                                </div>
-
-                                <div class="videoDesc">
-                                    <p>{{video.description}}</p>
-                                </div>
-                            </div>
-                        </div>
+                    <button @click="showOldVideos" class="material-icons tooltip"><div class="tooltiptext ttdown">Trashbin</div>delete</button>
+                    <button @click="showTags" class="material-icons tooltip" v-bind:class="{activeNavButton : tagsMode}"><div class="tooltiptext ttdown">Tags</div>label</button>
+                    <p class="selectedTag" v-if="selectedTag != null">{{selectedTag.name}}</p>
+                </div>
+                <div class="navMiddle">
+                    <div class="topbar">
+                        <input class="search" v-model="searchFilter" type="text" autocomplete="off" placeholder="Search" />
+                        <p class="Title" style="cursor: default;">{{filter}} - {{filteredVideos.length}}{{ (videos.length !== filteredVideos.length) ? (' / ' + videos.length) : ''}}</p>
                     </div>
-                </td>
-            </tr>
-        </table>
+                </div>
+                <div class="navRight">
+                    <button @click="switchDesign" class="material-icons tooltip"><div class="tooltiptext ttdown">Light/Dark Theme</div>highlight</button>
+                    <button @click="showSettings" class="material-icons tooltip" v-bind:class="{activeNavButton : settingsMode}"><div class="tooltiptext ttdown">Settings</div>settings_applications</button>
+                    <button @click="window.location.replace('http://localhost:5000/localbrowser.html');" class="material-icons tooltip"><div class="tooltiptext ttdown">SubBox Nightly</div>archive</button>
+                    <button @click="refresh" class="material-icons refreshButton">autorenew</button>
+                </div>
+            </nav>
+            <div class="scrollList">
+                <table v-show="filter==='SubBox' && searchFilter === '' && selectedTag == null" class="listList">
+                    <tr v-for="video in lists">
+                        <td>
+                            <div class="videoBox">
+                                <div class="videoContentDiv">
+                                    <div @click="openVideo(video.id)" @click.middle="openVideo(video.id)" class="videoThumb">
+                                        <img :src="video.thumbnailUrl" style="width:246px;height:138px" />
+                                        <p>{{video.duration}}</p>
+                                    </div>
+                                    <div class="videoTextContentDiv">
+                                        <div class="videoTitleDiv">
+                                            <div style="width: 100%" class="videoTitleAndMetaDiv">
+                                                <div @click="openVideo(video.id)" @click.middle="openVideo(video.id)" class="videoTitle">
+                                                    {{video.title}}
+                                                </div>
+                                                <div class="videoText">
+                                                    <span class="videoTextChannel" @click="openChannel(video.channelName)">{{video.channelTitle}}</span> &#9679 {{video.publishedAtString}}
+                                                </div>
+                                            </div>
+                                        </div>
 
-        <div class="bottomDiv">
-            <a target="_blank" rel="noopener noreferrer" href="https://github.com/MilchRatchet/SubBox" class="bottomDivEntry"><i class="bd-github"></i> Github</a>
-            <a href="http://localhost:5000/tutorial.html" class="bottomDivEntry"><i class="bd-html5"></i>Introduction</a>
-            <a target="_blank" rel="noopener noreferrer" href="https://www.youtube.com/" class="bottomDivEntry"><i class="bd-youtube"></i>Youtube</a>
+                                        <div class="videoDesc">
+                                            <p>{{video.description}}</p>
+                                        </div>
+
+                                        <div class="playlistButtonDiv">
+                                            <p class="playlistHint">PLAYLIST</p>
+                                            <button @click="prev(video.list)" style="margin-left: auto" class="material-icons listButton tooltip"><div class="tooltiptext ttleft">Previous Video</div>fast_rewind</button>
+                                            <button @click="next(video.list)" class="material-icons listButton tooltip"><div class="tooltiptext ttright">Next Video</div>fast_forward</button>
+                                            <button @click="showUniqueList(video.list)" class="material-icons listButton tooltip"><div class="tooltiptext ttright">Show Playlist</div>view_list</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                <table class="videoList">
+                    <tr v-for="video in filteredVideos">
+                        <td>
+                            <div class="videoBox">
+                                <div class="videoChannelDiv">
+                                    <img :src="video.channelPicUrl" style="left:0;width:32px;height:32px;border-radius: 50%;vertical-align:middle;cursor:pointer;" @click="openChannel(video.channelName)" />
+                                    <span class="videoHeaderName" @click="openChannel(video.channelName)">{{video.channelTitle}}</span>
+                                </div>
+                                <div class="videoContentDiv">
+                                    <div @click="openVideo(video.id)" @click.middle="openVideo(video.id)" class="videoThumb">
+                                        <img :src="video.thumbnailUrl" style="width:246px;height:138px" />
+                                        <p>{{video.duration}}</p>
+                                    </div>
+                                    <div class="videoTextContentDiv">
+                                        <div class="videoTitleDiv">
+                                            <div class="videoTitleAndMetaDiv">
+                                                <div @click="openVideo(video.id)" @click.middle="openVideo(video.id)" class="videoTitle">
+                                                    {{video.title}}
+                                                </div>
+                                                <div class="videoText">
+                                                    <span class="videoTextChannel" @click="openChannel(video.channelName)">{{video.channelTitle}}</span> &#9679 {{video.publishedAtString}}
+                                                </div>
+                                            </div>
+                                            <div class="videoTitleButtons">
+                                                <button v-show="video.dlstatus == 0" class="material-icons videoTitleButton tooltip" @click="downloadVideo(video)"><div class="tooltiptext ttleft">Download Video</div>save_alt</button>
+                                                <button v-show="video.dlstatus == 1" class="dlStatus1Button" style="cursor: default;">{{video.dlprogress}}% Finished</button>
+                                                <button v-show="video.dlstatus == 2" class="dlStatus2Button" @click="window.location.replace('http://localhost:5000/localbrowser.html?id=' + video.id);">Available in Nightly</button>
+                                                <button class="material-icons videoTitleButton tooltip" @click="deleteVideo(video)"><div class="tooltiptext ttright">Move to Trashbin</div>clear</button>
+                                            </div>
+                                        </div>
+
+                                        <div class="videoDesc">
+                                            <p>{{video.description}}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                <div class="bottomDiv">
+                    <a target="_blank" rel="noopener noreferrer" href="https://github.com/MilchRatchet/SubBox" class="bottomDivEntry"><i class="bd-github"></i> Github</a>
+                    <a href="http://localhost:5000/tutorial.html" class="bottomDivEntry"><i class="bd-html5"></i>Introduction</a>
+                    <a target="_blank" rel="noopener noreferrer" href="https://www.youtube.com/" class="bottomDivEntry"><i class="bd-youtube"></i>Youtube</a>
+                </div>
+            </div>
         </div>
+
+
     </div>
 
     <script src="js/index.js"></script>
