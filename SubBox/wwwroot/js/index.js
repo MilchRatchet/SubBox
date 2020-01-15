@@ -440,26 +440,74 @@ var app = new Vue({
 
             if (this.filter === "SubBox" && this.searchFilter === "" && this.selectedTag === null) return;
 
+            var count = 0;
+
+            const duration = this.updateVideosLength(this.filteredVideos);
+
+            var firstThumb = null;
+
             this.filteredVideos.forEach(function (item) {
                 fetch("/api/values/video/" + item.id, { method: "DELETE" });
 
                 var index = app.videos.indexOf(item);
 
+                if (firstThumb === null) firstThumb = item.thumbnailUrl;
+
                 app.videos.splice(index, 1);
+
+                count++;
             });
+
+            this.resetAllFilters();
+
+            const messageId = app.messageRunningId++;
+
+            app.messages.push({
+                "id": messageId,
+                "title": "Filtered Videos Deleted",
+                "subtitle": count + " Videos",
+                "thumbUrl": (firstThumb === null) ? "media/LogoRed.png" : firstThumb,
+                "text": "Length of Deleted Videos " + duration,
+                "event": "return;"
+            });
+
+            setTimeout(function () { const index = app.messages.findIndex(m => m.id === messageId); app.messages.splice(index, 1); }, 10000);
         },
         async deleteFilteredPlaylistVideos() {   
             if (!(await this.getConfirmation())) return;
+
+            var count = 0;
+
+            const duration = this.updateVideosLength(this.filteredPlaylist);
+
+            var firstThumb = null;
 
             this.filteredPlaylist.forEach(async function (item) {
                 var waiter = fetch("/api/values/video/" + item.id, { method: "DELETE" });
 
                 var index = app.uniqueList.indexOf(item);
 
+                if (firstThumb === null) firstThumb = item.thumbnailUrl;
+
                 app.uniqueList.splice(index, 1);
 
                 await waiter;
+
+                count++;
             });
+
+            const messageId = app.messageRunningId++;
+
+            app.messages.push({
+                "id": messageId,
+                "title": "Filtered Videos Deleted",
+                "subtitle": count + " Videos",
+                "thumbUrl": (firstThumb === null) ? "media/LogoRed.png" : firstThumb,
+                "text": "Length of Deleted Videos " + duration,
+                "event": "return;"
+            });
+
+            setTimeout(function () { const index = app.messages.findIndex(m => m.id === messageId); app.messages.splice(index, 1); }, 10000);
 
             this.playlistFilter = "";
         },
@@ -470,20 +518,49 @@ var app = new Vue({
                 return !app.filteredPlaylist.includes(u);
             });
 
+            var count = 0;
+
+            var firstThumb = null;
+
             NotFilteredPlaylist.forEach(async function (item) {
                 var waiter = fetch("/api/values/video/" + item.id, { method: "DELETE" });
 
                 var index = app.uniqueList.indexOf(item);
 
+                if (firstThumb === null) firstThumb = item.thumbnailUrl;
+
                 app.uniqueList.splice(index, 1);
 
                 await waiter;
+
+                count++;
             });
+
+            const messageId = app.messageRunningId++;
+
+            app.messages.push({
+                "id": messageId,
+                "title": "Filtered Videos Deleted",
+                "subtitle": count + " Videos",
+                "thumbUrl": (firstThumb === null) ? "media/LogoRed.png" : firstThumb,
+                "text": "",
+                "event": "return;"
+            });
+
+            setTimeout(function () { const index = app.messages.findIndex(m => m.id === messageId); app.messages.splice(index, 1); }, 10000);
 
             this.playlistFilter = "";
         },
         async deleteCompletePlaylist() {
             if (!(await this.getConfirmation())) return;
+
+            var count = this.uniqueList.length;
+
+            const duration = this.updateVideosLength(this.uniqueList);
+
+            var firstThumb = this.uniqueList.find(item => true);
+
+            if (firstThumb !== undefined) firstThumb = firstThumb.thumbnailUrl;
 
             this.lists.forEach(function (item) {
                 if (item.list === app.inputListModeNumber) {
@@ -497,7 +574,20 @@ var app = new Vue({
 
             this.uniqueList.forEach(async function (item) {
                 await fetch("/api/values/video/" + item.id, { method: "DELETE" });
-            });     
+            });    
+
+            const messageId = app.messageRunningId++;
+
+            app.messages.push({
+                "id": messageId,
+                "title": "Playlist Deleted",
+                "subtitle": count + " Videos",
+                "thumbUrl": (firstThumb === undefined) ? "media/LogoRed.png" : firstThumb,
+                "text": "Length of Deleted Videos " + duration,
+                "event": "return;"
+            });
+
+            setTimeout(function () { const index = app.messages.findIndex(m => m.id === messageId); app.messages.splice(index, 1); }, 10000);
         },
         async reactivateVideo(video) {
             var waiter = fetch("/api/values/video/" + video.id, { method: "POST" });
