@@ -491,9 +491,9 @@ var app = new Vue({
 
                 app.uniqueList.splice(index, 1);
 
-                await waiter;
-
                 count++;
+
+                await waiter;
             });
 
             const messageId = app.messageRunningId++;
@@ -1034,11 +1034,11 @@ var app = new Vue({
             if (h > 0) {
                 if (min < 10) min = "0" + min;
 
-                if (sec < 10) sec += "0" + sec;
+                if (sec < 10) sec = "0" + sec;
 
                 return h + ":" + min + ":" + sec;
             } else {
-                if (sec < 10) sec += "0" + sec;
+                if (sec < 10) sec = "0" + sec;
 
                 return min + ":" + sec;
             }
