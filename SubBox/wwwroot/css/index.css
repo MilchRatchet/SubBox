@@ -476,14 +476,9 @@ nav div {
         color: var(--font_title);
     }
 
-    .videoBox:hover .dlStatus1Button {
-        color: var(--secColor);
-        background: var(--mainColor);
-    }
-
     .videoBox:hover .dlStatus2Button {
         color: #fafafa;
-        background: linear-gradient(to right, #8f54f1, #8f85f1, #00bf9f);
+        background: linear-gradient(to right, #8f54f1 50%, #ff0166 50%);
         background-position: left;
         background-size: 200%;
         transition: 0.5s background;
@@ -494,10 +489,17 @@ nav div {
     border-radius: 0;
     color: transparent;
     height: 30px;
+    width: 150px;
     font-size: 16px;
     padding: 1px 7px 1px 7px;
     margin: 2px 5px 2px 5px;
     background: none;
+    text-align: center;
+}
+
+.dlStatus1Button {
+    color: #fafafa;
+    background: #777777;
 }
 
     .dlStatus2Button:hover {

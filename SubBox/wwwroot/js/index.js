@@ -376,6 +376,8 @@ var app = new Vue({
 
             Vue.set(video, 'dlstatus', 1);
 
+            const bar = document.getElementById("video" + video.id);
+
             var progressUpdater = setInterval(async function () {
                 var result = await fetch("/api/values/status/downloadProgress/" + video.id);
 
@@ -383,6 +385,8 @@ var app = new Vue({
 
                 if (progress.kind === "downloadProgress") {
                     Vue.set(video, 'dlprogress', progress.value);
+
+                    bar.style.setProperty("background", "linear-gradient(to left, #777777 0 " + (100 - progress.value) + "%, #8f54f1 " + (100 - progress.value) + "%)");
                 }
             }, 100);
 
