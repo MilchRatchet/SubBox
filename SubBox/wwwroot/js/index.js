@@ -172,7 +172,7 @@ var app = new Vue({
         },
         async showUniqueList(number) {
             if (number > 0) {
-                this.uniqueList = null;
+                this.uniqueList = [];
 
                 var waiter = fetch("/api/values/list/all/" + number);
 
@@ -180,13 +180,13 @@ var app = new Vue({
 
                 this.channelMode = false;
 
-                this.uniqueListMode = true;
-
-                this.videoListMode = false;
-
                 var result = await waiter;
 
                 this.uniqueList = await result.json();
+
+                this.uniqueListMode = true;
+
+                this.videoListMode = false;
             }
         },
         async showOldVideos() {
@@ -1265,6 +1265,17 @@ var app = new Vue({
             ctxMenu.style.left = "";
 
             ctxMenu.style.top = "";
+        }, false);
+
+        document.addEventListener("keyup", function (event) {
+            if (event.code === "Escape") {
+                if (app.uniqueListMode) {
+                    app.closeUniqueList();
+                }
+                if (app.trashbinMode) {
+                    app.closeTrashbin();
+                }
+            }
         }, false);
 
         document.body.onmousedown = function (e) { if (e.button === 1) return false; }

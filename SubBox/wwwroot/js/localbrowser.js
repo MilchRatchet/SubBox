@@ -80,6 +80,12 @@ var app = new Vue({
             event.preventDefault();
         }, false);
 
+        document.addEventListener("keyup", function (event) {
+            if (event.code === "Escape") {
+                window.location.replace("http://localhost:5000");
+            }
+        }, false);
+
         await this.update();
 
         var openId = this.GetURLParameter('id');
