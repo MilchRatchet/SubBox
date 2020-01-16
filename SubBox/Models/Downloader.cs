@@ -33,7 +33,8 @@ namespace SubBox.Models
 
                 int Progress = 0;
 
-                client.DownloadProgressChanged += (sender, e) => {
+                client.DownloadProgressChanged += (sender, e) =>
+                {
                     if (e.ProgressPercentage >= Progress)
                     {
                         Progress += 10;
@@ -71,7 +72,8 @@ namespace SubBox.Models
 
                 int Progress = 0;
 
-                client.DownloadProgressChanged += (sender, e) => {
+                client.DownloadProgressChanged += (sender, e) =>
+                {
                     if (e.ProgressPercentage >= Progress)
                     {
                         Progress += 10;
@@ -207,7 +209,7 @@ namespace SubBox.Models
             const char quote = '\u0022';
 
             dl.StartInfo.Arguments = $@"-f " + quote + $@"bestvideo[height<={height}][fps<={fps}][ext=webm]+bestaudio[ext=webm]/bestvideo[height<={height}][fps<={fps}][ext=mp4]+bestaudio[ext=m4a]/webm/mp4" + quote + $@" -o wwwroot/Videos/%(channel_id)s&%(uploader)s/%(id)s&%(title)s --restrict-filenames --write-all-thumbnails https://www.youtube.com/watch?v={id}";
-            
+
             dl.StartInfo.UseShellExecute = false;
 
             dl.StartInfo.RedirectStandardOutput = true;
@@ -236,30 +238,39 @@ namespace SubBox.Models
             bool videoDone = false;
 
             long lastUpdate = DateTime.Now.Ticks - 2000000;
-            
+
             while (!dl.StandardOutput.EndOfStream)
             {
                 string text = dl.StandardOutput.ReadLine();
 
                 if (!videoDone && (DateTime.Now.Ticks - lastUpdate >= 2000000) && text.Contains("download") && text.Contains("%"))
                 {
-                    lastUpdate = DateTime.Now.Ticks;
-
-                    string progress = text.Substring(12, 2);
-
-                    int progressNumber = Int32.Parse(progress);
-
-                    if (progressNumber < highestPercent)
+                    try
                     {
-                        videoDone = true;
+                        lastUpdate = DateTime.Now.Ticks;
 
-                        _ = StatusBoard.PutStatus("downloadProgress", id, "100");
+                        string progress = text.Substring(12, 2);
+
+                        int progressNumber = Int32.Parse(progress);
+
+                        if (progressNumber < highestPercent)
+                        {
+                            videoDone = true;
+
+                            _ = StatusBoard.PutStatus("downloadProgress", id, "100");
+                        }
+                        else
+                        {
+                            highestPercent = progressNumber;
+
+                            _ = StatusBoard.PutStatus("downloadProgress", id, progress);
+                        }
                     }
-                    else
+                    catch (Exception e)
                     {
-                        highestPercent = progressNumber;
+                        Logger.Warn("Failed sending download progress message");
 
-                        _ = StatusBoard.PutStatus("downloadProgress", id, progress);
+                        Logger.Error(e.Message);
                     }
                 }
 
