@@ -386,7 +386,7 @@ var app = new Vue({
                 if (progress.kind === "downloadProgress") {
                     Vue.set(video, 'dlprogress', progress.value);
 
-                    bar.style.setProperty("background", "linear-gradient(to left, #777777 0 " + (100 - progress.value) + "%, #8f54f1 " + (100 - progress.value) + "%)");
+                    bar.style.setProperty("background", "linear-gradient(to left, #232323 0 " + (100 - progress.value) + "%, #8f54f1 " + (100 - progress.value) + "%)");
                 }
             }, 100);
 

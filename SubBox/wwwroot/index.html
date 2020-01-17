@@ -554,7 +554,7 @@
                                             </div>
                                             <div class="videoTitleButtons">
                                                 <button v-show="video.dlstatus == 0" class="material-icons videoTitleButton tooltip" @click="downloadVideo(video)"><div class="tooltiptext ttleft">Download Video</div>save_alt</button>
-                                                <button v-show="video.dlstatus == 1" v-bind:id="'video' + video.id" class="dlStatus1Button" style="cursor: default;">{{video.dlprogress}}% Finished</button>
+                                                <button v-show="video.dlstatus == 1" v-bind:id="'video' + video.id" class="dlStatus1Button" style="cursor: default;">{{(video.dlprogress === "100") ? "Just a second..." : video.dlprogress + "% Finished"}}</button>
                                                 <button v-show="video.dlstatus == 2" class="dlStatus2Button" @click="window.location.replace('http://localhost:5000/localbrowser.html?id=' + video.id);">Available in Nightly</button>
                                                 <button class="material-icons videoTitleButton tooltip" @click="deleteVideo(video)"><div class="tooltiptext ttright">Move to Trashbin</div>clear</button>
                                             </div>

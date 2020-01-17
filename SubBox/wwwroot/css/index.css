@@ -489,7 +489,7 @@ nav div {
     border-radius: 0;
     color: transparent;
     height: 30px;
-    width: 150px;
+    width: 170px;
     font-size: 16px;
     padding: 1px 7px 1px 7px;
     margin: 2px 5px 2px 5px;
@@ -499,7 +499,7 @@ nav div {
 
 .dlStatus1Button {
     color: #fafafa;
-    background: #777777;
+    background: #232323;
 }
 
     .dlStatus2Button:hover {
