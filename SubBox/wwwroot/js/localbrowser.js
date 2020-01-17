@@ -12,8 +12,6 @@ var app = new Vue({
                 return this.videos;
             }
 
-            console.log("ok");
-
             filterUp = this.filter.toUpperCase();
 
             return this.videos.filter(function (u) {
@@ -26,6 +24,10 @@ var app = new Vue({
             var result = await fetch("/api/values/localvideos");
 
             this.videos = await result.json();
+
+            this.videos.forEach(function (item) {
+                item.Value.onlineThumbUrl = "https://i.ytimg.com/vi/"+ item.Key +"/mqdefault.jpg"
+            });
         },
         async select(video) {  
             window.scrollTo(0, 0);
@@ -70,6 +72,15 @@ var app = new Vue({
             }
 
             return null;
+        },
+        switchToLocalThumb(video, event) {
+            video.Value.onlineThumbUrl = video.Value.thumbDir;
+
+            event = event || window.event;
+
+            const target = event.target || event.srcElement;
+
+            target.src = video.Value.onlineThumbUrl;
         },
     },
     el: "#app",
