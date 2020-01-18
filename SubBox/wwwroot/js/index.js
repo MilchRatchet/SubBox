@@ -1172,7 +1172,14 @@ var app = new Vue({
                     "event": "const index = app.messages.findIndex(m => m.id === '" + messageId + "'); app.messages.splice(index, 1);"
                 });
             }
-        }
+        },
+        async closeSubBox() {
+            if (!(await this.getConfirmation())) return;
+
+            fetch("/api/values/close", { method: "POST" });
+
+            setTimeout(() => window.location.replace("https://www.youtube.com/"), 100);
+        },
     },
     el: "#app",
     async mounted() {

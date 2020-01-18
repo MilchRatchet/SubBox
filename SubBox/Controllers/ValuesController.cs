@@ -394,6 +394,15 @@ namespace SubBox.Controllers
             }
         }
 
+        //POST: api/values/close
+        [HttpPost("close")]
+        public void Close()
+        {
+            Logger.Warn("Shutdown was forced through API");
+
+            Environment.Exit(0);
+        }
+
         // DELETE: api/values/video/id
         [HttpDelete("video/{id}")]
         public void DeleteVideo(string id)
