@@ -108,6 +108,12 @@ var app = new Vue({
             }
         }, false);
 
+        document.addEventListener("keydown", function (event) {
+            if (document.activeElement.nodeName === "INPUT") return;
+
+            document.getElementById("search").focus();
+        }, false);
+
         await this.update();
 
         var openId = this.GetURLParameter('id');

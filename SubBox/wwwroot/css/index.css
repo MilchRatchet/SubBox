@@ -240,7 +240,9 @@ input::-webkit-inner-spin-button {
 }
 
 input[type=text].search {
-    display: none;
+    position: absolute;
+    top: -100px;
+    display: flex;
     padding: 4px;
     margin: 0;
     height: 18px;
@@ -325,19 +327,19 @@ nav div {
 }
 
     .topbar:hover .Title {
-        display: none;
+        top: -100px;
     }
 
     .topbar:hover .search {
-        display: flex;
+        top: 7px;
     }
 
 .search:focus {
-    display: flex !important;
+    top: 7px !important;
 }
 
     .search:focus ~ .Title {
-        display: none !important;
+        top: -100px !important;
     }
 
 

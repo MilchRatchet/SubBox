@@ -1278,6 +1278,14 @@ var app = new Vue({
             ctxMenu.style.top = "";
         }, false);
 
+        document.addEventListener("keydown", function (event) {
+            if (document.activeElement.nodeName === "INPUT") return;
+
+            if (app.videoListMode) {
+                document.getElementById("search").focus();
+            }
+        }, false);
+
         document.addEventListener("keyup", function (event) {
             if (event.code === "Escape") {
                 if (app.uniqueListMode) {

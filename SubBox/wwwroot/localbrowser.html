@@ -19,7 +19,7 @@
            <img height="32" src="media/LogoWhite.png"/>SubBox
         </button>
         <div class="filterDiv">
-            <input v-bind:class="{activeSearch : filter !== ''}" v-model="filter" type="text" autocomplete="off" placeholder="Search"/>
+            <input id="search"  v-bind:class="{activeSearch : filter !== ''}" v-model="filter" type="text" autocomplete="off" placeholder="Search"/>
             <div v-bind:class="{activeDeletion : deletionMode}" class="material-icons deleteModeButton" @click="deletionMode = !deletionMode">delete <p v-show="deletionMode">Left Click to Delete</p></div>
         </div>
         <div v-show="selectedDir !== ''" class="videoOverlay">

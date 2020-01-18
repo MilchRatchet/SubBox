@@ -87,7 +87,8 @@ input {
     border-color: #8f54f1;
 }
 
-    .activeSearch:hover {
+    .activeSearch:hover, .activeSearch:focus {
+        background: none;
         border-color: #af64f1;
     }
 

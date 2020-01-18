@@ -483,8 +483,8 @@
                     <p class="selectedTag" v-if="selectedTag != null">{{selectedTag.name}}</p>
                 </div>
                 <div class="navMiddle">
-                    <div class="topbar">
-                        <input class="search" v-model="searchFilter" type="text" autocomplete="off" placeholder="Search" />
+                    <div id="topbar" class="topbar">
+                        <input id="search" class="search" v-model="searchFilter" type="text" autocomplete="off" placeholder="Search" />
                         <p class="Title" style="cursor: default;">{{filter}} - {{filteredVideos.length}}{{ (videos.length !== filteredVideos.length) ? (' / ' + videos.length) : ''}}</p>
                     </div>
                 </div>
