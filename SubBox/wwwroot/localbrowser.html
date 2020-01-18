@@ -2,6 +2,7 @@
 <html>
 <head>
     <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="css/localbrowser.css">
     <script src="js/vue.min.js"></script>
     <meta charset="utf-8" />
@@ -18,7 +19,8 @@
            <img height="32" src="media/LogoWhite.png"/>SubBox
         </button>
         <div class="filterDiv">
-            <input v-model="filter" type="text" autocomplete="off" placeholder="Search"/>
+            <input v-bind:class="{activeSearch : filter !== ''}" v-model="filter" type="text" autocomplete="off" placeholder="Search"/>
+            <div v-bind:class="{activeDeletion : deletionMode}" class="material-icons deleteModeButton" @click="deletionMode = !deletionMode">delete <p v-show="deletionMode">Left Click to Delete</p></div>
         </div>
         <div v-show="selectedDir !== ''" class="videoOverlay">
             <video poster="" onloadstart="this.volume=0.1" :src="selectedDir" controls></video>

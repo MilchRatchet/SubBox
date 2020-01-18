@@ -5,6 +5,7 @@ var app = new Vue({
         selectedDir: "",
         selectedThumbDir: "",
         selectedSize: 0,
+        deletionMode: false,
     },
     computed: {
         filteredVideos: function () {
@@ -29,7 +30,17 @@ var app = new Vue({
                 item.Value.onlineThumbUrl = "https://i.ytimg.com/vi/"+ item.Key +"/mqdefault.jpg"
             });
         },
-        async select(video) {  
+        async select(video) {
+            if (this.deletionMode) {
+                var re = new RegExp('\\\\', 'g');
+
+                fetch("/api/values/localvideo/" + video.Value.dir.replace(re, '*') + "/" + video.Value.thumbDir.replace(re, '*'), { method: "DELETE" });
+
+                this.videos.splice(this.videos.indexOf(video), 1);
+
+                return;
+            }
+
             window.scrollTo(0, 0);
 
             document.body.style.overflow = "hidden";
