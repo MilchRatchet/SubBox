@@ -472,14 +472,14 @@
         <div v-show="videoListMode" class="videoListDiv">
             <nav class="mainNav">
                 <div class="navLeft">
-                    <button @click="showChannels" class="material-icons tooltip" v-bind:class="{activeNavButton : channelMode}"><div style="left: 0" class="tooltiptext ttdown">Channel List</div>{{(filter === 'SubBox') ? 'account_box' : 'star'}}</button>
+                    <button @click="showChannels" class="material-icons tooltip" v-bind:class="{activeNavButton : channelMode}"><div style="left: 0" class="tooltiptext ttdown">Channel List</div>{{(filter === 'SubBox') ? 'account_box' : 'star'}} <p>Channels</p></button>
                     <button @click="showListInput()" class="material-icons tooltip" v-bind:class="{activeNavButton : inputListMode}"><div class="tooltiptext ttdown">Add Playlist</div>playlist_add</button>
                     <div v-show="inputListMode" class="inputList">
                         <input @keyup.enter="submitPlaylist" v-model="addPlayList" autocomplete="off" type="text" name="PlaylistId" placeholder="Playlist Id..." />
                         <button @click="submitPlaylist" class="material-icons">search</button>
                     </div>
                     <button @click="showOldVideos" class="material-icons tooltip"><div class="tooltiptext ttdown">Trashbin</div>delete</button>
-                    <button @click="showTags" class="material-icons tooltip" v-bind:class="{activeNavButton : tagsMode}"><div class="tooltiptext ttdown">Tags</div>label</button>
+                    <button @click="showTags" class="material-icons tooltip" v-bind:class="{activeNavButton : tagsMode}"><div class="tooltiptext ttdown">Tags</div>label <p>Tags</p></button>
                     <p class="selectedTag" v-if="selectedTag != null">{{selectedTag.name}}</p>
                 </div>
                 <div class="navMiddle">
@@ -490,7 +490,7 @@
                 </div>
                 <div class="navRight">
                     <button @click="switchDesign" class="material-icons tooltip"><div class="tooltiptext ttdown">Light/Dark Theme</div>highlight</button>
-                    <button @click="showSettings" class="material-icons tooltip" v-bind:class="{activeNavButton : settingsMode}"><div class="tooltiptext ttdown">Settings</div>settings_applications</button>
+                    <button @click="showSettings" class="material-icons tooltip" v-bind:class="{activeNavButton : settingsMode}"><div class="tooltiptext ttdown">Settings</div>settings_applications<p>Settings</p></button>
                     <button @click="window.location.replace('http://localhost:5000/localbrowser.html');" class="material-icons tooltip"><div class="tooltiptext ttdown">SubBox Nightly</div>archive</button>
                     <button @click="refresh" class="material-icons refreshButton">autorenew</button>
                 </div>

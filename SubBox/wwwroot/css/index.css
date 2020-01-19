@@ -181,14 +181,29 @@ button {
     }
 
 nav button {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start !important;
+    align-items: center;
     height: 100%;
-    width: 40px;
+    max-width: 40px;
     margin: 0;
-    padding: 0;
+    padding: 0 8px 0 8px;
     border-radius: 0px;
     border-top: 3px solid transparent;
     border-bottom: 3px solid transparent;
+    transition: max-width 0.2s ease-in-out;
 }
+
+    nav button p {
+        font-family: 'Roboto', sans-serif;
+        font-size: 14px;
+        font-weight: bold;
+        color: var(--secColor);
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
 
 nav p {
     margin-left: 10px;
@@ -200,6 +215,10 @@ nav button:hover {
     color: var(--secColor);
     background-color: var(--mainColor);
 }
+
+    nav button:hover p {
+        color: var(--secColor);
+    }
 
 input[type=text] {
     margin-right: 2px;
@@ -365,7 +384,10 @@ nav div {
     }
 
 .activeNavButton {
-    border-top: 3px solid var(--mainColor);
+    color: var(--secColor);
+    background-color: var(--mainColor);
+    max-width: 120px;
+    transition: max-width 0.2s ease-in-out;
 }
 
 .videoChannelDiv {
