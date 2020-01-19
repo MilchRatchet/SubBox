@@ -21,6 +21,7 @@ var app = new Vue({
         addChannelName: "",
         night: false,
         filter: "SubBox",
+        filterImg: "",
         searchFilter: "",
         playlistFilter: "",
         selectedTag: null,
@@ -43,6 +44,7 @@ var app = new Vue({
         totalLength: "0:00",
         newestVersion: "1.5.1",
         messageRunningId: 0,
+        confirmationMessage: "",
         confirmationResult: false,
         confirmationDone: false,
     },
@@ -347,10 +349,6 @@ var app = new Vue({
 
                 this.inputListMode = false;
 
-                if (!Number.isInteger(this.inputListModeNumber)) {
-                    console.log(this.inputListModeNumber);
-                }
-
                 await fetch("/api/values/list/add/" + this.addPlayList + "/" + this.inputListModeNumber, { method: "POST" });
 
                 this.addPlayList = "";
@@ -440,7 +438,7 @@ var app = new Vue({
             }
         },
         async deleteFilteredVideos() {
-            if (!(await this.getConfirmation())) return;
+            if (!(await this.getConfirmation("Delete all Filtered Videos?"))) return;
 
             if (this.filter === "SubBox" && this.searchFilter === "" && this.selectedTag === null) return;
 
@@ -478,7 +476,7 @@ var app = new Vue({
             setTimeout(function () { const index = app.messages.findIndex(m => m.id === messageId); app.messages.splice(index, 1); }, 10000);
         },
         async deleteFilteredPlaylistVideos() {   
-            if (!(await this.getConfirmation())) return;
+            if (!(await this.getConfirmation("Delete all Filtered Videos?"))) return;
 
             var count = 0;
 
@@ -516,7 +514,7 @@ var app = new Vue({
             this.playlistFilter = "";
         },
         async deleteNotFilteredPlaylistVideos() {
-            if (!(await this.getConfirmation())) return;
+            if (!(await this.getConfirmation("Only Keep Filtered Videos?"))) return;
 
             const NotFilteredPlaylist = this.uniqueList.filter(function (u) {
                 return !app.filteredPlaylist.includes(u);
@@ -556,7 +554,7 @@ var app = new Vue({
             this.playlistFilter = "";
         },
         async deleteCompletePlaylist() {
-            if (!(await this.getConfirmation())) return;
+            if (!(await this.getConfirmation("Delete Playlist?"))) return;
 
             var count = this.uniqueList.length;
 
@@ -639,8 +637,6 @@ var app = new Vue({
         },
         lockChannel(id) {
             const ch = this.channels.find(c => c.id === id);
-
-            console.log(ch);
 
             if (ch === undefined) return;
 
@@ -828,8 +824,12 @@ var app = new Vue({
         setFilter(ch) {
             if (ch.displayname == this.filter) {
                 this.filter = "SubBox";
+
+                this.filterImg = "";
             } else {
                 this.filter = ch.displayname;
+
+                this.filterImg = ch.thumbnailUrl;
             }
 
             this.lockChannel(ch.id);
@@ -984,7 +984,9 @@ var app = new Vue({
 
             func();
         },
-        async getConfirmation() {
+        async getConfirmation(message) {
+            this.confirmationMessage = message;
+
             var menu = document.getElementById('confirmationMenu');
 
             menu.style.display = "flex";
@@ -1174,7 +1176,7 @@ var app = new Vue({
             }
         },
         async closeSubBox() {
-            if (!(await this.getConfirmation())) return;
+            if (!(await this.getConfirmation("Close SubBox?"))) return;
 
             fetch("/api/values/close", { method: "POST" });
 
@@ -1237,6 +1239,10 @@ var app = new Vue({
 
         var ctxOv = document.querySelector('#ctxMenu');
 
+        var inliOv = document.querySelector('#inputListUI');
+
+        var addliOv = document.querySelector('#addListUI');
+
         page.addEventListener("click", function (event) {
 
             event = event || window.event;
@@ -1267,6 +1273,12 @@ var app = new Vue({
                 }
             }
 
+            if (app.inputListMode && target.nodeName !== "BUTTON") {
+                if (!inliOv.contains(target) && !addliOv.contains(target)) {
+                    app.showListInput();
+                }
+            }
+
             app.inputContext = false;
 
             var ctxMenu = document.getElementById("ctxMenu");
@@ -1283,6 +1295,8 @@ var app = new Vue({
 
             if (app.videoListMode) {
                 document.getElementById("search").focus();
+            } else if (app.uniqueListMode) {
+                document.getElementById("playlistSearch").focus();
             }
         }, false);
 
