@@ -178,10 +178,6 @@
                 <div class="navLeft">
                     <p>Playlist</p><p class="material-icons">view_list</p><p>|</p>
                     <button @click="showListInput()" class="material-icons tooltip"><div class="tooltiptext ttdown">Extend Playlist</div>playlist_add</button>
-                    <div id="addListUI" v-show="inputListMode" class="inputList">
-                        <input @keyup.enter="submitPlaylist" v-model="addPlayList" autocomplete="off" type="text" name="PlaylistIdUnqiue" placeholder="Playlist Id..." />
-                        <button @click="submitPlaylist" class="material-icons addPlaylistButton">add</button>
-                    </div>
                 </div>
                 <div class="navMiddle">
                     <div>
@@ -389,6 +385,11 @@
             </table>
         </div>
 
+        <div id="addPlaylistUI" v-show="inputListMode" class="inputListOverlay">
+            <input @keyup.enter="submitPlaylist" v-model="addPlayList" autocomplete="off" type="text" name="PlaylistId" placeholder="Playlist Id..." />
+            <button @click="submitPlaylist" class="material-icons addPlaylistButton">add</button>
+        </div>
+
         <div id="tagsUI" v-show="tagsMode" class="overlay">
             <div class="addTagDiv">
                 <input @keyup.enter="submitTag" class="addTagInput" v-model="addTag" type="text" autocomplete="off" placeholder="Enter Tag Name..." />
@@ -473,11 +474,7 @@
             <nav class="mainNav">
                 <div class="navLeft">
                     <button @click="showChannels" class="material-icons tooltip" v-bind:class="{activeNavButton : channelMode}"><div style="left: 0" class="tooltiptext ttdown">Channel List</div>{{(filter === 'SubBox') ? 'account_box' : 'star'}} <p>Channels</p></button>
-                    <button @click="showListInput()" class="material-icons tooltip" v-bind:class="{activeNavButton : inputListMode}"><div class="tooltiptext ttdown">Add Playlist</div>playlist_add</button>
-                    <div id="inputListUI" v-show="inputListMode" class="inputList">
-                        <input @keyup.enter="submitPlaylist" v-model="addPlayList" autocomplete="off" type="text" name="PlaylistId" placeholder="Playlist Id..." />
-                        <button @click="submitPlaylist" class="material-icons addPlaylistButton">add</button>
-                    </div>
+                    <button @click="showListInput()" class="material-icons tooltip" v-bind:class="{activeNavButton : inputListMode}"><div class="tooltiptext ttdown">Add Playlist</div>playlist_add <p>Add Playlist</p></button>
                     <button @click="showOldVideos" class="material-icons tooltip"><div class="tooltiptext ttdown">Trashbin</div>delete</button>
                     <button @click="showTags" class="material-icons tooltip" v-bind:class="{activeNavButton : tagsMode}"><div class="tooltiptext ttdown">Tags</div>label <p>Tags</p></button>
                     <p class="selectedTag" v-if="selectedTag != null">{{selectedTag.name}}</p>

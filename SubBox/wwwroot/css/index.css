@@ -403,7 +403,7 @@ nav div {
 .activeNavButton {
     color: var(--secColor);
     background-color: var(--mainColor);
-    max-width: 120px;
+    max-width: 130px;
     transition: max-width 0.2s ease-in-out;
 }
 
@@ -597,6 +597,28 @@ nav div {
 
     .overlay:hover {
         overflow-y: auto;
+    }
+
+.inputListOverlay {
+    display: flex;
+    position: fixed;
+    top: 40px;
+    left: 0;
+    width: 400px;
+    height: 40px;
+    padding: 5px;
+    background-color: var(--nav_bg);
+    z-index: 500;
+    border: 1px solid var(--video_bd_bot);
+    border-left: none;
+    border-top: none;
+    box-shadow: 5px 5px 10px -8px rgba(0, 0, 0, .2);
+    overflow-y: hidden;
+    overflow-x: hidden;
+}
+
+    .inputListOverlay input{
+        width: 350px;
     }
 
 .channelList {
@@ -805,6 +827,11 @@ button.deleteChannelButton:hover {
     width: 28px;
     font-size: 24px;
 }
+
+    .addPlaylistButton:hover {
+        background: var(--mainColor);
+        color: var(--secColor);
+    }
 
 .videoListDiv {
     position: fixed;

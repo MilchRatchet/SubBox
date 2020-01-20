@@ -1239,9 +1239,7 @@ var app = new Vue({
 
         var ctxOv = document.querySelector('#ctxMenu');
 
-        var inliOv = document.querySelector('#inputListUI');
-
-        var addliOv = document.querySelector('#addListUI');
+        var aplOv = document.querySelector('#addPlaylistUI');
 
         page.addEventListener("click", function (event) {
 
@@ -1274,7 +1272,7 @@ var app = new Vue({
             }
 
             if (app.inputListMode && target.nodeName !== "BUTTON") {
-                if (!inliOv.contains(target) && !addliOv.contains(target)) {
+                if (!aplOv.contains(target)) {
                     app.showListInput();
                 }
             }
