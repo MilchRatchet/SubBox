@@ -26,14 +26,8 @@ var app = new Vue({
         playlistFilter: "",
         selectedTag: null,
         settingsMode: false,
-        settingNCT: 1,
-        settingRT: 7,
-        settingDT: 7,
-        settingPPS: 50,
-        settingColor: "ff0000",
-        settingPQ: 4,
+        settingsTab: 0,
         settings: [],
-        changes: false,
         inputContext: false,
         selectedInputForContext: null,
         informationMode: false,
@@ -134,36 +128,40 @@ var app = new Vue({
 
             this.settings = await result.json();
 
-            this.settingRT = this.settings[0];
+            document.documentElement.style.setProperty('--mainColor', "#" + this.settings.Color);
 
-            this.settingNCT = this.settings[1];
-
-            this.settingDT = this.settings[2];
-
-            this.settingPPS = this.settings[3];
-
-            this.settingColor = this.settings[4];
-
-            document.documentElement.style.setProperty('--mainColor', "#" + this.settingColor);
-
-            document.getElementById("colorPicker").jscolor.fromString(this.settingColor);
+            document.getElementById("colorPicker").jscolor.fromString(this.settings.Color);
 
             this.setSecondColor();
 
-            this.night = (this.settings[5] == "True");
-
-            this.settingPQ = this.settings[6];
-
             this.setBodyColor();
         },
-        showChannelInput() {
-            this.inputListMode = false;
+        async saveSettings() {
+            const output = JSON.stringify(this.settings);
 
-            this.inputMode = !this.inputMode;
-
-            this.addChannelName = "";
+            await fetch("/api/values/settings/save", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: output
+            });
         },
-        showListInput() {
+        async showListInput() {
+            if (this.inputListMode) {
+                this.inputListMode = false;
+
+                return;
+            }
+
+            if (this.channelMode) {
+                await this.showChannels();
+            }
+
+            if (this.tagsMode) {
+                await this.showTags();
+            }
+
             this.inputMode = false;
 
             this.addPlayList = "";
@@ -205,10 +203,14 @@ var app = new Vue({
             this.oldVideos = await result.json();
         },
         showSettings() {
-            this.changes = false;
+            this.settingsTab = 0;
 
-            this.getSettings();
-
+            if (this.settingsMode) {
+                this.saveSettings();
+            } else {
+                this.getSettings();
+            }
+            
             this.settingsMode = !this.settingsMode;
         },
         async showTags() {
@@ -222,6 +224,10 @@ var app = new Vue({
 
             if (!this.tagsMode) {
                 this.channelMode = false;
+
+                if (this.inputListMode) {
+                    this.showListInput();
+                }
             }   
 
             if (this.tagsMode) {
@@ -240,20 +246,20 @@ var app = new Vue({
             this.update();
         },
         setColor() {
-            this.settingColor = document.getElementById('colorPicker').value;
+            this.settings.Color = document.getElementById('colorPicker').value;
 
-            document.documentElement.style.setProperty('--mainColor', "#" + this.settingColor);
+            document.documentElement.style.setProperty('--mainColor', "#" + this.settings.Color);
 
             this.setSecondColor();
 
             this.changes = true;
         },
         resetColor() {
-            this.settingColor = "DB4437";
+            this.settings.Color = "DB4437";
 
-            document.getElementById("colorPicker").jscolor.fromString(this.settingColor);
+            document.getElementById("colorPicker").jscolor.fromString(this.settings.Color);
 
-            document.documentElement.style.setProperty('--mainColor', "#" + this.settingColor);
+            document.documentElement.style.setProperty('--mainColor', "#" + this.settings.Color);
 
             this.setSecondColor();
 
@@ -399,18 +405,20 @@ var app = new Vue({
 
                     Vue.set(video, 'dlstatus', ((status.value) ? 2 : 0));
 
-                    const messageId = app.messageRunningId++;
+                    if (this.settings.DownloadFinishedNotification) {
+                        const messageId = app.messageRunningId++;
 
-                    app.messages.push({
-                        "id": messageId,
-                        "title": video.title,
-                        "subtitle": video.channelTitle,
-                        "thumbUrl": video.thumbnailUrl,
-                        "text": ((status.value) ? "Download Finished" : "Download Failed"),
-                        "event": ((status.value) ? "window.location.replace('http://localhost:5000/localbrowser.html?id=" + video.id + "');" : "return;")
-                    });
+                        app.messages.push({
+                            "id": messageId,
+                            "title": video.title,
+                            "subtitle": video.channelTitle,
+                            "thumbUrl": video.thumbnailUrl,
+                            "text": ((status.value) ? "Download Finished" : "Download Failed"),
+                            "event": ((status.value) ? "window.location.replace('http://localhost:5000/localbrowser.html?id=" + video.id + "');" : "return;")
+                        });
 
-                    setTimeout(function () { const index = app.messages.findIndex(m => m.id === messageId); app.messages.splice(index, 1); }, 10000);
+                        setTimeout(function () { const index = app.messages.findIndex(m => m.id === messageId); app.messages.splice(index, 1); }, 10000);
+                    }
 
                     clearInterval(progressUpdater);
 
@@ -462,18 +470,20 @@ var app = new Vue({
 
             this.resetAllFilters();
 
-            const messageId = app.messageRunningId++;
+            if (this.settings.VideosDeletionNotification) {
+                const messageId = app.messageRunningId++;
 
-            app.messages.push({
-                "id": messageId,
-                "title": "Filtered Videos Deleted",
-                "subtitle": count + " Videos",
-                "thumbUrl": (firstThumb === null) ? "media/LogoRed.png" : firstThumb,
-                "text": "Length of Deleted Videos " + duration,
-                "event": "return;"
-            });
+                app.messages.push({
+                    "id": messageId,
+                    "title": "Filtered Videos Deleted",
+                    "subtitle": count + " Videos",
+                    "thumbUrl": (firstThumb === null) ? "media/LogoRed.png" : firstThumb,
+                    "text": "Length of Deleted Videos " + duration,
+                    "event": "return;"
+                });
 
-            setTimeout(function () { const index = app.messages.findIndex(m => m.id === messageId); app.messages.splice(index, 1); }, 10000);
+                setTimeout(function () { const index = app.messages.findIndex(m => m.id === messageId); app.messages.splice(index, 1); }, 10000);
+            }
         },
         async deleteFilteredPlaylistVideos() {   
             if (!(await this.getConfirmation("Delete all Filtered Videos?"))) return;
@@ -498,18 +508,20 @@ var app = new Vue({
                 await waiter;
             });
 
-            const messageId = app.messageRunningId++;
+            if (this.settings.VideosDeletionNotification) {
+                const messageId = app.messageRunningId++;
 
-            app.messages.push({
-                "id": messageId,
-                "title": "Filtered Videos Deleted",
-                "subtitle": count + " Videos",
-                "thumbUrl": (firstThumb === null) ? "media/LogoRed.png" : firstThumb,
-                "text": "Length of Deleted Videos " + duration,
-                "event": "return;"
-            });
+                app.messages.push({
+                    "id": messageId,
+                    "title": "Filtered Videos Deleted",
+                    "subtitle": count + " Videos",
+                    "thumbUrl": (firstThumb === null) ? "media/LogoRed.png" : firstThumb,
+                    "text": "Length of Deleted Videos " + duration,
+                    "event": "return;"
+                });
 
-            setTimeout(function () { const index = app.messages.findIndex(m => m.id === messageId); app.messages.splice(index, 1); }, 10000);
+                setTimeout(function () { const index = app.messages.findIndex(m => m.id === messageId); app.messages.splice(index, 1); }, 10000);
+            }
 
             this.playlistFilter = "";
         },
@@ -538,18 +550,20 @@ var app = new Vue({
                 count++;
             });
 
-            const messageId = app.messageRunningId++;
+            if (this.settings.VideosDeletionNotification) {
+                const messageId = app.messageRunningId++;
 
-            app.messages.push({
-                "id": messageId,
-                "title": "Filtered Videos Deleted",
-                "subtitle": count + " Videos",
-                "thumbUrl": (firstThumb === null) ? "media/LogoRed.png" : firstThumb,
-                "text": "",
-                "event": "return;"
-            });
+                app.messages.push({
+                    "id": messageId,
+                    "title": "Filtered Videos Deleted",
+                    "subtitle": count + " Videos",
+                    "thumbUrl": (firstThumb === null) ? "media/LogoRed.png" : firstThumb,
+                    "text": "",
+                    "event": "return;"
+                });
 
-            setTimeout(function () { const index = app.messages.findIndex(m => m.id === messageId); app.messages.splice(index, 1); }, 10000);
+                setTimeout(function () { const index = app.messages.findIndex(m => m.id === messageId); app.messages.splice(index, 1); }, 10000);
+            }
 
             this.playlistFilter = "";
         },
@@ -578,18 +592,20 @@ var app = new Vue({
                 await fetch("/api/values/video/" + item.id, { method: "DELETE" });
             });    
 
-            const messageId = app.messageRunningId++;
+            if (this.settings.VideosDeletionNotification) {
+                const messageId = app.messageRunningId++;
 
-            app.messages.push({
-                "id": messageId,
-                "title": "Playlist Deleted",
-                "subtitle": count + " Videos",
-                "thumbUrl": (firstThumb === undefined) ? "media/LogoRed.png" : firstThumb,
-                "text": "Length of Deleted Videos " + duration,
-                "event": "return;"
-            });
+                app.messages.push({
+                    "id": messageId,
+                    "title": "Playlist Deleted",
+                    "subtitle": count + " Videos",
+                    "thumbUrl": (firstThumb === undefined) ? "media/LogoRed.png" : firstThumb,
+                    "text": "Length of Deleted Videos " + duration,
+                    "event": "return;"
+                });
 
-            setTimeout(function () { const index = app.messages.findIndex(m => m.id === messageId); app.messages.splice(index, 1); }, 10000);
+                setTimeout(function () { const index = app.messages.findIndex(m => m.id === messageId); app.messages.splice(index, 1); }, 10000);
+            }
         },
         async reactivateVideo(video) {
             var waiter = fetch("/api/values/video/" + video.id, { method: "POST" });
@@ -614,6 +630,10 @@ var app = new Vue({
 
             if (this.tagsMode) {
                 await this.showTags();
+            }
+
+            if (this.inputListMode) {
+                this.showListInput();
             }
 
             var result = await waiter;
@@ -668,35 +688,8 @@ var app = new Vue({
 
             this.trashbinMode = false;
         },
-        async closeSettings() {
-            this.settingRT = document.getElementById('RT').value;
-
-            this.settingNCT = document.getElementById('NCT').value;
-
-            this.settingDT = document.getElementById('DT').value;
-
-            this.settingPPS = document.getElementById('PPS').value;
-            
-            this.settingsMode = false;
-
-            this.changes = false;
-
-            await Promise.all([fetch("/api/values/settings/RT/" + this.settingRT, { method: "POST" }),
-
-            fetch("/api/values/settings/NCT/" + this.settingNCT, { method: "POST" }),
-
-            fetch("/api/values/settings/DT/" + this.settingDT, { method: "POST" }),
-
-            fetch("/api/values/settings/PPS/" + this.settingPPS, { method: "POST" }),
-
-            fetch("/api/values/settings/COLOR/" + this.settingColor, { method: "POST" }),
-
-            fetch("/api/values/settings/PQ/" + this.settingPQ, { method: "POST" })]);
-
-            fetch("/api/values/settings/save", { method: "POST" });
-        },
         async switchDesign() {
-            this.night = !this.night;
+            this.settings.NightMode = !this.settings.NightMode;
 
             this.setBodyColor();
 
@@ -705,7 +698,7 @@ var app = new Vue({
             fetch("/api/values/settings/save", { method: "POST" });
         },
         setBodyColor() {
-            if (this.night) {
+            if (this.settings.NightMode) {
                 document.body.setAttribute('bgcolor', '#131313');
             } else {
                 document.body.setAttribute('bgcolor', '#fafafa');
@@ -751,69 +744,10 @@ var app = new Vue({
 
             this.listUpdate();
         },
-        changeSetting(setting, number) {
-            this.changes = true;
-
-            switch (setting) {
-                case "NCT": 
-                    this.settingNCT *= 1;
-
-                    this.settingNCT += number;
-
-                    if (this.settingNCT > 90) {
-                        this.settingNCT = 90;
-                    }
-
-                    else if (this.settingNCT < 1) {
-                        this.settingNCT = 1;
-                    }
-                    
-                    break;
-                case "RT":
-                    this.settingRT *= 1;
-
-                    this.settingRT += number;
-
-                    if (this.settingRT > 7) {
-                        this.settingRT = 7;
-                    }
-                    else if (this.settingRT < 1) {
-                        this.settingRT = 1;
-                    }
-
-                    break;
-                case "DT": 
-                    this.settingDT *= 1;
-
-                    this.settingDT += number;
-
-                    if (this.settingDT < 7) {
-                        this.settingDT = 7;
-                    }
-
-                    break;
-                case "PPS":
-                    this.settingPPS *= 1;
-
-                    this.settingPPS += number;
-
-                    if (this.settingPPS < 1) {
-                        this.settingPPS = 1;
-                    }
-
-                    break;
-                default:
-                    console.log("Unknown setting was tried to change!");
-
-                    console.log(setting);
-
-                    this.changes = false;
-            }
-        },
         setSecondColor() {
-            var r = parseInt(this.settingColor.substr(0, 2), 16);
-            var g = parseInt(this.settingColor.substr(2, 2), 16);
-            var b = parseInt(this.settingColor.substr(4, 2), 16);
+            var r = parseInt(this.settings.Color.substr(0, 2), 16);
+            var g = parseInt(this.settings.Color.substr(2, 2), 16);
+            var b = parseInt(this.settings.Color.substr(4, 2), 16);
             var yiq = ((r * 299) + (g * 587) + (b * 114)) / 1000;
             if (yiq >= 200) {
                 document.documentElement.style.setProperty('--secColor', 'black');
@@ -985,6 +919,12 @@ var app = new Vue({
             func();
         },
         async getConfirmation(message) {
+            if (!settings.ConfirmWindow) {
+                return new Promise((resolve, reject) => {
+                    resolve(true);
+                });
+            }
+
             this.confirmationMessage = message;
 
             var menu = document.getElementById('confirmationMenu');
@@ -1062,7 +1002,7 @@ var app = new Vue({
 
             this.newestVersion = this.newestVersion.substring(1, this.newestVersion.length);
 
-            if (this.newestVersion !== this.informationContent[0]) {
+            if (this.newestVersion !== this.informationContent[0] && this.settings.NewVersionNotification) {
                 const messageId = this.messageRunningId++;
 
                 this.messages.push({
@@ -1229,7 +1169,7 @@ var app = new Vue({
 
         }, false);
 
-        var setOv = document.querySelector('.settingsOverlay');
+        var setOv = document.querySelector('#settingsUI');
 
         var chOv = document.querySelector('#channelUI');
 
@@ -1247,7 +1187,7 @@ var app = new Vue({
 
             const target = event.target || event.srcElement;
 
-            if (app.settingsMode && target.nodeName !== "BUTTON" && !app.changes) {
+            if (app.settingsMode && target.nodeName !== "BUTTON") {
                 if (!setOv.contains(target)) {
                     app.showSettings();
                 }

@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using SubBox.Data;
 using SubBox.Models;
 
@@ -68,9 +70,9 @@ namespace SubBox.Controllers
 
         // GET: api/values/settings
         [HttpGet("settings")]
-        public string[] GetSettings()
+        public string GetSettings()
         {
-            return new string[] { AppSettings.RetrievalTimeFrame.ToString(), AppSettings.NewChannelTimeFrame.ToString(), AppSettings.DeletionTimeFrame.ToString(), AppSettings.PlaylistPlaybackSize.ToString(), AppSettings.Color, AppSettings.NightMode.ToString(), ((int) AppSettings.PreferredQuality).ToString() };
+            return JsonConvert.SerializeObject(new AppSettings());
         }
 
         // GET: api/values/information
@@ -159,7 +161,6 @@ namespace SubBox.Controllers
 
         // POST: api/values/channel
         [HttpPost("channel")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
         public void PostChannel([FromForm]Channel ch)
         {
             string name = ch.Username;
@@ -173,7 +174,6 @@ namespace SubBox.Controllers
 
         // POST: api/values/channel
         [HttpPost("channel/{name}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
         public void PostChannel(string name)
         { 
             Logger.Info("Adding " + name + " to Database...");
@@ -347,8 +347,12 @@ namespace SubBox.Controllers
 
         //POST: api/values/settings/save
         [HttpPost("settings/save")]
-        public void SaveSettings()
+        public async void SaveSettings()
         {
+            string raw = await new StreamReader(HttpContext.Request.Body).ReadToEndAsync();
+
+            JsonConvert.DeserializeObject(raw, typeof(AppSettings));
+
             AppSettings.Save();
         }
 

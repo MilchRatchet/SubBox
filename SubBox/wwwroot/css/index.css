@@ -181,17 +181,15 @@ button {
     }
 
 nav button {
-    display: flex;
+    display: flex !important;
     flex-direction: row;
-    justify-content: flex-start !important;
+    justify-content: flex-start;
     align-items: center;
     height: 100%;
     max-width: 40px;
     margin: 0;
     padding: 0 8px 0 8px;
     border-radius: 0px;
-    border-top: 3px solid transparent;
-    border-bottom: 3px solid transparent;
     transition: max-width 0.2s ease-in-out;
 }
 
@@ -220,6 +218,10 @@ nav button:hover {
         color: var(--secColor);
     }
 
+    input:focus {
+        outline: none;
+    }
+
 input[type=text] {
     margin-left: 4px;
     border-radius: 0;
@@ -242,7 +244,7 @@ input[type=number] {
     width: 250px;
     font-weight: bold;
     color: var(--font_title);
-    background-color: var(--bg);
+    background-color: var(--nav_bg);
     -moz-appearance: textfield;
     -webkit-appearance: textfield;
 }
@@ -272,7 +274,7 @@ tr {
 }
 
 select {
-    width: calc(35% + 52px);
+    width: 114px;
     height: 32px;
     background: var(--nav_bg);
     color: var(--font_title);
@@ -581,7 +583,8 @@ nav div {
 .overlay {
     position: fixed;
     top: 40px;
-    margin-left: 0%;
+    margin-left: 0;
+    padding: 10px 0 10px 0;
     width: 400px;
     background-color: var(--nav_bg);
     z-index: 500;
@@ -636,6 +639,69 @@ nav div {
         vertical-align: middle;
         cursor: pointer;
     }
+
+.channelEntry {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: auto;
+    color: var(--font_title);
+    background: none;
+}
+
+    .channelEntry img {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        cursor: pointer;
+    }
+
+    .channelEntry label {
+        margin-left: 10px;
+    }
+
+        .channelEntry .channelEntryRowContent:hover {
+            color: var(--secColor);
+            background-position: left bottom;
+            transition: 0.3s background;
+        }
+
+        .channelEntry .channelEntryRowContent:hover button {
+            color: var(--secColor);
+        }
+
+            .channelEntry .channelEntryRowContent:hover button:hover {
+                color: var(--mainColor);
+            }
+
+    .channelEntry .channelEntryRowDelete:hover button {
+        color: var(--font_title);
+    }
+
+
+.channelEntryRowContent, .channelEntryRowDelete {
+    display: flex;
+    flex-direction: row;
+    height: 44px;
+    padding: 0 10px 0 20px;
+    background: linear-gradient(to right, var(--mainColor) 50%, transparent 50%);
+    background-size: 200% 100%;
+    background-position: right bottom;
+    transition: 0.3s background;
+}
+
+    .channelEntryRowContent div, .channelEntryRowDelete div {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        width: 35%;
+        height: 100%;
+        overflow-x: visible;
+    }
+
+        .channelEntryRowContent div:first-child, .channelEntryRowDelete div:first-child {
+            width: 65%;
+        }
 
 .channelLastRowDiv {
     padding: 10px 5px 10px 10px;
@@ -727,6 +793,7 @@ nav div {
 
 .locked {
     border-left: 5px solid #daa520;
+    padding-left: 15px;
     background: linear-gradient(to right, #daa520 50%, transparent 50%);
     background-size: 200% 100%;
     background-position: right bottom;
@@ -885,13 +952,15 @@ button.deleteChannelButton:hover {
 }
 
 .settingsOverlay {
+    display: flex;
+    flex-direction: row;
+    flex: 1;
     position: fixed;
     top: 40px;
-    margin-left: 80%;
-    width: 20%;
+    right: 0;
+    width: 700px;
     background-color: var(--nav_bg);
     z-index: 500;
-    display: block;
     border: 1px solid var(--video_bd_bot);
     border-right: none;
     border-top: none;
@@ -904,57 +973,149 @@ button.deleteChannelButton:hover {
         margin: 0;
     }
 
-    .settingsOverlay table {
-        width: 100%;
-        border-collapse: collapse;
-    }
-
-    .settingsOverlay td {
-        justify-items: center;
-        width: 50%;
-        color: var(--font_title);
-        padding-left: 10px;
-    }
-
-    .settingsOverlay tr:hover td {
-        background-color: var(--bg);
-    }
-
-    .settingsOverlay td:first-of-type {
-        padding-top: 5px;
-        padding-bottom: 5px;
-    }
-
-    .settingsOverlay tr:nth-child(2) td {
-        padding-top: 5px;
-    }
-
     .settingsOverlay button {
         float: right;
     }
 
-.numberInput button:hover {
-    color: var(--secColor);
-    background: var(--mainColor);
+    .settingsOverlay input {
+        width: 60px;
+        height: 24px;
+        margin: 0;
+        padding: 0;
+        font-size: 16px;
+        text-align: center;
+        border: 1px solid var(--font_title);
+    }
+
+.settingCategoryList {
+    display: flex;
+    flex-direction: column;
+    width: 200px;
+    padding: 10px 0 10px 0;
 }
 
-.settingsOverlay input {
-    width: 35%;
-    margin: 0;
-    padding: 0;
-    font-size: 16px;
-    text-align: center;
-    border: 1px solid var(--font_title);
+    .settingCategoryList div {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-start;
+        height: 40px;
+        background: none;
+        color: var(--font_title);
+        padding: 0 5px 0 5px;
+    }
+
+        .settingCategoryList div:hover {
+            background: var(--bg);
+        }
+
+        .settingCategoryList div label {
+            margin-left: 5px;
+        }
+
+    .settingCategoryList .settingCategoryMarker {
+        display: flex;
+        align-items: center;
+        width: 5px;
+        height: 100%;
+        padding: 0 5px 0 5px;
+    }
+
+        .settingCategoryList .settingCategoryMarker div {
+            display: block;
+            width: 100%;
+            height: 30px;
+            background-color: var(--mainColor);
+            border-radius: 2px;
+            padding: 0;
+        }
+
+.settingsList {
+    display: flex;
+    flex-direction: column;
+    width: 500px;
+    padding: 10px 0 10px 0;
+    border-left: 1px solid var(--video_bd_bot);
 }
 
-.numberInput {
+.singleSetting {
+    display: flex;
+    flex-direction: row;
+    height: 40px;
+    width: 100%;
+}
+
+    .singleSetting div {
+        display: flex;
+        align-items: center;
+        height: 100%;
+        width: 35%;
+        padding: 0 20px 0 10px;
+    }
+
+    .singleSetting div:first-child {
+        width: 65%;
+    }
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 20px;
+}
+
+    .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--video_bd_bot);
+    border-radius: 8px;
+    -webkit-transition: .2s;
+    transition: .2s;
+}
+
+    .slider:before {
+        position: absolute;
+        content: "";
+        height: 14px;
+        width: 14px;
+        left: 4px;
+        bottom: 3px;
+        background-color: #fafafa;
+        border-radius: 50%;
+        -webkit-transition: .2s;
+        transition: .2s;
+    }
+
+input:checked + .slider {
+    background-color: var(--mainColor);
+}
+
+    input:checked + .slider:before {
+        background-color: var(--secColor);
+        -webkit-transform: translateX(26px);
+        -ms-transform: translateX(26px);
+        transform: translateX(26px);
+    }
+
+.singleSetting .numberInput {
+    width: auto !important;
     box-sizing: border-box;
     justify-content: center;
     display: flex;
     padding: 0;
 }
 
-    .numberInput button {
+    .singleSetting .numberInput button {
         align-items: center;
         justify-content: center;
         border: 1px var(--font_title) solid;
@@ -965,6 +1126,11 @@ button.deleteChannelButton:hover {
         position: relative;
         background: transparent;
     }
+
+        .singleSetting .numberInput button:hover {
+            color: var(--secColor);
+            background: var(--mainColor);
+        }
 
 .videoThumb {
     position: relative;
@@ -986,33 +1152,6 @@ button.deleteChannelButton:hover {
         border-radius: 2px;
     }
 
-.changeWarning {
-    margin-top: 4px !important;
-    cursor: default;
-    float: left;
-    width: 180px;
-    padding: 3px;
-    border-radius: 2px;
-    color: var(--secColor) !important;
-    font-size: 18px;
-    border: 1px solid var(--font_title);
-    background: linear-gradient(to right, var(--mainColor) 50%, transparent 50%);
-    background-size: 200% 100%;
-    background-position: left bottom;
-}
-
-.fade-enter-active {
-    transition: 0.3s;
-}
-
-.fade-leave-active {
-    transition: 0s;
-}
-
-.fade-enter, .fade-leave-to {
-    background-position: right bottom;
-}
-
 .bottomDiv {
     text-align: center;
 }
@@ -1031,10 +1170,13 @@ button.deleteChannelButton:hover {
     }
 
 .addTagDiv {
-    width: 100%;
-    height: 24px;
     display: flex;
-    vertical-align: central;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    height: 34px;
+    display: flex;
     padding: 3px;
     margin-bottom: 10px;
 }
@@ -1043,15 +1185,15 @@ input[type=text].addTagInput {
     margin-left: 10px;
     margin-right: 0;
     width: 75%;
-    height: 100%;
+    height: 24px;
 }
 
 .addTagButton {
     border-radius: 0;
     margin: 0;
     padding: 0;
-    width: 30px;
-    height: 30px;
+    width: 34px;
+    height: 34px;
     border: 1px solid var(--font_text);
 }
 
@@ -1073,7 +1215,7 @@ input[type=text].addTagFilterInput {
     margin-left: 15px;
     margin-right: 0;
     width: 75%;
-    height: 100%;
+    height: 20px;
 }
 
 .addTagFilterButton {
@@ -1156,7 +1298,8 @@ button.deleteTagFilterButton:hover {
     font-size: 14px;
     font-family: 'Roboto', sans-serif;
     padding: 8px;
-    height: 14px;
+    height: 14px !important;
+    width: auto !important;
     visibility: hidden;
     opacity: 0;
     color: var(--secColor);

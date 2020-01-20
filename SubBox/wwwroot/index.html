@@ -29,7 +29,7 @@
 </head>
 
 <body>
-    <div id="app" :class="night ? 'dark-mode' : 'light-mode'">
+    <div id="app" :class="settings.NightMode ? 'dark-mode' : 'light-mode'">
 
         <div id="confirmationMenu">
             <div>
@@ -164,7 +164,7 @@
 
         <div v-show="messages.length !== 0" id="notifications">
             <div @click="execEvent(message)" class="message" v-for="message in messages">
-                <img :src="message.thumbUrl"/>
+                <img :src="message.thumbUrl" />
                 <div>
                     <p>{{message.title}}</p>
                     <p style="font-size: 14px">{{message.subtitle}}</p>
@@ -280,72 +280,121 @@
             </div>
         </div>
 
-
-
-        <div v-show="settingsMode" class="settingsOverlay">
-            <table>
-                <tr style="border-bottom: 1px solid var(--font_title)">
-                    <td colspan="2">
-                        <p>SubBox - Settings</p>
-                    </td>
-                </tr>
-                <tr>
-                    <td><div class="tooltip"><div class="tooltiptext ttleft">Timespan of Videos that gets retrieved when adding a Channel</div>Channel Retrieval (Days)</div></td>
-                    <td>
+        <div id="settingsUI" v-show="settingsMode" class="settingsOverlay">
+            <div class="settingCategoryList">
+                <div @click="settingsTab = 0">
+                    <div class="settingCategoryMarker">
+                        <div v-show="settingsTab === 0"></div>
+                    </div>
+                    <p class="material-icons">
+                        account_circle
+                    </p>
+                    <label>
+                        General
+                    </label>
+                </div>
+                <div @click="settingsTab = 1">
+                    <div class="settingCategoryMarker">
+                        <div v-show="settingsTab === 1"></div>
+                    </div>
+                    <p class="material-icons">
+                        notifications
+                    </p>
+                    <label>
+                        Notifications
+                    </label>
+                </div>
+                <div @click="settingsTab = 2">
+                    <div class="settingCategoryMarker">
+                        <div v-show="settingsTab === 2"></div>
+                    </div>
+                    <p class="material-icons">
+                        computer
+                    </p>
+                    <label>
+                        Console
+                    </label>
+                </div>
+            </div>
+            <div v-show="settingsTab === 0" class="settingsList">
+                <div class="singleSetting" @click.prevent="switchDesign()">
+                    <div style="justify-content: flex-start;">
+                        <p>Dark Theme</p>
+                    </div>
+                    <div style="justify-content: flex-end;">
+                        <label class="switch">
+                            <input type="checkbox" v-model="settings.NightMode" />
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="singleSetting">
+                    <div style="justify-content: flex-start;">
+                        <p>Channel Retrieval (Days)</p>
+                    </div>
+                    <div style="justify-content: flex-end;">
                         <div class="numberInput">
-                            <button @click="changeSetting('NCT',-1)" class="material-icons">remove</button>
-                            <input v-model="settingNCT" type="number" id="NCT" name="NCT" min="1" max="30" />
-                            <button @click="changeSetting('NCT',+1)" class="material-icons">add</button>
+                            <button @click="if (settings.NewChannelTimeFrame > 1) settings.NewChannelTimeFrame--" class="material-icons">remove</button>
+                            <input v-model="settings.NewChannelTimeFrame" type="number" id="NCT" name="NCT" readonly />
+                            <button @click="if (settings.NewChannelTimeFrame < 90) settings.NewChannelTimeFrame++" class="material-icons">add</button>
                         </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td><div class="tooltip"><div class="tooltiptext ttleft">Timespan of Videos that gets retrieved when Refreshing</div>Retrieval Time (Days)</div></td>
-                    <td>
+                    </div>
+                </div>
+                <div class="singleSetting">
+                    <div style="justify-content: flex-start;">
+                        <p>Retrieval Time (Days)</p>
+                    </div>
+                    <div style="justify-content: flex-end;">
                         <div class="numberInput">
-                            <button @click="changeSetting('RT',-1)" class="material-icons">remove</button>
-                            <input v-model="settingRT" type="number" id="RT" name="RT" min="1" max="7" />
-                            <button @click="changeSetting('RT',+1)" class="material-icons">add</button>
+                            <button @click="if (settings.RetrievalTimeFrame > 1) settings.RetrievalTimeFrame--" class="material-icons">remove</button>
+                            <input v-model="settings.RetrievalTimeFrame" type="number" id="RT" name="RT" readonly />
+                            <button @click="if (settings.RetrievalTimeFrame < 14) settings.RetrievalTimeFrame++" class="material-icons">add</button>
                         </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td><div class="tooltip"><div class="tooltiptext ttleft">Automatically delete Videos in the Trashbin once they hit a certain Age in Days</div>Deletion Time (Days)</div></td>
-                    <td>
+                    </div>
+                </div>
+                <div class="singleSetting">
+                    <div style="justify-content: flex-start;">
+                        <p>Deletion Time (Days)</p>
+                    </div>
+                    <div style="justify-content: flex-end;">
                         <div class="numberInput">
-                            <button @click="changeSetting('DT',-1)" class="material-icons">remove</button>
-                            <input v-model="settingDT" type="number" id="DT" name="DT" min="7" />
-                            <button @click="changeSetting('DT',+1)" class="material-icons">add</button>
+                            <button @click="if (settings.DeletionTimeFrame > 14) settings.DeletionTimeFrame--" class="material-icons">remove</button>
+                            <input v-model="settings.DeletionTimeFrame" type="number" id="DT" name="DT" readonly />
+                            <button @click="settings.DeletionTimeFrame++" class="material-icons">add</button>
                         </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td><div class="tooltip"><div class="tooltiptext ttleft">Amount of Videos in a Playlist you go back to before they get deleted</div>Playlist Playback Size</div></td>
-                    <td>
+                    </div>
+                </div>
+                <div class="singleSetting">
+                    <div style="justify-content: flex-start;">
+                        <p>Playlist Playback Size</p>
+                    </div>
+                    <div style="justify-content: flex-end;">
                         <div class="numberInput">
-                            <button @click="changeSetting('PPS',-1)" class="material-icons">remove</button>
-                            <input v-model="settingPPS" type="number" id="PPS" name="PPS" min="1" />
-                            <button @click="changeSetting('PPS',+1)" class="material-icons">add</button>
+                            <button @click="if (settings.PlaylistPlaybackSize > 10) settings.PlaylistPlaybackSize--" class="material-icons">remove</button>
+                            <input v-model="settings.PlaylistPlaybackSize" type="number" id="PPS" name="PPS" readonly />
+                            <button @click="settings.PlaylistPlaybackSize++" class="material-icons">add</button>
                         </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Accent Color</td>
-                    <td>
+                    </div>
+                </div>
+                <div class="singleSetting">
+                    <div style="justify-content: flex-start;">
+                        <p>Accent Color</p>
+                    </div>
+                    <div style="justify-content: flex-end;">
                         <div class="numberInput">
                             <button @click="resetColor" class="material-icons">replay</button>
-                            <input v-model="settingColor" id="colorPicker" @change="setColor()" class="jscolor" />
-                            <button class="material-icons" style="color: transparent; background: transparent; cursor: default; border: transparent;">add</button>
+                            <input v-model="settings.Color" id="colorPicker" @change="setColor()" class="jscolor" />
+                            <button class="material-icons" style="color: transparent; background: transparent; cursor: default; border: 1px solid transparent;">add</button>
                         </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="tooltip"><div class="tooltiptext ttleft">Video Quality used when Downloading</div>Preferred Quality</div>
-                    </td>
-                    <td>
+                    </div>
+                </div>
+                <div class="singleSetting">
+                    <div style="justify-content: flex-start;">
+                        <p>Preferred Quality</p>
+                    </div>
+                    <div style="justify-content: flex-end;">
                         <div class="numberInput">
-                            <select v-model="settingPQ" @change="changes = true;">
+                            <select v-model="settings.PreferredQuality">
                                 <option value="0">
                                     2160p60
                                 </option>
@@ -372,17 +421,90 @@
                                 </option>
                             </select>
                         </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        <transition name="fade">
-                            <p class="changeWarning" v-if="changes">Unsaved Changes!</p>
-                        </transition>
-                        <button @click="closeSettings" class="material-icons closeChannelsButton tooltip"><div class="tooltiptext ttleft">Save Changes</div>save</button>
-                    </td>
-                </tr>
-            </table>
+                    </div>
+                </div>
+            </div>
+            <div v-show="settingsTab === 1" class="settingsList">
+                <div class="singleSetting" @click.prevent="settings.ConfirmWindow = !settings.ConfirmWindow">
+                    <div style="justify-content: flex-start;">
+                        <p>Show Confirmation Window</p>
+                    </div>
+                    <div style="justify-content: flex-end;">
+                        <label class="switch">
+                            <input type="checkbox" v-model="settings.ConfirmWindow" />
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="singleSetting" @click.prevent="settings.NewVersionNotification = !settings.NewVersionNotification">
+                    <div style="justify-content: flex-start;">
+                        <p>Show New Version Notifications</p>
+                    </div>
+                    <div style="justify-content: flex-end;">
+                        <label class="switch">
+                            <input type="checkbox" v-model="settings.NewVersionNotification" />
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="singleSetting" @click.prevent="settings.DownloadFinishedNotification = !settings.DownloadFinishedNotification">
+                    <div style="justify-content: flex-start;">
+                        <p>Show Download Finished Notifications</p>
+                    </div>
+                    <div style="justify-content: flex-end;">
+                        <label class="switch">
+                            <input type="checkbox" v-model="settings.DownloadFinishedNotification" />
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="singleSetting" @click.prevent="settings.VideosDeletedNotification = !settings.VideosDeletedNotification">
+                    <div style="justify-content: flex-start;">
+                        <p>Show Videos Deleted Notifications</p>
+                    </div>
+                    <div style="justify-content: flex-end;">
+                        <label class="switch">
+                            <input type="checkbox" v-model="settings.VideosDeletedNotification" />
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="singleSetting" @click.prevent="settings.ChannelAddedNotification = !settings.ChannelAddedNotification">
+                    <div style="justify-content: flex-start;">
+                        <p>Show Channel Added Notifications</p>
+                    </div>
+                    <div style="justify-content: flex-end;">
+                        <label class="switch">
+                            <input type="checkbox" v-model="settings.ChannelAddedNotification" />
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div v-show="settingsTab === 2" class="settingsList">
+                <div class="singleSetting" @click.prevent="settings.DevMode = !settings.DevMode">
+                    <div style="justify-content: flex-start;">
+                        <p>Developer Mode</p>
+                    </div>
+                    <div style="justify-content: flex-end;">
+                        <label class="switch">
+                            <input type="checkbox" v-model="settings.DevMode" />
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="singleSetting" @click.prevent="settings.AutoStart = !settings.AutoStart">
+                    <div style="justify-content: flex-start;">
+                        <p>Open Website on Startup</p>
+                    </div>
+                    <div style="justify-content: flex-end;">
+                        <label class="switch">
+                            <input type="checkbox" v-model="settings.AutoStart" />
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div id="addPlaylistUI" v-show="inputListMode" class="inputListOverlay">
@@ -419,7 +541,7 @@
                             </tr>
                         </table>
                         <div class="addTagFilterDiv">
-                            <input @keyup.enter="addFilterToTag(tag)"  class="addTagFilterInput" v-model="addTagFilter" type="text" autocomplete="off" placeholder="Enter Filter..." list="channels"/>
+                            <input @keyup.enter="addFilterToTag(tag)" class="addTagFilterInput" v-model="addTagFilter" type="text" autocomplete="off" placeholder="Enter Filter..." list="channels" />
                             <datalist id="channels">
                                 <option v-for="ch in channels">{{ch.displayname}}</option>
                             </datalist>
@@ -429,41 +551,38 @@
                     </td>
                 </tr>
             </table>
-            <button @click="showTags" class="material-icons closeChannelsButton tooltip"><div class="tooltiptext ttleft">Close Window</div>exit_to_app</button>
         </div>
 
         <div id="channelUI" v-show="channelMode" class="overlay">
-            <table class="channelList" v-for="channel in channels">
-                <tr v-bind:class="{ locked: channel.locked }" class="channelRow">
-                    <td>
+            <div class="channelEntry" v-for="channel in channels">
+                <div class="channelEntryRowContent" v-bind:class="{ locked: channel.locked }">
+                    <div style="justify-content: flex-start">
                         <img :src="channel.thumbnailUrl" @click="openChannel(channel.username)" />
-                    </td>
-                    <td class="channelNameColumn">
-                        {{channel.displayname}}
-                    </td>
-                    <td class="channelButtonColumn">
+                        <label>
+                            {{channel.displayname}}
+                        </label>
+                    </div>
+                    <div style="justify-content: flex-end">
                         <button @click="setFilter(channel)" class="material-icons deleteChannelButton tooltip"><div class="tooltiptext tooltiptextInverseColor ttleft">Only Show Videos by {{channel.displayname}}</div>star</button>
                         <button @click="markChannelDeletion(channel)" class="material-icons deleteChannelButton tooltip"><div class="tooltiptext tooltiptextInverseColor ttleft">Remove Channel</div>clear</button>
-                    </td>
-                </tr>
-                <tr v-if="removeChannel != null && removeChannel.id == channel.id" class="removeChannelRow">
-                    <td style="padding-left: 10px;" colspan="2">
+                    </div>
+                </div>
+                <div class="channelEntryRowDelete" v-if="removeChannel != null && removeChannel.id == channel.id">
+                    <div style="justify-content: flex-start">
                         Remove {{channel.displayname}}?
-                    </td>
-                    <td colspan="1">
+                    </div>
+                    <div style="justify-content: flex-end">
                         <button @click="deleteChannel(channel)" class="material-icons deleteTagFilterButton tooltip"><div class="tooltiptext ttleft">Remove Channel</div>check</button>
                         <button @click="removeChannel = null;" class="material-icons deleteTagFilterButton tooltip"><div class="tooltiptext ttleft">Keep Channel</div>clear</button>
-                    </td>
-                </tr>
-            </table>
+                    </div>
+                </div>
+            </div> 
             <div class="channelLastRowDiv">
                 <div>
                     <input @keyup.enter="submitChannel()" v-model="addChannelName" autocomplete="off" type="text" name="Username" placeholder="Channel Name..." />
                     <button @click="submitChannel()" class="material-icons addChannelButton">add</button>
                 </div>
-                <div>
-                    <button @click="closeChannels" class="material-icons closeChannelsButton tooltip"><div class="tooltiptext ttleft">Close Window</div>exit_to_app</button>
-                </div>
+                <div></div>
             </div>
         </div>
 
@@ -473,21 +592,32 @@
         <div v-show="videoListMode" class="videoListDiv">
             <nav class="mainNav">
                 <div class="navLeft">
-                    <button @click="showChannels" class="material-icons tooltip" v-bind:class="{activeNavButton : channelMode}"><div style="left: 0" class="tooltiptext ttdown">Channel List</div>{{(filter === 'SubBox') ? 'account_box' : 'star'}} <p>Channels</p></button>
-                    <button @click="showListInput()" class="material-icons tooltip" v-bind:class="{activeNavButton : inputListMode}"><div class="tooltiptext ttdown">Add Playlist</div>playlist_add <p>Add Playlist</p></button>
+                    <div class="tooltip">
+                        <button @click="showChannels" class="material-icons" v-bind:class="{activeNavButton : channelMode}">{{(filter === 'SubBox') ? 'account_box' : 'star'}} <p>Channels</p></button>
+                        <div style="left: 0" class="tooltiptext ttdown">Channel List</div>
+                    </div>
+                    <div class="tooltip">
+                        <button @click="showListInput()" class="material-icons" v-bind:class="{activeNavButton : inputListMode}">playlist_add <p>Add Playlist</p></button>
+                        <div class="tooltiptext ttdown">Add Playlist</div>
+                    </div>
                     <button @click="showOldVideos" class="material-icons tooltip"><div class="tooltiptext ttdown">Trashbin</div>delete</button>
-                    <button @click="showTags" class="material-icons tooltip" v-bind:class="{activeNavButton : tagsMode}"><div class="tooltiptext ttdown">Tags</div>label <p>Tags</p></button>
+                    <div class="tooltip">
+                        <button @click="showTags" class="material-icons" v-bind:class="{activeNavButton : tagsMode}">label <p>Tags</p></button>
+                        <div class="tooltiptext ttdown">Tags</div>
+                    </div>
                     <p class="selectedTag" v-if="selectedTag != null">{{selectedTag.name}}</p>
                 </div>
                 <div class="navMiddle">
                     <div id="topbar" class="topbar">
                         <input id="search" class="search" v-model="searchFilter" type="text" autocomplete="off" placeholder="Search" />
-                        <p class="Title" style="cursor: default;"><img v-show="filterImg!==''" :src="filterImg" class="channelPic"/>{{filter}} - {{filteredVideos.length}}{{ (videos.length !== filteredVideos.length) ? (' / ' + videos.length) : ''}}</p>
+                        <p class="Title" style="cursor: default;"><img v-show="filterImg!==''" :src="filterImg" class="channelPic" />{{filter}} - {{filteredVideos.length}}{{ (videos.length !== filteredVideos.length) ? (' / ' + videos.length) : ''}}</p>
                     </div>
                 </div>
                 <div class="navRight">
-                    <button @click="switchDesign" class="material-icons tooltip"><div class="tooltiptext ttdown">Light/Dark Theme</div>highlight</button>
-                    <button @click="showSettings" class="material-icons tooltip" v-bind:class="{activeNavButton : settingsMode}"><div class="tooltiptext ttdown">Settings</div>settings_applications<p>Settings</p></button>
+                    <div class="tooltip">
+                        <button @click="showSettings" class="material-icons" v-bind:class="{activeNavButton : settingsMode}">settings_applications<p>Settings</p></button>
+                        <div class="tooltiptext ttdown">Settings</div>
+                    </div>
                     <button @click="window.location.replace('http://localhost:5000/localbrowser.html');" class="material-icons tooltip"><div class="tooltiptext ttdown">SubBox Nightly</div>archive</button>
                     <button @click="refresh" class="material-icons refreshButton">autorenew</button>
                 </div>

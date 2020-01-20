@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Newtonsoft.Json;
 using SubBox.Data;
 using SubBox.Models;
 using System;
@@ -80,56 +81,12 @@ namespace SubBox
             //load settings
             try
             {
-                string[] options = File.ReadAllLines("settings.txt");
-
-                AppSettings.RetrievalTimeFrame = int.Parse(options[0]);
-
-                AppSettings.NewChannelTimeFrame = int.Parse(options[1]);
-
-                AppSettings.DeletionTimeFrame = int.Parse(options[2]);
-
-                AppSettings.PlaylistPlaybackSize = int.Parse(options[3]);
-
-                AppSettings.Color = options[4];
-
-                if (options[5]=="True")
+                using (StreamReader file = File.OpenText(@"settings.json"))
                 {
-                    AppSettings.NightMode = true;
-                } else
-                {
-                    AppSettings.NightMode = false;
+                    JsonSerializer serializer = new JsonSerializer();
+
+                    serializer.Deserialize(file, typeof(AppSettings));
                 }
-
-                AppSettings.LastRefresh = DateTime.ParseExact(options[6], "O", CultureInfo.InvariantCulture);
-
-                if (options[7] == "True")
-                {
-                    AppSettings.FirstStart = true;
-                }
-                else
-                {
-                    AppSettings.FirstStart = false;
-                }
-
-                if (options[8] == "True")
-                {
-                    AppSettings.AutoStart = true;
-                }
-                else
-                {
-                    AppSettings.AutoStart = false;
-                }
-
-                if (options[9] == "True")
-                {
-                    AppSettings.DevMode = true;
-                }
-                else
-                {
-                    AppSettings.DevMode = false;
-                }
-
-                AppSettings.PreferredQuality = (AppSettings.DownloadQuality) Enum.Parse(typeof(AppSettings.DownloadQuality), options[10]);
             }
             catch (Exception e)
             {
@@ -148,6 +105,16 @@ namespace SubBox
                 AppSettings.Color = "DB4437";
 
                 AppSettings.NightMode = false;
+
+                AppSettings.ConfirmWindow = true;
+
+                AppSettings.NewVersionNotification = true;
+
+                AppSettings.DownloadFinishedNotification = true;
+
+                AppSettings.VideosDeletedNotification = true;
+
+                AppSettings.ChannelAddedNotification = true;
 
                 AppSettings.LastRefresh = BuildTime;
 
