@@ -674,7 +674,7 @@
                     <button @click="refresh" class="material-icons refreshButton">autorenew</button>
                 </div>
             </nav>
-            <div class="scrollList">
+            <div id="mainList" class="scrollList">
                 <table v-show="filter==='SubBox' && searchFilter === '' && selectedTag == null" class="listList">
                     <tr v-for="video in lists">
                         <td>
@@ -713,7 +713,7 @@
                     </tr>
                 </table>
                 <table class="videoList">
-                    <tr v-for="video in filteredVideos" :key="video.id">
+                    <tr v-for="video in filteredVideos.slice(0, viewPort)">
                         <td>
                             <div class="videoBox">
                                 <div class="videoChannelDiv">

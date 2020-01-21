@@ -43,6 +43,8 @@ var app = new Vue({
         confirmationMessage: "",
         confirmationResult: false,
         confirmationDone: false,
+        viewPort: 10,
+        viewPortAnchor: 0,
     },
     computed: {
         filteredVideos: function () {
@@ -1156,6 +1158,22 @@ var app = new Vue({
         this.getNewestVersion();
 
         this.specialDayMessages();
+
+        var mainList = document.querySelector('#mainList');
+
+        this.viewPort = Math.floor(window.innerHeight / 25);
+
+        mainList.addEventListener("scroll", function (e) {
+            if (Math.abs(app.viewPortAnchor - mainList.scrollTop) < 4 * window.innerHeight) return;
+
+            app.viewPortAnchor = mainList.scrollTop;
+
+            app.viewPort = Math.floor(mainList.scrollTop / 200 + window.innerHeight/25);
+
+            app.videos.push("update");
+
+            app.videos.pop();
+        });
 
         const page = document.getElementById("app");
 
