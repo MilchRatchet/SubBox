@@ -283,7 +283,7 @@
         <div id="settingsUI" v-show="settingsMode" class="settingsOverlay">
             <div class="settingCategoryList">
                 <div @click="settingsTab = 0">
-                    <div class="settingCategoryMarker">
+                    <div class="listSelectedMarker">
                         <div v-show="settingsTab === 0"></div>
                     </div>
                     <p class="material-icons">
@@ -294,7 +294,7 @@
                     </label>
                 </div>
                 <div @click="settingsTab = 1">
-                    <div class="settingCategoryMarker">
+                    <div class="listSelectedMarker">
                         <div v-show="settingsTab === 1"></div>
                     </div>
                     <p class="material-icons">
@@ -305,7 +305,7 @@
                     </label>
                 </div>
                 <div @click="settingsTab = 2">
-                    <div class="settingCategoryMarker">
+                    <div class="listSelectedMarker">
                         <div v-show="settingsTab === 2"></div>
                     </div>
                     <p class="material-icons">
@@ -557,23 +557,17 @@
             <div class="channelEntry" v-for="channel in channels">
                 <div class="channelEntryRowContent" v-bind:class="{ locked: channel.locked }">
                     <div style="justify-content: flex-start">
+                        <div class="listSelectedMarker">
+                            <div v-show="channel.locked"></div>
+                        </div>
                         <img :src="channel.thumbnailUrl" @click="openChannel(channel.username)" />
                         <label>
                             {{channel.displayname}}
                         </label>
                     </div>
-                    <div style="justify-content: flex-end">
+                    <div style="justify-content: flex-end; width: 35%;">
                         <button @click="setFilter(channel)" class="material-icons deleteChannelButton tooltip"><div class="tooltiptext tooltiptextInverseColor ttleft">Only Show Videos by {{channel.displayname}}</div>star</button>
-                        <button @click="markChannelDeletion(channel)" class="material-icons deleteChannelButton tooltip"><div class="tooltiptext tooltiptextInverseColor ttleft">Remove Channel</div>clear</button>
-                    </div>
-                </div>
-                <div class="channelEntryRowDelete" v-if="removeChannel != null && removeChannel.id == channel.id">
-                    <div style="justify-content: flex-start">
-                        Remove {{channel.displayname}}?
-                    </div>
-                    <div style="justify-content: flex-end">
-                        <button @click="deleteChannel(channel)" class="material-icons deleteTagFilterButton tooltip"><div class="tooltiptext ttleft">Remove Channel</div>check</button>
-                        <button @click="removeChannel = null;" class="material-icons deleteTagFilterButton tooltip"><div class="tooltiptext ttleft">Keep Channel</div>clear</button>
+                        <button @click="deleteChannel(channel)" class="material-icons deleteChannelButton tooltip"><div class="tooltiptext tooltiptextInverseColor ttleft">Remove Channel</div>clear</button>
                     </div>
                 </div>
             </div> 

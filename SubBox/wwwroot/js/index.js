@@ -718,6 +718,8 @@ var app = new Vue({
             this.removeChannel = channel;
         },
         async deleteChannel(channel) {
+            if (!(await this.getConfirmation("Remove " + channel.displayname + "?"))) return;
+
             this.removeChannel = null;
 
             if (channel.displayname == this.filter) {
@@ -781,7 +783,9 @@ var app = new Vue({
             }
             this.selectedTag = tag;
         },
-        deleteTag(tag) {
+        async deleteTag(tag) {
+            if (!(await this.getConfirmation("Remove Tag " + tag.name + "?"))) return;
+
             if (this.selectedTag != null && this.selectedTag.name == tag.name) {
                 this.selectedTag = null;
             }
@@ -919,7 +923,7 @@ var app = new Vue({
             func();
         },
         async getConfirmation(message) {
-            if (!settings.ConfirmWindow) {
+            if (!this.settings.ConfirmWindow) {
                 return new Promise((resolve, reject) => {
                     resolve(true);
                 });

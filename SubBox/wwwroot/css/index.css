@@ -1,9 +1,10 @@
 .dark-mode {
     background-color: #131313;
-    --bg: #131313;
-    --nav_bg: #0b0b0b;
+    --bg: #191919;
+    --nav_bg: #0f0f0f;
     --font_title: #fafafa;
     --font_text: #b8b8b8;
+    --highlight: #2e2e2e;
     --video_bd_bot: #666666;
 }
 
@@ -13,6 +14,7 @@
     --nav_bg: #ffffff;
     --font_title: #131313;
     --font_text: #969696;
+    --highlight: #f4f4f4;
     --video_bd_bot: #c6c6c6;
 }
 
@@ -284,10 +286,18 @@ select {
     -webkit-appearance:none;
     -moz-appearance:none;
     -ms-appearance:none;
-    border: 1px solid var(--font_title);
+    border: 1px solid var(--font_text);
     text-align: center;
     text-align-last: center;
 }
+
+    select:focus {
+        outline: none;
+    }
+
+    select:hover {
+        border-color: var(--font_title);
+    }
 
 .Title {
     position: absolute;
@@ -629,17 +639,6 @@ nav div {
     width: 100%;
 }
 
-    .channelList img {
-        margin-top: 5px;
-        margin-bottom: 5px;
-        margin-left: 10px;
-        width: 32px;
-        height: 32px;
-        border-radius: 50%;
-        vertical-align: middle;
-        cursor: pointer;
-    }
-
 .channelEntry {
     display: flex;
     flex-direction: column;
@@ -650,6 +649,8 @@ nav div {
 }
 
     .channelEntry img {
+        margin-left: 5px;
+        margin-right: 5px;
         width: 32px;
         height: 32px;
         border-radius: 50%;
@@ -657,51 +658,38 @@ nav div {
     }
 
     .channelEntry label {
-        margin-left: 10px;
+        margin-left: 5px;
     }
 
         .channelEntry .channelEntryRowContent:hover {
-            color: var(--secColor);
-            background-position: left bottom;
-            transition: 0.3s background;
+            background: var(--highlight);
         }
 
         .channelEntry .channelEntryRowContent:hover button {
-            color: var(--secColor);
+            color: var(--font_title);
         }
 
             .channelEntry .channelEntryRowContent:hover button:hover {
-                color: var(--mainColor);
+                color: var(--secColor);
             }
 
-    .channelEntry .channelEntryRowDelete:hover button {
-        color: var(--font_title);
-    }
 
-
-.channelEntryRowContent, .channelEntryRowDelete {
+.channelEntryRowContent {
     display: flex;
     flex-direction: row;
     height: 44px;
-    padding: 0 10px 0 20px;
-    background: linear-gradient(to right, var(--mainColor) 50%, transparent 50%);
-    background-size: 200% 100%;
-    background-position: right bottom;
-    transition: 0.3s background;
+    padding: 0 5px 0 5px;
+    background: none;
 }
 
-    .channelEntryRowContent div, .channelEntryRowDelete div {
+    .channelEntryRowContent div {
         display: flex;
         flex-direction: row;
         align-items: center;
-        width: 35%;
+        width: 65%;
         height: 100%;
         overflow-x: visible;
     }
-
-        .channelEntryRowContent div:first-child, .channelEntryRowDelete div:first-child {
-            width: 65%;
-        }
 
 .channelLastRowDiv {
     padding: 10px 5px 10px 10px;
@@ -791,34 +779,9 @@ nav div {
             color: var(--font_title);
         }
 
-.locked {
-    border-left: 5px solid #daa520;
-    padding-left: 15px;
-    background: linear-gradient(to right, #daa520 50%, transparent 50%);
-    background-size: 200% 100%;
-    background-position: right bottom;
-    transition: 0.2s background ease;
-}
-
-    .locked td:first-child {
-        padding-left: 8px;
-    }
-
-    .locked:hover {
-        background-position: left bottom;
-        transition: 0.4s background ease;
-    }
-
-        .locked:hover .deleteChannelButton:hover {
-            color: #daa520 !important;
-        }
-
 button.deleteChannelButton:hover {
-    color: var(--mainColor);
-    background: linear-gradient(to top, var(--secColor) 50%, transparent 50%);
-    background-size: 100% 200%;
-    background-position: right bottom;
-    transition: 0.2s;
+    color: var(--secColor);
+    background: var(--mainColor);
 }
 
 .deleteChannelButton {
@@ -826,10 +789,7 @@ button.deleteChannelButton:hover {
     border-radius: 0;
     padding: 1px !important;
     color: transparent;
-    background: linear-gradient(to top, var(--secColor) 50%, transparent 50%);
-    background-size: 100% 200%;
-    background-position: right top;
-    transition: background 0.1s;
+    background: none;
 }
 
 .closeChannelsButton {
@@ -973,10 +933,6 @@ button.deleteChannelButton:hover {
         margin: 0;
     }
 
-    .settingsOverlay button {
-        float: right;
-    }
-
     .settingsOverlay input {
         width: 60px;
         height: 24px;
@@ -984,7 +940,7 @@ button.deleteChannelButton:hover {
         padding: 0;
         font-size: 16px;
         text-align: center;
-        border: 1px solid var(--font_title);
+        border: 1px solid var(--font_text);
     }
 
 .settingCategoryList {
@@ -1006,14 +962,14 @@ button.deleteChannelButton:hover {
     }
 
         .settingCategoryList div:hover {
-            background: var(--bg);
+            background: var(--highlight);
         }
 
         .settingCategoryList div label {
             margin-left: 5px;
         }
 
-    .settingCategoryList .settingCategoryMarker {
+    .settingCategoryList .listSelectedMarker, .channelEntry .listSelectedMarker {
         display: flex;
         align-items: center;
         width: 5px;
@@ -1021,7 +977,7 @@ button.deleteChannelButton:hover {
         padding: 0 5px 0 5px;
     }
 
-        .settingCategoryList .settingCategoryMarker div {
+        .settingCategoryList .listSelectedMarker div, .channelEntry .listSelectedMarker div {
             display: block;
             width: 100%;
             height: 30px;
@@ -1118,7 +1074,7 @@ input:checked + .slider {
     .singleSetting .numberInput button {
         align-items: center;
         justify-content: center;
-        border: 1px var(--font_title) solid;
+        border: 1px solid var(--font_text);
         border-radius: 0;
         cursor: pointer;
         margin: 0;
@@ -1128,8 +1084,8 @@ input:checked + .slider {
     }
 
         .singleSetting .numberInput button:hover {
-            color: var(--secColor);
             background: var(--mainColor);
+            color: var(--secColor);
         }
 
 .videoThumb {
