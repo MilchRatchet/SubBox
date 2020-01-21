@@ -35,6 +35,8 @@ namespace SubBox.Models
         [JsonProperty]
         public static int ChannelsPerPage { get; set; }
         [JsonProperty]
+        public static bool SmartListLoading { get; set; }
+        [JsonProperty]
         public static DateTime LastRefresh { get; set; }
         [JsonProperty]
         public static bool FirstStart { get; set; }

@@ -435,6 +435,17 @@
                         </div>
                     </div>
                 </div>
+                <div class="singleSetting" @click.prevent="settings.SmartListLoading = !settings.SmartListLoading; viewPort = (settings.SmartListLoading) ? Math.floor(window.innerHeight / 10) : Number.MAX_SAFE_INTEGER;">
+                    <div style="justify-content: flex-start;">
+                        <p>Smart List Loading</p>
+                    </div>
+                    <div style="justify-content: flex-end;">
+                        <label class="switch">
+                            <input type="checkbox" v-model="settings.SmartListLoading" />
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
             </div>
             <div v-show="settingsTab === 1" class="settingsList">
                 <div class="singleSetting" @click.prevent="settings.ConfirmWindow = !settings.ConfirmWindow">
@@ -713,7 +724,7 @@
                     </tr>
                 </table>
                 <table class="videoList">
-                    <tr v-for="video in filteredVideos.slice(0, viewPort)">
+                    <tr v-for="video in filteredVideos.slice(0, viewPort)" :key="video.id">
                         <td>
                             <div class="videoBox">
                                 <div class="videoChannelDiv">

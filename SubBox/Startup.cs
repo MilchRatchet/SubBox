@@ -118,6 +118,8 @@ namespace SubBox
 
                 AppSettings.ChannelsPerPage = 10;
 
+                AppSettings.SmartListLoading = false;
+
                 AppSettings.LastRefresh = BuildTime;
 
                 AppSettings.FirstStart = true;

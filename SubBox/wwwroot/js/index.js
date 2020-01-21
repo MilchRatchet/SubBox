@@ -1161,9 +1161,15 @@ var app = new Vue({
 
         var mainList = document.querySelector('#mainList');
 
-        this.viewPort = Math.floor(window.innerHeight / 25);
+        if (this.settings.SmartListLoading) {
+            this.viewPort = Math.floor(window.innerHeight / 25);
+        } else {
+            this.viewPort = Number.MAX_SAFE_INTEGER;
+        }
 
         mainList.addEventListener("scroll", function (e) {
+            if (!this.settings.SmartListLoading) return;
+
             if (Math.abs(app.viewPortAnchor - mainList.scrollTop) < 4 * window.innerHeight) return;
 
             app.viewPortAnchor = mainList.scrollTop;
