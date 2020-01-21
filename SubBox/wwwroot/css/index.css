@@ -1,20 +1,26 @@
 .dark-mode {
     background-color: #131313;
     --bg: #191919;
+    --bg_t: #19191966;
     --nav_bg: #0f0f0f;
+    --nav_bg_t: #0f0f0f66;
     --font_title: #fafafa;
     --font_text: #b8b8b8;
     --highlight: #2e2e2e;
+    --highlight_t: #2e2e2edd;
     --video_bd_bot: #666666;
 }
 
 .light-mode {
     background-color: #fafafa;
     --bg: #fafafa;
+    --bg_t: #fafafa66;
     --nav_bg: #ffffff;
+    --nav_bg_t: #ffffff66;
     --font_title: #131313;
     --font_text: #969696;
     --highlight: #f4f4f4;
+    --highlight_t: #f4f4f4dd;
     --video_bd_bot: #c6c6c6;
 }
 
@@ -596,21 +602,17 @@ nav div {
     margin-left: 0;
     padding: 10px 0 10px 0;
     width: 400px;
-    background-color: var(--nav_bg);
+    background-color: var(--nav_bg_t);
     z-index: 500;
     display: block;
     border: 1px solid var(--video_bd_bot);
     border-left: none;
     border-top: none;
     box-shadow: 5px 5px 10px -8px rgba(0, 0, 0, .2);
-    max-height: calc(100vh - 40px);
-    overflow-y: hidden;
-    overflow-x: hidden;
+    max-height: calc(100vh - 50px);
+    overflow-y: visible;
+    overflow-x: visible;
 }
-
-    .overlay:hover {
-        overflow-y: auto;
-    }
 
 .inputListOverlay {
     display: flex;
@@ -641,14 +643,40 @@ nav div {
 
 .channelEntry {
     display: flex;
-    flex-direction: column;
-    width: 100%;
-    height: auto;
+    flex-direction: row;
+    width: calc(100% - 5px);
+    height: 44px;
     color: var(--font_title);
+    padding: 0 0 0 5px;
     background: none;
 }
 
-    .channelEntry img {
+    .channelEntry:hover {
+        background: var(--highlight);
+    }
+
+    .channelEntry:hover .channelEntryArrow {
+        display: flex;
+    }
+
+    .channelEntry label {
+        margin-left: 5px;
+    }
+
+
+.channelEntryContent {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    height: 44px;
+    width: calc(100% - 40px);
+    padding: 0 5px 0 5px;
+    background: none;
+}
+
+    .channelEntryContent img {
         margin-left: 5px;
         margin-right: 5px;
         width: 32px;
@@ -657,39 +685,93 @@ nav div {
         cursor: pointer;
     }
 
-    .channelEntry label {
-        margin-left: 5px;
-    }
-
-        .channelEntry .channelEntryRowContent:hover {
-            background: var(--highlight);
-        }
-
-        .channelEntry .channelEntryRowContent:hover button {
-            color: var(--font_title);
-        }
-
-            .channelEntry .channelEntryRowContent:hover button:hover {
-                color: var(--secColor);
-            }
-
-
-.channelEntryRowContent {
-    display: flex;
-    flex-direction: row;
-    height: 44px;
-    padding: 0 5px 0 5px;
-    background: none;
+.channelEntryArrow {
+    padding: 0;
+    height: 100%;
+    width: 40px;
+    display: none;
+    align-items: flex-start;
+    justify-content: center;
 }
 
-    .channelEntryRowContent div {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        width: 65%;
-        height: 100%;
-        overflow-x: visible;
+    .channelEntryArrow .material-icons {
+        color: var(--font_title);
+        font-size: 44px;
     }
+
+    .channelEntryArrow:hover .channelEntryPane {
+        display: flex;
+    }
+
+.channelEntryPane {
+    display: none;
+    position: absolute;
+    left: 400px;
+    width: 200px;
+    height: auto;
+    background: var(--bg_t);
+    border: var(--video_bd_bot);
+    backdrop-filter: blur(20px);
+    color: var(--font_title);
+}
+
+    .channelEntryPane:hover {
+        display: flex;
+    }
+
+    .channelEntryPane img {
+        border-radius: 100%;
+    }
+
+.channelEntryPaneList {
+    padding: 10px 0 10px 0;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+    .channelEntryPaneList p {
+        display: flex;
+        justify-content: center;
+    }
+
+.channelEntryPaneListEntry {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 5px 10px 5px 10px;
+    min-height: 20px;
+}
+
+    .channelEntryPaneListEntry .material-icons {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 26px;
+        width: 50px;
+    }
+
+.channelEntryPaneListEntryStatistic {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    width: 50%;
+    height: 100%;
+}
+
+.channelEntryPaneListEntryButton {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 130px;
+    font-size: 16px;
+}
+
+.channelEntryPaneListEntryHover:hover {
+    background: var(--highlight_t);
+}
 
 .channelLastRowDiv {
     padding: 10px 5px 10px 10px;
@@ -919,7 +1001,8 @@ button.deleteChannelButton:hover {
     top: 40px;
     right: 0;
     width: 700px;
-    background-color: var(--nav_bg);
+    background-color: var(--nav_bg_t);
+    backdrop-filter: blur(10px);
     z-index: 500;
     border: 1px solid var(--video_bd_bot);
     border-right: none;
@@ -962,7 +1045,7 @@ button.deleteChannelButton:hover {
     }
 
         .settingCategoryList div:hover {
-            background: var(--highlight);
+            background: var(--highlight_t);
         }
 
         .settingCategoryList div label {

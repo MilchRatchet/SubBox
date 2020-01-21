@@ -554,23 +554,64 @@
         </div>
 
         <div id="channelUI" v-show="channelMode" class="overlay">
-            <div class="channelEntry" v-for="channel in channels">
-                <div class="channelEntryRowContent" v-bind:class="{ locked: channel.locked }">
-                    <div style="justify-content: flex-start">
-                        <div class="listSelectedMarker">
-                            <div v-show="channel.locked"></div>
-                        </div>
-                        <img :src="channel.thumbnailUrl" @click="openChannel(channel.username)" />
-                        <label>
-                            {{channel.displayname}}
-                        </label>
+            <div class="channelEntry" v-for="channel in channels" v-bind:class="{ locked: channel.locked }">
+                <div class="channelEntryContent">
+                    <div class="listSelectedMarker">
+                        <div v-show="channel.locked"></div>
                     </div>
-                    <div style="justify-content: flex-end; width: 35%;">
-                        <button @click="setFilter(channel)" class="material-icons deleteChannelButton tooltip"><div class="tooltiptext tooltiptextInverseColor ttleft">Only Show Videos by {{channel.displayname}}</div>star</button>
-                        <button @click="deleteChannel(channel)" class="material-icons deleteChannelButton tooltip"><div class="tooltiptext tooltiptextInverseColor ttleft">Remove Channel</div>clear</button>
+                    <img :src="channel.thumbnailUrl" @click="openChannel(channel.username)" />
+                    <label>
+                        {{channel.displayname}}
+                    </label>
+                </div>
+                <div class="channelEntryArrow">
+                    <div class="material-icons">
+                        keyboard_arrow_right
+                    </div>
+                    <div class="channelEntryPane">
+                        <div class="channelEntryPaneList">
+                            <div class="channelEntryPaneListEntry">
+                                <img :src="channel.thumbnailUrl" @click="openChannel(channel.username)" />
+                            </div>
+                            <div class="channelEntryPaneListEntry">
+                                {{channel.displayname}}
+                            </div>
+                            <div class="channelEntryPaneListEntry">
+                                <div class="channelEntryPaneListEntryStatistic">
+                                    Videos:
+                                </div>
+                                <div class="channelEntryPaneListEntryStatistic" style="justify-content: flex-end">
+                                    10
+                                </div>
+                            </div>
+                            <div class="channelEntryPaneListEntry">
+                                <div class="channelEntryPaneListEntryStatistic">
+                                    Length:
+                                </div>
+                                <div class="channelEntryPaneListEntryStatistic" style="justify-content: flex-end">
+                                    10:25:46
+                                </div>
+                            </div>
+                            <div class="channelEntryPaneListEntry channelEntryPaneListEntryHover" @click="setFilter(channel)">
+                                <div class="material-icons">
+                                    star
+                                </div>
+                                <div class="channelEntryPaneListEntryButton">
+                                    Filter by Channel
+                                </div>
+                            </div>
+                            <div class="channelEntryPaneListEntry channelEntryPaneListEntryHover" @click="deleteChannel(channel)">
+                                <div class="material-icons">
+                                    clear
+                                </div>
+                                <div class="channelEntryPaneListEntryButton">
+                                    Remove Channel
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div> 
+            </div>
             <div class="channelLastRowDiv">
                 <div>
                     <input @keyup.enter="submitChannel()" v-model="addChannelName" autocomplete="off" type="text" name="Username" placeholder="Channel Name..." />
