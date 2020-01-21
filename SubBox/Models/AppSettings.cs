@@ -33,6 +33,8 @@ namespace SubBox.Models
         [JsonProperty]
         public static bool ChannelAddedNotification { get; set; }
         [JsonProperty]
+        public static int ChannelsPerPage { get; set; }
+        [JsonProperty]
         public static DateTime LastRefresh { get; set; }
         [JsonProperty]
         public static bool FirstStart { get; set; }

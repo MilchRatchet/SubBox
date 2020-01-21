@@ -33,6 +33,8 @@ var app = new Vue({
         informationMode: false,
         informationContent: [],
         messages: [],
+        channelPage: 1,
+        maxChannelPage: 10,
         isFirefox: false,
         filteredLength: "0:00",
         totalLength: "0:00",
@@ -640,6 +642,12 @@ var app = new Vue({
 
             this.channels = await result.json();
 
+            this.calcChannelStats();
+
+            this.maxChannelPage = Math.ceil(this.channels.length / this.settings.ChannelsPerPage);
+
+            if (this.channelPage > this.maxChannelPage) this.channelPage = 1;
+
             this.unlockAllChannels();
 
             if (this.filter === "SubBox") {
@@ -649,6 +657,17 @@ var app = new Vue({
             this.channels.find(function (e) {
                 return e.displayname === app.filter;
             }).locked = true;
+        },
+        calcChannelStats() {
+            this.channels.forEach(function (c) {
+                channelVideos = app.videos.filter(function (v) {
+                    return v.channelTitle == c.displayname;
+                });
+
+                c.videoCount = channelVideos.length;
+
+                c.videoLength = app.updateVideosLength(channelVideos);
+            });
         },
         unlockAllChannels() {
             this.channels.forEach(function (c) {
@@ -862,6 +881,8 @@ var app = new Vue({
         },
         resetAllFilters() {
             this.filter = "SubBox";
+
+            this.filterImg = "";
 
             this.selectedTag = null;
 

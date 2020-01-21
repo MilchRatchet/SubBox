@@ -116,6 +116,8 @@ namespace SubBox
 
                 AppSettings.ChannelAddedNotification = true;
 
+                AppSettings.ChannelsPerPage = 10;
+
                 AppSettings.LastRefresh = BuildTime;
 
                 AppSettings.FirstStart = true;

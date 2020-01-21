@@ -423,6 +423,18 @@
                         </div>
                     </div>
                 </div>
+                <div class="singleSetting">
+                    <div style="justify-content: flex-start;">
+                        <p>Channels Per Page</p>
+                    </div>
+                    <div style="justify-content: flex-end;">
+                        <div class="numberInput">
+                            <button @click="if (settings.ChannelsPerPage > 1) settings.ChannelsPerPage--" class="material-icons">remove</button>
+                            <input v-model="settings.ChannelsPerPage" type="number" id="PPS" name="CPP" readonly />
+                            <button @click="settings.ChannelsPerPage++" class="material-icons">add</button>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div v-show="settingsTab === 1" class="settingsList">
                 <div class="singleSetting" @click.prevent="settings.ConfirmWindow = !settings.ConfirmWindow">
@@ -554,7 +566,7 @@
         </div>
 
         <div id="channelUI" v-show="channelMode" class="overlay">
-            <div class="channelEntry" v-for="channel in channels" v-bind:class="{ locked: channel.locked }">
+            <div class="channelEntry" v-for="channel in channels.slice((channelPage - 1) * settings.ChannelsPerPage, channelPage * settings.ChannelsPerPage)" v-bind:class="{ locked: channel.locked }">
                 <div class="channelEntryContent">
                     <div class="listSelectedMarker">
                         <div v-show="channel.locked"></div>
@@ -581,7 +593,7 @@
                                     Videos:
                                 </div>
                                 <div class="channelEntryPaneListEntryStatistic" style="justify-content: flex-end">
-                                    10
+                                    {{channel.videoCount}}
                                 </div>
                             </div>
                             <div class="channelEntryPaneListEntry">
@@ -589,27 +601,32 @@
                                     Length:
                                 </div>
                                 <div class="channelEntryPaneListEntryStatistic" style="justify-content: flex-end">
-                                    10:25:46
+                                    {{channel.videoLength}}
                                 </div>
                             </div>
                             <div class="channelEntryPaneListEntry channelEntryPaneListEntryHover" @click="setFilter(channel)">
-                                <div class="material-icons">
-                                    star
-                                </div>
                                 <div class="channelEntryPaneListEntryButton">
-                                    Filter by Channel
+                                    <label class="material-icons">star</label> Filter by Channel
                                 </div>
                             </div>
                             <div class="channelEntryPaneListEntry channelEntryPaneListEntryHover" @click="deleteChannel(channel)">
-                                <div class="material-icons">
-                                    clear
-                                </div>
                                 <div class="channelEntryPaneListEntryButton">
-                                    Remove Channel
+                                    <label class="material-icons">clear</label> Remove Channel
                                 </div>
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+            <div v-show="maxChannelPage != 1" class="channelPageNavigation">
+                <div>
+                    <button v-show="channelPage > 1" class="material-icons" @click="channelPage--">navigate_before</button>
+                </div>
+                <div>
+                    <label>Page {{channelPage}}</label>
+                </div>
+                <div>
+                    <button v-show="channelPage < maxChannelPage" class="material-icons" @click="channelPage++">navigate_next</button>
                 </div>
             </div>
             <div class="channelLastRowDiv">
@@ -696,7 +713,7 @@
                     </tr>
                 </table>
                 <table class="videoList">
-                    <tr v-for="video in filteredVideos">
+                    <tr v-for="video in filteredVideos" :key="video.id">
                         <td>
                             <div class="videoBox">
                                 <div class="videoChannelDiv">

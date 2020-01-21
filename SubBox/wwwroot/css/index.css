@@ -748,8 +748,8 @@ nav div {
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 26px;
-        width: 50px;
+        font-size: 22px;
+        margin: 0 5px 0 0;
     }
 
 .channelEntryPaneListEntryStatistic {
@@ -764,14 +764,42 @@ nav div {
 .channelEntryPaneListEntryButton {
     display: flex;
     align-items: center;
-    justify-content: flex-start;
-    width: 130px;
+    justify-content: center;
+    width: 100%;
     font-size: 16px;
+    height: 25px;
 }
 
 .channelEntryPaneListEntryHover:hover {
     background: var(--highlight_t);
 }
+
+.channelPageNavigation {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    height: 40px;
+}
+
+    .channelPageNavigation .material-icons {
+        font-size: 30px;
+    }
+
+    .channelPageNavigation div {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 33%;
+    }
+
+    .channelPageNavigation:hover {
+        background: var(--highlight_t);
+    }
+
+    .channelPageNavigation label {
+        color: var(--font_title);
+    }
 
 .channelLastRowDiv {
     padding: 10px 5px 10px 10px;
