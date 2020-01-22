@@ -591,7 +591,7 @@
                     <div class="material-icons">
                         keyboard_arrow_right
                     </div>
-                    <div class="channelEntryPane">
+                    <div class="channelEntryPane" v-bind:class="{channelEntryPaneLocked : channel.locked}">
                         <div class="channelEntryPaneList">
                             <div class="channelEntryPaneListEntry">
                                 <img :src="channel.thumbnailUrl" @click="openChannel(channel.username)" />
@@ -657,29 +657,29 @@
                 <div class="navLeft">
                     <div class="tooltip">
                         <button @click="showChannels" class="material-icons" v-bind:class="{activeNavButton : channelMode}">{{(filter === 'SubBox') ? 'account_box' : 'star'}} <p>Channels</p></button>
-                        <div style="left: 0" class="tooltiptext ttdown">Channel List</div>
+                        <div v-show="!channelMode" style="left: 0" class="tooltiptext ttdown">Channel List</div>
                     </div>
                     <div class="tooltip">
                         <button @click="showListInput()" class="material-icons" v-bind:class="{activeNavButton : inputListMode}">playlist_add <p>Add Playlist</p></button>
-                        <div class="tooltiptext ttdown">Add Playlist</div>
+                        <div v-show="!inputListMode" class="tooltiptext ttdown">Add Playlist</div>
                     </div>
                     <button @click="showOldVideos" class="material-icons tooltip"><div class="tooltiptext ttdown">Trashbin</div>delete</button>
                     <div class="tooltip">
                         <button @click="showTags" class="material-icons" v-bind:class="{activeNavButton : tagsMode}">label <p>Tags</p></button>
-                        <div class="tooltiptext ttdown">Tags</div>
+                        <div v-show="!tagsMode" class="tooltiptext ttdown">Tags</div>
                     </div>
                     <p class="selectedTag" v-if="selectedTag != null">{{selectedTag.name}}</p>
                 </div>
                 <div class="navMiddle">
                     <div id="topbar" class="topbar">
-                        <input id="search" class="search" v-model="searchFilter" type="text" autocomplete="off" placeholder="Search" />
+                        <input @input="initializeSmartListLoading();" id="search" class="search" v-model="searchFilter" type="text" autocomplete="off" placeholder="Search" />
                         <p class="Title" style="cursor: default;"><img v-show="filterImg!==''" :src="filterImg" class="channelPic" />{{filter}} - {{filteredVideos.length}}{{ (videos.length !== filteredVideos.length) ? (' / ' + videos.length) : ''}}</p>
                     </div>
                 </div>
                 <div class="navRight">
                     <div class="tooltip">
                         <button @click="showSettings" class="material-icons" v-bind:class="{activeNavButton : settingsMode}">settings_applications<p>Settings</p></button>
-                        <div class="tooltiptext ttdown">Settings</div>
+                        <div v-show="!settingsMode" class="tooltiptext ttdown">Settings</div>
                     </div>
                     <button @click="window.location.replace('http://localhost:5000/localbrowser.html');" class="material-icons tooltip"><div class="tooltiptext ttdown">SubBox Nightly</div>archive</button>
                     <button @click="refresh" class="material-icons refreshButton">autorenew</button>

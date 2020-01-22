@@ -52,6 +52,7 @@ var app = new Vue({
             if (this.filter === "SubBox" && this.searchFilter === "" && this.selectedTag == null) {
                 return this.videos;
             }
+
             searchFilterUp = this.searchFilter.toUpperCase();
 
             if (this.filter === "SubBox" && this.selectedTag == null) {
@@ -111,6 +112,8 @@ var app = new Vue({
             var result = await fetch("/api/values/lists");
 
             this.lists = await result.json();
+
+            this.initializeSmartListLoading();
         },
         async tagsUpdate() {
             var result = await fetch("/api/values/tags");
@@ -791,25 +794,37 @@ var app = new Vue({
             }
 
             this.lockChannel(ch.id);
+
+            this.initializeSmartListLoading();
         },
         selectTag(tag) {
             if (this.selectedTag == null) {
                 this.selectedTag = tag;
 
-                return;
-            }
-            if (this.selectedTag.name == tag.name) {
-                this.selectedTag = null;
+                this.initializeSmartListLoading();
 
                 return;
             }
+
+            if (this.selectedTag.name == tag.name) {
+                this.selectedTag = null;
+
+                this.initializeSmartListLoading();
+
+                return;
+            }
+
             this.selectedTag = tag;
+
+            this.initializeSmartListLoading();
         },
         async deleteTag(tag) {
             if (!(await this.getConfirmation("Remove Tag " + tag.name + "?"))) return;
 
             if (this.selectedTag != null && this.selectedTag.name == tag.name) {
                 this.selectedTag = null;
+
+                this.initializeSmartListLoading();
             }
 
             fetch("/api/values/tags/delete/" + tag.name, { method: "DELETE" });
@@ -892,6 +907,8 @@ var app = new Vue({
             this.searchFilter = "";
 
             this.unlockAllChannels();
+
+            this.initializeSmartListLoading();
         },
         async actOnClipboard(command) {
             if (command === 'paste') {
@@ -1144,14 +1161,18 @@ var app = new Vue({
             }
         },
         initializeSmartListLoading() {
+            var mainList = document.querySelector('#mainList');
+
             var mainVideoList = document.querySelector('#mainVideoList');
 
+            mainList.scrollTop = 0;
+
             if (this.settings.SmartListLoading) {
-                app.viewPortAnchor = mainList.scrollTop;
+                app.viewPortAnchor = Math.floor(mainList.scrollTop / 215) * 215;
 
-                app.viewPortTop = Math.floor((mainList.scrollTop + window.innerHeight) / 215);
+                app.viewPortTop = Math.floor((mainList.scrollTop + window.innerHeight) / 215) + 1;
 
-                app.viewPortBottom = Math.max(Math.floor((mainList.scrollTop - window.innerHeight) / 215), 0);
+                app.viewPortBottom = Math.max(Math.floor((mainList.scrollTop - app.lists.length * 165) / 215) - 2, 0);
 
                 mainVideoList.style.paddingTop = (app.viewPortBottom * 215) + "px";
 
@@ -1192,11 +1213,11 @@ var app = new Vue({
 
             if (Math.abs(app.viewPortAnchor - mainList.scrollTop) < 215) return;
 
-            app.viewPortAnchor = mainList.scrollTop;
+            app.viewPortAnchor = Math.floor(mainList.scrollTop / 215) * 215;
 
-            app.viewPortTop = Math.floor((mainList.scrollTop + window.innerHeight) / 215);
+            app.viewPortTop = Math.floor((mainList.scrollTop + window.innerHeight) / 215) + 1;
 
-            app.viewPortBottom = Math.max(Math.floor((mainList.scrollTop - window.innerHeight) / 215), 0);
+            app.viewPortBottom = Math.max(Math.floor((mainList.scrollTop - app.lists.length * 165) / 215) - 2, 0);
 
             mainVideoList.style.paddingTop = (app.viewPortBottom * 215) + "px";
 
