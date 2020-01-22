@@ -1142,6 +1142,15 @@ var app = new Vue({
                 });
             }
         },
+        adjustVideoListHeight() {
+            var mainVideoList = document.querySelector('#mainVideoList');
+
+            if (this.settings.SmartListLoading) {
+                mainVideoList.style.height = (this.videos.length * 215) + "px";
+            } else {
+                mainVideoList.style.height = "auto";
+            }
+        },
         async closeSubBox() {
             if (!(await this.getConfirmation("Close SubBox?"))) return;
 
@@ -1161,20 +1170,16 @@ var app = new Vue({
 
         var mainList = document.querySelector('#mainList');
 
-        if (this.settings.SmartListLoading) {
-            this.viewPort = Math.floor(window.innerHeight / 25);
-        } else {
-            this.viewPort = Number.MAX_SAFE_INTEGER;
-        }
+        var mainVideoList = document.querySelector('#mainVideoList');
 
         mainList.addEventListener("scroll", function (e) {
-            if (!this.settings.SmartListLoading) return;
+            if (!app.settings.SmartListLoading) return;
 
-            if (Math.abs(app.viewPortAnchor - mainList.scrollTop) < 4 * window.innerHeight) return;
+            if (Math.abs(app.viewPortAnchor - mainList.scrollTop) < 2 * window.innerHeight) return;
 
             app.viewPortAnchor = mainList.scrollTop;
 
-            app.viewPort = Math.floor(mainList.scrollTop / 200 + window.innerHeight/25);
+            app.viewPort = Math.floor(mainList.scrollTop / 200 + window.innerHeight/75);
 
             app.videos.push("update");
 
@@ -1308,12 +1313,22 @@ var app = new Vue({
             window.location.replace("http://localhost:5000/tutorial.html");
         }
 
-        this.listUpdate();
+        await this.getSettings();
 
-        this.update();
+        await this.listUpdate();
 
-        this.getSettings();
+        await this.update();
 
         this.tagsUpdate();
+
+        if (this.settings.SmartListLoading) {
+            this.viewPort = Math.floor(window.innerHeight / 75);
+
+            mainVideoList.style.height = (this.videos.length * 215) + "px";
+        } else {
+            this.viewPort = Number.MAX_SAFE_INTEGER;
+
+            mainVideoList.style.height = "auto";
+        }
     }
 });

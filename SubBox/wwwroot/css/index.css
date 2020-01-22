@@ -1,9 +1,9 @@
 .dark-mode {
     background-color: #131313;
     --bg: #191919;
-    --bg_t: #19191966;
+    --bg_t: #19191977;
     --nav_bg: #0f0f0f;
-    --nav_bg_t: #0f0f0f66;
+    --nav_bg_t: #0f0f0f77;
     --font_title: #fafafa;
     --font_text: #b8b8b8;
     --highlight: #2e2e2e;
@@ -14,9 +14,9 @@
 .light-mode {
     background-color: #fafafa;
     --bg: #fafafa;
-    --bg_t: #fafafa66;
+    --bg_t: #fafafa77;
     --nav_bg: #ffffff;
-    --nav_bg_t: #ffffff66;
+    --nav_bg_t: #ffffff77;
     --font_title: #131313;
     --font_text: #969696;
     --highlight: #f4f4f4;
