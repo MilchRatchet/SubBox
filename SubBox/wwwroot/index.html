@@ -435,7 +435,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="singleSetting" @click.prevent="settings.SmartListLoading = !settings.SmartListLoading; viewPort = (settings.SmartListLoading) ? Math.floor(window.innerHeight / 10) : Number.MAX_SAFE_INTEGER; adjustVideoListHeight();">
+                <div class="singleSetting" @click.prevent="settings.SmartListLoading = !settings.SmartListLoading; initializeSmartListLoading();">
                     <div style="justify-content: flex-start;">
                         <p>Smart List Loading</p>
                     </div>
@@ -721,7 +721,7 @@
                     </div>
                 </div>
                 <div id="mainVideoList" class="videoList">
-                    <div class="videoBox" v-for="video in filteredVideos.slice(0, viewPort)" :key="video.id">
+                    <div class="videoBox" v-for="video in filteredVideos.slice(viewPortBottom, viewPortTop)" :key="video.id">
                         <div class="videoChannelDiv">
                             <img :src="video.channelPicUrl" style="left:0;width:32px;height:32px;border-radius: 50%;vertical-align:middle;cursor:pointer;" @click="openChannel(video.channelName)" />
                             <span class="videoHeaderName" @click="openChannel(video.channelName)">{{video.channelTitle}}</span>

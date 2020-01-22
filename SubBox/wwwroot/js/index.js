@@ -43,7 +43,8 @@ var app = new Vue({
         confirmationMessage: "",
         confirmationResult: false,
         confirmationDone: false,
-        viewPort: 10,
+        viewPortTop: 10,
+        viewPortBottom: 0,
         viewPortAnchor: 0,
     },
     computed: {
@@ -1142,12 +1143,26 @@ var app = new Vue({
                 });
             }
         },
-        adjustVideoListHeight() {
+        initializeSmartListLoading() {
             var mainVideoList = document.querySelector('#mainVideoList');
 
             if (this.settings.SmartListLoading) {
-                mainVideoList.style.height = (this.videos.length * 215) + "px";
+                app.viewPortAnchor = mainList.scrollTop;
+
+                app.viewPortTop = Math.floor((mainList.scrollTop + window.innerHeight) / 215);
+
+                app.viewPortBottom = Math.max(Math.floor((mainList.scrollTop - window.innerHeight) / 215), 0);
+
+                mainVideoList.style.paddingTop = (app.viewPortBottom * 215) + "px";
+
+                mainVideoList.style.height = ((app.filteredVideos.length - app.viewPortBottom) * 215) + "px";
             } else {
+                app.viewPortBottom = 0;
+
+                app.viewPortTop = Number.MAX_SAFE_INTEGER;
+
+                mainVideoList.style.paddingTop = "0";
+
                 mainVideoList.style.height = "auto";
             }
         },
@@ -1175,11 +1190,17 @@ var app = new Vue({
         mainList.addEventListener("scroll", function (e) {
             if (!app.settings.SmartListLoading) return;
 
-            if (Math.abs(app.viewPortAnchor - mainList.scrollTop) < 2 * window.innerHeight) return;
+            if (Math.abs(app.viewPortAnchor - mainList.scrollTop) < 215) return;
 
             app.viewPortAnchor = mainList.scrollTop;
 
-            app.viewPort = Math.floor(mainList.scrollTop / 200 + window.innerHeight/75);
+            app.viewPortTop = Math.floor((mainList.scrollTop + window.innerHeight) / 215);
+
+            app.viewPortBottom = Math.max(Math.floor((mainList.scrollTop - window.innerHeight) / 215), 0);
+
+            mainVideoList.style.paddingTop = (app.viewPortBottom * 215) + "px";
+
+            mainVideoList.style.height = ((app.filteredVideos.length - app.viewPortBottom) * 215) + "px";
 
             app.videos.push("update");
 
@@ -1322,13 +1343,21 @@ var app = new Vue({
         this.tagsUpdate();
 
         if (this.settings.SmartListLoading) {
-            this.viewPort = Math.floor(window.innerHeight / 75);
+            this.viewPortTop = Math.floor(window.innerHeight / 75);
+
+            this.viewPortBottom = 0;
 
             mainVideoList.style.height = (this.videos.length * 215) + "px";
+
+            mainVideoList.style.paddingTop = (this.viewPortBottom * 215) + "px";
         } else {
-            this.viewPort = Number.MAX_SAFE_INTEGER;
+            this.viewPortTop = Number.MAX_SAFE_INTEGER;
+
+            this.viewPortBottom = 0;
 
             mainVideoList.style.height = "auto";
+
+            mainVideoList.style.paddingTop = "0";
         }
     }
 });
