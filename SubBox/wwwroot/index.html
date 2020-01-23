@@ -429,9 +429,9 @@
                     </div>
                     <div style="justify-content: flex-end;">
                         <div class="numberInput">
-                            <button @click="if (settings.ChannelsPerPage > 1) settings.ChannelsPerPage--" class="material-icons">remove</button>
+                            <button @click="if (settings.ChannelsPerPage > 1) settings.ChannelsPerPage--; maxChannelPage = Math.ceil(channels.length / settings.ChannelsPerPage);" class="material-icons">remove</button>
                             <input v-model="settings.ChannelsPerPage" type="number" id="PPS" name="CPP" readonly />
-                            <button @click="settings.ChannelsPerPage++" class="material-icons">add</button>
+                            <button @click="settings.ChannelsPerPage++; maxChannelPage = Math.ceil(channels.length / settings.ChannelsPerPage); if (channelPage > maxChannelPage) channelPage = 1;" class="material-icons">add</button>
                         </div>
                     </div>
                 </div>
@@ -652,6 +652,7 @@
         <div class="spacer">
 
         </div>
+
         <div v-show="videoListMode" class="videoListDiv">
             <nav class="mainNav">
                 <div class="navLeft">

@@ -41,6 +41,7 @@
     width: 100%;
     height: 100%;
     background: #00000033;
+    backdrop-filter: blur(10px);
     z-index: 2000;
     justify-content: center;
     align-items: center;
@@ -619,13 +620,17 @@ nav div {
 
 .inputListOverlay {
     display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
     position: fixed;
     top: 40px;
     left: 0;
     width: 400px;
-    height: 40px;
-    padding: 5px;
-    background-color: var(--nav_bg);
+    height: 50px;
+    padding: 0 15px 0 5px;
+    background-color: var(--nav_bg_t);
+    backdrop-filter: blur(10px);
     z-index: 500;
     border: 1px solid var(--video_bd_bot);
     border-left: none;
@@ -636,7 +641,11 @@ nav div {
 }
 
     .inputListOverlay input{
-        width: 350px;
+        width: 100%;
+    }
+
+    .inputListOverlay button {
+        background-color: var(--nav_bg);
     }
 
 .channelList {
