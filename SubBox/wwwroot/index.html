@@ -226,7 +226,7 @@
                 </table>
             </div>
         </div>
-        <div v-show="trashbinMode" class="videoListDiv">
+        <div v-show="false" class="videoListDiv">
             <nav>
                 <div class="navLeft">
                     <p>Trashbin</p><p class="material-icons">view_list</p><p>|</p>
@@ -277,6 +277,24 @@
                         </td>
                     </tr>
                 </table>
+            </div>
+        </div>
+
+        <div id="trashbinUI" v-show="trashbinMode" class="trashbinOverlay">
+            <div class="trashbinList">
+                <div v-for="video in oldVideos" :key="video.id" class="trashbinListEntry" @click.prevent="reactivateVideo(video)">
+                    <div class="trashbinListEntryImage">
+                        <img :src="video.thumbnailUrl"/>
+                    </div>
+                    <div class="trashbinListEntryContent">
+                        <div class="trashbinListEntryContentTitle">
+                            {{video.title}}
+                        </div>
+                        <div class="trashbinListEntryContentMeta">
+                            {{video.channelTitle}} &#9679 {{video.publishedAtString}}
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -664,7 +682,11 @@
                         <button @click="showListInput()" class="material-icons" v-bind:class="{activeNavButton : inputListMode}">playlist_add <p>Add Playlist</p></button>
                         <div v-show="!inputListMode" class="tooltiptext ttdown">Add Playlist</div>
                     </div>
-                    <button @click="showOldVideos" class="material-icons tooltip"><div class="tooltiptext ttdown">Trashbin</div>delete</button>
+                    <div class="tooltip">
+                        <button @click="showTrashbin" class="material-icons" v-bind:class="{activeNavButton : trashbinMode}">delete <p>Trashbin</p></button>
+                        <div v-show="!trashbinMode" class="tooltiptext ttdown">Trashbin</div>
+                    </div>
+                    
                     <div class="tooltip">
                         <button @click="showTags" class="material-icons" v-bind:class="{activeNavButton : tagsMode}">label <p>Tags</p></button>
                         <div v-show="!tagsMode" class="tooltiptext ttdown">Tags</div>

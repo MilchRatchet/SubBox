@@ -170,6 +170,10 @@ var app = new Vue({
                 await this.showTags();
             }
 
+            if (this.trashbinMode) {
+                await this.showTrashbin();
+            }
+
             this.inputMode = false;
 
             this.addPlayList = "";
@@ -197,18 +201,34 @@ var app = new Vue({
                 this.videoListMode = false;
             }
         },
-        async showOldVideos() {
+        async showTrashbin() {
+            if (this.trashbinMode) {
+                this.trashbinMode = false;
+
+                this.oldVideos = [];
+
+                return;
+            }
+
+            if (this.channelMode) {
+                await this.showChannels();
+            }
+
+            if (this.tagsMode) {
+                await this.showTags();
+            }
+
+            if (this.inputListMode) {
+                await this.showListInput();
+            }
+
             var waiter = fetch("api/values/videos/old");
-
-            this.channelMode = false;
-
-            this.trashbinMode = true;
-
-            this.videoListMode = false;
 
             var result = await waiter;
 
             this.oldVideos = await result.json();
+
+            this.trashbinMode = true;
         },
         showSettings() {
             this.settingsTab = 0;
@@ -448,6 +468,8 @@ var app = new Vue({
             } else {
                 fetch("/api/values/video/" + video.id, { method: "DELETE" });
 
+                if (this.trashbinMode) this.showTrashbin();
+
                 var index = this.videos.indexOf(video);
 
                 this.videos.splice(index, 1);
@@ -615,16 +637,22 @@ var app = new Vue({
                 setTimeout(function () { const index = app.messages.findIndex(m => m.id === messageId); app.messages.splice(index, 1); }, 10000);
             }
         },
-        async reactivateVideo(video) {
-            var waiter = fetch("/api/values/video/" + video.id, { method: "POST" });
+        reactivateVideo(video) {
+            fetch("/api/values/video/" + video.id, { method: "POST" });
 
             var index = this.oldVideos.indexOf(video);
 
             this.oldVideos.splice(index, 1);
 
-            await waiter;
+            index = 0;
 
-            this.update();
+            this.videos.forEach(v => {
+                if (v.publishedAt > video.publishedAt) {
+                    index++;
+                }
+            });
+
+            this.videos.splice(index, 0, video);
         },
         openChannel(link) {
             window.open("https://www.youtube.com/user/" + link, "_blank");
@@ -642,6 +670,10 @@ var app = new Vue({
 
             if (this.inputListMode) {
                 this.showListInput();
+            }
+
+            if (this.trashbinMode) {
+                await this.showTrashbin();
             }
 
             var result = await waiter;
@@ -1277,6 +1309,8 @@ var app = new Vue({
 
         var aplOv = document.querySelector('#addPlaylistUI');
 
+        var tbOv = document.querySelector('#trashbinUI');
+
         page.addEventListener("click", function (event) {
 
             event = event || window.event;
@@ -1310,6 +1344,14 @@ var app = new Vue({
             if (app.inputListMode && target.nodeName !== "BUTTON") {
                 if (!aplOv.contains(target)) {
                     app.showListInput();
+                }
+            }
+
+            if (app.trashbinMode && target.nodeName !== "BUTTON") {
+                if (!tbOv.contains(target)) {
+                    if (!target.className.includes("trashbin")) {
+                        app.showTrashbin();
+                    }
                 }
             }
 
