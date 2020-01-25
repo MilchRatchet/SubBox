@@ -226,59 +226,6 @@
                 </table>
             </div>
         </div>
-        <div v-show="false" class="videoListDiv">
-            <nav>
-                <div class="navLeft">
-                    <p>Trashbin</p><p class="material-icons">view_list</p><p>|</p>
-                    <p class="listCount" style="margin-left: 10px;">{{oldVideos.length}} Video{{(oldVideos.length != 1) ? 's' : ''}}</p>
-                </div>
-                <div class="navMiddle">
-
-                </div>
-                <div class="navRight">
-                    <button @click="closeTrashbin" class="material-icons closeUniqueListButton tooltip"><div class="tooltiptext ttdown">Back</div>exit_to_app</button>
-                </div>
-            </nav>
-            <div class="scrollList">
-                <table class="uniqueList">
-                    <tr v-for="video in oldVideos">
-                        <td>
-                            <div class="videoBox">
-                                <div class="videoChannelDiv">
-                                    <img :src="video.channelPicUrl" style="left:0;width:32px;height:32px;border-radius: 50%;vertical-align:middle;cursor:pointer;" @click="openChannel(video.channelName)" />
-                                    <span class="videoHeaderName" @click="openChannel(video.channelName)">{{video.channelTitle}}</span>
-                                </div>
-                                <div class="videoContentDiv">
-                                    <div @click="openVideo(video.id)" @click.middle="openVideo(video.id)" class="videoThumb">
-                                        <img :src="video.thumbnailUrl" style="width:246px;height:138px" />
-                                        <p>{{video.duration}}</p>
-                                    </div>
-                                    <div class="videoTextContentDiv">
-                                        <div class="videoTitleDiv">
-                                            <div class="videoTitleAndMetaDiv">
-                                                <div @click="openVideo(video.id)" @click.middle="openVideo(video.id)" class="videoTitle">
-                                                    {{video.title}}
-                                                </div>
-                                                <div class="videoText">
-                                                    <span class="videoTextChannel" @click="openChannel(video.channelName)">{{video.channelTitle}}</span> &#9679 {{video.publishedAtString}}
-                                                </div>
-                                            </div>
-                                            <div class="videoTitleButtons">
-                                                <button class="material-icons videoTitleButton tooltip" @click="reactivateVideo(video)"><div class="tooltiptext ttright">Add back to SubBox</div>add</button>
-                                            </div>
-                                        </div>
-
-                                        <div class="videoDesc">
-                                            <p>{{video.description}}</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-        </div>
 
         <div id="tagsUI" v-show="tagsMode" class="tagsOverlay">
             <div class="tagsList">
@@ -598,47 +545,6 @@
         <div id="addPlaylistUI" v-show="inputListMode" class="inputListOverlay">
             <input @keyup.enter="submitPlaylist" v-model="addPlayList" autocomplete="off" type="text" name="PlaylistId" placeholder="Playlist Id..." />
             <button @click="submitPlaylist" class="material-icons addPlaylistButton">add</button>
-        </div>
-
-        <div v-show="false" class="overlay">
-            <div class="addTagDiv">
-                <input @keyup.enter="submitTag" class="addTagInput" v-model="addTag" type="text" autocomplete="off" placeholder="Enter Tag Name..." />
-                <button @click="submitTag" class="material-icons addTagButton">add</button>
-            </div>
-            <table class="channelList" v-for="tag in tags">
-                <tr v-bind:class="{ locked: selectedTag != null && selectedTag.name == tag.name }" class="channelRow">
-                    <td class="channelNameColumn" style="width: 210px">
-                        {{tag.name}}
-                    </td>
-                    <td class="channelButtonColumn" style="width: 100px">
-                        <button @click="selectTag(tag)" class="material-icons deleteChannelButton tooltip"><div class="tooltiptext tooltiptextInverseColor ttleft">Select Tag</div>star</button>
-                        <button @click="editTag(tag)" class="material-icons deleteChannelButton tooltip"><div class="tooltiptext tooltiptextInverseColor ttleft">Edit Tag</div>create</button>
-                        <button @click="deleteTag(tag)" class="material-icons deleteChannelButton tooltip"><div class="tooltiptext tooltiptextInverseColor ttleft">Delete Tag</div>clear</button>
-                    </td>
-                </tr>
-                <tr class="tagFilterRow" v-if="tag.inEdit">
-                    <td colspan="2">
-                        <table class="tagFilterTable" v-for="(tagFilter,index) in tag.filterList">
-                            <tr>
-                                <td style="width: 80%">
-                                    {{index + 1}}: {{tagFilter}}
-                                </td>
-                                <td>
-                                    <button @click="deleteFilter(tag,tagFilter)" class="material-icons deleteTagFilterButton tooltip"><div class="tooltiptext ttleft">Delete Tag Filter</div>clear</button>
-                                </td>
-                            </tr>
-                        </table>
-                        <div class="addTagFilterDiv">
-                            <input @keyup.enter="addFilterToTag(tag)" class="addTagFilterInput" v-model="addTagFilter" type="text" autocomplete="off" placeholder="Enter Filter..." list="channels" />
-                            <datalist id="channels">
-                                <option v-for="ch in channels">{{ch.displayname}}</option>
-                            </datalist>
-                            <button @click="addFilterToTag(tag)" class="material-icons addTagFilterButton">add</button>
-                        </div>
-                        <button @click="saveFilters(tag)" class="material-icons closeChannelsButton tooltip"><div class="tooltiptext ttleft">Save Changes</div>save</button>
-                    </td>
-                </tr>
-            </table>
         </div>
 
         <div id="channelUI" v-show="channelMode" class="overlay">
