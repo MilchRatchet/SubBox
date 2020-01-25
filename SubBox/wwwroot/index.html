@@ -301,14 +301,17 @@
                     <div class="tagsListEntryEdit" v-if="tag.inEdit">
                         <div class="tagsListEntryEditEntry" v-for="(tagFilter,index) in tag.filterList">
                             <p class="tagsListEntryEditEntryName">{{tagFilter}}</p>
-                            <button class="tagsListEntryEditEntryButton">
+                            <button @click="deleteFilter(tag,tagFilter)" class="tagsListEntryEditEntryButton">
                                 Remove
                             </button>
                         </div>
                         <div class="tagsListEntryEditAdd">
                             <div class="tagsListEntryEditAddInput">
                                 <input @keyup.enter="addFilterToTag(tag)" v-model="addTagFilter" type="text" autocomplete="off" placeholder="Enter Filter..." list="channels" />
-                                <button @click="saveFilters(tag)" class="material-icons">add</button>
+                                <datalist id="channels">
+                                    <option v-for="ch in channels">{{ch.displayname}}</option>
+                                </datalist>
+                                <button @click="addFilterToTag(tag)" class="material-icons">add</button>
                             </div>
                         </div>
                         <div class="tagsListEntryEditRemove">
@@ -323,7 +326,10 @@
 
         <div id="trashbinUI" v-show="trashbinMode" class="trashbinOverlay">
             <div class="trashbinList">
-                <div v-for="video in oldVideos" :key="video.id" class="trashbinListEntry" @click.prevent="reactivateVideo(video)">
+                <div class="trashbinListSearch">
+                    <input v-model="trashbinFilter" type="text" autocomplete="off" placeholder="Search..." />
+                </div>
+                <div v-for="video in oldVideos.filter(v => (v.title + v.description + v.channelTitle).toUpperCase().includes(trashbinFilter.toUpperCase()))" :key="video.id" class="trashbinListEntry" @click.prevent="reactivateVideo(video)">
                     <div class="trashbinListEntryImage">
                         <img :src="video.thumbnailUrl"/>
                     </div>

@@ -24,6 +24,7 @@ var app = new Vue({
         filterImg: "",
         searchFilter: "",
         playlistFilter: "",
+        trashbinFilter: "",
         selectedTag: null,
         settingsMode: false,
         settingsTab: 0,
@@ -155,6 +156,45 @@ var app = new Vue({
                 body: output
             });
         },
+        async showChannels() {
+            this.removeChannel = null;
+
+            var waiter = fetch("/api/values/channels");
+
+            this.channelMode = !this.channelMode;
+
+            if (this.tagsMode) {
+                await this.showTags();
+            }
+
+            if (this.inputListMode) {
+                this.showListInput();
+            }
+
+            if (this.trashbinMode) {
+                await this.showTrashbin();
+            }
+
+            var result = await waiter;
+
+            this.channels = await result.json();
+
+            this.calcChannelStats();
+
+            this.maxChannelPage = Math.ceil(this.channels.length / this.settings.ChannelsPerPage);
+
+            if (this.channelPage > this.maxChannelPage) this.channelPage = 1;
+
+            this.unlockAllChannels();
+
+            if (this.filter === "SubBox") {
+                return;
+            }
+
+            this.channels.find(function (e) {
+                return e.displayname === app.filter;
+            }).locked = true;
+        },
         async showListInput() {
             if (this.inputListMode) {
                 this.inputListMode = false;
@@ -242,7 +282,17 @@ var app = new Vue({
             this.settingsMode = !this.settingsMode;
         },
         async showTags() {
-            if (this.tagsMode && !this.channelMode) {
+            if (this.tagsMode) {
+                this.tagsMode = false;
+
+                this.tags.forEach(function (t) {
+                    t.inEdit = false;
+                });
+
+                return;
+            }
+
+            if (this.channels.length == 0) {
                 var waiter = fetch("/api/values/channels");
 
                 var result = await waiter;
@@ -250,23 +300,19 @@ var app = new Vue({
                 this.channels = await result.json();
             }
 
-            if (!this.tagsMode) {
-                this.channelMode = false;
-
-                if (this.inputListMode) {
-                    this.showListInput();
-                }
-            }   
-
-            if (this.tagsMode) {
-                this.tags.forEach(function (t) {
-                    t.inEdit = false;
-                });
+            if (this.channelMode) {
+                await this.showChannels();
             }
 
-            this.tagsMode = !this.tagsMode;
+            if (this.inputListMode) {
+                await this.showListInput();
+            }
 
-            this.removeChannel = null;
+            if (this.trashbinMode) {
+                await this.showTrashbin();
+            }
+
+            this.tagsMode = true;
         },
         async refresh() {
             await fetch("/api/values/refresh", { method: "POST", });
@@ -656,45 +702,6 @@ var app = new Vue({
         },
         openChannel(link) {
             window.open("https://www.youtube.com/user/" + link, "_blank");
-        },
-        async showChannels() {
-            this.removeChannel = null;
-
-            var waiter = fetch("/api/values/channels");
-
-            this.channelMode = !this.channelMode;
-
-            if (this.tagsMode) {
-                await this.showTags();
-            }
-
-            if (this.inputListMode) {
-                this.showListInput();
-            }
-
-            if (this.trashbinMode) {
-                await this.showTrashbin();
-            }
-
-            var result = await waiter;
-
-            this.channels = await result.json();
-
-            this.calcChannelStats();
-
-            this.maxChannelPage = Math.ceil(this.channels.length / this.settings.ChannelsPerPage);
-
-            if (this.channelPage > this.maxChannelPage) this.channelPage = 1;
-
-            this.unlockAllChannels();
-
-            if (this.filter === "SubBox") {
-                return;
-            }
-
-            this.channels.find(function (e) {
-                return e.displayname === app.filter;
-            }).locked = true;
         },
         calcChannelStats() {
             this.channels.forEach(function (c) {
