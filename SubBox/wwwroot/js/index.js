@@ -250,6 +250,8 @@ var app = new Vue({
                 return;
             }
 
+            this.trashbinFilter = "";
+
             if (this.channelMode) {
                 await this.showChannels();
             }

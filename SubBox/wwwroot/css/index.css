@@ -407,9 +407,13 @@ nav div {
 }
 
 .refreshButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     height: 32px;
     width: 32px;
     margin-left: 4px;
+    padding: 0;
     transition: transform 1s;
     border-radius: 100%;
 }
