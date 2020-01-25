@@ -1387,9 +1387,6 @@ var app = new Vue({
                 if (app.uniqueListMode) {
                     app.closeUniqueList();
                 }
-                if (app.trashbinMode) {
-                    app.closeTrashbin();
-                }
             }
         }, false);
 

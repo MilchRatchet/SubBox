@@ -231,7 +231,7 @@
             <div class="tagsList">
                 <div class="tagsListAdd">
                     <div class="tagsListAddInput">
-                        <input @keyup.enter="submitTag" v-model="addTag" type="text" autocomplete="off" placeholder="Enter Tag..." list="channels" />
+                        <input @keyup.enter="submitTag" v-model="addTag" type="text" autocomplete="off" placeholder="Enter Tag..." />
                         <button @click="submitTag" class="material-icons">add</button>
                     </div>
                 </div>
@@ -258,13 +258,11 @@
                                 <datalist id="channels">
                                     <option v-for="ch in channels">{{ch.displayname}}</option>
                                 </datalist>
-                                <button @click="addFilterToTag(tag)" class="material-icons">add</button>
+                                <button @click="addFilterToTag(tag)" class="material-icons tagsListEntryEditAddInputAddButton">add</button>
+                                <button @click="deleteTag(tag)" class="tagsListEntryEditAddInputRemoveButton">
+                                    Remove Tag
+                                </button>
                             </div>
-                        </div>
-                        <div class="tagsListEntryEditRemove">
-                            <button @click="deleteTag(tag)" class="tagsListEntryEditRemoveButton">
-                                Remove Tag
-                            </button>
                         </div>
                     </div>
                 </div>
