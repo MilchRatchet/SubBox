@@ -666,10 +666,15 @@ nav div {
     color: var(--font_title);
     padding: 0 0 0 5px;
     background: none;
+    border-top: 1px solid transparent;
+    border-bottom: 1px solid transparent;
 }
 
     .channelEntry:hover {
-        background: var(--highlight);
+        background: var(--highlight_t);
+        border-top: 1px solid var(--video_bd_bot);
+        border-bottom: 1px solid var(--video_bd_bot);
+        box-shadow: 0 0 10px -8px var(--font_title);
     }
 
     .channelEntry:hover .channelEntryArrow {
@@ -763,6 +768,8 @@ nav div {
     align-items: center;
     padding: 5px 10px 5px 10px;
     min-height: 20px;
+    border-top: 1px solid transparent;
+    border-bottom: 1px solid transparent;
 }
 
     .channelEntryPaneListEntry .material-icons {
@@ -785,7 +792,7 @@ nav div {
 .channelEntryPaneListEntryButton {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     width: 100%;
     font-size: 16px;
     height: 25px;
@@ -793,6 +800,9 @@ nav div {
 
 .channelEntryPaneListEntryHover:hover {
     background: var(--highlight_t);
+    border-top: 1px solid var(--video_bd_bot);
+    border-bottom: 1px solid var(--video_bd_bot);
+    box-shadow: 0 0 10px -8px var(--font_title);
 }
 
 .channelPageNavigation {
@@ -1331,7 +1341,11 @@ input:checked + .slider {
 }
 
 .tagsListEntryContentName {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
     width: 460px;
+    height: 100%;
 }
 
 .tagsListEntryContentEdit {
@@ -1481,11 +1495,11 @@ input:checked + .slider {
 
 .selectedTag {
     cursor: default;
-    border-radius: 4px;
-    padding: 4px;
+    padding: 4px 10px 4px 10px;
     font-size: 16px;
     background: var(--mainColor);
     color: var(--secColor);
+    cursor: pointer;
 }
 
 .tooltip {

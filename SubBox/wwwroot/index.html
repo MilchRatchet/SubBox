@@ -639,12 +639,11 @@
                         <button @click="showTrashbin" class="material-icons" v-bind:class="{activeNavButton : trashbinMode}">delete <p>Trashbin</p></button>
                         <div v-show="!trashbinMode" class="tooltiptext ttdown">Trashbin</div>
                     </div>
-                    
                     <div class="tooltip">
                         <button @click="showTags" class="material-icons" v-bind:class="{activeNavButton : tagsMode}">label <p>Tags</p></button>
                         <div v-show="!tagsMode" class="tooltiptext ttdown">Tags</div>
                     </div>
-                    <p class="selectedTag" v-if="selectedTag != null">{{selectedTag.name}}</p>
+                    <p @click.prevent="goToTag()" class="selectedTag" v-if="selectedTag != null">{{selectedTag.name}}</p>
                 </div>
                 <div class="navMiddle">
                     <div id="topbar" class="topbar">

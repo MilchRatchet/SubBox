@@ -735,11 +735,6 @@ var app = new Vue({
 
             ch.locked = true;
         },
-        closeChannels() {
-            this.channelMode = false;
-
-            this.removeChannel = null;
-        },
         closeUniqueList() {
             this.inputListModeNumber = 0;
 
@@ -748,11 +743,6 @@ var app = new Vue({
             this.uniqueListMode = false;
 
             this.playlistFilter = "";
-        },
-        closeTrashbin() {
-            this.videoListMode = true;
-
-            this.trashbinMode = false;
         },
         async switchDesign() {
             this.settings.NightMode = !this.settings.NightMode;
@@ -937,6 +927,11 @@ var app = new Vue({
             fetch("/api/values/tags/set/" + tag.name + "/§" + tag.filter, { method: "POST" });
 
             this.tags.sort();
+        },
+        goToTag() {
+            this.selectedTag.inEdit = true;
+
+            this.showTags();
         },
         resetAllFilters() {
             this.filter = "SubBox";
@@ -1339,8 +1334,10 @@ var app = new Vue({
             }
 
             if (app.tagsMode && target.nodeName !== "BUTTON") {
-                if (!tagsOv.contains(target)) {
-                    app.showTags();
+                if (target.className != "selectedTag") {
+                    if (!tagsOv.contains(target)) {
+                        app.showTags();
+                    }
                 }
             }
 
