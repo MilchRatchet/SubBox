@@ -813,6 +813,24 @@ var app = new Vue({
                 document.documentElement.style.setProperty('--secColor', 'white');
             }
         },
+        async invertPlaylist() {
+            await fetch("api/values/list/invert/" + this.inputListModeNumber, { method: "POST" });
+
+            this.uniqueList = [];
+
+            var result = await fetch("/api/values/list/all/" + this.inputListModeNumber);
+
+            this.uniqueList = await result.json();
+        },
+        async jumpToPlaylistItem(target) {
+            const index = target.index;
+
+            await fetch("api/values/list/jump/" + this.inputListModeNumber + "/" + index, { method: "POST" });
+
+            this.uniqueList.forEach(v => v.index -= index);
+
+            this.listUpdate();
+        },
         setFilter(ch) {
             if (ch.displayname == this.filter) {
                 this.filter = "SubBox";

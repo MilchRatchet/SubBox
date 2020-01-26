@@ -499,11 +499,14 @@ nav div {
     padding: 3px;
     color: transparent;
     margin: 2px 5px 2px 5px;
+    border: 1px solid transparent;
 }
 
+    
     .videoTitleButton:hover {
+        background: var(--mainColor);
         color: var(--secColor) !important;
-        background-color: var(--mainColor);
+        box-shadow: 0 0 10px -8px var(--font_title);
     }
 
 .videoText {
@@ -811,12 +814,8 @@ nav div {
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    height: 40px;
+    height: 30px;
 }
-
-    .channelPageNavigation .material-icons {
-        font-size: 30px;
-    }
 
     .channelPageNavigation div {
         display: flex;
@@ -831,6 +830,20 @@ nav div {
 
     .channelPageNavigation label {
         color: var(--font_title);
+    }
+
+.channelPageNavigationButton {
+    width: 60px;
+    font-size: 30px;
+    padding: 0;
+    margin: 0;
+}
+
+    .channelPageNavigationButton:hover {
+        background: var(--mainColor);
+        color: var(--secColor);
+        border: 1px solid var(--video_bd_bot);
+        box-shadow: 0 0 10px -8px var(--font_title);
     }
 
 .channelLastRowDiv {
@@ -896,8 +909,9 @@ nav div {
 }
 
     .listButton:hover {
+        background: var(--mainColor);
         color: var(--secColor) !important;
-        background-color: var(--mainColor);
+        box-shadow: 0 0 10px -8px var(--font_title);
     }
 
 .inputList {
@@ -1518,15 +1532,14 @@ input:checked + .slider {
     font-size: 14px;
     font-family: 'Roboto', sans-serif;
     padding: 8px;
-    height: 14px !important;
-    width: auto !important;
+    height: 16px !important;
     visibility: hidden;
     opacity: 0;
     color: var(--secColor);
     background: var(--mainColor);
-    text-align: center;
     position: absolute;
-    display: inline-block;
+    display: flex;
+    align-items: center;
     white-space: nowrap;
     z-index: 1;
     box-shadow: 0 5px 10px -6px rgba(0,0,0,0.3);

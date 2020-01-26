@@ -71,6 +71,10 @@
                 <p class="material-icons">delete_sweep</p>
                 <p>Move all to Trashbin</p>
             </div>
+            <div @click="invertPlaylist()" v-show="uniqueListMode && playlistFilter === ''" class="menuButton">
+                <p class="material-icons">swap_horiz</p>
+                <p>Invert Order</p>
+            </div>
             <div @click="deleteFilteredPlaylistVideos()" v-show="uniqueListMode && playlistFilter !== ''" class="menuButton">
                 <p class="material-icons">delete_sweep</p>
                 <p>Remove all filtered</p>
@@ -211,12 +215,16 @@
                                                 </div>
                                             </div>
                                             <div class="videoTitleButtons">
+                                                <button class="material-icons videoTitleButton tooltip" @click="jumpToPlaylistItem(video)"><div class="tooltiptext ttleft">Jump to Video</div>navigation</button>
                                                 <button class="material-icons videoTitleButton tooltip" @click="deleteVideo(video)"><div class="tooltiptext ttright">Remove from Playlist</div>clear</button>
                                             </div>
                                         </div>
 
                                         <div class="videoDesc">
                                             <p>{{video.description}}</p>
+                                        </div>
+                                        <div v-show="video.index === 0" class="playlistButtonDiv">
+                                            <p class="playlistHint">Current Video</p>
                                         </div>
                                     </div>
                                 </div>
@@ -600,13 +608,13 @@
             </div>
             <div v-show="maxChannelPage != 1" class="channelPageNavigation">
                 <div>
-                    <button v-show="channelPage > 1" class="material-icons" @click="channelPage--">navigate_before</button>
+                    <button v-show="channelPage > 1" class="material-icons channelPageNavigationButton" @click="channelPage--">navigate_before</button>
                 </div>
                 <div>
                     <label>Page {{channelPage}}</label>
                 </div>
                 <div>
-                    <button v-show="channelPage < maxChannelPage" class="material-icons" @click="channelPage++">navigate_next</button>
+                    <button v-show="channelPage < maxChannelPage" class="material-icons channelPageNavigationButton" @click="channelPage++">navigate_next</button>
                 </div>
             </div>
             <div class="channelLastRowDiv">

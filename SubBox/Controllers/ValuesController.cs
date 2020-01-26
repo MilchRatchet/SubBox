@@ -247,6 +247,33 @@ namespace SubBox.Controllers
             context.SaveChanges();
         }
 
+        // POST: api/values/list/jump/{number}/{target}
+        [HttpPost("list/jump/{number}/{target}")]
+        public void JumpToEntry(int number, int target)
+        {
+            Video video = context.Videos.Where(v => v.List == number && v.Index == target).FirstOrDefault();
+
+            if (video == null)
+            {
+                Logger.Warn("List " + number + " does not contain video at index " + target);
+
+                return;
+            }
+
+            context.Videos.Where(v => v.List == number).ToList().ForEach(v => v.Index -= target);
+
+            context.SaveChanges();
+        }
+
+        // POST: api/values/list/invert/{number}
+        [HttpPost("list/invert/{number}")]
+        public void InvertList(int number)
+        {
+            context.Videos.Where(v => v.List == number).ToList().ForEach(v => v.Index *= -1);
+
+            context.SaveChanges();
+        }
+
         // POST: api/values/video/id
         [HttpPost("video/{id}")]
         public void ReactivateVideo(string id)
