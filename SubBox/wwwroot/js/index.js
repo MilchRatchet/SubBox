@@ -383,7 +383,7 @@ var app = new Vue({
 
                         status.value = status.value === 'true';
 
-                        if (!status.value) {
+                        if (!status.value && app.settings.ChannelAddedNotification) {
                             const messageId = app.messageRunningId++;
 
                             app.messages.push({
@@ -404,7 +404,7 @@ var app = new Vue({
 
                         const channel = app.channels.find(c => (c.id === requestString || c.username === requestString));
 
-                        if (channel !== undefined) {
+                        if (channel !== undefined && app.settings.ChannelAddedNotification) {
                             const messageId = app.messageRunningId++;
 
                             app.messages.push({
@@ -481,7 +481,7 @@ var app = new Vue({
 
                     Vue.set(video, 'dlstatus', ((status.value) ? 2 : 0));
 
-                    if (this.settings.DownloadFinishedNotification) {
+                    if (app.settings.DownloadFinishedNotification) {
                         const messageId = app.messageRunningId++;
 
                         app.messages.push({
@@ -1392,6 +1392,14 @@ var app = new Vue({
 
         document.addEventListener("keydown", function (event) {
             if (document.activeElement.nodeName === "INPUT") return;
+
+            if (event.altKey) return;
+
+            if (event.ctrlKey) return;
+
+            if (event.shiftKey) return;
+
+            if (event.code === "Escape") return;
 
             if (app.videoListMode) {
                 document.getElementById("search").focus();

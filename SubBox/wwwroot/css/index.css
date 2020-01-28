@@ -117,8 +117,8 @@
 }
 
     #informationOverlay button {
-        height: 30px;
-        width: 30px;
+        height: 32px;
+        width: 32px;
         padding: 0;
         margin-left: calc(100% - 40px);
     }
@@ -1360,7 +1360,9 @@ input:checked + .slider {
     align-items: center;
     justify-content: flex-start;
     width: 460px;
+    margin-right: 10px;
     height: 100%;
+    overflow: hidden;
 }
 
 .tagsListEntryContentEdit {
@@ -1401,6 +1403,9 @@ input:checked + .slider {
 
 .tagsListEntryEditEntryName {
     width: 419px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .tagsListEntryEditEntryButton {
