@@ -536,6 +536,7 @@ nav div {
 }
 
 .videoBox {
+    width: 100%;
     border-bottom-color: var(--video_bd_bot);
     border-bottom-style: solid;
     border-bottom-width: 1px;
