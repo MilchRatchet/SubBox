@@ -1026,18 +1026,14 @@ var app = new Vue({
 
             this.confirmationMessage = message;
 
-            var menu = document.getElementById('confirmationMenu');
-
-            menu.style.display = "flex";
-
             const promise = new Promise((resolve, reject) => {
 
                 const interval = setInterval(function () {
                     if (!app.confirmationDone) return;
 
-                    menu.style.display = "";
-
                     app.confirmationDone = false;
+
+                    app.confirmationMessage = "";
 
                     clearInterval(interval);
 

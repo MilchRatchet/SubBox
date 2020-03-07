@@ -31,7 +31,7 @@
 <body>
     <div id="app" :class="settings.NightMode ? 'dark-mode' : 'light-mode'">
 
-        <div id="confirmationMenu">
+        <div v-show="confirmationMessage !== ''" id="confirmationMenu">
             <div>
                 <p>{{confirmationMessage}}</p>
                 <div>
