@@ -26,6 +26,7 @@ var app = new Vue({
         playlistFilter: "",
         trashbinFilter: "",
         selectedTag: null,
+        profileMode: false,
         settingsMode: false,
         settingsTab: 0,
         settings: [],
@@ -273,6 +274,8 @@ var app = new Vue({
             this.trashbinMode = true;
         },
         showSettings() {
+            if (this.profileMode) this.showProfile();
+
             this.settingsTab = 0;
 
             if (this.settingsMode) {
@@ -282,6 +285,11 @@ var app = new Vue({
             }
             
             this.settingsMode = !this.settingsMode;
+        },
+        showProfile() {
+            if (this.settingsMode) this.showSettings();
+
+            this.profileMode = !this.profileMode;
         },
         async showTags() {
             if (this.tagsMode) {
@@ -1317,6 +1325,8 @@ var app = new Vue({
 
         var setOv = document.querySelector('#settingsUI');
 
+        var proOv = document.querySelector('#profileUI');
+
         var chOv = document.querySelector('#channelUI');
 
         var tagsOv = document.querySelector('#tagsUI');
@@ -1338,6 +1348,12 @@ var app = new Vue({
             if (app.settingsMode && target.nodeName !== "BUTTON") {
                 if (!setOv.contains(target)) {
                     app.showSettings();
+                }
+            }
+
+            if (app.profileMode && target.nodeName !== "BUTTON") {
+                if (!proOv.contains(target)) {
+                    app.showProfile();
                 }
             }
 

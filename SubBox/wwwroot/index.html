@@ -294,6 +294,18 @@
                             {{video.channelTitle}} &#9679 {{video.publishedAtString}}
                         </div>
                     </div>
+                </d
+            </div>
+        </div>
+
+        <div id="profileUI" v-show="profileMode" class="profileOverlay">
+            <div class="profileBlur">
+                <div class="profileHeader">
+                    <p>MilchRatchet</p>
+                </div>
+                <div @click="closeSubBox()" class="profileOption">
+                    <p class="material-icons">power_settings_new</p>
+                    <p>Close SubBox</p>
                 </div>
             </div>
         </div>
@@ -663,7 +675,12 @@
                         <div v-show="!settingsMode" class="tooltiptext ttdown">Settings</div>
                     </div>
                     <button @click="window.location.replace('http://localhost:5000/localbrowser.html');" class="material-icons tooltip"><div class="tooltiptext ttdown">SubBox Nightly</div>archive</button>
-                    <button @click="refresh" class="material-icons refreshButton">autorenew</button>
+                    <button @click="refresh" class="material-icons refreshButton" style="display:none">autorenew</button>
+                    <div class="tooltip">
+                        <button @click="showProfile" class="material-icons" v-bind:class="{activeNavButton : profileMode}">account_box <p>Profile</p></button>
+                        <div v-show="!profileMode" style="right: 0" class="tooltiptext ttdown">Profile</div>
+                    </div>
+                    
                 </div>
             </nav>
 
