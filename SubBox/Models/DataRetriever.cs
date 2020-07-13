@@ -411,13 +411,15 @@ namespace SubBox.Models
 
         private Video ParseVideo(Google.Apis.YouTube.v3.Data.Video item, int number, int count)
         {
-            Video NewVideo = new Video()
+            DateTime time = DateTime.Parse(item.Snippet.PublishedAt,null,System.Globalization.DateTimeStyles.RoundtripKind);
+
+            Video newVideo = new Video()
             {
                 Id = item.Id,
 
-                PublishedAt = item.Snippet.PublishedAt.GetValueOrDefault(),
+                PublishedAt = time,
 
-                PublishedAtString = item.Snippet.PublishedAt.GetValueOrDefault().Day + "." + item.Snippet.PublishedAt.GetValueOrDefault().Month + "." + item.Snippet.PublishedAt.GetValueOrDefault().Year + " " + item.Snippet.PublishedAt.GetValueOrDefault().Hour + ":" + ((item.Snippet.PublishedAt.GetValueOrDefault().Minute < 10) ? ("0" + item.Snippet.PublishedAt.GetValueOrDefault().Minute) : (item.Snippet.PublishedAt.GetValueOrDefault().Minute + "")),
+                PublishedAtString = time.Day + "." + time.Month + "." + time.Year + " " + time.Hour + ":" + ((time.Minute < 10) ? ("0" + time.Minute) : (time.Minute + "")),
 
                 ChannelId = item.Snippet.ChannelId,
 
@@ -448,9 +450,9 @@ namespace SubBox.Models
 
                     if (ch != null)
                     {
-                        NewVideo.ChannelName = ch.Username;
+                        newVideo.ChannelName = ch.Username;
 
-                        NewVideo.ChannelPicUrl = ch.ThumbnailUrl;
+                        newVideo.ChannelPicUrl = ch.ThumbnailUrl;
                     }
                 }
             }
@@ -512,9 +514,9 @@ namespace SubBox.Models
 
             min += ":";
 
-            NewVideo.Duration = hour + min + sec;
+            newVideo.Duration = hour + min + sec;
 
-            return NewVideo;
+            return newVideo;
         }
 
         public void GarbageCollector()
