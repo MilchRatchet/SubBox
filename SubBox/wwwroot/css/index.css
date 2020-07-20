@@ -1167,6 +1167,26 @@ nav div {
         width: 65%;
     }
 
+.singleSetting .settingsButton {
+    color: var(--font_title);
+    background-color: var(--nav_bg);
+    text-align: center;
+    width: 60%;
+    height: 28px;
+    box-sizing: border-box;
+    justify-content: center;
+    display: flex;
+    padding: 0;
+    border: 1px solid var(--font_text);
+    border-radius: 0;
+    cursor: pointer;
+}
+
+    .singleSetting .settingsButton:hover {
+        color: var(--secColor);
+        background-color: var(--mainColor);
+    }
+
 .switch {
     position: relative;
     display: inline-block;
