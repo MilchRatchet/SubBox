@@ -294,7 +294,7 @@
                             {{video.channelTitle}} &#9679 {{video.publishedAtString}}
                         </div>
                     </div>
-                </d
+                </div>
             </div>
         </div>
 
@@ -723,6 +723,7 @@
                         <div class="videoChannelDiv">
                             <img :src="video.channelPicUrl" style="left:0;width:32px;height:32px;border-radius: 50%;vertical-align:middle;cursor:pointer;" @click="openChannel(video.channelName)" />
                             <span class="videoHeaderName" @click="openChannel(video.channelName)">{{video.channelTitle}}</span>
+                            <span class="videoHeaderNameNew" v-show="(today.getTime()/1000 - video.publishedAt.getTime()/1000) < 86400">NEW</span>
                         </div>
                         <div class="videoContentDiv">
                             <div @click="openVideo(video.id)" @click.middle="openVideo(video.id)" class="videoThumb">

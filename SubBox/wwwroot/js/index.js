@@ -38,6 +38,7 @@ var app = new Vue({
         channelPage: 1,
         maxChannelPage: 10,
         isFirefox: false,
+        today: new Date(),
         filteredLength: "0:00",
         totalLength: "0:00",
         newestVersion: "1.5.1",
@@ -98,6 +99,8 @@ var app = new Vue({
             var result = await fetch("/api/values/videos");
 
             this.videos = await result.json();
+
+            this.videos.forEach(v => v.publishedAt = new Date(v.publishedAt));
 
             this.checkDownloadStatus();
         },
@@ -511,6 +514,8 @@ var app = new Vue({
             }, 1000);
         },
         async deleteVideo(video) {
+            console.log(new Date(video.publishedAt));
+
             if (this.uniqueListMode) {
                 var waiter = fetch("/api/values/video/" + video.id, { method: "DELETE" });
 

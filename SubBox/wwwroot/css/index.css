@@ -526,6 +526,19 @@ nav div {
     margin-left: 5px;
 }
 
+.videoHeaderNameNew {
+    color: var(--secColor);
+    background-color: var(--mainColor);
+    width: 50px;
+    text-align: center;
+    display: inline-block;
+    cursor: default;
+    font-size: 16px;
+    line-height: 20px;
+    font-weight: bold;
+    margin-left: 15px;   
+}
+
 .videoList {
     margin-left: auto;
     margin-right: auto;
