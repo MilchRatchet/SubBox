@@ -562,7 +562,7 @@
                         <p>Sync Channel Pictures</p>
                     </div>
                     <div style="justify-content: flex-end;">
-                        <div class="settingsButton">
+                        <div class="settingsButton" @click="syncChannelPictures">
                             Sync
                         </div>
                     </div>
@@ -581,7 +581,7 @@
                     <div class="listSelectedMarker">
                         <div v-show="channel.locked"></div>
                     </div>
-                    <img :src="channel.thumbnailUrl" @click="openChannel(channel.username)" />
+                    <img :src="'channelPictures/' + channel.id + '.jpg'" @click="openChannel(channel.username)" />
                     <label>
                         {{channel.displayname}}
                     </label>
@@ -593,7 +593,7 @@
                     <div class="channelEntryPane" v-bind:class="{channelEntryPaneLocked : channel.locked}">
                         <div class="channelEntryPaneList">
                             <div class="channelEntryPaneListEntry">
-                                <img :src="channel.thumbnailUrl" @click="openChannel(channel.username)" />
+                                <img :src="'channelPictures/' + channel.id + '.jpg'" @click="openChannel(channel.username)" />
                             </div>
                             <div class="channelEntryPaneListEntry">
                                 {{channel.displayname}}
@@ -731,7 +731,7 @@
                 <div id="mainVideoList" class="videoList">
                     <div class="videoBox" v-for="video in filteredVideos.slice(viewPortBottom, viewPortTop)" :key="video.id">
                         <div class="videoChannelDiv">
-                            <img :src="video.channelPicUrl" style="left:0;width:32px;height:32px;border-radius: 50%;vertical-align:middle;cursor:pointer;" @click="openChannel(video.channelName)" />
+                            <img :src="'channelPictures/' + video.channelId + '.jpg'" style="left:0;width:32px;height:32px;border-radius: 50%;vertical-align:middle;cursor:pointer;" @click="openChannel(video.channelName)" />
                             <span class="videoHeaderName" @click="openChannel(video.channelName)">{{video.channelTitle}}</span>
                             <span class="videoHeaderNameNew" v-show="(today.getTime()/1000 - video.publishedAt.getTime()/1000) < 86400">NEW</span>
                         </div>

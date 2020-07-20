@@ -170,6 +170,8 @@ namespace SubBox.Controllers
             DataRetriever fetcher = new DataRetriever();
 
             fetcher.AddChannel(name);
+
+            Downloader.SyncChannelPictures();
         }
 
         // POST: api/values/channel
@@ -321,6 +323,17 @@ namespace SubBox.Controllers
 
                 return;
             }
+        }
+
+        //POST: api/values/settings/syncChannelPictures
+        [HttpPost("settings/syncChannelPictures")]
+        public void SyncChannelPictures()
+        {
+            Logger.Info("Syncing channel pictures...");
+
+            Downloader.SyncChannelPictures();
+
+            Logger.Info("Done");
         }
 
         //POST: api/values/settings/type/value

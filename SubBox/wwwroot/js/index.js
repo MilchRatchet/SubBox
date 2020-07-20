@@ -766,6 +766,11 @@ var app = new Vue({
 
             fetch("/api/values/settings/save", { method: "POST" });
         },
+        async syncChannelPictures() {
+            await fetch("/api/values/settings/syncChannelPictures", {method: "POST"});
+
+            location.reload();
+        },
         setBodyColor() {
             if (this.settings.NightMode) {
                 document.body.setAttribute('bgcolor', '#131313');

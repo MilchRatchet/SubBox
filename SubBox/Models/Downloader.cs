@@ -1,7 +1,10 @@
-﻿using System;
+﻿using SubBox.Data;
+using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
+using System.Linq;
 using System.Net;
 
 namespace SubBox.Models
@@ -128,6 +131,26 @@ namespace SubBox.Models
                 };
 
                 client.DownloadFileAsync(new Uri("https://ffmpeg.zeranoe.com/builds/win64/static/ffmpeg-4.2.1-win64-static.zip"), "ffmpeg.zip");
+            }
+        }
+
+        public static void SyncChannelPictures()
+        {
+            List<Channel> Channels;
+
+            using (AppDbContext context = new AppDbContext())
+            {
+                Channels = context.Channels.ToList();
+            }
+
+            using (var client = new WebClient())
+            {
+                foreach(Channel ch in Channels)
+                {
+                    client.DownloadFile(new Uri(ch.ThumbnailUrl), "wwwroot/channelPictures/" + ch.Id + ".jpg");
+
+                    Logger.Debug("Downloading to: /channelPictures/" + ch.Id + ".jpg");
+                }     
             }
         }
 

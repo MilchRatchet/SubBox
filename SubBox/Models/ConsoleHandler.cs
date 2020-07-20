@@ -23,6 +23,7 @@ namespace SubBox.Models
                     case "-logf": Logf(); break;
                     case "-dlsv": Dlsv(); break;
                     case "-stca": Stca(); break;
+                    case "-schp": Schp(); break;
                     case "-help": Help(); break;  
                     default: Console.WriteLine("Invalid Command, type -help for a list of commands"); break;
                 }
@@ -176,6 +177,15 @@ namespace SubBox.Models
             _ = StatusBoard.PrintAllStatus();
         }
 
+        private static void Schp()
+        {
+            Logger.Info("Syncing channel pictures...");
+
+            Downloader.SyncChannelPictures();
+
+            Logger.Info("Done");
+        }
+
         private static void Help()
         {
             Console.WriteLine("List of all current commands:");
@@ -194,7 +204,9 @@ namespace SubBox.Models
 
             Console.WriteLine("-dlsv | Download individual video");
 
-            Console.WriteLine("-Stca | Outputs all status updates in the back end that were not yet requested by the front end");
+            Console.WriteLine("-stca | Outputs all status updates in the back end that were not yet requested by the front end");
+
+            Console.WriteLine("-schp | Sync all channel pictures");
 
             Console.WriteLine("-help | Shows all commands");
         }
