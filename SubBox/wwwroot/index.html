@@ -476,6 +476,17 @@
                         </label>
                     </div>
                 </div>
+                <div class="singleSetting" @click.prevent="settings.HighlightNewVideos = !settings.HighlightNewVideos">
+                    <div style="justify-content: flex-start;">
+                        <p>Highlight New Videos</p>
+                    </div>
+                    <div style="justify-content: flex-end;">
+                        <label class="switch">
+                            <input type="checkbox" v-model="settings.HighlightNewVideos"/>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
             </div>
             <div v-show="settingsTab === 1" class="settingsList">
                 <div class="singleSetting" @click.prevent="settings.ConfirmWindow = !settings.ConfirmWindow">
@@ -733,7 +744,7 @@
                         <div class="videoChannelDiv">
                             <img :src="'channelPictures/' + video.channelId + '.jpg'" style="left:0;width:32px;height:32px;border-radius: 50%;vertical-align:middle;cursor:pointer;" @click="openChannel(video.channelName)" />
                             <span class="videoHeaderName" @click="openChannel(video.channelName)">{{video.channelTitle}}</span>
-                            <span class="videoHeaderNameNew" v-show="(today.getTime()/1000 - video.publishedAt.getTime()/1000) < 86400">NEW</span>
+                            <span class="videoHeaderNameNew" v-show="settings.HighlightNewVideos && ((today.getTime()/1000 - video.publishedAt.getTime()/1000) < 86400)">NEW</span>
                         </div>
                         <div class="videoContentDiv">
                             <div @click="openVideo(video.id)" @click.middle="openVideo(video.id)" class="videoThumb">
