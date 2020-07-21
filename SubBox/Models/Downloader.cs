@@ -147,9 +147,16 @@ namespace SubBox.Models
             {
                 foreach(Channel ch in Channels)
                 {
-                    client.DownloadFile(new Uri(ch.ThumbnailUrl), "wwwroot/channelPictures/" + ch.Id + ".jpg");
+                    try
+                    {
+                        client.DownloadFile(new Uri(ch.ThumbnailUrl), "wwwroot/channelPictures/" + ch.Id + ".jpg");
+                    }
+                    catch (Exception e)
+                    {
+                        Logger.Error("At Downloader.SyncChannelPictures():");
 
-                    Logger.Debug("Downloading to: /channelPictures/" + ch.Id + ".jpg");
+                        Logger.Error(e.Message);
+                    }  
                 }     
             }
         }
