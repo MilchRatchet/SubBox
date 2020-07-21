@@ -771,6 +771,11 @@ var app = new Vue({
 
             location.reload();
         },
+        async togglePlaylistDisplay(list) {
+            Vue.set(this.settings.DisplayPlaylists, list-1, !this.settings.DisplayPlaylists[list-1]);
+
+            await this.saveSettings();
+        },
         setBodyColor() {
             if (this.settings.NightMode) {
                 document.body.setAttribute('bgcolor', '#131313');
@@ -1438,7 +1443,7 @@ var app = new Vue({
             }
         }, false);
 
-        document.body.onmousedown = function (e) { if (e.button === 1) return false; }
+        /*document.body.onmousedown = function (e) { if (e.button === 1) return false; }*/
 
         var result = await fetch("/api/values/first");
 

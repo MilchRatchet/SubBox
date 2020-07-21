@@ -294,6 +294,13 @@ namespace SubBox.Models
         {
             GarbageCollector();
 
+            if (number >= AppSettings.DisplayPlaylists.Count)
+            {
+                AppSettings.IncreaseDisplayPlaylists();
+            }
+
+            AppSettings.DisplayPlaylists[number] = true;
+
             int count = 0;
 
             using (AppDbContext context = new AppDbContext())

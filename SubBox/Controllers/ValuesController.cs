@@ -391,7 +391,7 @@ namespace SubBox.Controllers
         {
             string raw = await new StreamReader(HttpContext.Request.Body).ReadToEndAsync();
 
-            JsonConvert.DeserializeObject(raw, typeof(AppSettings));
+            JsonConvert.DeserializeObject(raw, typeof(AppSettings), new JsonSerializerSettings() { ObjectCreationHandling = ObjectCreationHandling.Replace});
 
             AppSettings.Save();
         }

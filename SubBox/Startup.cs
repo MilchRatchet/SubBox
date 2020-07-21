@@ -120,6 +120,8 @@ namespace SubBox
 
                 AppSettings.SmartListLoading = false;
 
+                AppSettings.HighlightNewVideos = true;
+
                 AppSettings.LastRefresh = BuildTime;
 
                 AppSettings.FirstStart = true;
@@ -134,6 +136,8 @@ namespace SubBox
             }
 
             AppSettings.GCMode = true;
+
+            AppSettings.EnsureDisplayPlaylists();
 
             using (AppDbContext context = new AppDbContext())
             {

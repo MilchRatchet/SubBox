@@ -582,8 +582,19 @@
         </div>
 
         <div id="addPlaylistUI" v-show="inputListMode" class="inputListOverlay">
-            <input @keyup.enter="submitPlaylist" v-model="addPlayList" autocomplete="off" type="text" name="PlaylistId" placeholder="Playlist Id..." />
-            <button @click="submitPlaylist" class="material-icons addPlaylistButton">add</button>
+            <div class="playlistUIMainDiv">
+                <div class="playlistUIUpperDiv">
+                    <div v-for="video in lists" class="playlistUIListEntry" @click.prevent="togglePlaylistDisplay(video.list)">
+                        <img :src="video.thumbnailUrl">
+                        <p>{{video.title}}</p>
+                    </div>
+                </div>
+                <div class="playlistUILowerDiv">
+                    <input @keyup.enter="submitPlaylist" v-model="addPlayList" autocomplete="off" type="text" name="PlaylistId" placeholder="Playlist Id..." />
+                    <button @click="submitPlaylist" class="material-icons addPlaylistButton">add</button>
+                </div>
+            </div>
+
         </div>
 
         <div id="channelUI" v-show="channelMode" class="overlay">
@@ -671,8 +682,8 @@
                         <div v-show="!channelMode" style="left: 0" class="tooltiptext ttdown">Channel List</div>
                     </div>
                     <div class="tooltip">
-                        <button @click="showListInput()" class="material-icons" v-bind:class="{activeNavButton : inputListMode}">playlist_add <p>Add Playlist</p></button>
-                        <div v-show="!inputListMode" class="tooltiptext ttdown">Add Playlist</div>
+                        <button @click="showListInput()" class="material-icons" v-bind:class="{activeNavButton : inputListMode}">playlist_add <p>Playlists</p></button>
+                        <div v-show="!inputListMode" class="tooltiptext ttdown">Playlists</div>
                     </div>
                     <div class="tooltip">
                         <button @click="showTrashbin" class="material-icons" v-bind:class="{activeNavButton : trashbinMode}">delete <p>Trashbin</p></button>
@@ -707,7 +718,7 @@
 
             <div id="mainList" class="scrollList">
                 <div v-show="filter==='SubBox' && searchFilter === '' && selectedTag == null" class="listList">
-                    <div class="videoBox" v-for="video in lists">
+                    <div class="videoBox" v-for="video in lists" v-show="settings.DisplayPlaylists[video.list-1]">
                         <div class="videoContentDiv">
                             <div @click="openVideo(video.id)" @click.middle="openVideo(video.id)" class="videoThumb">
                                 <img :src="video.thumbnailUrl" style="width:246px;height:138px" />
