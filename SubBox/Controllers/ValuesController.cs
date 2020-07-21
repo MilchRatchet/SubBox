@@ -49,9 +49,9 @@ namespace SubBox.Controllers
 
         // GET: api/values/channels
         [HttpGet("channels")]
-        public async Task<ActionResult<IEnumerable<Channel>>> GetChannels()
+        public IEnumerable<Channel> GetChannels()
         {
-            return await context.Channels.ToListAsync();
+            return context.Channels.ToList().OrderBy(ch => ch.Displayname);
         }
 
         // GET: api/values/lists
