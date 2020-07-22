@@ -249,14 +249,27 @@ namespace SubBox.Models
 
             int index = 0;
 
-            foreach(Channel ch in Channels)
+            try
             {
-                tasks[index] = RequestVideoIdsFromChannel(ch.Id);
+                foreach (Channel ch in Channels)
+                {
+                    tasks[index] = RequestVideoIdsFromChannel(ch.Id);
 
-                index++;
+                    index++;
+                }
+
+                Task.WaitAll(tasks);
+            } 
+            catch (Exception e)
+            {
+                Logger.Error("at DataRetriever.UpdateVideoList()");
+
+                Logger.Error(e.Message);
+
+                Logger.Warn("Continuing without updating!");
+
+                return;
             }
-
-            Task.WaitAll(tasks);
 
             foreach(Task<List<string>> list in tasks)
             {

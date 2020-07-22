@@ -144,7 +144,6 @@ namespace SubBox
                 context.Database.EnsureCreated();
 
                 context.Database.ExecuteSqlCommand("CREATE TABLE IF NOT EXISTS Tags (Name TEXT PRIMARY KEY, Filter TEXT);");
-
             }
 
             new Thread(() =>
