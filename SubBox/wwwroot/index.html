@@ -584,7 +584,7 @@
         <div id="addPlaylistUI" v-show="inputListMode" class="inputListOverlay">
             <div class="playlistUIMainDiv">
                 <div class="playlistUIUpperDiv">
-                    <div v-for="video in lists" class="playlistUIListEntry" @click.prevent="togglePlaylistDisplay(video.list)">
+                    <div v-for="video in lists" class="playlistUIListEntry" v-bind:class="{ playlistUIListEntrySelected : settings.DisplayPlaylists[video.list-1]}" @click.prevent="togglePlaylistDisplay(video.list)">
                         <img :src="video.thumbnailUrl">
                         <p>{{video.title}}</p>
                     </div>

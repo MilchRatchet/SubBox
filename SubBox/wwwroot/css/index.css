@@ -947,7 +947,7 @@ nav div {
     }
 
     .playlistUIMainDiv p {
-        color: var(--font_title);
+        
         width: 236px;
         margin: 10px 0 10px;
         padding: 0 5px 0 5px;
@@ -982,9 +982,33 @@ nav div {
             cursor: default;
         }
 
+            .playlistUIMainDiv .playlistUIUpperDiv .playlistUIListEntry img {
+                filter: grayscale(80%);
+            }
+
+            .playlistUIMainDiv .playlistUIUpperDiv .playlistUIListEntry:hover img {
+                filter: none;
+            }
+
+            .playlistUIMainDiv .playlistUIUpperDiv .playlistUIListEntry p {
+                color: var(--font_text);
+            }
+
+            .playlistUIMainDiv .playlistUIUpperDiv .playlistUIListEntry:hover p {
+                color: var(--font_title);
+            }
+
         .playlistUIMainDiv .playlistUIUpperDiv .playlistUIListEntry:hover {
             border: 2px solid var(--mainColor);
             cursor: pointer;
+        }
+
+        .playlistUIMainDiv .playlistUIUpperDiv .playlistUIListEntrySelected p {
+            color: var(--font_title) !important;
+        }
+
+        .playlistUIMainDiv .playlistUIUpperDiv .playlistUIListEntrySelected img {
+            filter: none; !important;
         }
 
     .playlistUIMainDiv .playlistUILowerDiv {
