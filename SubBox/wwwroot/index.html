@@ -298,14 +298,20 @@
             </div>
         </div>
 
-        <div id="profileUI" v-show="profileMode" class="profileOverlay">
+        <div id="profileUI" v-show="profileMode" class="profileOverlay" v-bind:style="{ 'background-image': 'url(' + settings.PicOfTheDayUrl + ')' }">
             <div class="profileBlur">
                 <div class="profileHeader">
                     <p>MilchRatchet</p>
                 </div>
+                <div class="profileOption">
+                    <p>SubBox user since {{settings.FirstUse}}</p>
+                </div>
                 <div @click="closeSubBox()" class="profileOption">
                     <p class="material-icons">power_settings_new</p>
                     <p>Close SubBox</p>
+                </div>
+                <div class="profileOption">
+                    <p style="font-size: 8pt;">Picture of the Day: <u @click="window.open(settings.PicOfTheDayLink, '_blank');" style="cursor: pointer;">{{settings.PicOfTheDayLink}}</u></p>
                 </div>
             </div>
         </div>

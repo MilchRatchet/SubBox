@@ -139,6 +139,10 @@ namespace SubBox
 
             AppSettings.EnsureDisplayPlaylists();
 
+            AppSettings.SetFirstUse();
+
+            Downloader.GetPictureOfTheDay();
+
             using (AppDbContext context = new AppDbContext())
             {
                 context.Database.EnsureCreated();

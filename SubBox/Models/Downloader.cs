@@ -1,4 +1,6 @@
-﻿using SubBox.Data;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using SubBox.Data;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -6,6 +8,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 
 namespace SubBox.Models
 {
@@ -158,6 +161,26 @@ namespace SubBox.Models
                         Logger.Error(e.Message);
                     }  
                 }     
+            }
+        }
+
+        public static async void GetPictureOfTheDay()
+        {
+            if (AppSettings.LastRefresh.DayOfYear == DateTime.Now.DayOfYear) return;
+
+            HttpClient client = new HttpClient();
+
+            HttpResponseMessage response = await client.GetAsync($@"https://api.unsplash.com/photos/random?client_id={Config.UnsplashAPIKey}&orientation=portrait&query=nature");
+
+            if (response.IsSuccessStatusCode)
+            {
+                string data = await response.Content.ReadAsStringAsync();
+
+                dynamic json = JsonConvert.DeserializeObject(data);
+
+                AppSettings.PicOfTheDayUrl = json.urls.regular;
+
+                AppSettings.PicOfTheDayLink = json.links.html;
             }
         }
 

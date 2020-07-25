@@ -43,6 +43,16 @@ namespace SubBox.Models
         [JsonProperty]
         public static DateTime LastRefresh { get; set; }
         [JsonProperty]
+        public static string FirstUse { get; set; }
+        [JsonProperty]
+        public static string PicOfTheDayUrl { get; set; }
+        [JsonProperty]
+        public static string PicOfTheDayLink { get; set; }
+        [JsonProperty]
+        public static string Username { get; set; }
+        [JsonProperty]
+        public static string Notes { get; set; }
+        [JsonProperty]
         public static bool FirstStart { get; set; }
         [JsonProperty]
         public static bool AutoStart { get; set; }
@@ -82,6 +92,16 @@ namespace SubBox.Models
             for (int i = 0; i < 10; i++)
             {
                 DisplayPlaylists.Add(true);
+            }
+        }
+
+        public static void SetFirstUse()
+        {
+            if (FirstUse == null || FirstUse == "")
+            {
+                DateTime now = DateTime.Now;
+
+                FirstUse = now.Day + "." + now.Month + "." + now.Year;
             }
         }
     }
