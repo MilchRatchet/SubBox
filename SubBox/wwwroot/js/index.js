@@ -277,20 +277,44 @@ var app = new Vue({
             this.trashbinMode = true;
         },
         showSettings() {
-            if (this.profileMode) this.showProfile();
+
+            if (this.profileMode) 
+            {
+                this.showProfile();
+            }
+            else 
+            {
+                if (this.settingsMode) 
+                {
+                    this.saveSettings();
+                } 
+                else 
+                {
+                    this.getSettings();
+                }
+            }
 
             this.settingsTab = 0;
-
-            if (this.settingsMode) {
-                this.saveSettings();
-            } else {
-                this.getSettings();
-            }
             
             this.settingsMode = !this.settingsMode;
         },
         showProfile() {
-            if (this.settingsMode) this.showSettings();
+
+            if (this.settingsMode) 
+            {               
+                this.showSettings();
+            }
+            else 
+            { 
+                if (this.profileMode) 
+                {
+                    this.saveSettings();
+                } 
+                else 
+                {
+                    this.getSettings();
+                }
+            }
 
             this.profileMode = !this.profileMode;
         },
@@ -1263,6 +1287,8 @@ var app = new Vue({
         async closeSubBox() {
             if (!(await this.getConfirmation("Close SubBox?"))) return;
 
+            await this.saveSettings();
+
             fetch("/api/values/close", { method: "POST" });
 
             setTimeout(() => window.location.replace("https://www.youtube.com/"), 100);
@@ -1418,7 +1444,7 @@ var app = new Vue({
         }, false);
 
         document.addEventListener("keydown", function (event) {
-            if (document.activeElement.nodeName === "INPUT") return;
+            if (document.activeElement.nodeName === "INPUT" || document.activeElement.nodeName === "TEXTAREA" ) return;
 
             if (event.altKey) return;
 

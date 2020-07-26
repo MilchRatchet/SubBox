@@ -306,7 +306,10 @@
                 <div class="profileOption">
                     <p>SubBox user since {{settings.FirstUse}}</p>
                 </div>
-                <div @click="closeSubBox()" class="profileOption">
+                <div class="profileNotes">
+                    <textarea v-model="settings.Notes"></textarea>
+                </div>
+                <div @click="closeSubBox()" class="profileOption" style="cursor: pointer;">
                     <p class="material-icons">power_settings_new</p>
                     <p>Close SubBox</p>
                 </div>

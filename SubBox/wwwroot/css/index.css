@@ -1008,7 +1008,7 @@ nav div {
         }
 
         .playlistUIMainDiv .playlistUIUpperDiv .playlistUIListEntrySelected img {
-            filter: none; !important;
+            filter: none !important;
         }
 
     .playlistUIMainDiv .playlistUILowerDiv {
@@ -1139,12 +1139,28 @@ nav div {
             cursor: pointer;
         }
 
+    .profileOverlay .profileNotes {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 400px;
+    }
+
+        .profileOverlay .profileNotes textarea {
+            width: 360px;
+            height: 380px;
+            background: var(--nav_bg_t);
+            border: 1px solid var(--font_text);
+            color: var(--font_title);
+            font-family: 'Roboto', sans-serif;
+            resize: none;
+        }
+
     .profileOverlay .profileOption {
         display: flex;
         justify-content: center;
         align-items: center;
-        border-color: var(--font_title);
-        border-width: 1px;
         margin: 0;
         height: 36px;
         width: 100%;
