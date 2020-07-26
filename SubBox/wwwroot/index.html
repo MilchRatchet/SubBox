@@ -301,20 +301,21 @@
         <div id="profileUI" v-show="profileMode" class="profileOverlay" v-bind:style="{ 'background-image': 'url(' + settings.PicOfTheDayUrl + ')' }">
             <div class="profileBlur">
                 <div class="profileHeader">
-                    <p>MilchRatchet</p>
+                    <input v-model="settings.Username"></input>
                 </div>
                 <div class="profileOption">
-                    <p>SubBox user since {{settings.FirstUse}}</p>
+                    <p>Since {{settings.FirstUse}}</p>
                 </div>
                 <div class="profileNotes">
                     <textarea v-model="settings.Notes"></textarea>
                 </div>
+                <div class="profileSpacer"></div>
                 <div @click="closeSubBox()" class="profileOption" style="cursor: pointer;">
                     <p class="material-icons">power_settings_new</p>
                     <p>Close SubBox</p>
                 </div>
                 <div class="profileOption">
-                    <p style="font-size: 8pt;">Picture of the Day: <u @click="window.open(settings.PicOfTheDayLink, '_blank');" style="cursor: pointer;">{{settings.PicOfTheDayLink}}</u></p>
+                    <p style="font-size: 8pt;">Photo by <a :href="settings.PicOfTheDayLink + '?utm_source=SubBox&utm_medium=referral'" target="_blank">{{settings.PicOfTheDayUser}}</a> on <a href="https://unsplash.com/?utm_source=SubBox&utm_medium=referral" target="_blank">Unsplash</a></p>
                 </div>
             </div>
         </div>
@@ -716,12 +717,11 @@
                         <div v-show="!settingsMode" class="tooltiptext ttdown">Settings</div>
                     </div>
                     <button @click="window.location.replace('http://localhost:5000/localbrowser.html');" class="material-icons tooltip"><div class="tooltiptext ttdown">SubBox Nightly</div>archive</button>
-                    <button @click="refresh" class="material-icons refreshButton" style="display:none">autorenew</button>
                     <div class="tooltip">
                         <button @click="showProfile" class="material-icons" v-bind:class="{activeNavButton : profileMode}">account_box <p>Profile</p></button>
-                        <div v-show="!profileMode" style="right: 0" class="tooltiptext ttdown">Profile</div>
+                        <div v-show="!profileMode" class="tooltiptext ttdown">Profile</div>
                     </div>
-                    
+                    <button @click="refresh" class="material-icons refreshButton" style="display:none">autorenew</button>
                 </div>
             </nav>
 

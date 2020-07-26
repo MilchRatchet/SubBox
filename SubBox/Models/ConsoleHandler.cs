@@ -24,6 +24,7 @@ namespace SubBox.Models
                     case "-dlsv": Dlsv(); break;
                     case "-stca": Stca(); break;
                     case "-schp": Schp(); break;
+                    //case "-potd": Potd(); break;
                     case "-help": Help(); break;  
                     default: Console.WriteLine("Invalid Command, type -help for a list of commands"); break;
                 }
@@ -186,6 +187,11 @@ namespace SubBox.Models
             Logger.Info("Done");
         }
 
+        private static void Potd()
+        {
+            Downloader.GetPictureOfTheDay();
+        }
+
         private static void Help()
         {
             Console.WriteLine("List of all current commands:");
@@ -207,6 +213,8 @@ namespace SubBox.Models
             Console.WriteLine("-stca | Outputs all status updates in the back end that were not yet requested by the front end");
 
             Console.WriteLine("-schp | Sync all channel pictures");
+
+            Console.WriteLine("-potd | Retrieve another picture of the day (DEBUG BUILD ONLY)");
 
             Console.WriteLine("-help | Shows all commands");
         }

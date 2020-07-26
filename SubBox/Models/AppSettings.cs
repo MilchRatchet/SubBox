@@ -49,6 +49,8 @@ namespace SubBox.Models
         [JsonProperty]
         public static string PicOfTheDayLink { get; set; }
         [JsonProperty]
+        public static string PicOfTheDayUser { get; set; }
+        [JsonProperty]
         public static string Username { get; set; }
         [JsonProperty]
         public static string Notes { get; set; }

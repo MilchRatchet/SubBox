@@ -166,11 +166,9 @@ namespace SubBox.Models
 
         public static async void GetPictureOfTheDay()
         {
-            if (AppSettings.LastRefresh.DayOfYear == DateTime.Now.DayOfYear) return;
-
             HttpClient client = new HttpClient();
 
-            HttpResponseMessage response = await client.GetAsync($@"https://api.unsplash.com/photos/random?client_id={Config.UnsplashAPIKey}&orientation=portrait&query=nature");
+            HttpResponseMessage response = await client.GetAsync($@"https://api.unsplash.com/photos/random?client_id={Config.UnsplashAPIKey}&orientation=portrait&query=sunset");
 
             if (response.IsSuccessStatusCode)
             {
@@ -180,7 +178,9 @@ namespace SubBox.Models
 
                 AppSettings.PicOfTheDayUrl = json.urls.regular;
 
-                AppSettings.PicOfTheDayLink = json.links.html;
+                AppSettings.PicOfTheDayLink = json.user.links.html;
+
+                AppSettings.PicOfTheDayUser = json.user.name;
             }
         }
 

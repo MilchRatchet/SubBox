@@ -1104,12 +1104,16 @@ nav div {
     color: var(--font_title);
 }
 
+    .profileOverlay a, .profileOverlay a:visited {
+        color: #fafafa;
+    }
+
     .profileOverlay .profileBlur {
         width: 100%;
         height: 100%;
         margin: 0;
-        background-color: var(--nav_bg_t);
-        backdrop-filter: blur(5px);
+        background-color: transparent;
+        backdrop-filter: blur(0px);
     }
 
     .profileOverlay .profileHeader {
@@ -1118,7 +1122,7 @@ nav div {
         justify-content: center;
         align-items: center;
         width: 100%;
-        height: 42px;
+        height: 36px;
         padding: 0;
         margin: 10px 0 10px 0;
     }
@@ -1128,6 +1132,16 @@ nav div {
             margin: 0;
             font-size: 26px;
             font-weight: bold;
+        }
+
+        .profileOverlay .profileHeader input {
+            text-align: center;
+            margin: 0;
+            font-size: 26px;
+            font-weight: bold;
+            background-color: transparent;
+            border: none;
+            color: #fafafa;
         }
 
         .profileOverlay .profileHeader img {
@@ -1144,17 +1158,18 @@ nav div {
         justify-content: center;
         align-items: center;
         width: 100%;
-        height: 400px;
+        height: 280px;
     }
 
         .profileOverlay .profileNotes textarea {
-            width: 360px;
-            height: 380px;
-            background: var(--nav_bg_t);
+            width: 370px;
+            height: 240px;
+            background: #0000002f;
             border: 1px solid var(--font_text);
-            color: var(--font_title);
+            color: #fafafa;
             font-family: 'Roboto', sans-serif;
             resize: none;
+            padding: 5px;
         }
 
     .profileOverlay .profileOption {
@@ -1164,11 +1179,17 @@ nav div {
         margin: 0;
         height: 36px;
         width: 100%;
+        color: #fafafa;
     }
 
         .profileOverlay .profileOption:hover {
-            background: var(--nav_bg_t);
+            background: #0000002f;
         }
+
+    .profileOverlay .profileSpacer {
+        width: 100%;
+        height: 354px;
+    }
 
 .settingsOverlay {
     display: flex;

@@ -141,7 +141,10 @@ namespace SubBox
 
             AppSettings.SetFirstUse();
 
-            Downloader.GetPictureOfTheDay();
+            if (AppSettings.LastRefresh.DayOfYear != DateTime.Now.DayOfYear)
+            {
+                Downloader.GetPictureOfTheDay();
+            }
 
             using (AppDbContext context = new AppDbContext())
             {
