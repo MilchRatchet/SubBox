@@ -1097,10 +1097,8 @@ nav div {
     background-repeat: no-repeat;
     background-size: cover;
     z-index: 500;
-    border: 1px solid var(--video_bd_bot);
-    border-right: none;
-    border-top: none;
-    box-shadow: -7px 7px 5px -5px rgba(0, 0, 0, .4);
+    border: none;
+    box-shadow: rgba(0,0,0,0.3) -4px 8px 16px 0px, rgba(0,0,0,0.15) 0px 0px 4px 0px;
     color: var(--font_title);
 }
 
