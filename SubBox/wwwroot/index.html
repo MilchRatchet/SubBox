@@ -310,6 +310,10 @@
                     <textarea v-model="settings.Notes"></textarea>
                 </div>
                 <div class="profileSpacer"></div>
+                <div @click="refresh()" class="profileOption" style="cursor: pointer;">
+                    <p class="material-icons">autorenew</p>
+                    <p>Refresh Videos</p>
+                </div>
                 <div @click="closeSubBox()" class="profileOption" style="cursor: pointer;">
                     <p class="material-icons">power_settings_new</p>
                     <p>Close SubBox</p>
@@ -719,9 +723,8 @@
                     <button @click="window.location.replace('http://localhost:5000/localbrowser.html');" class="material-icons tooltip"><div class="tooltiptext ttdown">SubBox Nightly</div>archive</button>
                     <div class="tooltip">
                         <button @click="showProfile" class="material-icons" v-bind:class="{activeNavButton : profileMode}">account_box <p>Profile</p></button>
-                        <div v-show="!profileMode" class="tooltiptext ttdown">Profile</div>
+                        <div v-show="!profileMode" class="tooltiptext ttdown" style="right: 0">Profile</div>
                     </div>
-                    <button @click="refresh" class="material-icons refreshButton" style="display:none">autorenew</button>
                 </div>
             </nav>
 
