@@ -612,75 +612,78 @@
         </div>
 
         <div id="channelUI" v-show="channelMode" class="overlay">
-            <div class="channelEntry" v-for="channel in channels.slice((channelPage - 1) * settings.ChannelsPerPage, channelPage * settings.ChannelsPerPage)" v-bind:class="{ locked: channel.locked }">
-                <div class="channelEntryContent">
-                    <div class="listSelectedMarker">
-                        <div v-show="channel.locked"></div>
+            <div class="channelOverlayBackground"></div>
+            <div class="channelOverlayContainer">
+                <div class="channelEntry" v-for="channel in channels.slice((channelPage - 1) * settings.ChannelsPerPage, channelPage * settings.ChannelsPerPage)" v-bind:class="{ locked: channel.locked }">
+                    <div class="channelEntryContent">
+                        <div class="listSelectedMarker">
+                            <div v-show="channel.locked"></div>
+                        </div>
+                        <img :src="'channelPictures/' + channel.id + '.jpg'" @click="openChannel(channel.username)" />
+                        <label>
+                            {{channel.displayname}}
+                        </label>
                     </div>
-                    <img :src="'channelPictures/' + channel.id + '.jpg'" @click="openChannel(channel.username)" />
-                    <label>
-                        {{channel.displayname}}
-                    </label>
-                </div>
-                <div class="channelEntryArrow">
-                    <div class="material-icons">
-                        keyboard_arrow_right
-                    </div>
-                    <div class="channelEntryPane" v-bind:class="{channelEntryPaneLocked : channel.locked}">
-                        <div class="channelEntryPaneList">
-                            <div class="channelEntryPaneListEntry">
-                                <img :src="'channelPictures/' + channel.id + '.jpg'" @click="openChannel(channel.username)" />
-                            </div>
-                            <div class="channelEntryPaneListEntry">
-                                {{channel.displayname}}
-                            </div>
-                            <div class="channelEntryPaneListEntry">
-                                <div class="channelEntryPaneListEntryStatistic">
-                                    Videos:
+                    <div class="channelEntryArrow">
+                        <div class="material-icons">
+                            keyboard_arrow_right
+                        </div>
+                        <div class="channelEntryPane" v-bind:class="{channelEntryPaneLocked : channel.locked}">
+                            <div class="channelEntryPaneList">
+                                <div class="channelEntryPaneListEntry">
+                                    <img :src="'channelPictures/' + channel.id + '.jpg'" @click="openChannel(channel.username)" />
                                 </div>
-                                <div class="channelEntryPaneListEntryStatistic" style="justify-content: flex-end">
-                                    {{channel.videoCount}}
+                                <div class="channelEntryPaneListEntry">
+                                    {{channel.displayname}}
                                 </div>
-                            </div>
-                            <div class="channelEntryPaneListEntry">
-                                <div class="channelEntryPaneListEntryStatistic">
-                                    Length:
+                                <div class="channelEntryPaneListEntry">
+                                    <div class="channelEntryPaneListEntryStatistic">
+                                        Videos:
+                                    </div>
+                                    <div class="channelEntryPaneListEntryStatistic" style="justify-content: flex-end">
+                                        {{channel.videoCount}}
+                                    </div>
                                 </div>
-                                <div class="channelEntryPaneListEntryStatistic" style="justify-content: flex-end">
-                                    {{channel.videoLength}}
+                                <div class="channelEntryPaneListEntry">
+                                    <div class="channelEntryPaneListEntryStatistic">
+                                        Length:
+                                    </div>
+                                    <div class="channelEntryPaneListEntryStatistic" style="justify-content: flex-end">
+                                        {{channel.videoLength}}
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="channelEntryPaneListEntry channelEntryPaneListEntryHover" @click="setFilter(channel)">
-                                <div class="channelEntryPaneListEntryButton">
-                                    <label class="material-icons">star</label> Filter by Channel
+                                <div class="channelEntryPaneListEntry channelEntryPaneListEntryHover" @click="setFilter(channel)">
+                                    <div class="channelEntryPaneListEntryButton">
+                                        <label class="material-icons">star</label> Filter by Channel
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="channelEntryPaneListEntry channelEntryPaneListEntryHover" @click="deleteChannel(channel)">
-                                <div class="channelEntryPaneListEntryButton">
-                                    <label class="material-icons">clear</label> Remove Channel
+                                <div class="channelEntryPaneListEntry channelEntryPaneListEntryHover" @click="deleteChannel(channel)">
+                                    <div class="channelEntryPaneListEntryButton">
+                                        <label class="material-icons">clear</label> Remove Channel
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div v-show="maxChannelPage != 1" class="channelPageNavigation">
-                <div>
-                    <button v-show="channelPage > 1" class="material-icons channelPageNavigationButton" @click="channelPage--">navigate_before</button>
+                <div v-show="maxChannelPage != 1" class="channelPageNavigation">
+                    <div>
+                        <button v-show="channelPage > 1" class="material-icons channelPageNavigationButton" @click="channelPage--">navigate_before</button>
+                    </div>
+                    <div>
+                        <label>Page {{channelPage}}</label>
+                    </div>
+                    <div>
+                        <button v-show="channelPage < maxChannelPage" class="material-icons channelPageNavigationButton" @click="channelPage++">navigate_next</button>
+                    </div>
                 </div>
-                <div>
-                    <label>Page {{channelPage}}</label>
+                <div class="channelLastRowDiv">
+                    <div>
+                        <input @keyup.enter="submitChannel()" v-model="addChannelName" autocomplete="off" type="text" name="Username" placeholder="Channel Name..." />
+                        <button @click="submitChannel()" class="material-icons addChannelButton">add</button>
+                    </div>
+                    <div></div>
                 </div>
-                <div>
-                    <button v-show="channelPage < maxChannelPage" class="material-icons channelPageNavigationButton" @click="channelPage++">navigate_next</button>
-                </div>
-            </div>
-            <div class="channelLastRowDiv">
-                <div>
-                    <input @keyup.enter="submitChannel()" v-model="addChannelName" autocomplete="off" type="text" name="Username" placeholder="Channel Name..." />
-                    <button @click="submitChannel()" class="material-icons addChannelButton">add</button>
-                </div>
-                <div></div>
             </div>
         </div>
 
