@@ -51,9 +51,9 @@ namespace SubBox.Models
         [JsonProperty]
         public static string PicOfTheDayUser { get; set; }
         [JsonProperty]
-        public static string Username { get; set; }
+        public static string Username { get; set; } = "Enter Username here...";
         [JsonProperty]
-        public static string Notes { get; set; }
+        public static string Notes { get; set; } = "Enter your notes here...";
         [JsonProperty]
         public static bool FirstStart { get; set; }
         [JsonProperty]

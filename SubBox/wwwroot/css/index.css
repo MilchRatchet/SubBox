@@ -933,7 +933,7 @@ nav div {
     height: auto;
     padding: 0;
     background-color: var(--nav_bg_t);
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(20px);
     z-index: 500;
     border: 1px solid var(--video_bd_bot);
     border-left: none;
