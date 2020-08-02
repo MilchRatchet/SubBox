@@ -71,12 +71,14 @@ namespace SubBox.Models
 
         public static void Save()
         {
-            using (StreamWriter file = File.CreateText(@"settings.json"))
+            using (StreamWriter file = File.CreateText(@"settings.json.temp"))
             {
                 JsonSerializer serializer = new JsonSerializer();
 
                 serializer.Serialize(file, new AppSettings());
             }
+
+            File.Replace("settings.json.temp", "settings.json", "settings.json.backup");
         }
 
         public static void EnsureDisplayPlaylists()
