@@ -16,105 +16,48 @@ namespace SubBox.Models
     {
         public static void DownloadFiles()
         {
-            bool youtubedl = File.Exists("youtube-dl.exe");
-
-            bool ffmpeg = File.Exists("ffmpeg.exe");
-
-            if (youtubedl && ffmpeg)
+            try
             {
-                AppSettings.DownloadReady = true;
+                bool youtubedl = File.Exists("youtube-dl.exe");
 
-                Logger.Info("Downloading videos is now available");
+                bool ffmpeg = File.Exists("ffmpeg.exe");
 
-                return;
-            }
-
-            if (!youtubedl)
-            {
-                Logger.Info("youtube-dl.exe not found");
-
-                Logger.Info("Downloading youtube-dl.exe...");
-
-                var client = new WebClient();
-
-                int Progress = 0;
-
-                client.DownloadProgressChanged += (sender, e) =>
+                if (youtubedl && ffmpeg)
                 {
-                    if (e.ProgressPercentage >= Progress)
-                    {
-                        Progress += 10;
+                    AppSettings.DownloadReady = true;
 
-                        Console.WriteLine("youtube-dl.exe: downloaded {1} of {2} bytes. {3} % complete...",
-                        (string)e.UserState,
-                         e.BytesReceived,
-                         e.TotalBytesToReceive,
-                         e.ProgressPercentage);
-                    }
-                };
+                    Logger.Info("Downloading videos is now available");
 
-                client.DownloadFileCompleted += (sender, e) =>
+                    return;
+                }
+
+                if (!youtubedl)
                 {
-                    youtubedl = true;
+                    Logger.Info("youtube-dl.exe not found");
 
-                    if (youtubedl && ffmpeg)
+                    Logger.Info("Downloading youtube-dl.exe...");
+
+                    var client = new WebClient();
+
+                    int Progress = 0;
+
+                    client.DownloadProgressChanged += (sender, e) =>
                     {
-                        AppSettings.DownloadReady = true;
+                        if (e.ProgressPercentage >= Progress)
+                        {
+                            Progress += 10;
 
-                        Logger.Info("Downloading videos is now available");
-                    }
-                };
-
-                client.DownloadFileAsync(new Uri("https://youtube-dl.org/downloads/latest/youtube-dl.exe"), "youtube-dl.exe");
-            }
-
-            if (!ffmpeg)
-            {
-                Logger.Info("ffmpeg.exe not found");
-
-                Logger.Info("Downloading ffmpeg.exe...");
-
-                var client = new WebClient();
-
-                int Progress = 0;
-
-                client.DownloadProgressChanged += (sender, e) =>
-                {
-                    if (e.ProgressPercentage >= Progress)
-                    {
-                        Progress += 10;
-
-                        Console.WriteLine("ffmpeg.exe: downloaded {1} of {2} bytes. {3} % complete...",
+                            Console.WriteLine("youtube-dl.exe: downloaded {1} of {2} bytes. {3} % complete...",
                             (string)e.UserState,
                              e.BytesReceived,
                              e.TotalBytesToReceive,
                              e.ProgressPercentage);
-                    }
+                        }
+                    };
 
-                };
-
-                client.DownloadFileCompleted += (sender, e) =>
-                {
-                    if (Directory.Exists("ffmpeg"))
+                    client.DownloadFileCompleted += (sender, e) =>
                     {
-                        Logger.Warn("ffmpeg dir exists unexpectedly");
-
-                        Directory.Delete("ffmpeg", true);
-                    }
-
-                    ZipFile.ExtractToDirectory("ffmpeg.zip", "ffmpeg");
-
-                    File.Delete("ffmpeg.zip");
-
-                    try
-                    {
-                        string dir = Directory.GetDirectories(Directory.GetCurrentDirectory() + @"\ffmpeg")[0];
-
-                        File.Move(dir + @"\bin\ffmpeg.exe", Directory.GetCurrentDirectory() + @"\ffmpeg.exe");
-
-                        Directory.Delete("ffmpeg", true);
-
-                        ffmpeg = true;
+                        youtubedl = true;
 
                         if (youtubedl && ffmpeg)
                         {
@@ -122,18 +65,84 @@ namespace SubBox.Models
 
                             Logger.Info("Downloading videos is now available");
                         }
-                    }
-                    catch (Exception m)
+                    };
+
+                    client.DownloadFileAsync(new Uri("https://youtube-dl.org/downloads/latest/youtube-dl.exe"), "youtube-dl.exe");
+                }
+
+                if (!ffmpeg)
+                {
+                    Logger.Info("ffmpeg.exe not found");
+
+                    Logger.Info("Downloading ffmpeg.exe...");
+
+                    var client = new WebClient();
+
+                    int Progress = 0;
+
+                    client.DownloadProgressChanged += (sender, e) =>
                     {
-                        Logger.Info("Failed installing ffmpeg");
+                        if (e.ProgressPercentage >= Progress)
+                        {
+                            Progress += 10;
 
-                        Logger.Info("Retry or install manually");
+                            Console.WriteLine("ffmpeg.exe: downloaded {1} of {2} bytes. {3} % complete...",
+                                (string)e.UserState,
+                                 e.BytesReceived,
+                                 e.TotalBytesToReceive,
+                                 e.ProgressPercentage);
+                        }
 
-                        Logger.Error(m.Message);
-                    }
-                };
+                    };
 
-                client.DownloadFileAsync(new Uri("https://ffmpeg.zeranoe.com/builds/win64/static/ffmpeg-4.2.1-win64-static.zip"), "ffmpeg.zip");
+                    client.DownloadFileCompleted += (sender, e) =>
+                    {
+                        if (Directory.Exists("ffmpeg"))
+                        {
+                            Logger.Warn("ffmpeg dir exists unexpectedly");
+
+                            Directory.Delete("ffmpeg", true);
+                        }
+
+                        ZipFile.ExtractToDirectory("ffmpeg.zip", "ffmpeg");
+
+                        File.Delete("ffmpeg.zip");
+
+                        try
+                        {
+                            string dir = Directory.GetDirectories(Directory.GetCurrentDirectory() + @"\ffmpeg")[0];
+
+                            File.Move(dir + @"\bin\ffmpeg.exe", Directory.GetCurrentDirectory() + @"\ffmpeg.exe");
+
+                            Directory.Delete("ffmpeg", true);
+
+                            ffmpeg = true;
+
+                            if (youtubedl && ffmpeg)
+                            {
+                                AppSettings.DownloadReady = true;
+
+                                Logger.Info("Downloading videos is now available");
+                            }
+                        }
+                        catch (Exception m)
+                        {
+                            Logger.Info("Failed installing ffmpeg");
+
+                            Logger.Info("Retry or install manually");
+
+                            Logger.Error(m.Message);
+                        }
+                    };
+
+                    client.DownloadFileAsync(new Uri("https://ffmpeg.zeranoe.com/builds/win64/static/ffmpeg-4.2.1-win64-static.zip"), "ffmpeg.zip");
+                }
+            }
+            catch (Exception e)
+            {
+                Logger.Error(e.Message);
+
+                Logger.Warn("Failed to download ffmpeg/youtube-dl");
             }
         }
 
@@ -166,21 +175,30 @@ namespace SubBox.Models
 
         public static async void GetPictureOfTheDay()
         {
-            HttpClient client = new HttpClient();
-
-            HttpResponseMessage response = await client.GetAsync($@"https://api.unsplash.com/photos/random?client_id={Config.UnsplashAPIKey}&orientation=portrait&query=sunset");
-
-            if (response.IsSuccessStatusCode)
+            try
             {
-                string data = await response.Content.ReadAsStringAsync();
+                HttpClient client = new HttpClient();
 
-                dynamic json = JsonConvert.DeserializeObject(data);
+                HttpResponseMessage response = await client.GetAsync($@"https://api.unsplash.com/photos/random?client_id={Config.UnsplashAPIKey}&orientation=portrait&query=sunset");
 
-                AppSettings.PicOfTheDayUrl = json.urls.regular;
+                if (response.IsSuccessStatusCode)
+                {
+                    string data = await response.Content.ReadAsStringAsync();
 
-                AppSettings.PicOfTheDayLink = json.user.links.html;
+                    dynamic json = JsonConvert.DeserializeObject(data);
 
-                AppSettings.PicOfTheDayUser = json.user.name;
+                    AppSettings.PicOfTheDayUrl = json.urls.regular;
+
+                    AppSettings.PicOfTheDayLink = json.user.links.html;
+
+                    AppSettings.PicOfTheDayUser = json.user.name;
+                }
+            }
+            catch (Exception e)
+            {
+                Logger.Error(e.Message);
+
+                Logger.Warn("No picture of the day could be retrieved");
             }
         }
 

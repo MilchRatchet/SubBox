@@ -377,8 +377,10 @@ namespace SubBox.Models
                                 {
                                     Logger.Warn("Couldn't parse: " + item.Snippet.Title + " by " + item.Snippet.ChannelTitle);
                                 }
-                                catch (Exception)
+                                catch (Exception f)
                                 {
+                                    Logger.Error(f.Message);
+
                                     Logger.Warn("Couldn't parse video information");
                                 }
 
@@ -420,8 +422,10 @@ namespace SubBox.Models
                         request.PageToken = response.NextPageToken;
                     }
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
+                    Logger.Error(e.Message);
+
                     Logger.Info("Error retrieving the playlist of id: " + listId);
 
                     return;
