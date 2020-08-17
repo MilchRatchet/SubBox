@@ -200,18 +200,18 @@
                         <td>
                             <div class="videoBox">
                                 <div class="videoContentDiv">
-                                    <div @click="openVideo(video.id)" @click.middle="openVideo(video.id)" class="videoThumb">
-                                        <img :src="video.thumbnailUrl" style="width:246px;height:138px" />
-                                        <p>{{video.duration}}</p>
+                                    <div class="videoThumb">
+                                        <a target="_blank" :href="'https://www.youtube.com/watch?v=' + video.id">
+                                            <img :src="video.thumbnailUrl" style="width:246px;height:138px" />
+                                            <p>{{video.duration}}</p>                                        
+                                        </a>
                                     </div>
                                     <div class="videoTextContentDiv">
                                         <div class="videoTitleDiv">
                                             <div class="videoTitleAndMetaDiv">
-                                                <div @click="openVideo(video.id)" @click.middle="openVideo(video.id)" class="videoTitle">
-                                                    {{video.title}}
-                                                </div>
+                                                <a class="videoTitle" target="_blank" :href="'https://www.youtube.com/watch?v=' + video.id">{{video.title}}</a>
                                                 <div class="videoText">
-                                                    <span class="videoTextChannel" @click="openChannel(video.channelName)">{{video.channelTitle}}</span> &#9679 {{video.publishedAtString}}
+                                                    {{video.channelTitle}} &#9679 {{video.publishedAtString}}
                                                 </div>
                                             </div>
                                             <div class="videoTitleButtons">
@@ -619,7 +619,9 @@
                         <div class="listSelectedMarker">
                             <div v-show="channel.locked"></div>
                         </div>
-                        <img :src="'channelPictures/' + channel.id + '.jpg'" @click="openChannel(channel.username)" />
+                        <a target="_blank" :href="'https://www.youtube.com/user/' + channel.username">
+                            <img :src="'channelPictures/' + channel.id + '.jpg'"/>
+                        </a>
                         <label>
                             {{channel.displayname}}
                         </label>
@@ -631,7 +633,9 @@
                         <div class="channelEntryPane" v-bind:class="{channelEntryPaneLocked : channel.locked}">
                             <div class="channelEntryPaneList">
                                 <div class="channelEntryPaneListEntry">
-                                    <img :src="'channelPictures/' + channel.id + '.jpg'" @click="openChannel(channel.username)" />
+                                    <a target="_blank" :href="'https://www.youtube.com/user/' + channel.username">
+                                        <img :src="'channelPictures/' + channel.id + '.jpg'"/>
+                                    </a> 
                                 </div>
                                 <div class="channelEntryPaneListEntry">
                                     {{channel.displayname}}
@@ -735,18 +739,18 @@
                 <div v-show="filter==='SubBox' && searchFilter === '' && selectedTag == null" class="listList">
                     <div class="videoBox" v-for="video in lists" v-show="settings.DisplayPlaylists[video.list-1]">
                         <div class="videoContentDiv">
-                            <div @click="openVideo(video.id)" @click.middle="openVideo(video.id)" class="videoThumb">
-                                <img :src="video.thumbnailUrl" style="width:246px;height:138px" />
-                                <p>{{video.duration}}</p>
+                            <div class="videoThumb">
+                                <a target="_blank" :href="'https://www.youtube.com/watch?v=' + video.id">
+                                    <img :src="video.thumbnailUrl" style="width:246px;height:138px" />
+                                    <p>{{video.duration}}</p>                             
+                                </a>
                             </div>
                             <div class="videoTextContentDiv">
                                 <div class="videoTitleDiv">
                                     <div style="width: 100%" class="videoTitleAndMetaDiv">
-                                        <div @click="openVideo(video.id)" @click.middle="openVideo(video.id)" class="videoTitle">
-                                            {{video.title}}
-                                        </div>
+                                        <a class="videoTitle" target="_blank" :href="'https://www.youtube.com/watch?v=' + video.id">{{video.title}}</a>
                                         <div class="videoText">
-                                            <span class="videoTextChannel" @click="openChannel(video.channelName)">{{video.channelTitle}}</span> &#9679 {{video.publishedAtString}}
+                                            {{video.channelTitle}} &#9679 {{video.publishedAtString}}
                                         </div>
                                     </div>
                                 </div>
@@ -768,23 +772,25 @@
                 <div id="mainVideoList" class="videoList">
                     <div class="videoBox" v-for="video in filteredVideos.slice(viewPortBottom, viewPortTop)" :key="video.id">
                         <div class="videoChannelDiv">
-                            <img :src="'channelPictures/' + video.channelId + '.jpg'" style="left:0;width:32px;height:32px;border-radius: 50%;vertical-align:middle;cursor:pointer;" @click="openChannel(video.channelName)" />
-                            <span class="videoHeaderName" @click="openChannel(video.channelName)">{{video.channelTitle}}</span>
+                            <a target="_blank" :href="'https://www.youtube.com/user/' + video.channelName" style="text-decoration: none;">
+                                <img :src="'channelPictures/' + video.channelId + '.jpg'" style="left:0;width:32px;height:32px;border-radius: 50%;vertical-align:middle;cursor:pointer;"/>
+                                <span class="videoHeaderName">{{video.channelTitle}}</span>
+                            </a>
                             <span class="videoHeaderNameNew" v-show="settings.HighlightNewVideos && ((today.getTime()/1000 - video.publishedAt.getTime()/1000) < 86400)">NEW</span>
                         </div>
                         <div class="videoContentDiv">
-                            <div @click="openVideo(video.id)" @click.middle="openVideo(video.id)" class="videoThumb">
-                                <img :src="video.thumbnailUrl" style="width:246px;height:138px" />
-                                <p>{{video.duration}}</p>
+                            <div class="videoThumb">
+                                <a target="_blank" :href="'https://www.youtube.com/watch?v=' + video.id">
+                                    <img :src="video.thumbnailUrl" style="width:246px;height:138px" />
+                                    <p>{{video.duration}}</p>
+                                </a>
                             </div>
                             <div class="videoTextContentDiv">
                                 <div class="videoTitleDiv">
                                     <div class="videoTitleAndMetaDiv">
-                                        <div @click="openVideo(video.id)" @click.middle="openVideo(video.id)" class="videoTitle">
-                                            {{video.title}}
-                                        </div>
+                                        <a class="videoTitle" target="_blank" :href="'https://www.youtube.com/watch?v=' + video.id">{{video.title}}</a>             
                                         <div class="videoText">
-                                            <span class="videoTextChannel" @click="openChannel(video.channelName)">{{video.channelTitle}}</span> &#9679 {{video.publishedAtString}}
+                                            <a class="videoTextChannel" target="_blank" :href="'https://www.youtube.com/user/' + video.channelName">{{video.channelTitle}}</a> &#9679 {{video.publishedAtString}}
                                         </div>
                                     </div>
                                     <div class="videoTitleButtons">

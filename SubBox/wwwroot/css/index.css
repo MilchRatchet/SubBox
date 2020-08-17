@@ -458,6 +458,7 @@ nav div {
 .videoTitle {
     font-size: 18px;
     color: var(--font_title);
+    text-decoration: none;
     padding-top: 0;
     padding-bottom: 0;
     margin: 0;
@@ -594,6 +595,8 @@ nav div {
 
 
 .videoTextChannel {
+    color: var(--font_text);
+    text-decoration: none;
     cursor: pointer;
 }
 
