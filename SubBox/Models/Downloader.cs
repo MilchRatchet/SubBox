@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using SubBox.Data;
 using System;
 using System.Collections.Generic;
@@ -154,6 +153,8 @@ namespace SubBox.Models
             {
                 Channels = context.Channels.ToList();
             }
+
+            Directory.CreateDirectory("wwwroot/channelPictures");
 
             using (var client = new WebClient())
             {
