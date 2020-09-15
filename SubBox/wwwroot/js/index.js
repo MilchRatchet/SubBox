@@ -1394,6 +1394,8 @@ var app = new Vue({
 
             const target = event.target || event.srcElement;
 
+            if (confirmationMessage !== '') return;
+
             if (app.settingsMode && target.nodeName !== "BUTTON") {
                 if (!setOv.contains(target)) {
                     app.showSettings();
