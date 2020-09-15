@@ -886,7 +886,7 @@ var app = new Vue({
             } else {
                 this.filter = ch.displayname;
 
-                this.filterImg = ch.thumbnailUrl;
+                this.filterImg = "channelPictures/" + ch.id + ".jpg";
             }
 
             this.lockChannel(ch.id);
