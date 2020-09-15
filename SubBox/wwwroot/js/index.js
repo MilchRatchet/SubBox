@@ -30,6 +30,7 @@ var app = new Vue({
         settingsMode: false,
         settingsTab: 0,
         settings: [],
+        profileImage: new Image(),
         inputContext: false,
         selectedInputForContext: null,
         informationMode: false,
@@ -148,6 +149,13 @@ var app = new Vue({
             this.setSecondColor();
 
             this.setBodyColor();
+
+            this.updateProfileImage();
+        },
+        updateProfileImage() {
+            if (this.settings.PicOfTheDayUrl != this.profileImage.src) {
+                this.profileImage.src = this.settings.PicOfTheDayUrl;
+            }
         },
         async saveSettings() {
             const output = JSON.stringify(this.settings);

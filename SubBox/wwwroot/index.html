@@ -298,7 +298,7 @@
             </div>
         </div>
 
-        <div id="profileUI" v-show="profileMode" class="profileOverlay" v-bind:style="{ 'background-image': 'url(' + settings.PicOfTheDayUrl + ')' }">
+        <div id="profileUI" v-show="profileMode" class="profileOverlay" :style="{ 'background-image': 'url(' + profileImage.src + ')' }">
             <div class="profileBlur">
                 <div class="profileHeader">
                     <input v-model="settings.Username" onfocus="this.setSelectionRange(0,this.value.length);" @focusout="saveSettings();"></input>
