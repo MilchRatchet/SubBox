@@ -48,7 +48,7 @@
 }
 
     #confirmationMenu div {
-        width: 250px;
+        width: 300px;
         display: flex;
         flex-direction: column;
         background: var(--nav_bg);
@@ -58,9 +58,11 @@
 
         #confirmationMenu div p {
             color: var(--font_title);
-            padding: 20px 0 20px 0;
+            padding: 20px 20px 20px 20px;
             text-align: center;
             margin: 0;
+            text-overflow: ellipsis;
+            overflow: hidden;
         }
 
         #confirmationMenu div div {
