@@ -546,8 +546,6 @@ var app = new Vue({
             }, 1000);
         },
         async deleteVideo(video) {
-            console.log(new Date(video.publishedAt));
-
             if (this.uniqueListMode) {
                 var waiter = fetch("/api/values/video/" + video.id, { method: "DELETE" });
 
@@ -1394,6 +1392,16 @@ var app = new Vue({
 
             const target = event.target || event.srcElement;
 
+            app.inputContext = false;
+
+            var ctxMenu = document.getElementById("ctxMenu");
+
+            ctxMenu.style.display = "";
+
+            ctxMenu.style.left = "";
+
+            ctxMenu.style.top = "";
+
             if (app.confirmationMessage != '') return;
 
             if (app.settingsMode && target.nodeName !== "BUTTON") {
@@ -1442,15 +1450,6 @@ var app = new Vue({
                 }
             }
 
-            app.inputContext = false;
-
-            var ctxMenu = document.getElementById("ctxMenu");
-
-            ctxMenu.style.display = "";
-
-            ctxMenu.style.left = "";
-
-            ctxMenu.style.top = "";
         }, false);
 
         document.addEventListener("keydown", function (event) {
