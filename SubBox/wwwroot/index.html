@@ -598,9 +598,13 @@
         <div id="addPlaylistUI" v-show="inputListMode" class="inputListOverlay">
             <div class="playlistUIMainDiv">
                 <div class="playlistUIUpperDiv">
-                    <div v-for="video in lists" class="playlistUIListEntry" v-bind:class="{ playlistUIListEntrySelected : settings.DisplayPlaylists[video.list-1]}" @click.prevent="togglePlaylistDisplay(video.list)">
-                        <img :src="video.thumbnailUrl">
-                        <p>{{video.title}}</p>
+                    <div class="tooltip" v-for="video in lists">
+                        <div class="playlistUIListEntry" v-bind:class="{ playlistUIListEntrySelected : settings.DisplayPlaylists[video.list-1]}" @click.prevent="togglePlaylistDisplay(video.list)">
+                            <img :src="video.thumbnailUrl">
+                            <p>{{video.title}}</p>
+                        </div>
+                        <div v-show="settings.DisplayPlaylists[video.list-1]" class="tooltiptext ttdown">Hide Playlist</div>
+                        <div v-show="!settings.DisplayPlaylists[video.list-1]" class="tooltiptext ttdown">Unhide Playlist</div>
                     </div>
                 </div>
                 <div class="playlistUILowerDiv">

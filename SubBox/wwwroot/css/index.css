@@ -1013,7 +1013,7 @@ nav div {
             }
 
             .playlistUIMainDiv .playlistUIUpperDiv .playlistUIListEntry:hover img {
-                filter: none;
+                filter: grayscale(25%);
             }
 
             .playlistUIMainDiv .playlistUIUpperDiv .playlistUIListEntry p {
