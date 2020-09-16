@@ -1589,7 +1589,7 @@ input:checked + .slider {
     padding: 0;
 }
 
-    .tagsListEntry:hover {
+    .tagsListEntry:hover, .tagsListEntryInEdit {
         background: var(--highlight_t);
         border-top: 1px solid var(--video_bd_bot);
         border-bottom: 1px solid var(--video_bd_bot);
@@ -1641,7 +1641,7 @@ input:checked + .slider {
     align-items: center;
     justify-content: flex-start;
     height: 26px;
-    padding: 3px 10px 3px 40px;
+    padding: 1px 10px 1px 40px;
 }
 
     .tagsListEntryEditEntry:hover {
@@ -1677,7 +1677,7 @@ input:checked + .slider {
     display: flex;
     flex-direction: row;
     height: 34px;
-    padding: 2px 10px 2px 40px;
+    padding: 10px 10px 5px 40px;
 }
 
 .tagsListEntryEditAddInput {
@@ -1762,12 +1762,14 @@ input:checked + .slider {
     }
 
 .selectedTag {
-    cursor: default;
     padding: 4px 10px 4px 10px;
     font-size: 16px;
     background: var(--mainColor);
     color: var(--secColor);
     cursor: pointer;
+    max-width: 250px;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .tooltip {

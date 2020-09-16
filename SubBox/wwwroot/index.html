@@ -243,7 +243,7 @@
                         <button @click="submitTag" class="material-icons">add</button>
                     </div>
                 </div>
-                <div v-for="tag in tags" class="tagsListEntry">
+                <div v-for="tag in tags" class="tagsListEntry" :class="{ tagsListEntryInEdit: tag.inEdit }">
                     <div class="tagsListEntryContent">
                         <div class="listSelectedMarker">
                             <div style="height: 24px;" v-show="selectedTag != null && selectedTag.name == tag.name"></div>
