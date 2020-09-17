@@ -582,6 +582,17 @@
                         </label>
                     </div>
                 </div>
+                <div class="singleSetting" @click.prevent="settings.UpdateYDL = !settings.UpdateYDL">
+                    <div style="justify-content: flex-start;">
+                        <p>Update Downloader on Startup</p>
+                    </div>
+                    <div style="justify-content: flex-end;">
+                        <label class="switch">
+                            <input type="checkbox" v-model="settings.UpdateYDL" />
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
                 <div class="singleSetting">
                     <div style="justify-content: flex-start;">
                         <p>Sync Channel Pictures</p>

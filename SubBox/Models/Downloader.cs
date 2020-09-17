@@ -274,7 +274,7 @@ namespace SubBox.Models
                     }
             }
 
-            var dl = new Process();
+            Process dl = new Process();
 
             dl.StartInfo.FileName = path;
 

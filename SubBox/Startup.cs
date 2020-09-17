@@ -130,6 +130,8 @@ namespace SubBox
 
                 AppSettings.DevMode = false;
 
+                AppSettings.UpdateYDL = true;
+
                 AppSettings.PreferredQuality = AppSettings.DownloadQuality.H1080F60;
 
                 AppSettings.Save();
@@ -144,6 +146,38 @@ namespace SubBox
             if (AppSettings.LastRefresh.DayOfYear != DateTime.Now.DayOfYear)
             {
                 Downloader.GetPictureOfTheDay();
+            }
+
+            if (AppSettings.UpdateYDL)
+            {
+                string path = Directory.GetCurrentDirectory() + @"\youtube-dl.exe";
+
+                Process ydl = new Process();
+
+                ydl.StartInfo.FileName = path;
+
+                ydl.StartInfo.Arguments = $@"-U";
+
+                ydl.StartInfo.UseShellExecute = false;
+
+                ydl.StartInfo.CreateNoWindow = true;
+
+                try
+                {
+                    Logger.Info("Checking for youtube-dl updates");
+
+                    ydl.Start();
+
+                    ydl.WaitForExit();
+                }
+                catch (Exception m)
+                {
+                    Logger.Info("Couldn't update youtube-dl");
+
+                    Logger.Info("Make sure youtube-dl.exe is found in the main dir");
+
+                    Logger.Error(m.Message);
+                }
             }
 
             using (AppDbContext context = new AppDbContext())

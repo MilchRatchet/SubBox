@@ -54,11 +54,13 @@ namespace SubBox.Models
         [JsonProperty]
         public static string Notes { get; set; } = "Enter your notes here...";
         [JsonProperty]
-        public static bool FirstStart { get; set; }
+        public static bool FirstStart { get; set; } = true;
         [JsonProperty]
-        public static bool AutoStart { get; set; }
+        public static bool AutoStart { get; set; } = true;
         [JsonProperty]
-        public static bool DevMode { get; set; }
+        public static bool DevMode { get; set; } = false;
+        [JsonProperty]
+        public static bool UpdateYDL { get; set; } = true;
         [JsonProperty]
         public static DownloadQuality PreferredQuality { get; set; }
         [JsonProperty]
