@@ -160,6 +160,25 @@ namespace SubBox
 
             new Thread(() =>
             {
+                //Update Channel Pictures if this is the first start since the release of version 1.8.0
+                if (AppSettings.LastRefresh.Ticks - 637319232000000000L < 0)
+                {
+                    Logger.Info("Updating Channel Pictures");
+
+                    Downloader.SyncChannelPictures();
+                } 
+                else
+                {
+                    Random ran = new Random();
+
+                    if (ran.Next(0, 30) == 0)
+                    {
+                        Logger.Info("Updating Channel Pictures");
+
+                        Downloader.SyncChannelPictures();
+                    }  
+                }
+
                 DataRetriever Fetcher = new DataRetriever();
 
                 Fetcher.UpdateVideoList();
