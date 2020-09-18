@@ -67,6 +67,10 @@
                 <p class="material-icons">filter_list</p>
                 <p>Reset all filters</p>
             </div>
+            <div @click="closeUniqueList()" v-show="uniqueListMode" class="menuButton">
+                <p class="material-icons">exit_to_app</p>
+                <p>Exit Playlist</p>
+            </div>
             <div @click="deleteFilteredVideos()" v-show="videoListMode && (filter !== 'SubBox' || searchFilter !== '' || selectedTag !== null) && filteredVideos.length !== 0" class="menuButton">
                 <p class="material-icons">delete_sweep</p>
                 <p>Move all to Trashbin</p>
@@ -190,7 +194,7 @@
                     </div>
                 </div>
                 <div class="navRight">
-                    <button @click="closeUniqueList" class="material-icons closeUniqueListButton tooltip"><div class="tooltiptext ttdown">Back</div>exit_to_app</button>
+                    <button @click="closeUniqueList()" class="material-icons closeUniqueListButton tooltip"><div class="tooltiptext ttdown">Back</div>exit_to_app</button>
                 </div>
             </nav>
 
