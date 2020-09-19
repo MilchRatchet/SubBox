@@ -241,28 +241,29 @@
 
         <div id="tagsUI" v-show="tagsMode" class="tagsOverlay">
             <div class="tagsList">
-                <div class="tagsListAdd">
-                    <div class="tagsListAddInput">
-                        <input @keyup.enter="submitTag" v-model="addTag" type="text" autocomplete="off" placeholder="Enter Tag..." />
-                        <button @click="submitTag" class="material-icons">add</button>
-                    </div>
-                </div>
                 <div v-for="tag in tags" class="tagsListEntry" :class="{ tagsListEntryInEdit: tag.inEdit }">
                     <div class="tagsListEntryContent">
                         <div class="listSelectedMarker">
                             <div style="height: 24px;" v-show="selectedTag != null && selectedTag.name == tag.name"></div>
                         </div>
                         <p @click="selectTag(tag)" class="tagsListEntryContentName">{{tag.name}}</p>
-                        <button @click.prevent="editTag(tag)" class="tagsListEntryContentEdit">
-                            Edit
-                        </button>
+                        <div class="tooltip">
+                            <button @click.prevent="editTag(tag)" class="tagsListEntryContentEdit material-icons">
+                                edit
+                            </button>
+                            <div class="tooltiptext ttleft">Edit</div>
+                        </div>
+
                     </div>
                     <div class="tagsListEntryEdit" v-if="tag.inEdit">
                         <div class="tagsListEntryEditEntry" v-for="(tagFilter,index) in tag.filterList">
                             <p class="tagsListEntryEditEntryName">{{tagFilter}}</p>
-                            <button @click="deleteFilter(tag,tagFilter)" class="tagsListEntryEditEntryButton">
-                                Remove
-                            </button>
+                            <div class="tooltip">
+                                <button @click="deleteFilter(tag,tagFilter)" class="tagsListEntryEditEntryButton material-icons">
+                                    clear
+                                </button>
+                                <div class="tooltiptext ttleft">Remove Filter</div>
+                            </div>
                         </div>
                         <div class="tagsListEntryEditAdd">
                             <div class="tagsListEntryEditAddInput">
@@ -271,11 +272,21 @@
                                     <option v-for="ch in channels">{{ch.displayname}}</option>
                                 </datalist>
                                 <button @click="addFilterToTag(tag)" class="material-icons tagsListEntryEditAddInputAddButton">add</button>
-                                <button @click="deleteTag(tag)" class="tagsListEntryEditAddInputRemoveButton">
-                                    Remove Tag
-                                </button>
+                                <div class="tooltip">
+                                    <button @click="deleteTag(tag)" class="tagsListEntryEditAddInputRemoveButton material-icons">
+                                        delete_sweep
+                                    </button>
+                                    <div class="tooltiptext ttleft">Remove Tag</div>
+                                </div>
+
                             </div>
                         </div>
+                    </div>
+                </div>
+                <div class="tagsListAdd">
+                    <div class="tagsListAddInput">
+                        <input @keyup.enter="submitTag" v-model="addTag" type="text" autocomplete="off" placeholder="Enter New Tag..." />
+                        <button @click="submitTag" class="material-icons">add</button>
                     </div>
                 </div>
             </div>

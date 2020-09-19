@@ -854,13 +854,15 @@ nav div {
     }
 
 .channelLastRowDiv {
-    padding: 10px 5px 10px 10px;
+    padding: 10px 5px 0px 10px;
     display: flex;
     flex-direction: row;
+    border-top: 1px solid var(--font_text);
+    margin-top: 10px;
 }
 
     .channelLastRowDiv input {
-        width: 100%;
+        width: 310px;
         height: 20px;
         margin: 0;
     }
@@ -909,7 +911,7 @@ nav div {
 
 .listButton {
     border-radius: 0;
-    padding: 2px;
+    padding: 3px;
     color: transparent;
     background-color: transparent;
     border: 1px solid transparent;
@@ -1545,7 +1547,9 @@ input:checked + .slider {
     justify-content: flex-start;
     align-items: center;
     height: 36px;
-    padding: 3px 0 3px 18px;
+    padding: 12px 0 0px 18px;
+    margin-top: 10px;
+    border-top: 1px solid var(--font_text);
 }
 
 .tagsListAddInput {
@@ -1556,7 +1560,7 @@ input:checked + .slider {
 }
 
     .tagsListAddInput input {
-        width: 250px;
+        width: 480px;
         height: 26px;
         padding: 2px;
         margin: 0;
@@ -1609,18 +1613,28 @@ input:checked + .slider {
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    width: 460px;
+    width: 480px;
     margin-right: 10px;
     height: 100%;
     overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.tagsListEntryContent:hover .tagsListEntryContentEdit, .tagsListEntryInEdit .tagsListEntryContentEdit {
+    display: flex;
+}
+
+.tagsListEntryInEdit .tagsListEntryContentEdit {
+    border-left: 1px solid transparent;
 }
 
 .tagsListEntryContentEdit {
-    height: 26px;
-    border: 1px solid var(--font_text);
-    padding: 0 10px 0 10px;
+    display: none;
+    height: 42px;
+    width: 42px;
+    padding: 7px;
     margin: 0;
-    background: var(--nav_bg_t);
+    border-left: 1px solid var(--font_text);
 }
 
     .tagsListEntryContentEdit:hover {
@@ -1640,11 +1654,12 @@ input:checked + .slider {
     align-items: center;
     justify-content: flex-start;
     height: 26px;
-    padding: 1px 10px 1px 40px;
+    padding: 1px 0px 1px 41px;
 }
 
     .tagsListEntryEditEntry:hover {
         background: var(--bg_t);
+        box-shadow: 0 0 10px -8px var(--font_title);
     }
 
     .tagsListEntryEditEntry:hover .tagsListEntryEditEntryButton {
@@ -1652,7 +1667,7 @@ input:checked + .slider {
     }
 
 .tagsListEntryEditEntryName {
-    width: 419px;
+    width: 480px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -1660,11 +1675,11 @@ input:checked + .slider {
 
 .tagsListEntryEditEntryButton {
     display: none;
-    height: 22px;
-    border: 1px solid var(--font_text);
-    padding: 0 8px 0 8px;
+    height: 30px;
+    width: 30px;
+    padding: 2px;
     margin: 0;
-    background: var(--nav_bg_t);
+    border-left: 1px solid var(--font_text);
 }
 
     .tagsListEntryEditEntryButton:hover {
@@ -1676,7 +1691,7 @@ input:checked + .slider {
     display: flex;
     flex-direction: row;
     height: 34px;
-    padding: 10px 10px 5px 40px;
+    padding: 10px 0px 5px 40px;
 }
 
 .tagsListEntryEditAddInput {
@@ -1702,6 +1717,7 @@ input:checked + .slider {
     font-size: 22px;
     padding: 0;
     margin: 0;
+    margin-right: 191px;
     border: 1px solid var(--font_text);
 }
 
@@ -1711,11 +1727,10 @@ input:checked + .slider {
     }
 
 .tagsListEntryEditAddInputRemoveButton {
-    height: 26px;
-    border: 1px solid var(--font_text);
-    padding: 0 10px 0 10px;
-    margin: 0 0 0 107px;
-    background: var(--nav_bg_t);
+    height: 32px;
+    width: 32px;
+    padding: 3px;
+    margin: 0;
 }
 
     .tagsListEntryEditAddInputRemoveButton:hover {
