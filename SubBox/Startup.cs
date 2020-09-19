@@ -143,7 +143,7 @@ namespace SubBox
 
             AppSettings.SetFirstUse();
 
-            if (AppSettings.LastRefresh.DayOfYear != DateTime.Now.DayOfYear)
+            if (AppSettings.LastRefresh.DayOfYear != DateTime.Now.DayOfYear || AppSettings.PicOfTheDayLink == "")
             {
                 Downloader.GetPictureOfTheDay();
             }
