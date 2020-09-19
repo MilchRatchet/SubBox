@@ -884,7 +884,7 @@ nav div {
     padding: 0;
     border: 1px solid var(--font_text);
     color: var(--font_title);
-    background-color: transparent;
+    background: var(--bg);
 }
 
     .addChannelButton:hover {
@@ -1575,6 +1575,7 @@ input:checked + .slider {
         padding: 0;
         margin: 0;
         border: 1px solid var(--font_text);
+        background: var(--bg);
     }
 
         .tagsListAddInput button:hover {
