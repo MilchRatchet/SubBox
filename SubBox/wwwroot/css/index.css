@@ -739,14 +739,13 @@ nav div {
 .channelEntryPane {
     display: none;
     position: absolute;
-    left: 400px;
+    left: 401px;
     width: 200px;
     height: auto;
     background: var(--bg_t);
-    border: var(--video_bd_bot);
     backdrop-filter: blur(20px);
     color: var(--font_title);
-    border: 1px solid var(--video_bd_bot);
+    outline: 1px solid var(--video_bd_bot);
 }
 
     .channelEntryPane:hover {
