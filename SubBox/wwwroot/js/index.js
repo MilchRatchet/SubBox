@@ -114,6 +114,13 @@ var app = new Vue({
                 Vue.set(v, 'dlstatus', (locals.some((l) => l.Key == v.id)) ? 2 : 0);
             });
         },
+        async checkDownloadStatusUniqueVideo(video) {
+            var result = await fetch("/api/values/localvideos");
+
+            locals = await result.json();
+
+            Vue.set(video, 'dlstatus', (locals.some((l) => l.Key == video.id)) ? 2 : 0);
+        },
         async listUpdate() {
             var result = await fetch("/api/values/lists");
 
@@ -281,6 +288,8 @@ var app = new Vue({
             var result = await waiter;
 
             this.oldVideos = await result.json();
+
+            this.oldVideos.forEach(v => v.publishedAt = new Date(v.publishedAt));
 
             this.trashbinMode = true;
         },
@@ -728,7 +737,7 @@ var app = new Vue({
                 setTimeout(function () { const index = app.messages.findIndex(m => m.id === messageId); app.messages.splice(index, 1); }, 10000);
             }
         },
-        reactivateVideo(video) {
+        async reactivateVideo(video) {
             fetch("/api/values/video/" + video.id, { method: "POST" });
 
             var index = this.oldVideos.indexOf(video);
@@ -744,6 +753,8 @@ var app = new Vue({
             });
 
             this.videos.splice(index, 0, video);
+
+            this.checkDownloadStatusUniqueVideo(video);
         },
         openChannel(link) {
             window.open("https://www.youtube.com/user/" + link, "_blank");
