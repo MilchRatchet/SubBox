@@ -207,6 +207,10 @@ nav button {
 }
 
     nav button p {
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
         font-family: 'Roboto', sans-serif;
         font-size: 14px;
         font-weight: bold;
@@ -1777,14 +1781,18 @@ input:checked + .slider {
     }
 
 .selectedTag {
-    padding: 4px 10px 4px 10px;
+    height: 28px;
+    padding: 12px 10px 0 10px;
+    margin: 0 0 0 20px;
+    vertical-align: middle;
     font-size: 16px;
     background: var(--mainColor);
     color: var(--secColor);
     cursor: pointer;
-    max-width: 250px;
+    max-width: 400px;
     overflow: hidden;
     text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .tooltip {
