@@ -1192,7 +1192,7 @@ var app = new Vue({
                     "subtitle": "   ...then who was flickering the lights?",
                     "thumbUrl": "media/3110.png",
                     "text": "Nosferatu " + '\uD83D\uDC7B',
-                    "event": "const index = app.messages.findIndex(m => m.id === '" + messageId + "'); app.messages.splice(index, 1); if (!app.night) app.switchDesign();"
+                    "event": "const index = app.messages.findIndex(m => m.id == '" + messageId + "'); app.messages.splice(index, 1); if (!app.night) app.switchDesign();"
                 });
             }
 
@@ -1205,7 +1205,7 @@ var app = new Vue({
                     "subtitle": '\u2744' + '\u2744' + '\u2744' + '\u2744' + '\u2744' + '\u2744' + '\u2744' + '\u2744' + '\u2744' + '\u2744' + '\u2744' + '\u2744' + '\u2744',
                     "thumbUrl": "media/2412.png",
                     "text": '\u2744' + '\u2744' + '\u2744' + '\u2744' + '\u2744' + '\u2744' + '\u2744' + '\u2744' + '\u2744' + '\u2744' + '\u2744' + '\u2744' + '\u2744',
-                    "event": "const index = app.messages.findIndex(m => m.id === '" + messageId + "'); app.messages.splice(index, 1);"
+                    "event": "const index = app.messages.findIndex(m => m.id == '" + messageId + "'); app.messages.splice(index, 1);"
                 });
             }
 
@@ -1215,10 +1215,10 @@ var app = new Vue({
                 this.messages.push({
                     "id": messageId,
                     "title": "Happy New Year",
-                    "subtitle": "Looking forward to " + (date.getFullYear() + 1),
+                    "subtitle": "Looking forward to " + (date.getFullYear() + 1) + ".",
                     "thumbUrl": "media/3112.png",
                     "text": '\uD83D\uDE80' + '\uD83D\uDE80' + '\uD83D\uDE80' + '\uD83D\uDE80' + '\uD83D\uDE80' + '\uD83D\uDE80' + '\uD83D\uDE80' + '\uD83D\uDE80' + '\uD83D\uDE80' + '\uD83D\uDE80' + '\uD83D\uDE80' + '\uD83D\uDE80',
-                    "event": "const index = app.messages.findIndex(m => m.id === '" + messageId + "'); app.messages.splice(index, 1);"
+                    "event": "const index = app.messages.findIndex(m => m.id == '" + messageId + "'); app.messages.splice(index, 1);"
                 });
             }
 
@@ -1227,11 +1227,11 @@ var app = new Vue({
 
                 this.messages.push({
                     "id": messageId,
-                    "title": "Happy Leif Erikson Day",
+                    "title": "Happy Leif Erikson Day.",
                     "subtitle": "hinga-dinga-durgen",
                     "thumbUrl": "media/0910.png",
-                    "text": "My favorite holiday, next to April Fool's Day",
-                    "event": "const index = app.messages.findIndex(m => m.id === '" + messageId + "'); app.messages.splice(index, 1);"
+                    "text": "My favorite holiday, after April Fool's Day.",
+                    "event": "const index = app.messages.findIndex(m => m.id == '" + messageId + "'); app.messages.splice(index, 1);"
                 });
             }
 
@@ -1240,11 +1240,11 @@ var app = new Vue({
 
                 this.messages.push({
                     "id": messageId,
-                    "title": "SubBox is celebrating its Anniversary",
-                    "subtitle": "Thanks for using SubBox",
+                    "title": "SubBox is celebrating its Anniversary.",
+                    "subtitle": "Thanks for using SubBox.",
                     "thumbUrl": "media/LogoRed.png",
                     "text": '\uD83C\uDF89' + '\uD83C\uDF89' + '\uD83C\uDF89' + '\uD83C\uDF89' + '\uD83C\uDF89' + '\uD83C\uDF89' + '\uD83C\uDF89' + '\uD83C\uDF89' + '\uD83C\uDF89' + '\uD83C\uDF89' + '\uD83C\uDF89' + '\uD83C\uDF89',
-                    "event": "const index = app.messages.findIndex(m => m.id === '" + messageId + "'); app.messages.splice(index, 1);"
+                    "event": "const index = app.messages.findIndex(m => m.id == '" + messageId + "'); app.messages.splice(index, 1);"
                 });
             }
 
@@ -1253,11 +1253,11 @@ var app = new Vue({
 
                 this.messages.push({
                     "id": messageId,
-                    "title": "It is April Fool's Day",
-                    "subtitle": "Don't trust everything you read today",
+                    "title": "It is April Fool's Day.",
+                    "subtitle": "Don't trust everything you read today.",
                     "thumbUrl": "media/0104.png",
                     "text": "You never know who wants to fool you" + '\uD83D\uDC40',
-                    "event": "const index = app.messages.findIndex(m => m.id === '" + messageId + "'); app.messages.splice(index, 1); app.openVideo('dQw4w9WgXcQ');"
+                    "event": "const index = app.messages.findIndex(m => m.id == '" + messageId + "'); app.messages.splice(index, 1); app.openVideo('dQw4w9WgXcQ');"
                 });
             }
 
@@ -1266,11 +1266,11 @@ var app = new Vue({
 
                 this.messages.push({
                     "id": messageId,
-                    "title": "It is Valentins Day",
+                    "title": "It is Valentins Day.",
                     "subtitle": "Did you know that it is Youtube's Birthday?",
                     "thumbUrl": "media/1402.png",
-                    "text": "Youtube just turned " + (date.getFullYear() - 2005) + " years",
-                    "event": "const index = app.messages.findIndex(m => m.id === '" + messageId + "'); app.messages.splice(index, 1);"
+                    "text": "Youtube just turned " + (date.getFullYear() - 2005) + " years.",
+                    "event": "const index = app.messages.findIndex(m => m.id == '" + messageId + "'); app.messages.splice(index, 1);"
                 });
             }
         },
