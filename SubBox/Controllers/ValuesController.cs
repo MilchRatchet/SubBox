@@ -185,22 +185,20 @@ namespace SubBox.Controllers
         }
 
         // POST: api/values/list/add/id
-        [HttpPost("list/add/{id}/{number}")]
-        public void AddList(string id, int number)
+        [HttpPost("list/add/{id}/{listNumber}")]
+        public void AddList(string id, int listNumber)
         {
-            int count = number;
-
-            if (number == 0)
+            if (listNumber == 0)
             {
-                count = 1;
+                listNumber = 1;
 
                 var videos = context.Videos;
 
                 foreach (Video v in videos)
                 {
-                    if (v.List >= count)
+                    if (v.List >= listNumber)
                     {
-                        count = v.List + 1;
+                        listNumber = v.List + 1;
                     }
                 }
             }
@@ -209,7 +207,7 @@ namespace SubBox.Controllers
 
             DataRetriever fetcher = new DataRetriever();
 
-            fetcher.AddPlaylist(count, id);
+            fetcher.AddPlaylist(listNumber, id);
         }
 
         // POST: api/values/list/next/number
