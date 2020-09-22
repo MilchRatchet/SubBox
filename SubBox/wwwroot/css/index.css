@@ -1637,7 +1637,7 @@ input:checked + .slider {
     display: none;
     height: 42px;
     width: 42px;
-    padding: 7px;
+    padding: 9px;
     margin: 0;
     border-left: 1px solid var(--font_text);
 }
@@ -1672,7 +1672,7 @@ input:checked + .slider {
     }
 
 .tagsListEntryEditEntryName {
-    width: 480px;
+    width: 479px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -1682,7 +1682,7 @@ input:checked + .slider {
     display: none;
     height: 30px;
     width: 30px;
-    padding: 2px;
+    padding: 3px;
     margin: 0;
     border-left: 1px solid var(--font_text);
 }
