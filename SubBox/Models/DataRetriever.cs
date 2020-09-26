@@ -29,7 +29,7 @@ namespace SubBox.Models
             });
         }
 
-        public void AddChannel(string name)
+        public Channel AddChannel(string name)
         {
             LifeTime = AppSettings.NewChannelTimeFrame;
 
@@ -69,7 +69,7 @@ namespace SubBox.Models
 
                     List<string> list = RequestVideoIdsFromChannel(NewChannel.Id).GetAwaiter().GetResult();
 
-                    if (list.Count == 0) return;
+                    if (list.Count == 0) return NewChannel;
 
                     List<string> requests = CreateRequestList(list);
 
@@ -85,13 +85,17 @@ namespace SubBox.Models
                     }
 
                     Task.WaitAll(waitTasks);
-                } 
+                }
+
+                return NewChannel;
             }
             catch (Exception)
             {
                 Logger.Info(name + " couldn't be added");
 
                 _ = StatusBoard.PutStatus("channelResult", name, "false");
+
+                return null;
             }
         }
 

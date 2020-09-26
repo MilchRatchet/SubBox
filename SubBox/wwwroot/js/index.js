@@ -7,7 +7,6 @@ var app = new Vue({
         uniqueList: [],
         tags: [],
         videoListMode: true,
-        inputMode: false,
         trashbinMode: false,
         inputListMode: false,
         tagsMode: false,
@@ -233,8 +232,6 @@ var app = new Vue({
                 await this.showTrashbin();
             }
 
-            this.inputMode = false;
-
             this.addPlayList = "";
 
             this.addPlayListUnique = "";
@@ -412,8 +409,6 @@ var app = new Vue({
 
                 this.addChannelName = "";
 
-                this.inputMode = false;
-
                 var waiter = fetch("/api/values/channel/" + requestString, { method: "POST" });
 
                 await waiter;
@@ -463,7 +458,7 @@ var app = new Vue({
                                 "id": messageId,
                                 "title": channel.displayname + " was added",
                                 "subtitle": "Username: " + channel.username,
-                                "thumbUrl": channel.thumbnailUrl,
+                                "thumbUrl": 'channelPictures/' + channel.id + '.jpg',
                                 "text": "Id: " + channel.id,
                                 "event": "app.filter = '" + channel.displayname + "'; app.lockChannel('" + channel.id + "');"
                             });

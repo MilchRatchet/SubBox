@@ -60,7 +60,7 @@ namespace SubBox.Controllers
             return await context.Videos.Where(v => v.List != 0 && v.Index == 0).OrderBy(v => v.List).ToListAsync();
         }
 
-        // GET: api/values/list/all/number
+        // GET: api/values/list/all/{number}
         [HttpGet("list/all/{number}")]
         public async Task<ActionResult<IEnumerable<Video>>> GetAllVideosInList(int number)
         {
@@ -158,22 +158,7 @@ namespace SubBox.Controllers
             fetcher.UpdateVideoList();
         }
 
-        // POST: api/values/channel
-        [HttpPost("channel")]
-        public void PostChannel([FromForm]Channel ch)
-        {
-            string name = ch.Username;
-
-            Logger.Info("Adding "+name+" to Database...");
-
-            DataRetriever fetcher = new DataRetriever();
-
-            fetcher.AddChannel(name);
-
-            Downloader.SyncChannelPictures();
-        }
-
-        // POST: api/values/channel
+        // POST: api/values/channel/{name}
         [HttpPost("channel/{name}")]
         public void PostChannel(string name)
         { 
@@ -181,10 +166,19 @@ namespace SubBox.Controllers
 
             DataRetriever fetcher = new DataRetriever();
 
-            fetcher.AddChannel(name);
+            Channel channel = fetcher.AddChannel(name);
+
+            if (channel == null)
+            {
+                Logger.Warn("channel:" + name + " was requested but is not present in db");
+
+                return;
+            }
+
+            Downloader.AddChannelPicture(channel);
         }
 
-        // POST: api/values/list/add/id
+        // POST: api/values/list/add/{id}/{listNumber}
         [HttpPost("list/add/{id}/{listNumber}")]
         public void AddList(string id, int listNumber)
         {
@@ -210,7 +204,7 @@ namespace SubBox.Controllers
             fetcher.AddPlaylist(listNumber, id);
         }
 
-        // POST: api/values/list/next/number
+        // POST: api/values/list/next/{number}
         [HttpPost("list/next/{number}")]
         public void NextEntry(int number)
         {
@@ -228,7 +222,7 @@ namespace SubBox.Controllers
             context.SaveChanges();
         }
 
-        // POST: api/values/list/previous/number
+        // POST: api/values/list/previous/{number}
         [HttpPost("list/previous/{number}")]
         public void PrevEntry(int number)
         {
@@ -273,7 +267,7 @@ namespace SubBox.Controllers
             context.SaveChanges();
         }
 
-        // POST: api/values/video/id
+        // POST: api/values/video/{id}
         [HttpPost("video/{id}")]
         public void ReactivateVideo(string id)
         {
@@ -304,7 +298,7 @@ namespace SubBox.Controllers
             }
         }
 
-        //Post: api/values/download/id
+        //Post: api/values/download/{id}
         [HttpPost("download/{id}")]
         public void DownloadVideo(string id)
         {
@@ -332,55 +326,6 @@ namespace SubBox.Controllers
 
             Logger.Info("Done");
         }
-
-        //POST: api/values/settings/type/value
-        [HttpPost("settings/{type}/{value}")]
-        public void SetSetting(string type, string value)
-        {
-            switch (type.ToUpper())
-            {
-                case "NCT":
-                    AppSettings.NewChannelTimeFrame = int.Parse(value);
-
-                    break;
-
-                case "RT":
-                    AppSettings.RetrievalTimeFrame = int.Parse(value);
-
-                    break;
-
-                case "DT":
-                    AppSettings.DeletionTimeFrame = int.Parse(value);
-
-                    break;
-
-                case "PPS":
-                    AppSettings.PlaylistPlaybackSize = int.Parse(value);
-
-                    break;
-
-                case "PQ":
-                    AppSettings.PreferredQuality = (AppSettings.DownloadQuality) int.Parse(value);
-
-                    break;
-
-                case "NIGHT":
-                    AppSettings.NightMode = !AppSettings.NightMode;
-
-                    break;
-
-                case "COLOR":
-                    AppSettings.Color = value;
-
-                    break;
-
-                default:
-                    Logger.Warn("Unknown setting was tried to change");
-
-                    break;
-            }
-        }
-
 
         //POST: api/values/settings/save
         [HttpPost("settings/save")]
@@ -411,7 +356,7 @@ namespace SubBox.Controllers
             }
         }
 
-        // POST: api/values/tags/add/{name}
+        // POST: api/values/tags/add/{name}/{filter}
         [HttpPost("tags/set/{name}/{filter}")]
         public void SetTag(string name, string filter)
         {
@@ -444,7 +389,7 @@ namespace SubBox.Controllers
             Environment.Exit(0);
         }
 
-        // DELETE: api/values/video/id
+        // DELETE: api/values/video/{id}
         [HttpDelete("video/{id}")]
         public void DeleteVideo(string id)
         {
@@ -492,7 +437,7 @@ namespace SubBox.Controllers
             }
         }
 
-        // DELETE: api/values/localvideo/dir
+        // DELETE: api/values/localvideo/{dir}/{thumbdir}
         [HttpDelete("localvideo/{dir}/{thumbdir}")]
         public void DeleteLocalVideo(string dir, string thumbdir)
         {
@@ -537,7 +482,7 @@ namespace SubBox.Controllers
             LocalCollection.CollectAllDownloadedVideos();
         }
 
-        // DELETE: api/values/channel/id
+        // DELETE: api/values/channel/{id}
         [HttpDelete("channel/{id}")]
         public void DeleteChannel(string id)
         {
@@ -562,6 +507,8 @@ namespace SubBox.Controllers
             }
 
             context.SaveChanges();
+
+            Downloader.RemoveChannelPicture(id);
         }
 
         // DELETE: api/values/tags/{name}

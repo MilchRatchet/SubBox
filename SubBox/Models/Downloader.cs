@@ -166,11 +166,44 @@ namespace SubBox.Models
                     }
                     catch (Exception e)
                     {
-                        Logger.Error("At Downloader.SyncChannelPictures():");
+                        Logger.Error("At Downloader.SyncChannelPictures()");
 
                         Logger.Error(e.Message);
                     }  
                 }     
+            }
+        }
+
+        public static void AddChannelPicture(Channel ch)
+        {
+            Directory.CreateDirectory("wwwroot/channelPictures");
+
+            using (var client = new WebClient())
+            {
+                try
+                {
+                    client.DownloadFile(new Uri(ch.ThumbnailUrl), "wwwroot/channelPictures/" + ch.Id + ".jpg");
+                }
+                catch (Exception e)
+                {
+                    Logger.Error("At Downloader.AddChannelPicture(Channel)");
+
+                    Logger.Error(e.Message);
+                }
+            }
+        }
+
+        public static void RemoveChannelPicture(string id)
+        {
+            try
+            {
+                File.Delete("wwwroot/channelPictures/" + id + ".jpg");
+            }
+            catch (Exception e)
+            {
+                Logger.Error("At Downloader.RemoveChannelPicture(string)");
+
+                Logger.Error(e.Message);
             }
         }
 
