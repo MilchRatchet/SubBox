@@ -15,7 +15,6 @@ var app = new Vue({
         addTag: "",
         addTagFilter: "",
         channelMode: false,
-        removeChannel: null,
         uniqueListMode: false,
         addChannelName: "",
         night: false,
@@ -174,34 +173,12 @@ var app = new Vue({
                 body: output
             });
         },
-        async showChannels() {
-            this.removeChannel = null;
-
+        async getChannels() {
             var waiter = fetch("/api/values/channels");
-
-            this.channelMode = !this.channelMode;
-
-            if (this.tagsMode) {
-                await this.showTags();
-            }
-
-            if (this.inputListMode) {
-                this.showListInput();
-            }
-
-            if (this.trashbinMode) {
-                await this.showTrashbin();
-            }
 
             var result = await waiter;
 
             this.channels = await result.json();
-
-            this.calcChannelStats();
-
-            this.maxChannelPage = Math.ceil(this.channels.length / this.settings.ChannelsPerPage);
-
-            if (this.channelPage > this.maxChannelPage) this.channelPage = 1;
 
             this.unlockAllChannels();
 
@@ -212,6 +189,45 @@ var app = new Vue({
             this.channels.find(function (e) {
                 return e.displayname === app.filter;
             }).locked = true;
+        },
+        async showChannels() {
+            this.channelMode = !this.channelMode;
+
+            if (this.channelMode) {
+                var waiter = fetch("/api/values/channels");
+
+                if (this.tagsMode) {
+                    await this.showTags();
+                }
+    
+                if (this.inputListMode) {
+                    this.showListInput();
+                }
+    
+                if (this.trashbinMode) {
+                    await this.showTrashbin();
+                }
+    
+                var result = await waiter;
+    
+                this.channels = await result.json();
+    
+                this.calcChannelStats();
+    
+                this.maxChannelPage = Math.ceil(this.channels.length / this.settings.ChannelsPerPage);
+    
+                if (this.channelPage > this.maxChannelPage) this.channelPage = 1;
+    
+                this.unlockAllChannels();
+    
+                if (this.filter === "SubBox") {
+                    return;
+                }
+    
+                this.channels.find(function (e) {
+                    return e.displayname === app.filter;
+                }).locked = true;
+            }
         },
         async showListInput() {
             if (this.inputListMode) {
@@ -819,23 +835,8 @@ var app = new Vue({
                 document.body.setAttribute('bgcolor', '#fafafa');
             }
         },
-        markChannelDeletion(channel) {
-            if (this.removeChannel == null) {
-                this.removeChannel = channel;
-                return;
-            }
-
-            if (this.removeChannel.id == channel.id) {
-                this.removeChannel = null;
-                return;
-            }
-
-            this.removeChannel = channel;
-        },
         async deleteChannel(channel) {
             if (!(await this.getConfirmation("Remove " + channel.displayname + "?"))) return;
-
-            this.removeChannel = null;
 
             if (channel.displayname == this.filter) {
                 this.filter = "SubBox";
@@ -889,6 +890,13 @@ var app = new Vue({
             this.uniqueList.forEach(v => v.index -= index);
 
             this.listUpdate();
+        },
+        async filterByChannelFromVideoList(id) {
+            await this.getChannels();
+
+            channel = this.channels.find(ch => ch.id == id);
+
+            this.setFilter(channel);
         },
         setFilter(ch) {
             if (ch.displayname == this.filter) {

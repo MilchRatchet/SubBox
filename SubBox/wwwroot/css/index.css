@@ -761,7 +761,7 @@ nav div {
     }
 
 .channelEntryPaneLocked {
-    border: 1px solid var(--mainColor);
+    outline: 1px solid var(--mainColor);
 }
 
 .channelEntryPaneList {

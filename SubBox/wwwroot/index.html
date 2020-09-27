@@ -802,10 +802,10 @@
                 <div id="mainVideoList" class="videoList">
                     <div class="videoBox" v-for="video in filteredVideos.slice(viewPortBottom, viewPortTop)" :key="video.id">
                         <div class="videoChannelDiv">
-                            <a target="_blank" :href="'https://www.youtube.com/user/' + video.channelName" style="text-decoration: none;">
+                            <div target="_blank" @click="filterByChannelFromVideoList(video.channelId);" style="text-decoration: none;">
                                 <img :src="'channelPictures/' + video.channelId + '.jpg'" style="left:0;width:32px;height:32px;border-radius: 50%;vertical-align:middle;cursor:pointer;"/>
                                 <span class="videoHeaderName">{{video.channelTitle}}</span>
-                            </a>
+                            </div>
                             <span class="videoHeaderNameNew" v-show="settings.HighlightNewVideos && ((today.getTime()/1000 - video.publishedAt.getTime()/1000) < 86400)">NEW</span>
                         </div>
                         <div class="videoContentDiv">
