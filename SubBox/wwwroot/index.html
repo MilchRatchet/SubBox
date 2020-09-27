@@ -35,10 +35,10 @@
             <div>
                 <p>{{confirmationMessage}}</p>
                 <div>
-                    <button @click="confirmationResult = true; confirmationDone = true;">
+                    <button class="confirmationConfirm" @click="confirmationResult = true; confirmationDone = true;" style="border-right: 1px solid var(--font_text);">
                         Confirm
                     </button>
-                    <button @click="confirmationResult = false; confirmationDone = true;">
+                    <button class="confirmationDismiss" @click="confirmationResult = false; confirmationDone = true;">
                         Dismiss
                     </button>
                 </div>
