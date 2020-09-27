@@ -376,7 +376,7 @@
                 </div>
             </div>
             <div v-show="settingsTab === 0" class="settingsList">
-                <div class="singleSetting" @click.prevent="switchDesign()">
+                <div class="singleSetting" @click.prevent="settings.NightMode = !settings.NightMode; setBodyColor();">
                     <div style="justify-content: flex-start;">
                         <p>Dark Theme</p>
                     </div>

@@ -17,7 +17,6 @@ var app = new Vue({
         channelMode: false,
         uniqueListMode: false,
         addChannelName: "",
-        night: false,
         filter: "SubBox",
         filterImg: "",
         searchFilter: "",
@@ -95,41 +94,31 @@ var app = new Vue({
     },
     methods: {
         async update() {
-            var result = await fetch("/api/values/videos");
-
-            this.videos = await result.json();
+            this.videos = await (await fetch("/api/values/videos")).json();
 
             this.videos.forEach(v => v.publishedAt = new Date(v.publishedAt));
 
             this.checkDownloadStatus();
         },
         async checkDownloadStatus() {
-            var result = await fetch("/api/values/localvideos");
-
-            locals = await result.json();
+            var locals = await (await fetch("/api/values/localvideos")).json();
 
             this.videos.forEach(function (v) {
                 Vue.set(v, 'dlstatus', (locals.some((l) => l.Key == v.id)) ? 2 : 0);
             });
         },
         async checkDownloadStatusUniqueVideo(video) {
-            var result = await fetch("/api/values/localvideos");
-
-            locals = await result.json();
+            var locals = await (await fetch("/api/values/localvideos")).json();
 
             Vue.set(video, 'dlstatus', (locals.some((l) => l.Key == video.id)) ? 2 : 0);
         },
         async listUpdate() {
-            var result = await fetch("/api/values/lists");
-
-            this.lists = await result.json();
+            this.lists = await (await fetch("/api/values/lists")).json();
 
             this.initializeSmartListLoading();
         },
         async tagsUpdate() {
-            var result = await fetch("/api/values/tags");
-
-            this.tags = await result.json();
+            this.tags = await (await fetch("/api/values/tags")).json();
 
             this.tags.forEach(function (t) {
                 if (t.filter == "") {
@@ -143,9 +132,7 @@ var app = new Vue({
             this.tags.sort();
         },
         async getSettings() {
-            var result = await fetch("/api/values/settings");
-
-            this.settings = await result.json();
+            this.settings = await (await fetch("/api/values/settings")).json();
 
             document.documentElement.style.setProperty('--mainColor', "#" + this.settings.Color);
 
@@ -174,11 +161,7 @@ var app = new Vue({
             });
         },
         async getChannels() {
-            var waiter = fetch("/api/values/channels");
-
-            var result = await waiter;
-
-            this.channels = await result.json();
+            this.channels = await (await fetch("/api/values/channels")).json();
 
             this.unlockAllChannels();
 
@@ -296,18 +279,13 @@ var app = new Vue({
                 await this.showListInput();
             }
 
-            var waiter = fetch("api/values/videos/old");
-
-            var result = await waiter;
-
-            this.oldVideos = await result.json();
+            this.oldVideos = await (await fetch("api/values/videos/old")).json();
 
             this.oldVideos.forEach(v => v.publishedAt = new Date(v.publishedAt));
 
             this.trashbinMode = true;
         },
         showSettings() {
-
             if (this.profileMode) 
             {
                 this.showProfile();
@@ -359,13 +337,7 @@ var app = new Vue({
                 return;
             }
 
-            if (this.channels.length == 0) {
-                var waiter = fetch("/api/values/channels");
-
-                var result = await waiter;
-
-                this.channels = await result.json();
-            }
+            if (this.channels.length == 0) await this.getChannels();
 
             if (this.channelMode) {
                 await this.showChannels();
@@ -425,16 +397,12 @@ var app = new Vue({
 
                 this.addChannelName = "";
 
-                var waiter = fetch("/api/values/channel/" + requestString, { method: "POST" });
-
-                await waiter;
+                await fetch("/api/values/channel/" + requestString, { method: "POST" });
 
                 this.update();
 
                 if (this.channelMode) {
-                    this.channelMode = false;
-
-                    await this.showChannels();
+                    await this.getChannels();
                 }
 
                 var updater = setInterval(async function () {
@@ -485,7 +453,6 @@ var app = new Vue({
                         clearInterval(updater);
                     }
                 }, 1000);
-
             }
         },
         async submitPlaylist() {
@@ -522,9 +489,7 @@ var app = new Vue({
             const bar = document.getElementById("video" + video.id);
 
             var progressUpdater = setInterval(async function () {
-                var result = await fetch("/api/values/status/downloadProgress/" + video.id);
-
-                var progress = await result.json();
+                var progress = await (await fetch("/api/values/status/downloadProgress/" + video.id)).json();
 
                 if (progress.kind === "downloadProgress") {
                     Vue.set(video, 'dlprogress', progress.value);
@@ -534,9 +499,7 @@ var app = new Vue({
             }, 100);
 
             var updater = setInterval(async function () {
-                var result = await fetch("/api/values/status/downloadResult/" + video.id);
-
-                var status = await result.json();
+                var status = await (await fetch("/api/values/status/downloadResult/" + video.id)).json();
 
                 if (status.kind === "downloadResult") {
 
@@ -809,15 +772,6 @@ var app = new Vue({
 
             this.playlistFilter = "";
         },
-        async switchDesign() {
-            this.settings.NightMode = !this.settings.NightMode;
-
-            this.setBodyColor();
-
-            await fetch("/api/values/settings/NIGHT/" + null, { method: "POST" });
-
-            fetch("/api/values/settings/save", { method: "POST" });
-        },
         async syncChannelPictures() {
             await fetch("/api/values/settings/syncChannelPictures", {method: "POST"});
 
@@ -878,9 +832,7 @@ var app = new Vue({
 
             this.uniqueList = [];
 
-            var result = await fetch("/api/values/list/all/" + this.inputListModeNumber);
-
-            this.uniqueList = await result.json();
+            this.uniqueList = await (await fetch("/api/values/list/all/" + this.inputListModeNumber)).json();
         },
         async jumpToPlaylistItem(target) {
             const index = target.index;
@@ -1074,9 +1026,7 @@ var app = new Vue({
                     this.filteredLength = this.updateVideosLength(this.filteredVideos);
                 }
 
-                var result = await waiter;
-
-                this.informationContent = await result.json();
+                this.informationContent = await (await waiter).json();
             }
         },
         execEvent(message) {
@@ -1152,13 +1102,9 @@ var app = new Vue({
             }
         },
         async getNewestVersion() {
-            var waiter = await fetch("/api/values/information");
+            this.informationContent = await (await fetch("/api/values/information")).json();
 
-            this.informationContent = await waiter.json();
-
-            var result = await fetch("https://api.github.com/repos/MilchRatchet/SubBox/releases/latest");
-
-            const latest = await result.json();
+            const latest = await (await fetch("https://api.github.com/repos/MilchRatchet/SubBox/releases/latest")).json();
 
             this.newestVersion = latest.tag_name;
 
@@ -1195,7 +1141,7 @@ var app = new Vue({
                     "subtitle": "   ...then who was flickering the lights?",
                     "thumbUrl": "media/3110.png",
                     "text": "Nosferatu " + '\uD83D\uDC7B',
-                    "event": "const index = app.messages.findIndex(m => m.id == '" + messageId + "'); app.messages.splice(index, 1); if (!app.night) app.switchDesign();"
+                    "event": "const index = app.messages.findIndex(m => m.id == '" + messageId + "'); app.messages.splice(index, 1); for (var i = 0; i < 6; i++) { setTimeout( function() { app.settings.NightMode = !app.settings.NightMode; app.setBodyColor(); }, 2000 * i); }"
                 });
             }
 
