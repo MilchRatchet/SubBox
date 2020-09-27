@@ -892,7 +892,7 @@ var app = new Vue({
             this.listUpdate();
         },
         async filterByChannelFromVideoList(id) {
-            await this.getChannels();
+            if (this.channels.length == 0) await this.getChannels();
 
             channel = this.channels.find(ch => ch.id == id);
 
@@ -1327,7 +1327,7 @@ var app = new Vue({
 
         var mainVideoList = document.querySelector('#mainVideoList');
 
-        mainList.addEventListener("scroll", function (e) {
+        var updateSmartListLoading = function(event) {
             if (!app.settings.SmartListLoading) return;
 
             if (Math.abs(app.viewPortAnchor - mainList.scrollTop) < 215) return;
@@ -1345,7 +1345,11 @@ var app = new Vue({
             app.videos.push("update");
 
             app.videos.pop();
-        });
+        }
+
+        mainList.addEventListener("scroll", updateSmartListLoading);
+
+        window.addEventListener("resize", updateSmartListLoading);
 
         const page = document.getElementById("app");
 
