@@ -13,7 +13,7 @@ namespace SubBox
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
                 .UseKestrel()
-                .UseUrls("http://localhost:5000", "http://*:5000")
+                .UseUrls("http://localhost:2828", "http://*:2828")
                 .UseStartup<Startup>();
     }
 }

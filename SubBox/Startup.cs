@@ -223,7 +223,7 @@ namespace SubBox
 
                     try
                     {
-                        Process.Start(new ProcessStartInfo("cmd", $"/c start {"http://localhost:5000/".Replace("&", "^&")}"));
+                        Process.Start(new ProcessStartInfo("cmd", $"/c start {"http://localhost:2828/".Replace("&", "^&")}"));
                     }
                     catch(Exception e)
                     {
