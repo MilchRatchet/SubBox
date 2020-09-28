@@ -3,7 +3,7 @@ var app = new Vue({
         async leave() {
             await fetch("api/values/firstdone", { method: "POST" });
 
-            window.location.replace("http://localhost:5000/");
+            window.location.replace("http://localhost:2828/");
         }
     },
     el: "#app",

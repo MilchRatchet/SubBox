@@ -757,7 +757,7 @@
                         <button @click="showSettings" class="material-icons" v-bind:class="{activeNavButton : settingsMode}">settings_applications<p>Settings</p></button>
                         <div v-show="!settingsMode" class="tooltiptext ttdown">Settings</div>
                     </div>
-                    <button @click="window.location.replace('http://localhost:5000/localbrowser.html');" class="material-icons tooltip"><div class="tooltiptext ttdown">SubBox Nightly</div>archive</button>
+                    <button @click="window.location.replace('http://localhost:2828/localbrowser.html');" class="material-icons tooltip"><div class="tooltiptext ttdown">SubBox Nightly</div>archive</button>
                     <div class="tooltip">
                         <button @click="showProfile" class="material-icons" v-bind:class="{activeNavButton : profileMode}">account_box <p>Profile</p></button>
                         <div v-show="!profileMode" class="tooltiptext ttdown" style="right: 0">Profile</div>
@@ -826,7 +826,7 @@
                                     <div class="videoTitleButtons">
                                         <button v-show="video.dlstatus == 0" class="material-icons videoTitleButton tooltip" @click="downloadVideo(video)"><div class="tooltiptext ttleft">Download Video</div>save_alt</button>
                                         <button v-show="video.dlstatus == 1" v-bind:id="'video' + video.id" class="dlStatus1Button" style="cursor: default;">{{(video.dlprogress === "100") ? "Just a second..." : video.dlprogress + "% Finished"}}</button>
-                                        <button v-show="video.dlstatus == 2" class="dlStatus2Button" @click="window.location.replace('http://localhost:5000/localbrowser.html?id=' + video.id);">Available in Nightly</button>
+                                        <button v-show="video.dlstatus == 2" class="dlStatus2Button" @click="window.location.replace('http://localhost:2828/localbrowser.html?id=' + video.id);">Available in Nightly</button>
                                         <button class="material-icons videoTitleButton tooltip" @click="deleteVideo(video)"><div class="tooltiptext ttright">Move to Trashbin</div>clear</button>
                                     </div>
                                 </div>
@@ -840,7 +840,7 @@
                 </div>
                 <div class="bottomDiv">
                     <a target="_blank" rel="noopener noreferrer" href="https://github.com/MilchRatchet/SubBox" class="bottomDivEntry"><i class="bd-github"></i> Github</a>
-                    <a href="http://localhost:5000/tutorial.html" class="bottomDivEntry"><i class="bd-html5"></i>Introduction</a>
+                    <a href="http://localhost:2828/tutorial.html" class="bottomDivEntry"><i class="bd-html5"></i>Introduction</a>
                     <a target="_blank" rel="noopener noreferrer" href="https://www.youtube.com/" class="bottomDivEntry"><i class="bd-youtube"></i>Youtube</a>
                 </div>
             </div>

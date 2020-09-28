@@ -104,7 +104,7 @@ var app = new Vue({
 
         document.addEventListener("keyup", function (event) {
             if (event.code === "Escape") {
-                window.location.replace("http://localhost:5000");
+                window.location.replace("http://localhost:2828");
             }
         }, false);
 

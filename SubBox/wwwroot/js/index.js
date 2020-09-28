@@ -516,7 +516,7 @@ var app = new Vue({
                             "subtitle": video.channelTitle,
                             "thumbUrl": video.thumbnailUrl,
                             "text": ((status.value) ? "Download Finished" : "Download Failed"),
-                            "event": ((status.value) ? "window.location.replace('http://localhost:5000/localbrowser.html?id=" + video.id + "');" : "return;")
+                            "event": ((status.value) ? "window.location.replace('http://localhost:2828/localbrowser.html?id=" + video.id + "');" : "return;")
                         });
 
                         setTimeout(function () { const index = app.messages.findIndex(m => m.id === messageId); app.messages.splice(index, 1); }, 10000);
@@ -1449,7 +1449,7 @@ var app = new Vue({
         var first = await result.json();
 
         if (first) {
-            window.location.replace("http://localhost:5000/tutorial.html");
+            window.location.replace("http://localhost:2828/tutorial.html");
         }
 
         await this.getSettings();
