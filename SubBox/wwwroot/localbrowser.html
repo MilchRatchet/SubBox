@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="css/localbrowser.css">
     <script src="js/vue.min.js"></script>
     <meta charset="utf-8" />
-    <title>SubBox Nighty</title>
+    <title>SubBox Nightly</title>
 </head>
 
 <body>
@@ -47,7 +47,7 @@
                     <table>
                         <tr>
                             <td rowspan="2">                    
-                                <img class="channelPic" :src="video.Value.data.channelPicUrl" alt="NOIMG" onerror="this.onerror = null; this.src='media/LogoWhite.png'" />
+                                <img class="channelPic" :src="'channelPictures/' + video.Value.data.channelId + '.jpg'" alt="NOIMG" onerror="this.onerror = null; this.src='media/LogoWhite.png'" />
                             </td>
                             <td>
                                 <p class="videoTitle">{{video.Value.data.title}}</p>

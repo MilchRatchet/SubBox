@@ -541,16 +541,18 @@ nav div {
 }
 
 .videoHeaderNameNew {
-    color: var(--secColor);
-    background-color: var(--mainColor);
-    width: 50px;
+    color: var(--mainColor);
+    background-color: transparent;
+    outline: 1px solid var(--mainColor);
+    width: 40px;
     text-align: center;
-    display: inline-block;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
     cursor: default;
     font-size: 16px;
     line-height: 20px;
-    font-weight: bold;
-    margin-left: 15px;   
+    margin-left: 10px;   
 }
 
 .videoList {
