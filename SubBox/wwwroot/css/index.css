@@ -692,7 +692,7 @@ nav div {
 }
 
     .channelEntry:hover {
-        background: var(--highlight_t);
+        background: var(--bg);
         border-top: 1px solid var(--video_bd_bot);
         border-bottom: 1px solid var(--video_bd_bot);
         box-shadow: 0 0 10px -8px var(--font_title);
@@ -1474,7 +1474,7 @@ input:checked + .slider {
 }
 
     .trashbinListEntry:hover {
-        background: var(--highlight_t);
+        background: var(--bg);
         border-top: 1px solid var(--video_bd_bot);
         border-bottom: 1px solid var(--video_bd_bot);
         box-shadow: 0 0 10px -8px var(--font_title);
@@ -1601,10 +1601,11 @@ input:checked + .slider {
     border-top: 1px solid transparent;
     border-bottom: 1px solid transparent;
     padding: 0;
+    cursor: pointer;
 }
 
     .tagsListEntry:hover, .tagsListEntryInEdit {
-        background: var(--highlight_t);
+        background: var(--bg);
         border-top: 1px solid var(--video_bd_bot);
         border-bottom: 1px solid var(--video_bd_bot);
         box-shadow: 0 0 10px -8px var(--font_title);
@@ -1617,7 +1618,6 @@ input:checked + .slider {
     height: 40px;
     padding: 0 0 0 5px;
     font-size: 18px;
-    cursor: pointer;
 }
 
 .tagsListEntryContentName {
@@ -1631,7 +1631,7 @@ input:checked + .slider {
     text-overflow: ellipsis;
 }
 
-.tagsListEntryContent:hover .tagsListEntryContentEdit, .tagsListEntryInEdit .tagsListEntryContentEdit {
+.tagsListEntry:hover .tagsListEntryContentEdit, .tagsListEntryInEdit .tagsListEntryContentEdit {
     display: flex;
 }
 
@@ -1641,7 +1641,7 @@ input:checked + .slider {
 
 .tagsListEntryContentEdit {
     display: none;
-    height: 42px;
+    height: 41px;
     width: 42px;
     padding: 9px;
     margin: 0;
