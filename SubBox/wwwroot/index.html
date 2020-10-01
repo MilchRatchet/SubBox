@@ -54,8 +54,7 @@
                 <p style="color: transparent" class="material-icons">file_copy</p>
                 <p>Copy   [CTRL + C]</p>
             </div>
-            <div @click="$event.preventDefault(); actOnClipboard('paste')" v-show="inputContext" class="menuButton" v-bind:class="{tooltip : isFirefox, disabledMenuButton : isFirefox}">
-                <div class="tooltiptext ttright">Unavailable in Firefox</div>
+            <div @click="$event.preventDefault(); actOnClipboard('paste')" v-show="inputContext && !isFirefox" class="menuButton">
                 <p style="color: transparent" class="material-icons">filter_list</p>
                 <p>Paste  [CTRL + V]</p>
             </div>
@@ -840,7 +839,7 @@
                 </div>
                 <div class="bottomDiv">
                     <a target="_blank" rel="noopener noreferrer" href="https://github.com/MilchRatchet/SubBox" class="bottomDivEntry"><i class="bd-github"></i> Github</a>
-                    <a href="http://localhost:2828/tutorial.html" class="bottomDivEntry">Introduction</a>
+                    <a href="http://localhost:2828/tutorial.html" class="bottomDivEntry"><i class="bd-github" style="color: transparent;"></i>Introduction</a>
                     <a target="_blank" rel="noopener noreferrer" href="https://www.youtube.com/" class="bottomDivEntry"><i class="bd-youtube"></i>Youtube</a>
                 </div>
             </div>
