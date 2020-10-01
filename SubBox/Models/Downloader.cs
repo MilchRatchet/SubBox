@@ -378,8 +378,6 @@ namespace SubBox.Models
                         Logger.Error(e.Message);
                     }
                 }
-
-                Logger.Info(text);
             }
 
             LocalCollection.CollectAllDownloadedVideos();
