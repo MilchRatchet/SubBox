@@ -1310,7 +1310,7 @@ var app = new Vue({
 
             const target = event.target || event.srcElement;
 
-            if (target.nodeName === "INPUT" && target.className !== "search" && target.type.toLowerCase() === 'text') {
+            if (target.nodeName === "INPUT" && target.type.toLowerCase() === 'text') {
                 app.inputContext = true;
 
                 app.selectedInputForContext = target;
