@@ -84,14 +84,14 @@ var app = new Vue({
 
             return null;
         },
-        switchToLocalThumb(video, event) {
-            video.Value.onlineThumbUrl = video.Value.thumbDir;
+        switchToOnlineThumb(video, event) {
+            video.Value.thumbDir = video.Value.onlineThumbUrl;
 
             event = event || window.event;
 
             const target = event.target || event.srcElement;
 
-            target.src = video.Value.onlineThumbUrl;
+            target.src = video.Value.thumbDir;
         },
     },
     el: "#app",

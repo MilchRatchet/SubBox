@@ -39,7 +39,7 @@
         <div class="grid">
             <div v-for="video in filteredVideos" class="gridVideo" >
                 <div class="videoThumbDiv" @click="select(video)">
-                    <img class="videoThumb" :src="video.Value.onlineThumbUrl" @error="switchToLocalThumb(video, $event)" />
+                    <img class="videoThumb" :src="video.Value.thumbDir" @error="switchToOnlineThumb(video, $event)" />
                     <p class="videoThumbDuration" v-if="video.Value.data.duration !== 'NULL'">{{video.Value.data.duration}}</p>
                 </div>
 

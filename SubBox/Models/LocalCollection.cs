@@ -69,7 +69,7 @@ namespace SubBox.Models
 
                 mp4Files = null;
 
-                string[] jpgFiles = Directory.GetFiles(@"wwwroot\Videos", "*.jpg", SearchOption.AllDirectories);
+                string[] webpFiles = Directory.GetFiles(@"wwwroot\Videos", "*.webp", SearchOption.AllDirectories);
 
                 foreach (string file in videoFiles)
                 {
@@ -79,7 +79,7 @@ namespace SubBox.Models
 
                     string thumbDir = "";
 
-                    foreach (string thumb in jpgFiles)
+                    foreach (string thumb in webpFiles)
                     {
                         string thumbId = thumb.Split('\\')[3].Split('&')[0];
 
@@ -187,7 +187,6 @@ namespace SubBox.Models
 
                         Logger.Error(e.Message);
                     }
-
 
                     LocalVideo lv = new LocalVideo()
                     {
