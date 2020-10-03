@@ -31,204 +31,222 @@
 <body>
 
     <div id="app" style="width:100%">
-        <section class="vertical-scrolling" style="background-color: #db4437; color: #fafafa; height: 360px">
-            <div class="Title">
-                <p style="font-size: 36px;">Welcome to</p>
-                <p style="font-size: 120px; display: flex; align-items: center;">
-                    <img src="media/LogoWhite.png" />SubBox
-                </p>
-            </div>
-        </section>
 
-        <section>
-            <div class="ImageDiv">
-                <img src="media/intro1.png" />
-            </div>
-            <div class="TextDiv">
-                <p class="TextDivHeader">
-                    <img src="media/LogoRed.png" class="miniLogo" /><b>SubBox</b> - ASP.NET Youtube
-                    Tool
-                </p>
+        <div class="slide" v-show="slide == 0">
+            <section class="titleSection">
+                <div class="Title">
+                    <p style="font-size: 36px;">Welcome to</p>
+                    <p style="font-size: 120px; display: flex; align-items: center;">
+                        <img src="media/LogoWhite.png" />SubBox
+                    </p>
+                </div>
+            </section>
+            <section>
+                <div class="ImageDiv">
+                    <img src="media/intro1.png" />
+                </div>
+                <div class="TextDiv">
+                    <p class="TextDivHeader">
+                        <img src="media/LogoRed.png" class="miniLogo" /><b>SubBox</b>
+                    </p>
+                    <p>
+                        SubBox is an easy to use tool to manage the uploaded videos of your favourite Youtube channels. Never
+                        forget about uploaded videos again and watch them when it is right for you.
+                    </p>
+                </div>
+            </section>
+            <section class="scrollHint" @click="slide++">
+                Scroll <div class="material-icons">keyboard_arrow_down</div> Down
+            </section>
+        </div>
+
+        <div class="slide" v-show="slide == 1">
+            <section>
+                <div class="TextDiv">
+                    <p class="TextDivHeader">
+                        <img src="media/LogoRed.png" class="miniLogo" /><b>SubBox</b> - Profile
+                    </p>
+                    <p>
+                        In the profile tab, you can choose your username and make notes about whatever you need. See when you first started using SubBox. Every day a new background image appears.
+                    </p>
+                </div>
+                <div class="ImageDiv">
+                    <img src="media/intro2.png" />
+                </div>
+            </section>
+    
+            <section>
+                <div class="ImageDiv">
+                    <img src="media/intro3.png" />
+                </div>
+                <div class="TextDiv">
+                    <p class="TextDivHeader">
+                        <img src="media/LogoRed.png" class="miniLogo" /><b>SubBox</b> - Manage Your
+                        Channels
+                    </p>
+                    <p>
+                        Add your favourite channels through entering their username. Their username might not be the name you
+                        are familiar with, in that case, open their channel on Youtube and copy their name there from
+                        the link as shown. Through the channels button you can get a list of all your currently added channels. Here you can
+                        decide to show only videos of one particular channel by clicking on the star icon. Remove a channel
+                        with the delete button.
+                    </p>
+                </div>
+            </section>
+    
+            <section class="miniSection">
                 <p>
-                    SubBox is an easy to use tool to manage the uploaded videos of your favourite Youtube channels. Never
-                    forget about uploaded videos again and watch them when it is right for you.
+                    Don't know what a button does? Hover over it with your Mouse to display a tooltip.<button class="material-icons tooltip">
+                        <div class="tooltiptext ttleft">I think you got the point.</div>visibility
+                    </button>
                 </p>
-            </div>
-        </section>
+            </section>
+        </div>
 
-        <section>
-            <div class="TextDiv">
-                <p class="TextDivHeader">
-                    <img src="media/LogoRed.png" class="miniLogo" /><b>SubBox</b> - Add Your
-                    Favourite Channels
-                </p>
+        <div class="slide" v-show="slide == 2">
+            <section>
+                <div class="TextDiv">
+                    <p class="TextDivHeader">
+                        <img src="media/LogoRed.png" class="miniLogo" /><b>SubBox</b> - Add Playlists
+                    </p>
+                    <p>
+                        Add playlists you want to watch by simply entering the respective playlist id. To get the playlist
+                        id, open the playlist on Youtube and copy the id from the link. You will always see each
+                        current video of every playlist in your list marked with the PLAYLIST box. Use the arrow buttons on the playlist video to go to the next/previous video or use the list button
+                        to get an overview over the whole playlist. You want to combine playlists? Just click the list button
+                        on an already created playlist and use the add button.
+                    </p>
+                </div>
+                <div class="ImageDiv">
+                    <img src="media/intro4.png" />
+                </div>
+            </section>
+            <section>
+                <div class="ImageDiv">
+                    <img src="media/intro5.png" />
+                </div>
+                <div class="TextDiv">
+                    <p class="TextDivHeader">
+                        <img src="media/LogoRed.png" class="miniLogo" /><b>SubBox</b> - Using Playlists
+                    </p>
+                    <p>
+                        If you don't want you playlists to clutter your front page, you can hide them in the playlist tab. This way you can add playlists that you want to watch in a few months time.
+                    </p>
+                </div>
+            </section>
+    
+            <section class="miniSection">
+                <p>You can search for videos in your SubBox by simply typing anywhere.</p>
+            </section>
+        </div>
+
+
+
+        <div class="slide" v-show="slide == 3">
+            <section>
+                <div class="TextDiv">
+                    <p class="TextDivHeader">
+                        <img src="media/LogoRed.png" class="miniLogo" /><b>SubBox</b> - The Trashbin
+                    </p>
+                    <p>
+                        If you removed videos from your list on accident or you changed your mind, you can just click on the
+                        trashbin icon to get a list of all removed videos. Be aware these videos will be permanently deleted
+                        after they have reached a certain age. You can set this age yourself, more on that later.
+                    </p>
+                </div>
+                <div class="ImageDiv">
+                    <img src="media/intro6.png" />
+                </div>
+            </section>
+            <section>
+                <div class="ImageDiv">
+                    <img src="media/intro7.png" />
+                </div>
+                <div class="TextDiv">
+                    <p class="TextDivHeader">
+                        <img src="media/LogoRed.png" class="miniLogo" /><b>SubBox</b> - Search and Tags
+                    </p>
+                    <p>
+                        Hover over the "SubBox" to use the search bar. If one search keyword isn't enough, you can make use
+                        of tags. Just create a tag and add all keywords you want to combine. When selecting a tag, all
+                        videos, containing at least one of the keywords, will be shown.
+                    </p>
+                </div>
+            </section>
+    
+            <section class="miniSection">
                 <p>
-                    Add your favourite channels through entering their username. Their username might not be the name you
-                    are familiar with, in that case just open their channel on Youtube and copy their name there from
-                    the link as shown.
+                    Did you know you can visit this page from other devices in your network? The link is [Your IP]:2828
                 </p>
-            </div>
-            <div class="ImageDiv">
-                <img src="media/intro2.png" />
-            </div>
-        </section>
+            </section>
+        </div>
 
-        <section>
-            <div class="ImageDiv">
-                <img src="media/intro3.png" />
-            </div>
-            <div class="TextDiv">
-                <p class="TextDivHeader">
-                    <img src="media/LogoRed.png" class="miniLogo" /><b>SubBox</b> - Manage Your
-                    Channels
-                </p>
+        <div class="slide" v-show="slide == 4">
+            <section>
+                <div class="TextDiv">
+                    <p class="TextDivHeader">
+                        <img src="media/LogoPurple.png" class="miniLogo" /><b>SubBox</b> - Customize To
+                        Your Needs
+                    </p>
+                    <p>
+                        Bright themes hurt your eyes? You can switch to a more comfortable dark theme with just one click. 
+                        Red is nice and all but you prefer different colours? Switch to any accent colour of
+                        your choice in the settings tab. Set the time spans in which videos are retrieved and deleted.
+                        Smart List Loading is a feature that helps you improve performance when you have a lot of videos in your SubBox at the cost of small stuttering on scrolling.
+                    </p>
+    
+                </div>
+                <div class="ImageDiv">
+                    <img src="media/intro8.png" />
+                </div>
+            </section>
+    
+            <section>
+                <div class="ImageDiv">
+                    <img src="media/intro9.png" />
+                </div>
+                <div class="TextDiv">
+                    <p class="TextDivHeader"><img src="media/LogoPurple.png" class="miniLogo" /><b>SubBox</b> - Nigthly</p>
+                    <p>
+                        Download Videos in your SubBox and watch them later from your Harddrive without the need for
+                        Internet. The desired Video Quality for your downloads can be set in the Settings Menu. Individual
+                        Videos outside of your SubBox can be downloaded with the console command "-dlsv".
+                    </p>
+                </div>
+            </section>
+    
+            <section class="miniSection">
                 <p>
-                    Through the channels button you can get a list of all your currently added channels. Here you can
-                    decide to show only videos of one particular channel by clicking on the star icon. Remove a channel
-                    with the delete button.
+                    Check out SubBox on <a target="_blank" rel="noopener noreferrer"
+                                       href="https://github.com/MilchRatchet/SubBox"><i class="bd-github"></i> Github</a> to not miss
+                    future updates!
                 </p>
-            </div>
-        </section>
+            </section>
+        </div>
 
-        <section class="miniSection">
-            <p>
-                Click on the <button class="material-icons refreshButton">autorenew</button> button in the top right
-                corner to update your list manually.
-            </p>
-        </section>
+        <div class="slide" v-show="slide == 5">
+            <section class="EndSection">
+                <div class="EndDiv">
+                    <p>This is all you need to know.</p>
+                    <a class="leaveButton" @click="leave()">
+                        Continue to <img src="media/LogoWhite.png"
+                                         style="height: 40px" />SubBox
+                    </a>
+                </div>
+            </section>
+        </div>
 
-        <section>
-            <div class="TextDiv">
-                <p class="TextDivHeader">
-                    <img src="media/LogoRed.png" class="miniLogo" /><b>SubBox</b> - Add Playlists
-                </p>
-                <p>
-                    Add playlists you want to watch by simply entering the respective playlist id. To get the playlist
-                    id, just open the playlist on Youtube and copy the id from the link. You will always see each
-                    current video of every playlist in your list marked with the PLAYLIST box.
-                </p>
-            </div>
-            <div class="ImageDiv">
-                <img src="media/intro4.png" />
-            </div>
-        </section>
+        
+        <div class="sidebar" z-index="999">
+            <div :class="{activeSidebarNote : slide == 0}" @click="slide = 0"></div>
+            <div :class="{activeSidebarNote : slide == 1}" @click="slide = 1"></div>
+            <div :class="{activeSidebarNote : slide == 2}" @click="slide = 2"></div>
+            <div :class="{activeSidebarNote : slide == 3}" @click="slide = 3"></div>
+            <div :class="{activeSidebarNote : slide == 4}" @click="slide = 4"></div>
+            <div :class="{activeSidebarNote : slide == 5}" @click="slide = 5"></div>
+        </div>
 
-        <section>
-            <div class="ImageDiv">
-                <img src="media/intro5.png" />
-            </div>
-            <div class="TextDiv">
-                <p class="TextDivHeader">
-                    <img src="media/LogoRed.png" class="miniLogo" /><b>SubBox</b> - Using Playlists
-                </p>
-                <p>
-                    Use the arrow buttons on the playlist video to go to the next/previous video or use the list button
-                    to get a overview over the whole playlist. You want to combine playlists? Just click the list button
-                    on an already created playlist and use the add button.
-                </p>
-            </div>
-        </section>
 
-        <section class="miniSection">
-            <p>Did you know you can visit this page from other devices in your network? The link is [Your IP]:2828</p>
-        </section>
-
-        <section>
-            <div class="TextDiv">
-                <p class="TextDivHeader">
-                    <img src="media/LogoRed.png" class="miniLogo" /><b>SubBox</b> - The Trashbin
-                </p>
-                <p>
-                    If you removed videos from your list on accident or you changed your mind, you can just click on the
-                    trashbin icon to get a list of all removed videos. Be aware these videos will be permanently deleted
-                    after they have reached a certain age. You can set this age yourself, more on that later.
-                </p>
-            </div>
-            <div class="ImageDiv">
-                <img src="media/intro6.png" />
-            </div>
-        </section>
-
-        <section>
-            <div class="ImageDiv">
-                <img src="media/intro7.png" />
-            </div>
-            <div class="TextDiv">
-                <p class="TextDivHeader">
-                    <img src="media/LogoRed.png" class="miniLogo" /><b>SubBox</b> - Search and Tags
-                </p>
-                <p>
-                    Hover over the "SubBox" to use the search bar. If one search keyword isn't enough, you can make use
-                    of tags. Just create a tag and add all keywords you want to combine. When selecting a tag, all
-                    videos containing atleast one of the keywords will be shown.
-                </p>
-            </div>
-        </section>
-
-        <section class="miniSection">
-            <p>
-                Don't know what a button or a setting does? Hover over it with your Mouse to display a tooltip.<button class="material-icons tooltip">
-                    <div class="tooltiptext ttleft">I think you got the point.</div>visibility
-                </button>
-            </p>
-        </section>
-
-        <section>
-            <div class="TextDiv">
-                <p class="TextDivHeader">
-                    <img src="media/LogoPurple.png" class="miniLogo" /><b>SubBox</b> - Customize To
-                    Your Needs
-                </p>
-                <p>
-                    Bright themes hurt your eyes? You can switch to a more comfortable dark theme with just one click on
-                    the lightbulb. Red is nice and all but you prefer different colors? Switch to any accent color of
-                    your choice in the settings tab. In there you can also set your preferences for:
-                </p>
-                <ul>
-                    <li>- How many days of videos you want to retrieve when adding new channels</li>
-                    <li>- How many days of videos you want to retrieve everytime you refresh</li>
-                    <li>- How old you want videos to get before they get deleted from the bin</li>
-                    <li>- How many videos do you want to go back to in a playlist</li>
-                </ul>
-
-            </div>
-            <div class="ImageDiv">
-                <img src="media/intro8.png" />
-            </div>
-        </section>
-
-        <section>
-            <div class="ImageDiv">
-                <img src="media/intro9.png" />
-            </div>
-            <div class="TextDiv">
-                <p class="TextDivHeader"><img src="media/LogoPurple.png" class="miniLogo" /><b>SubBox</b> - Nigthly</p>
-                <p>
-                    Download Videos in your SubBox and watch them later from your Harddrive without the need for
-                    Internet. The desired Video Quality for your downloads can be set in the Settings Menu. Individual
-                    Videos outside of your SubBox can be downloaded with the console command "-dlsv".
-                </p>
-            </div>
-        </section>
-
-        <section class="miniSection">
-            <p>
-                Check SubBox on <a target="_blank" rel="noopener noreferrer"
-                                   href="https://github.com/MilchRatchet/SubBox"><i class="bd-github"></i> Github</a> to not miss
-                future updates!
-            </p>
-        </section>
-
-        <section class="EndSection">
-            <div class="EndDiv">
-                <p>This is all you need to know.</p>
-                <a class="leaveButton" @click="leave()">
-                    Continue to <img src="media/LogoWhite.png"
-                                     style="height: 40px" />SubBox
-                </a>
-            </div>
-
-        </section>
 
     </div>
 
