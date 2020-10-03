@@ -13,6 +13,7 @@ namespace SubBox.Models
 {
     public class Downloader
     {
+
         public static void DownloadFiles()
         {
             try
@@ -66,10 +67,22 @@ namespace SubBox.Models
                         }
                     };
 
-                    client.DownloadFileAsync(new Uri("https://youtube-dl.org/downloads/latest/youtube-dl.exe"), "youtube-dl.exe");
+                    try
+                    {
+                        client.DownloadFile(new Uri("https://youtube-dl.org/downloads/latest/youtube-dl.exe"), "youtube-dl.exe");
+                    }
+                    catch (Exception m)
+                    {
+                        Logger.Info("Failed downloading youtube-dl");
+
+                        Logger.Info("Please open an issue on Github if this issue persists");
+
+                        Logger.Error(m.Message);
+                    }
                 }
 
-                if (!ffmpeg)
+                //ffmpeg is to be included in releases until a stable download option is found now that zeranoe is no more
+                /*if (!ffmpeg)
                 {
                     Logger.Info("ffmpeg.exe not found");
 
@@ -134,8 +147,19 @@ namespace SubBox.Models
                         }
                     };
 
-                    client.DownloadFileAsync(new Uri("https://ffmpeg.zeranoe.com/builds/win64/static/ffmpeg-4.2.1-win64-static.zip"), "ffmpeg.zip");
-                }
+                    try
+                    {
+                        client.DownloadFile(new Uri("https://www.gyan.dev/ffmpeg/builds/ffmpeg-release-essentials.zip"), "ffmpeg.zip");
+                    }
+                    catch (Exception m)
+                    {
+                        Logger.Info("Failed downloading ffmpeg");
+
+                        Logger.Info("Please open an issue on Github if this issue persists");
+
+                        Logger.Error(m.Message);
+                    }
+                }*/
             }
             catch (Exception e)
             {

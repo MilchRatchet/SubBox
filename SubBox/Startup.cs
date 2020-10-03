@@ -74,10 +74,6 @@ namespace SubBox
 
             Logger.Info("SubBox Build v"+ BuildVersion + " - " + BuildTime.Day + "." + BuildTime.Month + "." + BuildTime.Year);
 
-            AppSettings.DownloadReady = false;
-
-            Downloader.DownloadFiles();
-
             //load settings
             try
             {
@@ -143,12 +139,16 @@ namespace SubBox
 
             AppSettings.SetFirstUse();
 
+            AppSettings.DownloadReady = false;
+
+            Downloader.DownloadFiles();
+
             if (AppSettings.LastRefresh.DayOfYear != DateTime.Now.DayOfYear || AppSettings.PicOfTheDayLink == "")
             {
                 Downloader.GetPictureOfTheDay();
             }
 
-            if (AppSettings.UpdateYDL)
+            if (AppSettings.UpdateYDL && AppSettings.DownloadReady)
             {
                 string path = Directory.GetCurrentDirectory() + @"\youtube-dl.exe";
 
