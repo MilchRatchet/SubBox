@@ -67,18 +67,8 @@ namespace SubBox.Models
                         }
                     };
 
-                    try
-                    {
-                        client.DownloadFile(new Uri("https://youtube-dl.org/downloads/latest/youtube-dl.exe"), "youtube-dl.exe");
-                    }
-                    catch (Exception m)
-                    {
-                        Logger.Info("Failed downloading youtube-dl");
-
-                        Logger.Info("Please open an issue on Github if this issue persists");
-
-                        Logger.Error(m.Message);
-                    }
+                    //this may crash SubBox if the link does not work anymore, try catch does not work for async methods
+                    client.DownloadFileAsync(new Uri("https://youtube-dl.org/downloads/latest/youtube-dl.exe"), "youtube-dl.exe");
                 }
 
                 //ffmpeg is to be included in releases until a stable download option is found now that zeranoe is no more
