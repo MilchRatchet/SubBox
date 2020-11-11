@@ -315,7 +315,7 @@
         <div id="profileUI" v-show="profileMode" class="profileOverlay" :style="{ 'background-image': 'url(' + profileImage.src + ')' }">
             <div class="profileBlur">
                 <div class="profileHeader">
-                    <input v-model="settings.Username" onfocus="this.setSelectionRange(0,this.value.length);" @focusout="saveSettings();"></input>
+                    <input v-model="settings.Username" onfocus="this.setSelectionRange(0,this.value.length);" @focusout="saveSettings();" />
                 </div>
                 <div class="profileOption">
                     <p>Since {{settings.FirstUse}}</p>
@@ -801,7 +801,7 @@
                 <div id="mainVideoList" class="videoList">
                     <div class="videoBox" v-for="video in filteredVideos.slice(viewPortBottom, viewPortTop)" :key="video.id">
                         <div class="videoChannelDiv">
-                            <div target="_blank" @click="filterByChannelFromVideoList(video.channelId);" style="text-decoration: none;">
+                            <div target="_blank" @click="filterByChannelFromVideoList(video.channelId);" style="text-decoration: none; cursor: pointer;">
                                 <img :src="'channelPictures/' + video.channelId + '.jpg'" style="left:0;width:32px;height:32px;border-radius: 50%;vertical-align:middle;cursor:pointer;"/>
                                 <span class="videoHeaderName">{{video.channelTitle}}</span>
                                 <span class="videoHeaderNameNew" v-show="settings.HighlightNewVideos && ((today.getTime()/1000 - video.publishedAt.getTime()/1000) < 86400)">NEW</span>
