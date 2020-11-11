@@ -66,7 +66,7 @@ namespace SubBox
         {
             Assembly assembly = Assembly.GetExecutingAssembly();
 
-            FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
+            FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(AppContext.BaseDirectory + "SubBox.dll");
 
             BuildVersion = fvi.ProductVersion.Split('+')[0];
 
