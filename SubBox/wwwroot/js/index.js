@@ -140,8 +140,6 @@ var app = new Vue({
 
             this.setSecondColor();
 
-            this.setBodyColor();
-
             this.updateProfileImage();
         },
         updateProfileImage() {
@@ -182,31 +180,31 @@ var app = new Vue({
                 if (this.tagsMode) {
                     await this.showTags();
                 }
-    
+
                 if (this.inputListMode) {
                     this.showListInput();
                 }
-    
+
                 if (this.trashbinMode) {
                     await this.showTrashbin();
                 }
-    
+
                 var result = await waiter;
-    
+
                 this.channels = await result.json();
-    
+
                 this.calcChannelStats();
-    
+
                 this.maxChannelPage = Math.ceil(this.channels.length / this.settings.ChannelsPerPage);
-    
+
                 if (this.channelPage > this.maxChannelPage) this.channelPage = 1;
-    
+
                 this.unlockAllChannels();
-    
+
                 if (this.filter === "SubBox") {
                     return;
                 }
-    
+
                 this.channels.find(function (e) {
                     return e.displayname === app.filter;
                 }).locked = true;
@@ -286,39 +284,39 @@ var app = new Vue({
             this.trashbinMode = true;
         },
         showSettings() {
-            if (this.profileMode) 
+            if (this.profileMode)
             {
                 this.showProfile();
             }
-            else 
+            else
             {
-                if (this.settingsMode) 
+                if (this.settingsMode)
                 {
                     this.saveSettings();
-                } 
-                else 
+                }
+                else
                 {
                     this.getSettings();
                 }
             }
 
             this.settingsTab = 0;
-            
+
             this.settingsMode = !this.settingsMode;
         },
         showProfile() {
 
-            if (this.settingsMode) 
-            {               
+            if (this.settingsMode)
+            {
                 this.showSettings();
             }
-            else 
-            { 
-                if (this.profileMode) 
+            else
+            {
+                if (this.profileMode)
                 {
                     this.saveSettings();
-                } 
-                else 
+                }
+                else
                 {
                     this.getSettings();
                 }
@@ -589,7 +587,7 @@ var app = new Vue({
                 setTimeout(function () { const index = app.messages.findIndex(m => m.id === messageId); app.messages.splice(index, 1); }, 10000);
             }
         },
-        async deleteFilteredPlaylistVideos() {   
+        async deleteFilteredPlaylistVideos() {
             if (!(await this.getConfirmation("Delete all Filtered Videos?"))) return;
 
             var count = 0;
@@ -694,7 +692,7 @@ var app = new Vue({
 
             this.uniqueList.forEach(async function (item) {
                 await fetch("/api/values/video/" + item.id, { method: "DELETE" });
-            });    
+            });
 
             if (this.settings.VideosDeletionNotification) {
                 const messageId = app.messageRunningId++;
@@ -781,13 +779,6 @@ var app = new Vue({
             Vue.set(this.settings.DisplayPlaylists, list-1, !this.settings.DisplayPlaylists[list-1]);
 
             await this.saveSettings();
-        },
-        setBodyColor() {
-            if (this.settings.NightMode) {
-                document.body.setAttribute('bgcolor', '#131313');
-            } else {
-                document.body.setAttribute('bgcolor', '#fafafa');
-            }
         },
         async deleteChannel(channel) {
             if (!(await this.getConfirmation("Remove " + channel.displayname + "?"))) return;
@@ -929,7 +920,7 @@ var app = new Vue({
 
                 fetch("/api/values/tags/set/" + tag.name + "/§" + tag.filter, { method: "POST" });
 
-            }     
+            }
         },
         async saveFilters(tag) {
             var forceUpdateTag = this.selectedTag;
@@ -1141,7 +1132,7 @@ var app = new Vue({
                     "subtitle": "   ...then who was flickering the lights?",
                     "thumbUrl": "media/3110.png",
                     "text": "Nosferatu " + '\uD83D\uDC7B',
-                    "event": "const index = app.messages.findIndex(m => m.id == '" + messageId + "'); app.messages.splice(index, 1); for (var i = 0; i < 6; i++) { setTimeout( function() { app.settings.NightMode = !app.settings.NightMode; app.setBodyColor(); }, 2000 * i); }"
+                    "event": "const index = app.messages.findIndex(m => m.id == '" + messageId + "'); app.messages.splice(index, 1);"
                 });
             }
 

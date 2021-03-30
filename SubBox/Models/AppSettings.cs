@@ -22,7 +22,7 @@ namespace SubBox.Models
         [JsonProperty]
         public static string Color { get; set; }
         [JsonProperty]
-        public static bool NightMode { get; set; }
+        public static string Theme { get; set; } = "ThemeSubBoxLight";
         [JsonProperty]
         public static bool ConfirmWindow { get; set; }
         [JsonProperty]

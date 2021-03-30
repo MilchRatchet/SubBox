@@ -100,7 +100,7 @@ namespace SubBox
 
                 AppSettings.Color = "DB4437";
 
-                AppSettings.NightMode = false;
+                AppSettings.Theme = "ThemeSubBoxLight";
 
                 AppSettings.ConfirmWindow = true;
 

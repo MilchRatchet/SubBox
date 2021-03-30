@@ -29,8 +29,7 @@
 </head>
 
 <body>
-    <div id="app" :class="settings.NightMode ? 'dark-mode' : 'light-mode'">
-
+    <div id="app" :class="settings.Theme">
         <div v-show="confirmationMessage !== ''" id="confirmationMenu">
             <div>
                 <p>{{confirmationMessage}}</p>
@@ -206,7 +205,7 @@
                                     <div class="videoThumb">
                                         <a target="_blank" :href="'https://www.youtube.com/watch?v=' + video.id">
                                             <img :src="video.thumbnailUrl" style="width:246px;height:138px" />
-                                            <p>{{video.duration}}</p>                                        
+                                            <p>{{video.duration}}</p>
                                         </a>
                                     </div>
                                     <div class="videoTextContentDiv">
@@ -375,15 +374,36 @@
                 </div>
             </div>
             <div v-show="settingsTab === 0" class="settingsList">
-                <div class="singleSetting" @click.prevent="settings.NightMode = !settings.NightMode; setBodyColor();">
+                <div class="singleSetting">
                     <div style="justify-content: flex-start;">
-                        <p>Dark Theme</p>
+                        <p>Theme</p>
                     </div>
                     <div style="justify-content: flex-end;">
-                        <label class="switch">
-                            <input type="checkbox" v-model="settings.NightMode" />
-                            <span class="slider"></span>
-                        </label>
+                        <div class="numberInput">
+                            <select v-model="settings.Theme">
+                                <option value="ThemeSubBoxLight">
+                                    SubBox Light
+                                </option>
+                                <option value="ThemeSubBoxDark">
+                                    SubBox Dark
+                                </option>
+                                <option value="ThemeGithubDark">
+                                    Github Dark
+                                </option>
+                                <option value="ThemeYoutubeDark">
+                                    Youtube Dark
+                                </option>
+                                <option value="ThemeTwitchDark">
+                                    Twitch Dark
+                                </option>
+                                <option value="ThemeLunarNewYear">
+                                    Lunar New Year
+                                </option>
+                                <option value="ThemeHalloween">
+                                    Halloween
+                                </option>
+                            </select>
+                        </div>
                     </div>
                 </div>
                 <div class="singleSetting">
@@ -664,7 +684,7 @@
                                 <div class="channelEntryPaneListEntry">
                                     <a target="_blank" :href="'https://www.youtube.com/user/' + channel.username">
                                         <img :src="'channelPictures/' + channel.id + '.jpg'"/>
-                                    </a> 
+                                    </a>
                                 </div>
                                 <div class="channelEntryPaneListEntry">
                                     {{channel.displayname}}
@@ -771,7 +791,7 @@
                             <div class="videoThumb">
                                 <a target="_blank" :href="'https://www.youtube.com/watch?v=' + video.id">
                                     <img :src="video.thumbnailUrl" style="width:246px;height:138px" />
-                                    <p>{{video.duration}}</p>                             
+                                    <p>{{video.duration}}</p>
                                 </a>
                             </div>
                             <div class="videoTextContentDiv">
@@ -805,7 +825,7 @@
                                 <img :src="'channelPictures/' + video.channelId + '.jpg'" style="left:0;width:32px;height:32px;border-radius: 50%;vertical-align:middle;cursor:pointer;"/>
                                 <span class="videoHeaderName">{{video.channelTitle}}</span>
                                 <span class="videoHeaderNameNew" v-show="settings.HighlightNewVideos && ((today.getTime()/1000 - video.publishedAt.getTime()/1000) < 86400)">NEW</span>
-                            </div>    
+                            </div>
                         </div>
                         <div class="videoContentDiv">
                             <div class="videoThumb">
@@ -817,7 +837,7 @@
                             <div class="videoTextContentDiv">
                                 <div class="videoTitleDiv">
                                     <div class="videoTitleAndMetaDiv">
-                                        <a class="videoTitle" target="_blank" :href="'https://www.youtube.com/watch?v=' + video.id">{{video.title}}</a>             
+                                        <a class="videoTitle" target="_blank" :href="'https://www.youtube.com/watch?v=' + video.id">{{video.title}}</a>
                                         <div class="videoText">
                                             <a class="videoTextChannel" target="_blank" :href="'https://www.youtube.com/user/' + video.channelName">{{video.channelTitle}}</a> &#9679 {{video.publishedAtString}}
                                         </div>
