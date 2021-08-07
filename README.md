@@ -1,19 +1,32 @@
 # SubBox [![Github Release](https://img.shields.io/badge/Release-1.8.1-red)](https://github.com/MilchRatchet/SubBox/releases)
-`SubBox` is an easy to use tool to manage the uploaded videos of your favourite Youtube channels. Never forget about uploaded videos again and watch them when it is right for you.
+`SubBox` is a tool to manage the uploaded videos of your favourite Youtube channels. It resembles the `Subscriptions` tab on Youtube.
 
-![alt text](https://github.com/MilchRatchet/SubBox/blob/master/SubBox/wwwroot/media/intro1.png)
-![alt text](https://github.com/MilchRatchet/SubBox/blob/master/SubBox/wwwroot/media/intro8.png)
+![DemoImage1](SubBox/wwwroot/media/intro1.png)
+![DemoImage2](SubBox/wwwroot/media/intro8.png)
 
 <img src="https://github.com/MilchRatchet/SubBox/blob/master/SubBox/wwwroot/media/intro3.png" width="45%"></img>
 <img src="https://github.com/MilchRatchet/SubBox/blob/master/SubBox/wwwroot/media/intro5.png" width="45%"></img>
 
-# SubBox Nightly
-`SubBox Nightly` is a built in feature providing the ability to download any Video from Youtube and watch them later on demand. All your downloaded Videos will be conveniently listed.
+All videos can be downloaded and watched later without an internet connection. For this [FFmpeg](https://github.com/FFmpeg/FFmpeg) and [youtube-dl](https://github.com/ytdl-org/youtube-dl) are used on the backend.
 
-![alt text](https://github.com/MilchRatchet/SubBox/blob/master/SubBox/wwwroot/media/intro9.png)
+![DemoImageNightly](SubBox/wwwroot/media/intro9.png)
 
-# Installation
-It is simple, just download the latest Release Version and launch `SubBox.exe`. A new Tab in your browser will open and you are ready to go.
-Downloading Videos requires `youtube-dl` and `ffmpeg` but you won't have to care about any of that as `SubBox` will download these on your first launch.
+# Building
+
+First, you need to create a public class called `Config` which has the following static fields:
+``` C#
+public static string APIKey =
+[Insert your Youtube API key];
+
+public static string UnsplashAPIKey =
+[Insert your Unsplash API key];
+```
+This project can be build using Visual Studio. `SubBox` should download `youtube-dl` and `ffmpeg`. If this does not work, you need to put the executables into `SubBox/`.
+
+Alternatively, you can download one of the release executables.
+
+# Issues
+
+See the `Issues` tab for a list of currently known bugs and feature ideas. As some important functionalities rely on external APIs it is quite likely that things break over time. In that case, it would be helpful to create a new issue in which you describe the bug.
 
 
