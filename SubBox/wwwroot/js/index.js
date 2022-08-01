@@ -1301,6 +1301,11 @@ var app = new Vue({
 
             var ctxMenu = document.getElementById("ctxMenu");
 
+            if (target.nodeName === "BUTTON") {
+                ctxMenu.style.display = "";
+                return;
+            }
+
             ctxMenu.style.display = "block";
 
             if (event.clientX > window.innerWidth - ctxMenu.offsetWidth) {
