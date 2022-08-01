@@ -439,7 +439,7 @@ namespace SubBox.Models
 
         private Video ParseVideo(Google.Apis.YouTube.v3.Data.Video item, int number, int count)
         {
-            DateTime time = DateTime.Parse(item.Snippet.PublishedAt,null,System.Globalization.DateTimeStyles.RoundtripKind);
+            DateTime time = (DateTime)item.Snippet.PublishedAt;//DateTime.Parse(item.Snippet.PublishedAt,null,System.Globalization.DateTimeStyles.RoundtripKind);
 
             Video newVideo = new Video()
             {
