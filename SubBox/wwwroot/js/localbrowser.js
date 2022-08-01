@@ -27,7 +27,7 @@ var app = new Vue({
             this.videos = await result.json();
 
             this.videos.forEach(function (item) {
-                item.Value.onlineThumbUrl = "https://i.ytimg.com/vi/"+ item.Key +"/mqdefault.jpg"
+                item.Value.onlineThumbUrl = "https://i.ytimg.com/vi/" + item.Key + "/mqdefault.jpg"
             });
         },
         async select(video) {
@@ -45,7 +45,7 @@ var app = new Vue({
 
             document.body.style.overflow = "hidden";
 
-            this.selectedDir = video.Value.dir; 
+            this.selectedDir = video.Value.dir;
 
             this.selectedThumbDir = video.Value.thumbDir;
 
@@ -56,7 +56,7 @@ var app = new Vue({
         async deleteVideo() {
             var re = new RegExp('\\\\', 'g');
 
-            await fetch("/api/values/localvideo/" + this.selectedDir.replace(re,'*') + "/" + this.selectedThumbDir.replace(re,'*'), { method: "DELETE" }); 
+            await fetch("/api/values/localvideo/" + this.selectedDir.replace(re, '*') + "/" + this.selectedThumbDir.replace(re, '*'), { method: "DELETE" });
 
             this.back();
 
@@ -72,12 +72,10 @@ var app = new Vue({
 
             var sURLVariables = sPageURL.split('&');
 
-            for (var i = 0; i < sURLVariables.length; i++) 
-            {
+            for (var i = 0; i < sURLVariables.length; i++) {
                 var sParameterName = sURLVariables[i].split('=');
 
-                if (sParameterName[0] == sParam) 
-                {
+                if (sParameterName[0] == sParam) {
                     return sParameterName[1];
                 }
             }
@@ -117,13 +115,13 @@ var app = new Vue({
         await this.update();
 
         var openId = this.GetURLParameter('id');
-        
+
         if (openId !== null) {
             var video = this.videos.find((v) => v.Value.data.id == openId);
 
             if (video !== undefined) {
                 this.select(video);
-            }   
+            }
         }
     }
 });

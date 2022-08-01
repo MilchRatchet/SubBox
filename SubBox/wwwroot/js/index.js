@@ -63,7 +63,7 @@ var app = new Vue({
             }
             if (this.filter === "SubBox") {
                 return this.videos.filter(function (u) {
-                    return ((u.title + u.description + u.channelTitle).toUpperCase().includes(searchFilterUp) && app.selectedTag.filterList.some(function(f) {
+                    return ((u.title + u.description + u.channelTitle).toUpperCase().includes(searchFilterUp) && app.selectedTag.filterList.some(function (f) {
                         return (u.title + u.description + u.channelTitle).toUpperCase().includes(f.toUpperCase());
                     }));
                 });
@@ -74,7 +74,7 @@ var app = new Vue({
                 });
             }
             return this.videos.filter(function (u) {
-                return (u.channelTitle == app.filter && (u.title + u.description + u.channelTitle).toUpperCase().includes(searchFilterUp) && app.selectedTag.filterList.some(function(f) {
+                return (u.channelTitle == app.filter && (u.title + u.description + u.channelTitle).toUpperCase().includes(searchFilterUp) && app.selectedTag.filterList.some(function (f) {
                     return (u.title + u.description + u.channelTitle).toUpperCase().includes(f.toUpperCase());
                 }));
             });
@@ -284,18 +284,14 @@ var app = new Vue({
             this.trashbinMode = true;
         },
         showSettings() {
-            if (this.profileMode)
-            {
+            if (this.profileMode) {
                 this.showProfile();
             }
-            else
-            {
-                if (this.settingsMode)
-                {
+            else {
+                if (this.settingsMode) {
                     this.saveSettings();
                 }
-                else
-                {
+                else {
                     this.getSettings();
                 }
             }
@@ -306,18 +302,14 @@ var app = new Vue({
         },
         showProfile() {
 
-            if (this.settingsMode)
-            {
+            if (this.settingsMode) {
                 this.showSettings();
             }
-            else
-            {
-                if (this.profileMode)
-                {
+            else {
+                if (this.profileMode) {
                     this.saveSettings();
                 }
-                else
-                {
+                else {
                     this.getSettings();
                 }
             }
@@ -771,12 +763,12 @@ var app = new Vue({
             this.playlistFilter = "";
         },
         async syncChannelPictures() {
-            await fetch("/api/values/settings/syncChannelPictures", {method: "POST"});
+            await fetch("/api/values/settings/syncChannelPictures", { method: "POST" });
 
             location.reload();
         },
         async togglePlaylistDisplay(list) {
-            Vue.set(this.settings.DisplayPlaylists, list-1, !this.settings.DisplayPlaylists[list-1]);
+            Vue.set(this.settings.DisplayPlaylists, list - 1, !this.settings.DisplayPlaylists[list - 1]);
 
             await this.saveSettings();
         },
@@ -1105,7 +1097,7 @@ var app = new Vue({
                 const messageId = this.messageRunningId++;
 
                 this.messages.push({
-                    "id" : messageId,
+                    "id": messageId,
                     "title": "Newer Version is available",
                     "subtitle": "Current: v" + this.informationContent[0],
                     "thumbUrl": "media/LogoRed.png",
@@ -1264,7 +1256,7 @@ var app = new Vue({
 
         var mainVideoList = document.querySelector('#mainVideoList');
 
-        var updateSmartListLoading = function(event) {
+        var updateSmartListLoading = function (event) {
             if (!app.settings.SmartListLoading) return;
 
             if (Math.abs(app.viewPortAnchor - mainList.scrollTop) < 215) return;
@@ -1408,7 +1400,7 @@ var app = new Vue({
         }, false);
 
         document.addEventListener("keydown", function (event) {
-            if (document.activeElement.nodeName === "INPUT" || document.activeElement.nodeName === "TEXTAREA" ) return;
+            if (document.activeElement.nodeName === "INPUT" || document.activeElement.nodeName === "TEXTAREA") return;
 
             if (event.altKey) return;
 
