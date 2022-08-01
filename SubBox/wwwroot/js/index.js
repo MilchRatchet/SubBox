@@ -1415,11 +1415,17 @@ var app = new Vue({
 
             if (event.code === "Escape") return;
 
+            var searchField;
+
             if (app.videoListMode) {
-                document.getElementById("search").focus();
+                searchField = document.getElementById("search");
             } else if (app.uniqueListMode) {
-                document.getElementById("playlistSearch").focus();
+                searchField = document.getElementById("playlistSearch");
             }
+
+            if (event.code === "Space" && searchField.value === "") return;
+
+            searchField.focus();
         }, false);
 
         document.addEventListener("keyup", function (event) {
