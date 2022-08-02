@@ -65,7 +65,7 @@
                 <p>Delete [DEL]</p>
             </div>
             <div @click="resetAllFilters()"
-                v-show="videoListMode && (filter !== 'SubBox' || searchFilter !== '' || selectedTag !== null)"
+                v-show="videoListMode && (channelFilter.id !== '' || searchFilter !== '' || selectedTag !== null)"
                 class="menuButton">
                 <p class="material-icons">filter_list</p>
                 <p>Reset all filters</p>
@@ -75,7 +75,7 @@
                 <p>Exit Playlist</p>
             </div>
             <div @click="deleteFilteredVideos()"
-                v-show="videoListMode && (filter !== 'SubBox' || searchFilter !== '' || selectedTag !== null) && filteredVideos.length !== 0"
+                v-show="videoListMode && (channelFilter.id !== '' || searchFilter !== '' || selectedTag !== null) && filteredVideos.length !== 0"
                 class="menuButton">
                 <p class="material-icons">delete_sweep</p>
                 <p>Move all to Trashbin</p>
@@ -730,7 +730,7 @@
                         <div class="listSelectedMarker">
                             <div v-show="channel.locked"></div>
                         </div>
-                        <a target="_blank" :href="'https://www.youtube.com/user/' + channel.username">
+                        <a target="_blank" :href="channel.url">
                             <img :src="'channelPictures/' + channel.id + '.jpg'" />
                         </a>
                         <label>
@@ -744,7 +744,7 @@
                         <div class="channelEntryPane" v-bind:class="{channelEntryPaneLocked : channel.locked}">
                             <div class="channelEntryPaneList">
                                 <div class="channelEntryPaneListEntry">
-                                    <a target="_blank" :href="'https://www.youtube.com/user/' + channel.username">
+                                    <a target="_blank" :href="channel.url">
                                         <img :src="'channelPictures/' + channel.id + '.jpg'" />
                                     </a>
                                 </div>
@@ -816,7 +816,7 @@
                 <div class="navLeft">
                     <div class="tooltip">
                         <button @click="showChannels" class="material-icons"
-                            v-bind:class="{activeNavButton : channelMode}">{{(filter === 'SubBox') ? 'account_box' :
+                            v-bind:class="{activeNavButton : channelMode}">{{(channelFilter.id === '') ? 'account_box' :
                             'star'}} <p>Channels</p></button>
                         <div v-show="!channelMode" style="left: 0" class="tooltiptext ttdown">Channel List</div>
                     </div>
@@ -843,7 +843,8 @@
                         <input @input="initializeSmartListLoading();" id="search" class="search" v-model="searchFilter"
                             type="text" autocomplete="off" placeholder="Search" />
                         <p class="Title" style="cursor: default;"><img v-show="filterImg!==''" :src="filterImg"
-                                class="channelPic" />{{filter}} - {{filteredVideos.length}}{{ (videos.length !==
+                                class="channelPic" />{{channelFilter.name}} - {{filteredVideos.length}}{{ (videos.length
+                            !==
                             filteredVideos.length) ? (' / ' + videos.length) : ''}}</p>
                     </div>
                 </div>
@@ -867,7 +868,7 @@
             </nav>
 
             <div id="mainList" class="scrollList">
-                <div v-show="filter==='SubBox' && searchFilter === '' && selectedTag == null" class="listList">
+                <div v-show="channelFilter.id === '' && searchFilter === '' && selectedTag == null" class="listList">
                     <div class="videoBox" v-for="video in lists" v-show="settings.DisplayPlaylists[video.list-1]">
                         <div class="videoContentDiv">
                             <div class="videoThumb">
@@ -936,7 +937,7 @@
                                             :href="'https://www.youtube.com/watch?v=' + video.id">{{video.title}}</a>
                                         <div class="videoText">
                                             <a class="videoTextChannel" target="_blank"
-                                                :href="'https://www.youtube.com/user/' + video.channelName">{{video.channelTitle}}</a>
+                                                @click="filterByChannelFromVideoList(video.channelId);">{{video.channelTitle}}</a>
                                             &#9679 {{video.publishedAtString}}
                                         </div>
                                     </div>

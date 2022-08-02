@@ -17,7 +17,7 @@ var app = new Vue({
         channelMode: false,
         uniqueListMode: false,
         addChannelName: "",
-        filter: "SubBox",
+        channelFilter: { name: "SubBox", id: "" },
         filterImg: "",
         searchFilter: "",
         playlistFilter: "",
@@ -50,18 +50,18 @@ var app = new Vue({
     },
     computed: {
         filteredVideos: function () {
-            if (this.filter === "SubBox" && this.searchFilter === "" && this.selectedTag == null) {
+            if (this.channelFilter.id === "" && this.searchFilter === "" && this.selectedTag == null) {
                 return this.videos;
             }
 
             searchFilterUp = this.searchFilter.toUpperCase();
 
-            if (this.filter === "SubBox" && this.selectedTag == null) {
+            if (this.channelFilter.id === "" && this.selectedTag == null) {
                 return this.videos.filter(function (u) {
                     return (u.title + u.description + u.channelTitle).toUpperCase().includes(searchFilterUp);
                 });
             }
-            if (this.filter === "SubBox") {
+            if (this.channelFilter.id === "") {
                 return this.videos.filter(function (u) {
                     return ((u.title + u.description + u.channelTitle).toUpperCase().includes(searchFilterUp) && app.selectedTag.filterList.some(function (f) {
                         return (u.title + u.description + u.channelTitle).toUpperCase().includes(f.toUpperCase());
@@ -70,11 +70,11 @@ var app = new Vue({
             }
             if (this.selectedTag == null) {
                 return this.videos.filter(function (u) {
-                    return (u.channelTitle == app.filter && (u.title + u.description + u.channelTitle).toUpperCase().includes(searchFilterUp));
+                    return (u.channelId == app.channelFilter.id && (u.title + u.description + u.channelTitle).toUpperCase().includes(searchFilterUp));
                 });
             }
             return this.videos.filter(function (u) {
-                return (u.channelTitle == app.filter && (u.title + u.description + u.channelTitle).toUpperCase().includes(searchFilterUp) && app.selectedTag.filterList.some(function (f) {
+                return (u.channelId == app.channelFilter.id && (u.title + u.description + u.channelTitle).toUpperCase().includes(searchFilterUp) && app.selectedTag.filterList.some(function (f) {
                     return (u.title + u.description + u.channelTitle).toUpperCase().includes(f.toUpperCase());
                 }));
             });
@@ -158,17 +158,29 @@ var app = new Vue({
                 body: output
             });
         },
+        computeChannelUrls() {
+            // A channel may have a customUrl attribute which is stored in the username nowadays in SubBox
+            // If a channel has a customUrl then the Url is https://www.youtube.com/c/customUrl
+            // Else the Url is https://www.youtube.com/channel/channelId
+            this.channels.forEach(c => {
+                c.url = (c.username == null) ? "https://www.youtube.com/channel/" + c.id : "https://www.youtube.com/c/" + c.username;
+            });
+        },
         async getChannels() {
             this.channels = await (await fetch("/api/values/channels")).json();
 
+            this.computeChannelUrls();
+
+            this.calcChannelStats();
+
             this.unlockAllChannels();
 
-            if (this.filter === "SubBox") {
+            if (this.channelFilter.id === "") {
                 return;
             }
 
             this.channels.find(function (e) {
-                return e.displayname === app.filter;
+                return e.id === app.channelFilter.id;
             }).locked = true;
         },
         async showChannels() {
@@ -193,6 +205,8 @@ var app = new Vue({
 
                 this.channels = await result.json();
 
+                this.computeChannelUrls();
+
                 this.calcChannelStats();
 
                 this.maxChannelPage = Math.ceil(this.channels.length / this.settings.ChannelsPerPage);
@@ -201,12 +215,12 @@ var app = new Vue({
 
                 this.unlockAllChannels();
 
-                if (this.filter === "SubBox") {
+                if (this.channelFilter.id === "") {
                     return;
                 }
 
                 this.channels.find(function (e) {
-                    return e.displayname === app.filter;
+                    return e.id === app.channelFilter.id;
                 }).locked = true;
             }
         },
@@ -409,7 +423,7 @@ var app = new Vue({
 
                             app.messages.push({
                                 "id": messageId,
-                                "title": "Channel could not be added",
+                                "title": "No channels matching that name were found!",
                                 "subtitle": "Check out the introduction to look up how to add channels",
                                 "thumbUrl": "media/LogoRed.png",
                                 "text": "Input: " + requestString,
@@ -423,22 +437,26 @@ var app = new Vue({
                             return;
                         }
 
-                        const channel = app.channels.find(c => (c.id === requestString || c.username === requestString));
+                        const addedChannels = app.channels.filter(c => (c.displayname.toUpperCase() === requestString.toUpperCase()));
 
-                        if (channel !== undefined && app.settings.ChannelAddedNotification) {
-                            const messageId = app.messageRunningId++;
+                        addedChannels.forEach(channel => {
+                            if (channel !== undefined && app.settings.ChannelAddedNotification) {
+                                const messageId = app.messageRunningId++;
 
-                            app.messages.push({
-                                "id": messageId,
-                                "title": channel.displayname + " was added",
-                                "subtitle": "Username: " + channel.username,
-                                "thumbUrl": 'channelPictures/' + channel.id + '.jpg',
-                                "text": "Id: " + channel.id,
-                                "event": "app.filter = '" + channel.displayname + "'; app.lockChannel('" + channel.id + "');"
-                            });
+                                app.messages.push({
+                                    "id": messageId,
+                                    "title": channel.displayname + " was added",
+                                    "subtitle": channel.url,
+                                    "thumbUrl": 'channelPictures/' + channel.id + '.jpg',
+                                    "text": "Id: " + channel.id,
+                                    "event": "app.channelFilter.name = '" + channel.displayname + "'; app.channelFilter.id = '" + channel.id + "'; app.lockChannel('" + channel.id + "');"
+                                });
 
-                            setTimeout(function () { const index = app.messages.findIndex(m => m.id === messageId); app.messages.splice(index, 1); }, 10000);
-                        }
+                                setTimeout(function () { const index = app.messages.findIndex(m => m.id === messageId); app.messages.splice(index, 1); }, 10000);
+                            }
+                        });
+
+                        app.calcChannelStats();
 
                         clearInterval(updater);
                     }
@@ -542,7 +560,7 @@ var app = new Vue({
         async deleteFilteredVideos() {
             if (!(await this.getConfirmation("Delete all Filtered Videos?"))) return;
 
-            if (this.filter === "SubBox" && this.searchFilter === "" && this.selectedTag === null) return;
+            if (this.channelFilter.id === "" && this.searchFilter === "" && this.selectedTag === null) return;
 
             var count = 0;
 
@@ -721,12 +739,12 @@ var app = new Vue({
             this.checkDownloadStatusUniqueVideo(video);
         },
         openChannel(link) {
-            window.open("https://www.youtube.com/user/" + link, "_blank");
+            window.open("https://www.youtube.com/c/" + link, "_blank");
         },
         calcChannelStats() {
             this.channels.forEach(function (c) {
                 channelVideos = app.videos.filter(function (v) {
-                    return v.channelTitle == c.displayname;
+                    return v.channelId == c.id;
                 });
 
                 c.videoCount = channelVideos.length;
@@ -775,8 +793,9 @@ var app = new Vue({
         async deleteChannel(channel) {
             if (!(await this.getConfirmation("Remove " + channel.displayname + "?"))) return;
 
-            if (channel.displayname == this.filter) {
-                this.filter = "SubBox";
+            if (channel.id == this.channelFilter.id) {
+                this.channelFilter.name = "SubBox";
+                this.channelFilter.id = "";
             }
 
             var waiter = fetch("/api/values/channel/" + channel.id, { method: "DELETE" });
@@ -834,12 +853,14 @@ var app = new Vue({
             this.setFilter(channel);
         },
         setFilter(ch) {
-            if (ch.displayname == this.filter) {
-                this.filter = "SubBox";
+            if (ch.id == this.channelFilter.id) {
+                this.channelFilter.name = "SubBox";
+                this.channelFilter.id = "";
 
                 this.filterImg = "";
             } else {
-                this.filter = ch.displayname;
+                this.channelFilter.name = ch.displayname;
+                this.channelFilter.id = ch.id;
 
                 this.filterImg = "channelPictures/" + ch.id + ".jpg";
             }
@@ -954,7 +975,9 @@ var app = new Vue({
             this.showTags();
         },
         resetAllFilters() {
-            this.filter = "SubBox";
+            this.channelFilter.name = "SubBox";
+
+            this.channelFilter.id = "";
 
             this.filterImg = "";
 

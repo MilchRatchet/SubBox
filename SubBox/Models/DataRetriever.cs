@@ -29,20 +29,13 @@ namespace SubBox.Models
             });
         }
 
-        public Channel AddChannel(string name)
+        private Channel RetrieveChannelData(string ID)
         {
-            LifeTime = AppSettings.NewChannelTimeFrame;
-
             var Request = service.Channels.List("snippet");
 
-            if (name.Length == 24)
-            {
-                Request.Id = name;
-            }
-            else
-            {
-                Request.ForUsername = name;
-            }
+            Request.Id = ID;
+
+            Request.MaxResults = 1;
 
             var Response = Request.Execute();
 
@@ -52,7 +45,7 @@ namespace SubBox.Models
                 {
                     Id = Response.Items.First().Id,
 
-                    Username = name,
+                    Username = Response.Items.First().Snippet.CustomUrl,
 
                     Displayname = Response.Items.First().Snippet.Title,
 
@@ -64,8 +57,6 @@ namespace SubBox.Models
                     context.Channels.Add(NewChannel);
 
                     context.SaveChanges();
-
-                    _ = StatusBoard.PutStatus("channelResult", name, "true");
 
                     List<string> list = RequestVideoIdsFromChannel(NewChannel.Id).GetAwaiter().GetResult();
 
@@ -89,14 +80,38 @@ namespace SubBox.Models
 
                 return NewChannel;
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                Logger.Info(name + " couldn't be added");
-
-                _ = StatusBoard.PutStatus("channelResult", name, "false");
+                Logger.Info("Channel with ID " + ID + " couldn't be added! This shouldn't happen! Reason: " + e.Message);
 
                 return null;
             }
+        }
+
+        public List<Channel> AddChannels(string name)
+        {
+            LifeTime = AppSettings.NewChannelTimeFrame;
+
+            List<Channel> result = new List<Channel>();
+
+            var ChannelsRequest = service.Search.List("snippet");
+
+            ChannelsRequest.Q = name;
+            ChannelsRequest.Type = "channel";
+            ChannelsRequest.MaxResults = 50;
+
+            var ChannelsResponse = ChannelsRequest.Execute();
+
+            foreach (var response in ChannelsResponse.Items)
+            {
+                Logger.Debug("Channel found with title: " + response.Snippet.ChannelTitle);
+                if (response.Snippet.ChannelTitle == name)
+                {
+                    result.Add(RetrieveChannelData(response.Id.ChannelId));
+                }
+            }
+
+            return result;
         }
 
         private async Task RequestVideosFromIds(string id)
@@ -111,7 +126,7 @@ namespace SubBox.Models
             {
                 Video[] videoList = context.Videos.ToArray();
 
-                foreach(var item in VideoResponse.Items)
+                foreach (var item in VideoResponse.Items)
                 {
                     try
                     {
@@ -208,7 +223,7 @@ namespace SubBox.Models
                     if (requestId != "")
                     {
                         requests.Add(requestId);
-                    } 
+                    }
                 }
             }
 
@@ -263,7 +278,7 @@ namespace SubBox.Models
                 }
 
                 Task.WaitAll(tasks);
-            } 
+            }
             catch (Exception e)
             {
                 Logger.Error("at DataRetriever.UpdateVideoList()");
@@ -275,12 +290,13 @@ namespace SubBox.Models
                 return;
             }
 
-            foreach(Task<List<string>> list in tasks)
+            foreach (Task<List<string>> list in tasks)
             {
                 videoIds.AddRange(list.Result);
             }
 
-            if (videoIds.Count == 0) {
+            if (videoIds.Count == 0)
+            {
                 Logger.Info("Finished loading 0 new Videos");
 
                 return;
@@ -304,7 +320,7 @@ namespace SubBox.Models
             using (AppDbContext context = new AppDbContext())
             {
                 Logger.Info("Finished loading " + (context.Videos.LongCount() - count) + " new Videos");
-            }  
+            }
         }
 
         public void AddPlaylist(int number, string listId)
@@ -326,7 +342,7 @@ namespace SubBox.Models
 
                 foreach (Video v in listOfVideos)
                 {
-                    if ((v.List == number)&&(v.Index>=count))
+                    if ((v.List == number) && (v.Index >= count))
                     {
                         count = v.Index + 1;
                     }
@@ -422,7 +438,7 @@ namespace SubBox.Models
                         break;
                     }
                     else
-                    { 
+                    {
                         request.PageToken = response.NextPageToken;
                     }
                 }
@@ -439,7 +455,7 @@ namespace SubBox.Models
 
         private Video ParseVideo(Google.Apis.YouTube.v3.Data.Video item, int number, int count)
         {
-            DateTime time = (DateTime)item.Snippet.PublishedAt;//DateTime.Parse(item.Snippet.PublishedAt,null,System.Globalization.DateTimeStyles.RoundtripKind);
+            DateTime time = (DateTime) item.Snippet.PublishedAt;//DateTime.Parse(item.Snippet.PublishedAt,null,System.Globalization.DateTimeStyles.RoundtripKind);
 
             Video newVideo = new Video()
             {
@@ -562,9 +578,9 @@ namespace SubBox.Models
             {
                 var list = context.Videos;
 
-                foreach(Video v in list)
+                foreach (Video v in list)
                 {
-                    if ((!v.New)&&(v.List==0))
+                    if ((!v.New) && (v.List == 0))
                     {
                         if (v.PublishedAt.AddDays(LifeTime) < DateTime.Now)
                         {
