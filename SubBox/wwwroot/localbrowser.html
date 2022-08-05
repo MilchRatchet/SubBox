@@ -1,5 +1,6 @@
 ﻿<!DOCTYPE html>
 <html>
+
 <head>
     <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" type="text/css">
@@ -12,15 +13,18 @@
 <body>
     <div id="app">
         <nav>
-            <img height="32" src="media/LogoWhite.png"/>
+            <img height="32" src="media/LogoWhite.png" />
             <p>SubBox Nightly</p>
         </nav>
         <button @click="window.location.replace('http://localhost:2828/');" class="exitButton">
-           <img height="32" src="media/LogoWhite.png"/>SubBox
+            <img height="32" src="media/LogoWhite.png" />SubBox
         </button>
         <div class="filterDiv">
-            <input id="search"  v-bind:class="{activeSearch : filter !== ''}" v-model="filter" type="text" autocomplete="off" placeholder="Search"/>
-            <div v-bind:class="{activeDeletion : deletionMode}" class="material-icons deleteModeButton" @click="deletionMode = !deletionMode">delete <p v-show="deletionMode">Left Click to Delete</p></div>
+            <input id="search" v-bind:class="{activeSearch : filter !== ''}" v-model="filter" type="text"
+                autocomplete="off" placeholder="Search" />
+            <div v-bind:class="{activeDeletion : deletionMode}" class="material-icons deleteModeButton"
+                @click="deletionMode = !deletionMode">delete <p v-show="deletionMode">Left Click to Delete</p>
+            </div>
         </div>
         <div v-show="selectedDir !== ''" class="videoOverlay">
             <video poster="" onloadstart="this.volume=0.1" :src="selectedDir" controls></video>
@@ -33,21 +37,24 @@
             </div>
         </div>
         <div v-show="filteredVideos.length == 0" class="emptyOverlay">
-            <p v-show="filter == ''">No Local Videos available. You can download them with the download button next to each Video.</p>
+            <p v-show="filter == ''">No Local Videos available. You can download them with the download button next to
+                each Video.</p>
             <p v-show="filter != ''">No Local Videos available that fit the search filter.</p>
         </div>
         <div class="grid">
-            <div v-for="video in filteredVideos" class="gridVideo" >
+            <div v-for="video in filteredVideos" class="gridVideo">
                 <div class="videoThumbDiv" @click="select(video)">
                     <img class="videoThumb" :src="video.Value.thumbDir" @error="switchToOnlineThumb(video, $event)" />
-                    <p class="videoThumbDuration" v-if="video.Value.data.duration !== 'NULL'">{{video.Value.data.duration}}</p>
+                    <p class="videoThumbDuration" v-if="video.Value.data.duration !== 'NULL'">
+                        {{video.Value.data.duration}}</p>
                 </div>
 
                 <div class="infoBox">
                     <table>
                         <tr>
-                            <td rowspan="2">                    
-                                <img class="channelPic" :src="'channelPictures/' + video.Value.data.channelId + '.jpg'" alt="NOIMG" onerror="this.onerror = null; this.src='media/LogoWhite.png'" />
+                            <td rowspan="2">
+                                <img class="channelPic" :src="'channelPictures/' + video.Value.data.channelId + '.jpg'"
+                                    alt="NOIMG" onerror="this.onerror = null; this.src='media/LogoWhite.png'" />
                             </td>
                             <td>
                                 <p class="videoTitle">{{video.Value.data.title}}</p>
@@ -58,7 +65,7 @@
                                 <span class="channelTitle">{{video.Value.data.channelTitle}}</span>
                             </td>
                         </tr>
-                    </table>     
+                    </table>
                 </div>
             </div>
         </div>
@@ -66,4 +73,5 @@
 
     <script src="js/localbrowser.js"></script>
 </body>
+
 </html>

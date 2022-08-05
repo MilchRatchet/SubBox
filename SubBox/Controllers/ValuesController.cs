@@ -22,7 +22,7 @@ namespace SubBox.Controllers
 
         public ValuesController(AppDbContext context)
         {
-            this.context = context;   
+            this.context = context;
         }
 
         // GET: api/values/videos
@@ -34,7 +34,7 @@ namespace SubBox.Controllers
 
         // GET: api/values/localvideos
         [HttpGet("localvideos")]
-        public IEnumerable<KeyValuePair<string,LocalVideo>> GetLocalVideos()
+        public IEnumerable<KeyValuePair<string, LocalVideo>> GetLocalVideos()
         {
             return LocalCollection.DownloadedVideos.ToList();
         }
@@ -161,21 +161,26 @@ namespace SubBox.Controllers
         // POST: api/values/channel/{name}
         [HttpPost("channel/{name}")]
         public void PostChannel(string name)
-        { 
+        {
             Logger.Info("Adding " + name + " to Database...");
 
             DataRetriever fetcher = new DataRetriever();
 
-            Channel channel = fetcher.AddChannel(name);
+            List<Channel> channels = fetcher.AddChannels(name);
 
-            if (channel == null)
+            _ = StatusBoard.PutStatus("channelResult", name, (channels.Count != 0) ? "true" : "false");
+
+            if (channels.Count == 0)
             {
-                Logger.Warn("channel:" + name + " was requested but is not present in db");
+                Logger.Warn("channel:" + name + " was requested but no matching channels were found! Report this on Github!");
 
                 return;
             }
 
-            Downloader.AddChannelPicture(channel);
+            foreach (Channel channel in channels)
+            {
+                Downloader.AddChannelPicture(channel);
+            }
         }
 
         // POST: api/values/list/add/{id}/{listNumber}
@@ -288,7 +293,7 @@ namespace SubBox.Controllers
 
                 context.SaveChanges();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Logger.Warn("video: " + id + "could not be reactivated");
 
@@ -306,7 +311,7 @@ namespace SubBox.Controllers
             {
                 Downloader.DownloadVideo(id);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Logger.Warn("video: " + id + "could not be downloaded");
 
@@ -333,7 +338,7 @@ namespace SubBox.Controllers
         {
             string raw = await new StreamReader(HttpContext.Request.Body).ReadToEndAsync();
 
-            JsonConvert.DeserializeObject(raw, typeof(AppSettings), new JsonSerializerSettings() { ObjectCreationHandling = ObjectCreationHandling.Replace});
+            JsonConvert.DeserializeObject(raw, typeof(AppSettings), new JsonSerializerSettings() { ObjectCreationHandling = ObjectCreationHandling.Replace });
 
             AppSettings.Save();
         }
@@ -344,7 +349,7 @@ namespace SubBox.Controllers
         {
             try
             {
-                context.Tags.Add(new Tag{ Name = name, Filter = string.Empty});
+                context.Tags.Add(new Tag { Name = name, Filter = string.Empty });
 
                 context.SaveChanges();
             }

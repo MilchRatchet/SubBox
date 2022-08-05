@@ -20,7 +20,7 @@ var app = new Vue({
 
         this.lastSlideChange = Date.now();
 
-        window.addEventListener('wheel', function(event) {
+        window.addEventListener('wheel', function (event) {
             var newTime = Date.now();
 
             if (newTime - app.lastSlideChange > 300) {

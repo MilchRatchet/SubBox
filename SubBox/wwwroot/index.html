@@ -1,5 +1,6 @@
 ﻿<!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="utf-8" />
     <script src="js/vue.min.js"></script>
@@ -34,7 +35,8 @@
             <div>
                 <p>{{confirmationMessage}}</p>
                 <div>
-                    <button class="confirmationConfirm" @click="confirmationResult = true; confirmationDone = true;" style="border-right: 1px solid var(--font_text);">
+                    <button class="confirmationConfirm" @click="confirmationResult = true; confirmationDone = true;"
+                        style="border-right: 1px solid var(--font_text);">
                         Confirm
                     </button>
                     <button class="confirmationDismiss" @click="confirmationResult = false; confirmationDone = true;">
@@ -47,21 +49,24 @@
         <div id="ctxMenu">
             <div @click="$event.preventDefault(); actOnClipboard('cut')" v-show="inputContext" class="menuButton">
                 <p style="color: transparent" class="material-icons">filter_list</p>
-                <p>Cut      [CTRL + X]</p>
+                <p>Cut [CTRL + X]</p>
             </div>
             <div @click="$event.preventDefault(); actOnClipboard('copy')" v-show="inputContext" class="menuButton">
                 <p style="color: transparent" class="material-icons">file_copy</p>
-                <p>Copy   [CTRL + C]</p>
+                <p>Copy [CTRL + C]</p>
             </div>
-            <div @click="$event.preventDefault(); actOnClipboard('paste')" v-show="inputContext && !isFirefox" class="menuButton">
+            <div @click="$event.preventDefault(); actOnClipboard('paste')" v-show="inputContext && !isFirefox"
+                class="menuButton">
                 <p style="color: transparent" class="material-icons">filter_list</p>
-                <p>Paste  [CTRL + V]</p>
+                <p>Paste [CTRL + V]</p>
             </div>
             <div @click="$event.preventDefault(); actOnClipboard('delete')" v-show="inputContext" class="menuButton">
                 <p style="color: transparent" class="material-icons">file_copy</p>
                 <p>Delete [DEL]</p>
             </div>
-            <div @click="resetAllFilters()" v-show="videoListMode && (filter !== 'SubBox' || searchFilter !== '' || selectedTag !== null)" class="menuButton">
+            <div @click="resetAllFilters()"
+                v-show="videoListMode && (channelFilter.id !== '' || searchFilter !== '' || selectedTag !== null)"
+                class="menuButton">
                 <p class="material-icons">filter_list</p>
                 <p>Reset all filters</p>
             </div>
@@ -69,7 +74,9 @@
                 <p class="material-icons">exit_to_app</p>
                 <p>Exit Playlist</p>
             </div>
-            <div @click="deleteFilteredVideos()" v-show="videoListMode && (filter !== 'SubBox' || searchFilter !== '' || selectedTag !== null) && filteredVideos.length !== 0" class="menuButton">
+            <div @click="deleteFilteredVideos()"
+                v-show="videoListMode && (channelFilter.id !== '' || searchFilter !== '' || selectedTag !== null) && filteredVideos.length !== 0"
+                class="menuButton">
                 <p class="material-icons">delete_sweep</p>
                 <p>Move all to Trashbin</p>
             </div>
@@ -77,11 +84,13 @@
                 <p class="material-icons">swap_horiz</p>
                 <p>Invert Order</p>
             </div>
-            <div @click="deleteFilteredPlaylistVideos()" v-show="uniqueListMode && playlistFilter !== ''" class="menuButton">
+            <div @click="deleteFilteredPlaylistVideos()" v-show="uniqueListMode && playlistFilter !== ''"
+                class="menuButton">
                 <p class="material-icons">delete_sweep</p>
                 <p>Remove all filtered</p>
             </div>
-            <div @click="deleteNotFilteredPlaylistVideos()" v-show="uniqueListMode && playlistFilter !== ''" class="menuButton">
+            <div @click="deleteNotFilteredPlaylistVideos()" v-show="uniqueListMode && playlistFilter !== ''"
+                class="menuButton">
                 <p class="material-icons">delete_sweep</p>
                 <p>Keep only filtered</p>
             </div>
@@ -165,7 +174,9 @@
                 <p>Firefox Compatibility Mode:</p>
                 <label>{{(isFirefox ? "On" : "Off")}}</label>
             </div>
-            <button @click="informationMode = false" class="material-icons tooltip"><div class="tooltiptext ttleft">Close Window</div>exit_to_app</button>
+            <button @click="informationMode = false" class="material-icons tooltip">
+                <div class="tooltiptext ttleft">Close Window</div>exit_to_app
+            </button>
         </div>
 
         <div v-show="messages.length !== 0" id="notifications">
@@ -182,17 +193,25 @@
         <div v-show="uniqueListMode" class="videoListDiv">
             <nav>
                 <div class="navLeft">
-                    <p>Playlist</p><p class="material-icons">view_list</p><p>|</p>
-                    <button @click="showListInput()" class="material-icons tooltip"><div class="tooltiptext ttdown">Extend Playlist</div>playlist_add</button>
+                    <p>Playlist</p>
+                    <p class="material-icons">view_list</p>
+                    <p>|</p>
+                    <button @click="showListInput()" class="material-icons tooltip">
+                        <div class="tooltiptext ttdown">Extend Playlist</div>playlist_add
+                    </button>
                 </div>
                 <div class="navMiddle">
                     <div>
-                        <input id="playlistSearch" v-model="playlistFilter" type="text" autocomplete="off" placeholder="Search" />
-                        <p class="listCount" style="margin-left: 10px;">{{filteredPlaylist.length}}{{ (uniqueList.length !== filteredPlaylist.length) ? (' / ' + uniqueList.length) : ''}}</p>
+                        <input id="playlistSearch" v-model="playlistFilter" type="text" autocomplete="off"
+                            placeholder="Search" />
+                        <p class="listCount" style="margin-left: 10px;">{{filteredPlaylist.length}}{{ (uniqueList.length
+                            !== filteredPlaylist.length) ? (' / ' + uniqueList.length) : ''}}</p>
                     </div>
                 </div>
                 <div class="navRight">
-                    <button @click="closeUniqueList()" class="material-icons closeUniqueListButton tooltip"><div class="tooltiptext ttdown">Back</div>exit_to_app</button>
+                    <button @click="closeUniqueList()" class="material-icons closeUniqueListButton tooltip">
+                        <div class="tooltiptext ttdown">Back</div>exit_to_app
+                    </button>
                 </div>
             </nav>
 
@@ -203,7 +222,8 @@
                             <div class="videoBox">
                                 <div class="videoContentDiv">
                                     <div class="videoThumb">
-                                        <a target="_blank" :href="'https://www.youtube.com/watch?v=' + video.id">
+                                        <a target="_blank"
+                                            :href="(settings.UseEmbedLinks) ? 'https://www.youtube.com/embed/' + video.id + '?autoplay=0&widget_referrer=SubBox' : 'https://www.youtube.com/watch?v=' + video.id">
                                             <img :src="video.thumbnailUrl" style="width:246px;height:138px" />
                                             <p>{{video.duration}}</p>
                                         </a>
@@ -211,14 +231,21 @@
                                     <div class="videoTextContentDiv">
                                         <div class="videoTitleDiv">
                                             <div class="videoTitleAndMetaDiv">
-                                                <a class="videoTitle" target="_blank" :href="'https://www.youtube.com/watch?v=' + video.id">{{video.title}}</a>
+                                                <a class="videoTitle" target="_blank"
+                                                    :href="(settings.UseEmbedLinks) ? 'https://www.youtube.com/embed/' + video.id + '?autoplay=0&widget_referrer=SubBox' : 'https://www.youtube.com/watch?v=' + video.id">{{video.title}}</a>
                                                 <div class="videoText">
                                                     {{video.channelTitle}} &#9679 {{video.publishedAtString}}
                                                 </div>
                                             </div>
                                             <div class="videoTitleButtons">
-                                                <button class="material-icons videoTitleButton tooltip" @click="jumpToPlaylistItem(video)"><div class="tooltiptext ttleft">Jump to Video</div>navigation</button>
-                                                <button class="material-icons videoTitleButton tooltip" @click="deleteVideo(video)"><div class="tooltiptext ttright">Remove from Playlist</div>clear</button>
+                                                <button class="material-icons videoTitleButton tooltip"
+                                                    @click="jumpToPlaylistItem(video)">
+                                                    <div class="tooltiptext ttleft">Jump to Video</div>navigation
+                                                </button>
+                                                <button class="material-icons videoTitleButton tooltip"
+                                                    @click="deleteVideo(video)">
+                                                    <div class="tooltiptext ttright">Remove from Playlist</div>clear
+                                                </button>
                                             </div>
                                         </div>
 
@@ -242,7 +269,8 @@
                 <div v-for="tag in tags" class="tagsListEntry" :class="{ tagsListEntryInEdit: tag.inEdit }">
                     <div class="tagsListEntryContent">
                         <div class="listSelectedMarker">
-                            <div style="height: 24px;" v-show="selectedTag != null && selectedTag.name == tag.name"></div>
+                            <div style="height: 24px;" v-show="selectedTag != null && selectedTag.name == tag.name">
+                            </div>
                         </div>
                         <p @click="selectTag(tag)" class="tagsListEntryContentName">{{tag.name}}</p>
                         <div class="tooltip">
@@ -257,7 +285,8 @@
                         <div class="tagsListEntryEditEntry" v-for="(tagFilter,index) in tag.filterList">
                             <p class="tagsListEntryEditEntryName">{{tagFilter}}</p>
                             <div class="tooltip">
-                                <button @click="deleteFilter(tag,tagFilter)" class="tagsListEntryEditEntryButton material-icons">
+                                <button @click="deleteFilter(tag,tagFilter)"
+                                    class="tagsListEntryEditEntryButton material-icons">
                                     clear
                                 </button>
                                 <div class="tooltiptext ttleft">Remove Filter</div>
@@ -265,13 +294,16 @@
                         </div>
                         <div class="tagsListEntryEditAdd">
                             <div class="tagsListEntryEditAddInput">
-                                <input @keyup.enter="addFilterToTag(tag)" v-model="addTagFilter" type="text" autocomplete="off" placeholder="Enter Filter..." list="channels" />
+                                <input @keyup.enter="addFilterToTag(tag)" v-model="addTagFilter" type="text"
+                                    autocomplete="off" placeholder="Enter Filter..." list="channels" />
                                 <datalist id="channels">
                                     <option v-for="ch in channels">{{ch.displayname}}</option>
                                 </datalist>
-                                <button @click="addFilterToTag(tag)" class="material-icons tagsListEntryEditAddInputAddButton">add</button>
+                                <button @click="addFilterToTag(tag)"
+                                    class="material-icons tagsListEntryEditAddInputAddButton">add</button>
                                 <div class="tooltip">
-                                    <button @click="deleteTag(tag)" class="tagsListEntryEditAddInputRemoveButton material-icons">
+                                    <button @click="deleteTag(tag)"
+                                        class="tagsListEntryEditAddInputRemoveButton material-icons">
                                         delete_sweep
                                     </button>
                                     <div class="tooltiptext ttleft">Remove Tag</div>
@@ -283,7 +315,8 @@
                 </div>
                 <div class="tagsListAdd">
                     <div class="tagsListAddInput">
-                        <input @keyup.enter="submitTag" v-model="addTag" type="text" autocomplete="off" placeholder="Enter New Tag..." />
+                        <input @keyup.enter="submitTag" v-model="addTag" type="text" autocomplete="off"
+                            placeholder="Enter New Tag..." />
                         <button @click="submitTag" class="material-icons">add</button>
                     </div>
                 </div>
@@ -295,9 +328,10 @@
                 <div v-show="oldVideos.length > 0" class="trashbinListSearch">
                     <input v-model="trashbinFilter" type="text" autocomplete="off" placeholder="Search..." />
                 </div>
-                <div v-for="video in oldVideos.filter(v => (v.title + v.description + v.channelTitle).toUpperCase().includes(trashbinFilter.toUpperCase()))" :key="video.id" class="trashbinListEntry" @click.prevent="reactivateVideo(video)">
+                <div v-for="video in oldVideos.filter(v => (v.title + v.description + v.channelTitle).toUpperCase().includes(trashbinFilter.toUpperCase()))"
+                    :key="video.id" class="trashbinListEntry" @click.prevent="reactivateVideo(video)">
                     <div class="trashbinListEntryImage">
-                        <img :src="video.thumbnailUrl"/>
+                        <img :src="video.thumbnailUrl" />
                     </div>
                     <div class="trashbinListEntryContent">
                         <div class="trashbinListEntryContentTitle">
@@ -311,10 +345,12 @@
             </div>
         </div>
 
-        <div id="profileUI" v-show="profileMode" class="profileOverlay" :style="{ 'background-image': 'url(' + profileImage.src + ')' }">
+        <div id="profileUI" v-show="profileMode" class="profileOverlay"
+            :style="{ 'background-image': 'url(' + profileImage.src + ')' }">
             <div class="profileBlur">
                 <div class="profileHeader">
-                    <input v-model="settings.Username" onfocus="this.setSelectionRange(0,this.value.length);" @focusout="saveSettings();" />
+                    <input v-model="settings.Username" onfocus="this.setSelectionRange(0,this.value.length);"
+                        @focusout="saveSettings();" />
                 </div>
                 <div class="profileOption">
                     <p>Since {{settings.FirstUse}}</p>
@@ -332,7 +368,11 @@
                     <p>Close SubBox</p>
                 </div>
                 <div class="profileOption">
-                    <p style="font-size: 8pt;">Photo by <a :href="settings.PicOfTheDayLink + '?utm_source=SubBox&utm_medium=referral'" target="_blank">{{settings.PicOfTheDayUser}}</a> on <a href="https://unsplash.com/?utm_source=SubBox&utm_medium=referral" target="_blank">Unsplash</a></p>
+                    <p style="font-size: 8pt;">Photo by <a
+                            :href="settings.PicOfTheDayLink + '?utm_source=SubBox&utm_medium=referral'"
+                            target="_blank">{{settings.PicOfTheDayUser}}</a> on <a
+                            href="https://unsplash.com/?utm_source=SubBox&utm_medium=referral"
+                            target="_blank">Unsplash</a></p>
                 </div>
             </div>
         </div>
@@ -397,7 +437,7 @@
                                     Twitch Dark
                                 </option>
                                 <option value="ThemeLunarNewYear">
-                                    Lunar New Year
+                                    Lunar NY
                                 </option>
                                 <option value="ThemeHalloween">
                                     Halloween
@@ -412,9 +452,11 @@
                     </div>
                     <div style="justify-content: flex-end;">
                         <div class="numberInput">
-                            <button @click="if (settings.NewChannelTimeFrame > 1) settings.NewChannelTimeFrame--" class="material-icons">remove</button>
+                            <button @click="if (settings.NewChannelTimeFrame > 1) settings.NewChannelTimeFrame--"
+                                class="material-icons">remove</button>
                             <input v-model="settings.NewChannelTimeFrame" type="number" id="NCT" name="NCT" readonly />
-                            <button @click="if (settings.NewChannelTimeFrame < 90) settings.NewChannelTimeFrame++" class="material-icons">add</button>
+                            <button @click="if (settings.NewChannelTimeFrame < 90) settings.NewChannelTimeFrame++"
+                                class="material-icons">add</button>
                         </div>
                     </div>
                 </div>
@@ -424,9 +466,11 @@
                     </div>
                     <div style="justify-content: flex-end;">
                         <div class="numberInput">
-                            <button @click="if (settings.RetrievalTimeFrame > 1) settings.RetrievalTimeFrame--" class="material-icons">remove</button>
+                            <button @click="if (settings.RetrievalTimeFrame > 1) settings.RetrievalTimeFrame--"
+                                class="material-icons">remove</button>
                             <input v-model="settings.RetrievalTimeFrame" type="number" id="RT" name="RT" readonly />
-                            <button @click="if (settings.RetrievalTimeFrame < 14) settings.RetrievalTimeFrame++" class="material-icons">add</button>
+                            <button @click="if (settings.RetrievalTimeFrame < 14) settings.RetrievalTimeFrame++"
+                                class="material-icons">add</button>
                         </div>
                     </div>
                 </div>
@@ -436,7 +480,8 @@
                     </div>
                     <div style="justify-content: flex-end;">
                         <div class="numberInput">
-                            <button @click="if (settings.DeletionTimeFrame > 14) settings.DeletionTimeFrame--" class="material-icons">remove</button>
+                            <button @click="if (settings.DeletionTimeFrame > 14) settings.DeletionTimeFrame--"
+                                class="material-icons">remove</button>
                             <input v-model="settings.DeletionTimeFrame" type="number" id="DT" name="DT" readonly />
                             <button @click="settings.DeletionTimeFrame++" class="material-icons">add</button>
                         </div>
@@ -448,7 +493,8 @@
                     </div>
                     <div style="justify-content: flex-end;">
                         <div class="numberInput">
-                            <button @click="if (settings.PlaylistPlaybackSize > 10) settings.PlaylistPlaybackSize--" class="material-icons">remove</button>
+                            <button @click="if (settings.PlaylistPlaybackSize > 10) settings.PlaylistPlaybackSize--"
+                                class="material-icons">remove</button>
                             <input v-model="settings.PlaylistPlaybackSize" type="number" id="PPS" name="PPS" readonly />
                             <button @click="settings.PlaylistPlaybackSize++" class="material-icons">add</button>
                         </div>
@@ -462,7 +508,8 @@
                         <div class="numberInput">
                             <button @click="resetColor" class="material-icons">replay</button>
                             <input v-model="settings.Color" id="colorPicker" @change="setColor()" class="jscolor" />
-                            <button class="material-icons" style="color: transparent; background: transparent; cursor: default; border: 1px solid transparent;">add</button>
+                            <button class="material-icons"
+                                style="color: transparent; background: transparent; cursor: default; border: 1px solid transparent;">add</button>
                         </div>
                     </div>
                 </div>
@@ -507,13 +554,18 @@
                     </div>
                     <div style="justify-content: flex-end;">
                         <div class="numberInput">
-                            <button @click="if (settings.ChannelsPerPage > 1) settings.ChannelsPerPage--; maxChannelPage = Math.ceil(channels.length / settings.ChannelsPerPage);" class="material-icons">remove</button>
+                            <button
+                                @click="if (settings.ChannelsPerPage > 1) settings.ChannelsPerPage--; maxChannelPage = Math.ceil(channels.length / settings.ChannelsPerPage);"
+                                class="material-icons">remove</button>
                             <input v-model="settings.ChannelsPerPage" type="number" id="PPS" name="CPP" readonly />
-                            <button @click="settings.ChannelsPerPage++; maxChannelPage = Math.ceil(channels.length / settings.ChannelsPerPage); if (channelPage > maxChannelPage) channelPage = 1;" class="material-icons">add</button>
+                            <button
+                                @click="settings.ChannelsPerPage++; maxChannelPage = Math.ceil(channels.length / settings.ChannelsPerPage); if (channelPage > maxChannelPage) channelPage = maxChannelPage;"
+                                class="material-icons">add</button>
                         </div>
                     </div>
                 </div>
-                <div class="singleSetting" @click.prevent="settings.SmartListLoading = !settings.SmartListLoading; initializeSmartListLoading();">
+                <div class="singleSetting"
+                    @click.prevent="settings.SmartListLoading = !settings.SmartListLoading; initializeSmartListLoading();">
                     <div style="justify-content: flex-start;">
                         <p>Smart List Loading</p>
                     </div>
@@ -530,7 +582,29 @@
                     </div>
                     <div style="justify-content: flex-end;">
                         <label class="switch">
-                            <input type="checkbox" v-model="settings.HighlightNewVideos"/>
+                            <input type="checkbox" v-model="settings.HighlightNewVideos" />
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="singleSetting" @click.prevent="settings.AutoDeleteShorts = !settings.AutoDeleteShorts">
+                    <div style="justify-content: flex-start;">
+                        <p>Automatically Delete Shorts</p>
+                    </div>
+                    <div style="justify-content: flex-end;">
+                        <label class="switch">
+                            <input type="checkbox" v-model="settings.AutoDeleteShorts" />
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="singleSetting" @click.prevent="settings.UseEmbedLinks = !settings.UseEmbedLinks">
+                    <div style="justify-content: flex-start;">
+                        <p>Use Embed Links For Videos</p>
+                    </div>
+                    <div style="justify-content: flex-end;">
+                        <label class="switch">
+                            <input type="checkbox" v-model="settings.UseEmbedLinks" />
                             <span class="slider"></span>
                         </label>
                     </div>
@@ -548,7 +622,8 @@
                         </label>
                     </div>
                 </div>
-                <div class="singleSetting" @click.prevent="settings.NewVersionNotification = !settings.NewVersionNotification">
+                <div class="singleSetting"
+                    @click.prevent="settings.NewVersionNotification = !settings.NewVersionNotification">
                     <div style="justify-content: flex-start;">
                         <p>Show New Version Notifications</p>
                     </div>
@@ -559,7 +634,8 @@
                         </label>
                     </div>
                 </div>
-                <div class="singleSetting" @click.prevent="settings.DownloadFinishedNotification = !settings.DownloadFinishedNotification">
+                <div class="singleSetting"
+                    @click.prevent="settings.DownloadFinishedNotification = !settings.DownloadFinishedNotification">
                     <div style="justify-content: flex-start;">
                         <p>Show Download Finished Notifications</p>
                     </div>
@@ -570,7 +646,8 @@
                         </label>
                     </div>
                 </div>
-                <div class="singleSetting" @click.prevent="settings.VideosDeletedNotification = !settings.VideosDeletedNotification">
+                <div class="singleSetting"
+                    @click.prevent="settings.VideosDeletedNotification = !settings.VideosDeletedNotification">
                     <div style="justify-content: flex-start;">
                         <p>Show Videos Deleted Notifications</p>
                     </div>
@@ -581,7 +658,8 @@
                         </label>
                     </div>
                 </div>
-                <div class="singleSetting" @click.prevent="settings.ChannelAddedNotification = !settings.ChannelAddedNotification">
+                <div class="singleSetting"
+                    @click.prevent="settings.ChannelAddedNotification = !settings.ChannelAddedNotification">
                     <div style="justify-content: flex-start;">
                         <p>Show Channel Added Notifications</p>
                     </div>
@@ -644,16 +722,21 @@
             <div class="playlistUIMainDiv">
                 <div class="playlistUIUpperDiv">
                     <div class="tooltip" v-for="video in lists">
-                        <div class="playlistUIListEntry" v-bind:class="{ playlistUIListEntrySelected : settings.DisplayPlaylists[video.list-1]}" @click.prevent="togglePlaylistDisplay(video.list)">
+                        <div class="playlistUIListEntry"
+                            v-bind:class="{ playlistUIListEntrySelected : settings.DisplayPlaylists[video.list-1]}"
+                            @click.prevent="togglePlaylistDisplay(video.list)">
                             <img :src="video.thumbnailUrl">
                             <p>{{video.title}}</p>
                         </div>
-                        <div v-show="settings.DisplayPlaylists[video.list-1]" class="tooltiptext ttdown">Hide Playlist</div>
-                        <div v-show="!settings.DisplayPlaylists[video.list-1]" class="tooltiptext ttdown">Unhide Playlist</div>
+                        <div v-show="settings.DisplayPlaylists[video.list-1]" class="tooltiptext ttdown">Hide Playlist
+                        </div>
+                        <div v-show="!settings.DisplayPlaylists[video.list-1]" class="tooltiptext ttdown">Unhide
+                            Playlist</div>
                     </div>
                 </div>
                 <div class="playlistUILowerDiv">
-                    <input @keyup.enter="submitPlaylist" v-model="addPlayList" autocomplete="off" type="text" name="PlaylistId" placeholder="Playlist Id..." />
+                    <input @keyup.enter="submitPlaylist" v-model="addPlayList" autocomplete="off" type="text"
+                        name="PlaylistId" placeholder="Playlist Id..." />
                     <button @click="submitPlaylist" class="material-icons addPlaylistButton">add</button>
                 </div>
             </div>
@@ -663,13 +746,15 @@
         <div id="channelUI" v-show="channelMode" class="overlay">
             <div class="channelOverlayBackground"></div>
             <div class="channelOverlayContainer">
-                <div class="channelEntry" v-for="channel in channels.slice((channelPage - 1) * settings.ChannelsPerPage, channelPage * settings.ChannelsPerPage)" v-bind:class="{ locked: channel.locked }">
+                <div class="channelEntry"
+                    v-for="channel in channels.slice((channelPage - 1) * settings.ChannelsPerPage, channelPage * settings.ChannelsPerPage)"
+                    v-bind:class="{ locked: channel.locked }">
                     <div class="channelEntryContent">
                         <div class="listSelectedMarker">
                             <div v-show="channel.locked"></div>
                         </div>
-                        <a target="_blank" :href="'https://www.youtube.com/user/' + channel.username">
-                            <img :src="'channelPictures/' + channel.id + '.jpg'"/>
+                        <a target="_blank" :href="channel.url">
+                            <img :src="'channelPictures/' + channel.id + '.jpg'" />
                         </a>
                         <label>
                             {{channel.displayname}}
@@ -682,8 +767,8 @@
                         <div class="channelEntryPane" v-bind:class="{channelEntryPaneLocked : channel.locked}">
                             <div class="channelEntryPaneList">
                                 <div class="channelEntryPaneListEntry">
-                                    <a target="_blank" :href="'https://www.youtube.com/user/' + channel.username">
-                                        <img :src="'channelPictures/' + channel.id + '.jpg'"/>
+                                    <a target="_blank" :href="channel.url">
+                                        <img :src="'channelPictures/' + channel.id + '.jpg'" />
                                     </a>
                                 </div>
                                 <div class="channelEntryPaneListEntry">
@@ -705,12 +790,14 @@
                                         {{channel.videoLength}}
                                     </div>
                                 </div>
-                                <div class="channelEntryPaneListEntry channelEntryPaneListEntryHover" @click="setFilter(channel)">
+                                <div class="channelEntryPaneListEntry channelEntryPaneListEntryHover"
+                                    @click="setFilter(channel)">
                                     <div class="channelEntryPaneListEntryButton">
                                         <label class="material-icons">star</label> Filter by Channel
                                     </div>
                                 </div>
-                                <div class="channelEntryPaneListEntry channelEntryPaneListEntryHover" @click="deleteChannel(channel)">
+                                <div class="channelEntryPaneListEntry channelEntryPaneListEntryHover"
+                                    @click="deleteChannel(channel)">
                                     <div class="channelEntryPaneListEntryButton">
                                         <label class="material-icons">clear</label> Remove Channel
                                     </div>
@@ -721,18 +808,21 @@
                 </div>
                 <div v-show="maxChannelPage != 1" class="channelPageNavigation">
                     <div>
-                        <button v-show="channelPage > 1" class="material-icons channelPageNavigationButton" @click="channelPage--">navigate_before</button>
+                        <button v-show="channelPage > 1" class="material-icons channelPageNavigationButton"
+                            @click="channelPage--">navigate_before</button>
                     </div>
                     <div>
                         <label>Page {{channelPage}}</label>
                     </div>
                     <div>
-                        <button v-show="channelPage < maxChannelPage" class="material-icons channelPageNavigationButton" @click="channelPage++">navigate_next</button>
+                        <button v-show="channelPage < maxChannelPage" class="material-icons channelPageNavigationButton"
+                            @click="channelPage++">navigate_next</button>
                     </div>
                 </div>
                 <div class="channelLastRowDiv">
                     <div>
-                        <input @keyup.enter="submitChannel()" v-model="addChannelName" autocomplete="off" type="text" name="Username" placeholder="Channel Name..." />
+                        <input @keyup.enter="submitChannel()" v-model="addChannelName" autocomplete="off" type="text"
+                            name="Username" placeholder="Channel Title..." />
                         <button @click="submitChannel()" class="material-icons addChannelButton">add</button>
                     </div>
                     <div></div>
@@ -748,48 +838,65 @@
             <nav class="mainNav">
                 <div class="navLeft">
                     <div class="tooltip">
-                        <button @click="showChannels" class="material-icons" v-bind:class="{activeNavButton : channelMode}">{{(filter === 'SubBox') ? 'account_box' : 'star'}} <p>Channels</p></button>
+                        <button @click="showChannels" class="material-icons"
+                            v-bind:class="{activeNavButton : channelMode}">{{(channelFilter.id === '') ? 'account_box' :
+                            'star'}} <p>Channels</p></button>
                         <div v-show="!channelMode" style="left: 0" class="tooltiptext ttdown">Channel List</div>
                     </div>
                     <div class="tooltip">
-                        <button @click="showListInput()" class="material-icons" v-bind:class="{activeNavButton : inputListMode}">playlist_add <p>Playlists</p></button>
+                        <button @click="showListInput()" class="material-icons"
+                            v-bind:class="{activeNavButton : inputListMode}">playlist_add <p>Playlists</p></button>
                         <div v-show="!inputListMode" class="tooltiptext ttdown">Playlists</div>
                     </div>
                     <div class="tooltip">
-                        <button @click="showTrashbin" class="material-icons" v-bind:class="{activeNavButton : trashbinMode}">delete <p>Trashbin</p></button>
+                        <button @click="showTrashbin" class="material-icons"
+                            v-bind:class="{activeNavButton : trashbinMode}">delete <p>Trashbin</p></button>
                         <div v-show="!trashbinMode" class="tooltiptext ttdown">Trashbin</div>
                     </div>
                     <div class="tooltip">
-                        <button @click="showTags" class="material-icons" v-bind:class="{activeNavButton : tagsMode}">label <p>Tags</p></button>
+                        <button @click="showTags" class="material-icons"
+                            v-bind:class="{activeNavButton : tagsMode}">label <p>Tags</p></button>
                         <div v-show="!tagsMode" class="tooltiptext ttdown">Tags</div>
                     </div>
-                    <p @click.prevent="goToTag()" class="selectedTag" v-if="selectedTag != null">{{selectedTag.name}}</p>
+                    <p @click.prevent="goToTag()" class="selectedTag" v-if="selectedTag != null">{{selectedTag.name}}
+                    </p>
                 </div>
                 <div class="navMiddle">
                     <div id="topbar" class="topbar">
-                        <input @input="initializeSmartListLoading();" id="search" class="search" v-model="searchFilter" type="text" autocomplete="off" placeholder="Search" />
-                        <p class="Title" style="cursor: default;"><img v-show="filterImg!==''" :src="filterImg" class="channelPic" />{{filter}} - {{filteredVideos.length}}{{ (videos.length !== filteredVideos.length) ? (' / ' + videos.length) : ''}}</p>
+                        <input @input="initializeSmartListLoading();" id="search" class="search" v-model="searchFilter"
+                            type="text" autocomplete="off" placeholder="Search" />
+                        <p class="Title" style="cursor: default;"><img v-show="filterImg!==''" :src="filterImg"
+                                class="channelPic" />{{channelFilter.name}} - {{filteredVideos.length}}{{ (videos.length
+                            !==
+                            filteredVideos.length) ? (' / ' + videos.length) : ''}}</p>
                     </div>
                 </div>
                 <div class="navRight">
                     <div class="tooltip">
-                        <button @click="showSettings" class="material-icons" v-bind:class="{activeNavButton : settingsMode}">settings_applications<p>Settings</p></button>
+                        <button @click="showSettings" class="material-icons"
+                            v-bind:class="{activeNavButton : settingsMode}">settings_applications<p>Settings</p>
+                        </button>
                         <div v-show="!settingsMode" class="tooltiptext ttdown">Settings</div>
                     </div>
-                    <button @click="window.location.replace('http://localhost:2828/localbrowser.html');" class="material-icons tooltip"><div class="tooltiptext ttdown">SubBox Nightly</div>archive</button>
+                    <button @click="window.location.replace('http://localhost:2828/localbrowser.html');"
+                        class="material-icons tooltip">
+                        <div class="tooltiptext ttdown">SubBox Nightly</div>archive
+                    </button>
                     <div class="tooltip">
-                        <button @click="showProfile" class="material-icons" v-bind:class="{activeNavButton : profileMode}">account_box <p>Profile</p></button>
+                        <button @click="showProfile" class="material-icons"
+                            v-bind:class="{activeNavButton : profileMode}">account_box <p>Profile</p></button>
                         <div v-show="!profileMode" class="tooltiptext ttdown" style="right: 0">Profile</div>
                     </div>
                 </div>
             </nav>
 
             <div id="mainList" class="scrollList">
-                <div v-show="filter==='SubBox' && searchFilter === '' && selectedTag == null" class="listList">
+                <div v-show="channelFilter.id === '' && searchFilter === '' && selectedTag == null" class="listList">
                     <div class="videoBox" v-for="video in lists" v-show="settings.DisplayPlaylists[video.list-1]">
                         <div class="videoContentDiv">
                             <div class="videoThumb">
-                                <a target="_blank" :href="'https://www.youtube.com/watch?v=' + video.id">
+                                <a target="_blank"
+                                    :href="(settings.UseEmbedLinks) ? 'https://www.youtube.com/embed/' + video.id + '?autoplay=0&widget_referrer=SubBox' : 'https://www.youtube.com/watch?v=' + video.id">
                                     <img :src="video.thumbnailUrl" style="width:246px;height:138px" />
                                     <p>{{video.duration}}</p>
                                 </a>
@@ -797,7 +904,8 @@
                             <div class="videoTextContentDiv">
                                 <div class="videoTitleDiv">
                                     <div style="width: 100%" class="videoTitleAndMetaDiv">
-                                        <a class="videoTitle" target="_blank" :href="'https://www.youtube.com/watch?v=' + video.id">{{video.title}}</a>
+                                        <a class="videoTitle" target="_blank"
+                                            :href="(settings.UseEmbedLinks) ? 'https://www.youtube.com/embed/' + video.id + '?autoplay=0&widget_referrer=SubBox' : 'https://www.youtube.com/watch?v=' + video.id">{{video.title}}</a>
                                         <div class="videoText">
                                             {{video.channelTitle}} &#9679 {{video.publishedAtString}}
                                         </div>
@@ -810,26 +918,39 @@
 
                                 <div class="playlistButtonDiv">
                                     <p class="playlistHint">PLAYLIST</p>
-                                    <button @click="prev(video.list)" style="margin-left: auto" class="material-icons listButton tooltip"><div class="tooltiptext ttleft">Previous Video</div>fast_rewind</button>
-                                    <button @click="next(video.list)" class="material-icons listButton tooltip"><div class="tooltiptext ttright">Next Video</div>fast_forward</button>
-                                    <button @click="showUniqueList(video.list)" class="material-icons listButton tooltip"><div class="tooltiptext ttright">Show Playlist</div>view_list</button>
+                                    <button @click="prev(video.list)" style="margin-left: auto"
+                                        class="material-icons listButton tooltip">
+                                        <div class="tooltiptext ttleft">Previous Video</div>fast_rewind
+                                    </button>
+                                    <button @click="next(video.list)" class="material-icons listButton tooltip">
+                                        <div class="tooltiptext ttright">Next Video</div>fast_forward
+                                    </button>
+                                    <button @click="showUniqueList(video.list)"
+                                        class="material-icons listButton tooltip">
+                                        <div class="tooltiptext ttright">Show Playlist</div>view_list
+                                    </button>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div id="mainVideoList" class="videoList">
-                    <div class="videoBox" v-for="video in filteredVideos.slice(viewPortBottom, viewPortTop)" :key="video.id">
+                    <div class="videoBox" v-for="video in filteredVideos.slice(viewPortBottom, viewPortTop)"
+                        :key="video.id">
                         <div class="videoChannelDiv">
-                            <div target="_blank" @click="filterByChannelFromVideoList(video.channelId);" style="text-decoration: none; cursor: pointer;">
-                                <img :src="'channelPictures/' + video.channelId + '.jpg'" style="left:0;width:32px;height:32px;border-radius: 50%;vertical-align:middle;cursor:pointer;"/>
+                            <div target="_blank" @click="filterByChannelFromVideoList(video.channelId);"
+                                style="text-decoration: none; cursor: pointer;">
+                                <img :src="'channelPictures/' + video.channelId + '.jpg'"
+                                    style="left:0;width:32px;height:32px;border-radius: 50%;vertical-align:middle;cursor:pointer;" />
                                 <span class="videoHeaderName">{{video.channelTitle}}</span>
-                                <span class="videoHeaderNameNew" v-show="settings.HighlightNewVideos && ((today.getTime()/1000 - video.publishedAt.getTime()/1000) < 86400)">NEW</span>
+                                <span class="videoHeaderNameNew"
+                                    v-show="settings.HighlightNewVideos && ((today.getTime()/1000 - video.publishedAt.getTime()/1000) < 86400)">NEW</span>
                             </div>
                         </div>
                         <div class="videoContentDiv">
                             <div class="videoThumb">
-                                <a target="_blank" :href="'https://www.youtube.com/watch?v=' + video.id">
+                                <a target="_blank"
+                                    :href="(settings.UseEmbedLinks) ? 'https://www.youtube.com/embed/' + video.id + '?autoplay=0&widget_referrer=SubBox' : 'https://www.youtube.com/watch?v=' + video.id">
                                     <img :src="video.thumbnailUrl" style="width:246px;height:138px" />
                                     <p>{{video.duration}}</p>
                                 </a>
@@ -837,16 +958,31 @@
                             <div class="videoTextContentDiv">
                                 <div class="videoTitleDiv">
                                     <div class="videoTitleAndMetaDiv">
-                                        <a class="videoTitle" target="_blank" :href="'https://www.youtube.com/watch?v=' + video.id">{{video.title}}</a>
+                                        <a class="videoTitle" target="_blank"
+                                            :href="(settings.UseEmbedLinks) ? 'https://www.youtube.com/embed/' + video.id + '?autoplay=0&widget_referrer=SubBox' : 'https://www.youtube.com/watch?v=' + video.id">{{video.title}}</a>
                                         <div class="videoText">
-                                            <a class="videoTextChannel" target="_blank" :href="'https://www.youtube.com/user/' + video.channelName">{{video.channelTitle}}</a> &#9679 {{video.publishedAtString}}
+                                            <a class="videoTextChannel" target="_blank"
+                                                @click="filterByChannelFromVideoList(video.channelId);">{{video.channelTitle}}</a>
+                                            &#9679 {{video.publishedAtString}}
                                         </div>
                                     </div>
                                     <div class="videoTitleButtons">
-                                        <button v-show="video.dlstatus == 0" class="material-icons videoTitleButton tooltip" @click="downloadVideo(video)"><div class="tooltiptext ttleft">Download Video to SubBox Nightly</div>save_alt</button>
-                                        <button v-show="video.dlstatus == 1" v-bind:id="'video' + video.id" class="dlStatus1Button" style="cursor: default;">{{(video.dlprogress === "100") ? "Just a second..." : video.dlprogress + "% Finished"}}</button>
-                                        <button v-show="video.dlstatus == 2" class="dlStatus2Button" @click="window.location.replace('http://localhost:2828/localbrowser.html?id=' + video.id);">Available in Nightly</button>
-                                        <button class="material-icons videoTitleButton tooltip" @click="deleteVideo(video)"><div class="tooltiptext ttright">Move to Trashbin</div>clear</button>
+                                        <button v-show="video.dlstatus == 0"
+                                            class="material-icons videoTitleButton tooltip"
+                                            @click="downloadVideo(video)">
+                                            <div class="tooltiptext ttleft">Download Video to SubBox Nightly</div>
+                                            save_alt
+                                        </button>
+                                        <button v-show="video.dlstatus == 1" v-bind:id="'video' + video.id"
+                                            class="dlStatus1Button" style="cursor: default;">{{(video.dlprogress ===
+                                            "100") ? "Just a second..." : video.dlprogress + "% Finished"}}</button>
+                                        <button v-show="video.dlstatus == 2" class="dlStatus2Button"
+                                            @click="window.location.replace('http://localhost:2828/localbrowser.html?id=' + video.id);">Available
+                                            in Nightly</button>
+                                        <button class="material-icons videoTitleButton tooltip"
+                                            @click="deleteVideo(video)">
+                                            <div class="tooltiptext ttright">Move to Trashbin</div>clear
+                                        </button>
                                     </div>
                                 </div>
 
@@ -858,9 +994,12 @@
                     </div>
                 </div>
                 <div class="bottomDiv">
-                    <a target="_blank" rel="noopener noreferrer" href="https://github.com/MilchRatchet/SubBox" class="bottomDivEntry"><i class="bd-github"></i> Github</a>
-                    <a href="http://localhost:2828/tutorial.html" class="bottomDivEntry"><i class="bd-github" style="color: transparent;"></i>Introduction</a>
-                    <a target="_blank" rel="noopener noreferrer" href="https://www.youtube.com/" class="bottomDivEntry"><i class="bd-youtube"></i>Youtube</a>
+                    <a target="_blank" rel="noopener noreferrer" href="https://github.com/MilchRatchet/SubBox"
+                        class="bottomDivEntry"><i class="bd-github"></i> Github</a>
+                    <a href="http://localhost:2828/tutorial.html" class="bottomDivEntry"><i class="bd-github"
+                            style="color: transparent;"></i>Introduction</a>
+                    <a target="_blank" rel="noopener noreferrer" href="https://www.youtube.com/"
+                        class="bottomDivEntry"><i class="bd-youtube"></i>Youtube</a>
                 </div>
             </div>
         </div>
@@ -875,4 +1014,3 @@
 
 
 </html>
-
