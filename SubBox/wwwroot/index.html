@@ -222,7 +222,8 @@
                             <div class="videoBox">
                                 <div class="videoContentDiv">
                                     <div class="videoThumb">
-                                        <a target="_blank" :href="'https://www.youtube.com/watch?v=' + video.id">
+                                        <a target="_blank"
+                                            :href="(settings.UseEmbedLinks) ? 'https://www.youtube.com/embed/' + video.id + '?autoplay=0&widget_referrer=SubBox' : 'https://www.youtube.com/watch?v=' + video.id">
                                             <img :src="video.thumbnailUrl" style="width:246px;height:138px" />
                                             <p>{{video.duration}}</p>
                                         </a>
@@ -231,7 +232,7 @@
                                         <div class="videoTitleDiv">
                                             <div class="videoTitleAndMetaDiv">
                                                 <a class="videoTitle" target="_blank"
-                                                    :href="'https://www.youtube.com/watch?v=' + video.id">{{video.title}}</a>
+                                                    :href="(settings.UseEmbedLinks) ? 'https://www.youtube.com/embed/' + video.id + '?autoplay=0&widget_referrer=SubBox' : 'https://www.youtube.com/watch?v=' + video.id">{{video.title}}</a>
                                                 <div class="videoText">
                                                     {{video.channelTitle}} &#9679 {{video.publishedAtString}}
                                                 </div>
@@ -597,6 +598,17 @@
                         </label>
                     </div>
                 </div>
+                <div class="singleSetting" @click.prevent="settings.UseEmbedLinks = !settings.UseEmbedLinks">
+                    <div style="justify-content: flex-start;">
+                        <p>Use Embed Links For Videos</p>
+                    </div>
+                    <div style="justify-content: flex-end;">
+                        <label class="switch">
+                            <input type="checkbox" v-model="settings.UseEmbedLinks" />
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
             </div>
             <div v-show="settingsTab === 1" class="settingsList">
                 <div class="singleSetting" @click.prevent="settings.ConfirmWindow = !settings.ConfirmWindow">
@@ -883,7 +895,8 @@
                     <div class="videoBox" v-for="video in lists" v-show="settings.DisplayPlaylists[video.list-1]">
                         <div class="videoContentDiv">
                             <div class="videoThumb">
-                                <a target="_blank" :href="'https://www.youtube.com/watch?v=' + video.id">
+                                <a target="_blank"
+                                    :href="(settings.UseEmbedLinks) ? 'https://www.youtube.com/embed/' + video.id + '?autoplay=0&widget_referrer=SubBox' : 'https://www.youtube.com/watch?v=' + video.id">
                                     <img :src="video.thumbnailUrl" style="width:246px;height:138px" />
                                     <p>{{video.duration}}</p>
                                 </a>
@@ -892,7 +905,7 @@
                                 <div class="videoTitleDiv">
                                     <div style="width: 100%" class="videoTitleAndMetaDiv">
                                         <a class="videoTitle" target="_blank"
-                                            :href="'https://www.youtube.com/watch?v=' + video.id">{{video.title}}</a>
+                                            :href="(settings.UseEmbedLinks) ? 'https://www.youtube.com/embed/' + video.id + '?autoplay=0&widget_referrer=SubBox' : 'https://www.youtube.com/watch?v=' + video.id">{{video.title}}</a>
                                         <div class="videoText">
                                             {{video.channelTitle}} &#9679 {{video.publishedAtString}}
                                         </div>
@@ -936,7 +949,8 @@
                         </div>
                         <div class="videoContentDiv">
                             <div class="videoThumb">
-                                <a target="_blank" :href="'https://www.youtube.com/watch?v=' + video.id">
+                                <a target="_blank"
+                                    :href="(settings.UseEmbedLinks) ? 'https://www.youtube.com/embed/' + video.id + '?autoplay=0&widget_referrer=SubBox' : 'https://www.youtube.com/watch?v=' + video.id">
                                     <img :src="video.thumbnailUrl" style="width:246px;height:138px" />
                                     <p>{{video.duration}}</p>
                                 </a>
@@ -945,7 +959,7 @@
                                 <div class="videoTitleDiv">
                                     <div class="videoTitleAndMetaDiv">
                                         <a class="videoTitle" target="_blank"
-                                            :href="'https://www.youtube.com/watch?v=' + video.id">{{video.title}}</a>
+                                            :href="(settings.UseEmbedLinks) ? 'https://www.youtube.com/embed/' + video.id + '?autoplay=0&widget_referrer=SubBox' : 'https://www.youtube.com/watch?v=' + video.id">{{video.title}}</a>
                                         <div class="videoText">
                                             <a class="videoTextChannel" target="_blank"
                                                 @click="filterByChannelFromVideoList(video.channelId);">{{video.channelTitle}}</a>
