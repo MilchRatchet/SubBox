@@ -1,4 +1,4 @@
-# SubBox [![Github Release](https://img.shields.io/badge/Release-1.8.1-red)](https://github.com/MilchRatchet/SubBox/releases)
+# SubBox [![Github Release](https://img.shields.io/badge/Release-1.9-red)](https://github.com/MilchRatchet/SubBox/releases)
 `SubBox` is a tool to manage the uploaded videos of your favourite Youtube channels. It resembles the `Subscriptions` tab on Youtube.
 
 ![DemoImage1](SubBox/wwwroot/media/intro1.png)
