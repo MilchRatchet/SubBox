@@ -132,6 +132,13 @@ namespace SubBox.Models
                     {
                         Video v = ParseVideo(item, 0, 0);
 
+                        if (AppSettings.AutoDeleteShorts && v.Title.Contains("#shorts"))
+                        {
+                            Logger.Debug("Video \"" + v.Title + "\" was deleted because it is a short.");
+
+                            continue;
+                        }
+
                         context.Videos.Add(v);
                     }
                     catch (Exception e)

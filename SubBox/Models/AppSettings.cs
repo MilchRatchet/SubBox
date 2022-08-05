@@ -65,6 +65,8 @@ namespace SubBox.Models
         public static DownloadQuality PreferredQuality { get; set; }
         [JsonProperty]
         public static List<bool> DisplayPlaylists { get; set; }
+        [JsonProperty]
+        public static bool AutoDeleteShorts { get; set; } = false;
 
         //Runtime vars
         public static bool GCMode { get; set; }
