@@ -559,7 +559,7 @@
                                 class="material-icons">remove</button>
                             <input v-model="settings.ChannelsPerPage" type="number" id="PPS" name="CPP" readonly />
                             <button
-                                @click="settings.ChannelsPerPage++; maxChannelPage = Math.ceil(channels.length / settings.ChannelsPerPage); if (channelPage > maxChannelPage) channelPage = 1;"
+                                @click="settings.ChannelsPerPage++; maxChannelPage = Math.ceil(channels.length / settings.ChannelsPerPage); if (channelPage > maxChannelPage) channelPage = maxChannelPage;"
                                 class="material-icons">add</button>
                         </div>
                     </div>

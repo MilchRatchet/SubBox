@@ -34,7 +34,6 @@ var app = new Vue({
         informationContent: [],
         messages: [],
         channelPage: 1,
-        maxChannelPage: 10,
         isFirefox: false,
         today: new Date(),
         filteredLength: "0:00",
@@ -87,6 +86,9 @@ var app = new Vue({
             return this.uniqueList.filter(function (u) {
                 return (u.title + u.description + u.channelTitle).toUpperCase().includes(playlistFilterUp);
             });
+        },
+        maxChannelPage: function () {
+            return Math.ceil(this.channels.length / this.settings.ChannelsPerPage);
         }
     },
     functions: {
@@ -209,9 +211,7 @@ var app = new Vue({
 
                 this.calcChannelStats();
 
-                this.maxChannelPage = Math.ceil(this.channels.length / this.settings.ChannelsPerPage);
-
-                if (this.channelPage > this.maxChannelPage) this.channelPage = 1;
+                if (this.channelPage > this.maxChannelPage) this.channelPage = this.maxChannelPage;
 
                 this.unlockAllChannels();
 
