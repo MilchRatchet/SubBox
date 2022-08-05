@@ -54,6 +54,13 @@ namespace SubBox.Models
 
                 using (AppDbContext context = new AppDbContext())
                 {
+                    if (context.Channels.Any(c => c.Id == NewChannel.Id))
+                    {
+                        Logger.Debug("Channel " + NewChannel.Id + " was already present!");
+
+                        return null;
+                    }
+
                     context.Channels.Add(NewChannel);
 
                     context.SaveChanges();
@@ -82,7 +89,9 @@ namespace SubBox.Models
             }
             catch (Exception e)
             {
-                Logger.Info("Channel with ID " + ID + " couldn't be added! This shouldn't happen! Reason: " + e.Message);
+                Logger.Warn("Channel with ID " + ID + " couldn't be added! This shouldn't happen! Reason: " + e.Message);
+
+                Logger.Error(e.InnerException.Message);
 
                 return null;
             }
@@ -107,7 +116,10 @@ namespace SubBox.Models
                 Logger.Debug("Channel found with title: " + response.Snippet.ChannelTitle);
                 if (response.Snippet.ChannelTitle == name)
                 {
-                    result.Add(RetrieveChannelData(response.Id.ChannelId));
+                    Channel addedChannel = RetrieveChannelData(response.Id.ChannelId);
+
+                    if (addedChannel != null)
+                        result.Add(addedChannel);
                 }
             }
 

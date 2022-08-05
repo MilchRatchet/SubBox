@@ -399,6 +399,8 @@ var app = new Vue({
 
                 const requestString = this.addChannelName;
 
+                const previousChannelList = this.channels;
+
                 this.addChannelName = "";
 
                 await fetch("/api/values/channel/" + requestString, { method: "POST" });
@@ -423,8 +425,8 @@ var app = new Vue({
 
                             app.messages.push({
                                 "id": messageId,
-                                "title": "No channels matching that name were found!",
-                                "subtitle": "Check out the introduction to look up how to add channels",
+                                "title": "No channels matching that name were added!",
+                                "subtitle": "Either no such channel exists or it is already present in SubBox.",
                                 "thumbUrl": "media/LogoRed.png",
                                 "text": "Input: " + requestString,
                                 "event": "return;"
@@ -441,18 +443,20 @@ var app = new Vue({
 
                         addedChannels.forEach(channel => {
                             if (channel !== undefined && app.settings.ChannelAddedNotification) {
-                                const messageId = app.messageRunningId++;
+                                if (!previousChannelList.some(e => e.id === channel.id)) {
+                                    const messageId = app.messageRunningId++;
 
-                                app.messages.push({
-                                    "id": messageId,
-                                    "title": channel.displayname + " was added",
-                                    "subtitle": channel.url,
-                                    "thumbUrl": 'channelPictures/' + channel.id + '.jpg',
-                                    "text": "Id: " + channel.id,
-                                    "event": "app.channelFilter.name = '" + channel.displayname + "'; app.channelFilter.id = '" + channel.id + "'; app.lockChannel('" + channel.id + "');"
-                                });
+                                    app.messages.push({
+                                        "id": messageId,
+                                        "title": channel.displayname + " was added",
+                                        "subtitle": channel.url,
+                                        "thumbUrl": 'channelPictures/' + channel.id + '.jpg',
+                                        "text": "Id: " + channel.id,
+                                        "event": "app.channelFilter.name = '" + channel.displayname + "'; app.channelFilter.id = '" + channel.id + "'; app.lockChannel('" + channel.id + "');"
+                                    });
 
-                                setTimeout(function () { const index = app.messages.findIndex(m => m.id === messageId); app.messages.splice(index, 1); }, 10000);
+                                    setTimeout(function () { const index = app.messages.findIndex(m => m.id === messageId); app.messages.splice(index, 1); }, 10000);
+                                }
                             }
                         });
 
