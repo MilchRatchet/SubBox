@@ -14,14 +14,16 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <OutputType>Exe</OutputType>
     <PublishSingleFile Condition="'$(Configuration)' == 'Release'">true</PublishSingleFile>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <SelfContained>true</SelfContained>
+    <IncludeAllContentForSelfExtract>true</IncludeAllContentForSelfExtract>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <Optimize>true</Optimize>
-    <PlatformTarget>x64</PlatformTarget>
-  </PropertyGroup>
+  <ItemGroup>
+    <Content Remove="settings.json" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Google.Apis.YouTube.v3" Version="1.57.0.2756" />
@@ -32,6 +34,12 @@
 
   <ItemGroup>
     <Folder Include="wwwroot\channelPictures\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="settings.json">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>
