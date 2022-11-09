@@ -144,11 +144,11 @@ namespace SubBox.Models
                     {
                         Video v = ParseVideo(item, 0, 0);
 
-                        if (AppSettings.AutoDeleteShorts && v.Title.Contains("#shorts"))
+                        if (AppSettings.AutoDeleteShorts && v.Title.ToLower().Contains("#shorts"))
                         {
                             Logger.Debug("Video \"" + v.Title + "\" was deleted because it is a short.");
 
-                            continue;
+                            v.New = false;
                         }
 
                         context.Videos.Add(v);
